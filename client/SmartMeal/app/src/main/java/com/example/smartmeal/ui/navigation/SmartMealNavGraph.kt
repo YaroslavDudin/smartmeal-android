@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.smartmeal.ui.screens.TestScreen
 import com.example.smartmeal.ui.screens.auth.WelcomeScreen
+import com.example.smartmeal.ui.screens.home.HomeScreen
 
 /**
  * Отдельный компонент для управления навигацией.
@@ -19,23 +20,22 @@ fun SmartMealNavGraph(navController: NavHostController) {
         startDestination = Screen.Welcome.route // Указываем, откуда стартует приложение
     ) {
         
-        // --- ЗОНА АВТОРИЗАЦИИ / ОНБОРДИНГА ---
+        // --- ЗОНА АВТОРИЗАЦИИ ---
         composable(route = Screen.Welcome.route) {
             WelcomeScreen(
-                // Передаем логику перехода в лямбду
                 onNavigateNext = {
-                    navController.navigate(Screen.Test.route) {
-                        // Пример: если нужно, чтобы по кнопке "Назад" нельзя было 
-                        // вернуться на экран Welcome, можно очистить стек:
-                        /*
+                    navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Welcome.route) { inclusive = true }
-                        */
                     }
                 }
             )
         }
 
         // --- ЗОНА ОСНОВНОГО ПРИЛОЖЕНИЯ ---
+        composable(route = Screen.Home.route) {
+            HomeScreen()
+        }
+
         composable(route = Screen.Test.route) {
             TestScreen()
         }

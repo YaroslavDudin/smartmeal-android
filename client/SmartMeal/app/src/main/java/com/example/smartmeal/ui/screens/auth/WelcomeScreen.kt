@@ -1,86 +1,101 @@
 package com.example.smartmeal.ui.screens.auth
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.smartmeal.ui.components.PrimaryButton
-import com.example.smartmeal.ui.theme.SmartMealTheme
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.smartmeal.data.api.SmartMealApi
+import com.example.smartmeal.data.models.LoginRequest
+import kotlinx.coroutines.launch
+
+class LoginViewModel(private val api: SmartMealApi = SmartMealApi.create()) : ViewModel() {
+    var email by mutableStateOf("")
+    var password by mutableStateOf("")
+    var isLoading by mutableStateOf(false)
+    var error by mutableStateOf<String?>(null)
+
+    fun login(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            isLoading = true
+            error = null
+            try {
+                // В DRF ObtainAuthToken ожидает 'username' и 'password'
+                // Мы передаем email как username
+                val response = api.login(LoginRequest(email = email, username = email, password = password))
+                // Сохранение токена (в реальном приложении нужно использовать DataStore/SharedPreferences)
+                onSuccess()
+            } catch (e: Exception) {
+                error = e.localizedMessage ?: "Login failed"
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+}
 
 @Composable
 fun WelcomeScreen(
-    onNavigateNext: () -> Unit = {}
+    onNavigateNext: () -> Unit,
+    viewModel: LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 24.dp, vertical = 40.dp),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.Center
     ) {
+        Text(text = "Smart Meal Login", style = MaterialTheme.typography.headlineMedium)
         
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Spacer(modifier = Modifier.height(40.dp))
-            
-            Box(
-                modifier = Modifier
-                    .size(240.dp)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Тут иллюстрация\nиз макета",
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            Spacer(modifier = Modifier.height(48.dp))
-
-            Text(
-                text = "Избавим от вопроса\n«Что приготовить?»",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center,
-                lineHeight = 34.sp
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Я гениален, я люблю водить девушек на свидания",
-                fontSize = 16.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center
-            )
-        }
-
-        PrimaryButton(
-            text = "Начать",
-            onClick = onNavigateNext
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        OutlinedTextField(
+            value = viewModel.email,
+            onValueChange = { viewModel.email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true, name = "Welcome Screen")
-@Composable
-fun WelcomeScreenPreview() {
-    SmartMealTheme {
-        WelcomeScreen(onNavigateNext = {})
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        OutlinedTextField(
+            value = viewModel.password,
+            onValueChange = { viewModel.password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+        )
+        
+        if (viewModel.error != null) {
+            Text(text = viewModel.error!!, color = MaterialTheme.colorScheme.error)
+        }
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        Button(
+            onClick = { viewModel.login(onNavigateNext) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !viewModel.isLoading
+        ) {
+            if (viewModel.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    strokeWidth = 2.dp
+                )
+            } else {
+                Text(text = "Login")
+            }
+        }
     }
 }
