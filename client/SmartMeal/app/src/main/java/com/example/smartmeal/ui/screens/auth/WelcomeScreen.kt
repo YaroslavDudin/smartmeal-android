@@ -63,7 +63,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Персонализированное меню и умный список продуктов в пару кликов.",
+                text = "Я гениален, я люблю водить девушек на свидания",
                 fontSize = 16.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Center
