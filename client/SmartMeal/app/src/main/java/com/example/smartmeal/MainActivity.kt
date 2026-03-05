@@ -10,13 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.smartmeal.ui.screens.TestScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.smartmeal.ui.navigation.SmartMealNavGraph
 import com.example.smartmeal.ui.theme.SmartMealTheme
-
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,26 +25,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // Создаем контроллер навигации на самом верхнем уровне
+                    val navController = rememberNavController()
+
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
-                            TestScreen()
+                            // Вызываем наш вынесенный граф навигации!
+                            SmartMealNavGraph(navController = navController)
                         }
                     }
                 }
             }
-        }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun TestScreenPreview() {
-    SmartMealTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            TestScreen()
         }
     }
 }
