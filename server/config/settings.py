@@ -47,9 +47,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'meals',
-    'accounts'
+    'app.accounts',
+    'app.recipes',
+    'app.menus',
+    'app.cart',
 ]
+
+AUTH_USER_MODEL = 'accounts.user'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
