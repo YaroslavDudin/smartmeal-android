@@ -30,13 +30,12 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 #Накините своих хостов
-ALLOWED_HOSTS = [
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') if os.getenv('ALLOWED_HOSTS') else [
     '10.0.2.2',    # Специальный IP-адрес эмулятора Android, который ссылается на localhost компьютера
     '127.0.0.1',   # Стандартный localhost
     'localhost',
     '*'            # Разрешает запросы отовсюду (полезно для тестирования с физического телефона в одной Wi-Fi сети)
 ]
-
 
 # Application definition
 
@@ -48,9 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    
-    
-    'meals'
+    'meals',
+    'accounts'
 ]
 
 MIDDLEWARE = [
