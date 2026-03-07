@@ -20,6 +20,7 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
+
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(IngredientCategory, on_delete=models.RESTRICT, related_name='ingredients')
@@ -30,6 +31,7 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
@@ -49,6 +51,7 @@ class Recipe(models.Model):
     def __str__(self):
         return self.title
 
+
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_ingredients')
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='used_in_recipes')
@@ -57,10 +60,11 @@ class RecipeIngredient(models.Model):
 
     class Meta:
         db_table = 'recipe_ingredient'
-        unique_togather = [['recipe', 'ingredient']]
+        unique_together = [['recipe', 'ingredient']]
 
     def __str__(self):
         return f"{self.amount} {self.unit} of {self.ingredient.name} for {self.recipe.title}"
+
 
 class RecipeStep(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
@@ -71,6 +75,7 @@ class RecipeStep(models.Model):
     class Meta:
         db_table = 'recipe_step'
         ordering = ['step_number']
-        unique_togather = [['recipe', 'step_number']]
+        unique_together = [['recipe', 'step_number']]
+
     def __str__(self):
-        return f"Step {self.step_number} for {self.recipe.title}"# Create your models here.
+        return f"Step {self.step_number} for {self.recipe.title}"

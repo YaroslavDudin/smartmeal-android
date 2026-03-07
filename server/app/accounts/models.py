@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class Allergy(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
@@ -10,6 +11,7 @@ class Allergy(models.Model):
     class Meta:
         db_table = 'allergy'
 
+
 class DietType(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
@@ -18,6 +20,7 @@ class DietType(models.Model):
     
     class Meta:
         db_table = 'diet_type'
+
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, max_length=255)
@@ -36,6 +39,7 @@ class User(AbstractUser):
     class Meta:
         db_table = 'user'
 
+
 class UserFavorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
     recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE, related_name='favorited_by')
@@ -46,4 +50,4 @@ class UserFavorite(models.Model):
     
     class Meta:
         db_table = 'user_favorite'
-        unique_togather = [['user'], ['recipe']]
+        unique_together = [['user'], ['recipe']]

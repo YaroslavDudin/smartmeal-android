@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class Menu(models.Model):
     PERIOD_CHOICES = [('day', 'Day'), ('week', 'Week')]
 
@@ -13,6 +14,7 @@ class Menu(models.Model):
     
     class Meta:
         db_table = 'menu'
+
 
 class MenuItem(models.Model):
     MEAL_TYPE_CHOICES = [
