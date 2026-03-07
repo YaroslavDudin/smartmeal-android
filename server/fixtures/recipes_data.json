@@ -1,0 +1,4765 @@
+[
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 1,
+    "fields": {
+        "name": "Мясо и птица"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 2,
+    "fields": {
+        "name": "Рыба и морепродукты"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 3,
+    "fields": {
+        "name": "Овощи, грибы и зелень"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 4,
+    "fields": {
+        "name": "Фрукты и ягоды"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 5,
+    "fields": {
+        "name": "Молочные продукты и яйца"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 6,
+    "fields": {
+        "name": "Крупы и макароны"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 7,
+    "fields": {
+        "name": "Бакалея и соусы (масла, мука)"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 8,
+    "fields": {
+        "name": "Специи и приправы"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 1,
+    "fields": {
+        "name": "г."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 2,
+    "fields": {
+        "name": "кг."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 3,
+    "fields": {
+        "name": "мл."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 4,
+    "fields": {
+        "name": "л."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 5,
+    "fields": {
+        "name": "шт."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 6,
+    "fields": {
+        "name": "ст. л."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 7,
+    "fields": {
+        "name": "ч. л."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 8,
+    "fields": {
+        "name": "зубчик"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 9,
+    "fields": {
+        "name": "щепотка"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 10,
+    "fields": {
+        "name": "по вкусу"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 11,
+    "fields": {
+        "name": "веточки"
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 1,
+    "fields": {
+        "name": "Овсяные хлопья",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 2,
+    "fields": {
+        "name": "Яйцо куриное",
+        "category": 5,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 3,
+    "fields": {
+        "name": "Молоко",
+        "category": 5,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 4,
+    "fields": {
+        "name": "Сыр легкий",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 5,
+    "fields": {
+        "name": "Помидор",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 6,
+    "fields": {
+        "name": "Соль",
+        "category": 8,
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 7,
+    "fields": {
+        "name": "Куриное филе",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 8,
+    "fields": {
+        "name": "Киноа",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 9,
+    "fields": {
+        "name": "Брокколи",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 10,
+    "fields": {
+        "name": "Масло оливковое",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 11,
+    "fields": {
+        "name": "Паприка",
+        "category": 8,
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 12,
+    "fields": {
+        "name": "Огурцы",
+        "category": 3,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 14,
+    "fields": {
+        "name": "Перец болгарский",
+        "category": 3,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 15,
+    "fields": {
+        "name": "Сыр Фета",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 16,
+    "fields": {
+        "name": "Маслины без косточки",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 17,
+    "fields": {
+        "name": "Орегано сушеный",
+        "category": 8,
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 18,
+    "fields": {
+        "name": "Творог 5%",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 19,
+    "fields": {
+        "name": "Рисовая мука",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 20,
+    "fields": {
+        "name": "Подсластитель",
+        "category": 7,
+        "unit": 10
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 21,
+    "fields": {
+        "name": "Ванилин",
+        "category": 8,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 22,
+    "fields": {
+        "name": "Стейк лосося",
+        "category": 2,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 23,
+    "fields": {
+        "name": "Лимон",
+        "category": 4,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 24,
+    "fields": {
+        "name": "Розмарин свежий",
+        "category": 3,
+        "unit": 11
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 25,
+    "fields": {
+        "name": "Спагетти",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 26,
+    "fields": {
+        "name": "Бекон",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 27,
+    "fields": {
+        "name": "Сыр Пармезан",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 28,
+    "fields": {
+        "name": "Чеснок",
+        "category": 3,
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 29,
+    "fields": {
+        "name": "Перец черный",
+        "category": 8,
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 30,
+    "fields": {
+        "name": "Картофель",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 31,
+    "fields": {
+        "name": "Морковь",
+        "category": 3,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 32,
+    "fields": {
+        "name": "Лук репчатый",
+        "category": 3,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 33,
+    "fields": {
+        "name": "Сыр плавленый",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 34,
+    "fields": {
+        "name": "Вода",
+        "category": 7,
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 35,
+    "fields": {
+        "name": "Масло сливочное",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 36,
+    "fields": {
+        "name": "Сухарики",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 37,
+    "fields": {
+        "name": "Сыр Тофу",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 38,
+    "fields": {
+        "name": "Стручковая фасоль",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 39,
+    "fields": {
+        "name": "Соевый соус",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 40,
+    "fields": {
+        "name": "Масло кунжутное",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 41,
+    "fields": {
+        "name": "Кунжут",
+        "category": 8,
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 42,
+    "fields": {
+        "name": "Банан",
+        "category": 4,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 43,
+    "fields": {
+        "name": "Ягоды замороженные",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 44,
+    "fields": {
+        "name": "Молоко растительное",
+        "category": 7,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 45,
+    "fields": {
+        "name": "Семена чиа",
+        "category": 7,
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 46,
+    "fields": {
+        "name": "Орехи",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 47,
+    "fields": {
+        "name": "Салат Айсберг",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 48,
+    "fields": {
+        "name": "Помидоры черри",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 49,
+    "fields": {
+        "name": "Соус Цезарь",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 50,
+    "fields": {
+        "name": "Стейк из говядины",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 51,
+    "fields": {
+        "name": "Кабачок",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 52,
+    "fields": {
+        "name": "Сыр полутвердый",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 53,
+    "fields": {
+        "name": "Сметана",
+        "category": 5,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 54,
+    "fields": {
+        "name": "Зелень свежая",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 55,
+    "fields": {
+        "name": "Авокадо Хасс",
+        "category": 4,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 56,
+    "fields": {
+        "name": "Лук красный",
+        "category": 3,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 57,
+    "fields": {
+        "name": "Сок лайма",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 58,
+    "fields": {
+        "name": "Кинза свежая",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 59,
+    "fields": {
+        "name": "Чипсы Начос",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 60,
+    "fields": {
+        "name": "Шампиньоны",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 61,
+    "fields": {
+        "name": "Шпинат свежий",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 62,
+    "fields": {
+        "name": "Говядина на кости",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 63,
+    "fields": {
+        "name": "Свекла",
+        "category": 3,
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 64,
+    "fields": {
+        "name": "Капуста белокочанная",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 65,
+    "fields": {
+        "name": "Томатная паста",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 66,
+    "fields": {
+        "name": "Масло растительное",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 67,
+    "fields": {
+        "name": "Фарш говяжий",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 68,
+    "fields": {
+        "name": "Рис",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 69,
+    "fields": {
+        "name": "Зира (кумин)",
+        "category": 8,
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 70,
+    "fields": {
+        "name": "Рис Арборио",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 71,
+    "fields": {
+        "name": "Бульон овощной",
+        "category": 7,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 72,
+    "fields": {
+        "name": "Мука пшеничная",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 73,
+    "fields": {
+        "name": "Сахар",
+        "category": 8,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 74,
+    "fields": {
+        "name": "Сыр Моцарелла",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 75,
+    "fields": {
+        "name": "Соус Песто",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 76,
+    "fields": {
+        "name": "Базилик свежий",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 77,
+    "fields": {
+        "name": "Макароны Пенне",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 78,
+    "fields": {
+        "name": "Креветки очищенные",
+        "category": 2,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 79,
+    "fields": {
+        "name": "Кокосовое молоко",
+        "category": 7,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 80,
+    "fields": {
+        "name": "Паста Том Ям",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 81,
+    "fields": {
+        "name": "Стейк тунца",
+        "category": 2,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 82,
+    "fields": {
+        "name": "Чечевица красная",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 83,
+    "fields": {
+        "name": "Мята сушеная",
+        "category": 8,
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 84,
+    "fields": {
+        "name": "Фарш куриный",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 85,
+    "fields": {
+        "name": "Тунец консервированный (в собственном соку)",
+        "category": 2,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 86,
+    "fields": {
+        "name": "Листья салата",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 87,
+    "fields": {
+        "name": "Сок лимона",
+        "category": 7,
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 88,
+    "fields": {
+        "name": "Крупа манная",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 89,
+    "fields": {
+        "name": "Изюм",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 90,
+    "fields": {
+        "name": "Говядина (мякоть)",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 91,
+    "fields": {
+        "name": "Овсяные хлопья долгой варки",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 92,
+    "fields": {
+        "name": "Йогурт натуральный",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 93,
+    "fields": {
+        "name": "Мед",
+        "category": 7,
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 1,
+    "fields": {
+        "title": "Овсяноблин с сыром и помидором",
+        "image_url": null,
+        "cook_time": 10,
+        "servings": 1,
+        "calories": 320,
+        "protein": "18.0",
+        "fat": "14.0",
+        "carbs": "30.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 2,
+    "fields": {
+        "title": "Куриная грудка с киноа и брокколи",
+        "image_url": null,
+        "cook_time": 25,
+        "servings": 1,
+        "calories": 450,
+        "protein": "45.0",
+        "fat": "10.0",
+        "carbs": "45.0",
+        "diet_types": [
+            1,
+            4,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 3,
+    "fields": {
+        "title": "Греческий салат классический",
+        "image_url": null,
+        "cook_time": 15,
+        "servings": 2,
+        "calories": 250,
+        "protein": "8.0",
+        "fat": "20.0",
+        "carbs": "10.0",
+        "diet_types": [
+            2,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 4,
+    "fields": {
+        "title": "ПП-Сырники в духовке",
+        "image_url": null,
+        "cook_time": 30,
+        "servings": 2,
+        "calories": 380,
+        "protein": "35.0",
+        "fat": "12.0",
+        "carbs": "32.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 5,
+    "fields": {
+        "title": "Запеченный лосось с лимоном и розмарином",
+        "image_url": null,
+        "cook_time": 25,
+        "servings": 2,
+        "calories": 420,
+        "protein": "38.0",
+        "fat": "28.0",
+        "carbs": "2.0",
+        "diet_types": [
+            1,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 6,
+    "fields": {
+        "title": "Паста Карбонара классическая",
+        "image_url": null,
+        "cook_time": 29,
+        "servings": 2,
+        "calories": 650,
+        "protein": "25.0",
+        "fat": "35.0",
+        "carbs": "55.0",
+        "diet_types": [
+            1,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 7,
+    "fields": {
+        "title": "Сырный крем-суп с сухариками",
+        "image_url": null,
+        "cook_time": 30,
+        "servings": 4,
+        "calories": 310,
+        "protein": "12.0",
+        "fat": "22.0",
+        "carbs": "18.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 8,
+    "fields": {
+        "title": "Тофу с овощами в соевом соусе",
+        "image_url": null,
+        "cook_time": 20,
+        "servings": 2,
+        "calories": 220,
+        "protein": "16.0",
+        "fat": "12.0",
+        "carbs": "14.0",
+        "diet_types": [
+            2,
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 9,
+    "fields": {
+        "title": "Смузи-боул с ягодами и бананом",
+        "image_url": null,
+        "cook_time": 5,
+        "servings": 1,
+        "calories": 280,
+        "protein": "6.0",
+        "fat": "5.0",
+        "carbs": "55.0",
+        "diet_types": [
+            2,
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 10,
+    "fields": {
+        "title": "Салат Цезарь с курицей",
+        "image_url": null,
+        "cook_time": 25,
+        "servings": 2,
+        "calories": 410,
+        "protein": "32.0",
+        "fat": "25.0",
+        "carbs": "15.0",
+        "diet_types": [
+            1,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 11,
+    "fields": {
+        "title": "Говяжий стейк с розмарином",
+        "image_url": null,
+        "cook_time": 15,
+        "servings": 1,
+        "calories": 480,
+        "protein": "40.0",
+        "fat": "35.0",
+        "carbs": "0.0",
+        "diet_types": [
+            4,
+            5,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 12,
+    "fields": {
+        "title": "Запеканка из кабачков с сыром",
+        "image_url": null,
+        "cook_time": 45,
+        "servings": 3,
+        "calories": 180,
+        "protein": "10.0",
+        "fat": "11.0",
+        "carbs": "12.0",
+        "diet_types": [
+            2,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 13,
+    "fields": {
+        "title": "Гуакамоле с начос",
+        "image_url": null,
+        "cook_time": 10,
+        "servings": 2,
+        "calories": 340,
+        "protein": "4.0",
+        "fat": "25.0",
+        "carbs": "28.0",
+        "diet_types": [
+            2,
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 14,
+    "fields": {
+        "title": "Омлет со шпинатом и грибами",
+        "image_url": null,
+        "cook_time": 15,
+        "servings": 1,
+        "calories": 260,
+        "protein": "18.0",
+        "fat": "19.0",
+        "carbs": "5.0",
+        "diet_types": [
+            2,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 15,
+    "fields": {
+        "title": "Борщ с говядиной",
+        "image_url": null,
+        "cook_time": 120,
+        "servings": 6,
+        "calories": 210,
+        "protein": "12.0",
+        "fat": "10.0",
+        "carbs": "18.0",
+        "diet_types": [
+            1,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 16,
+    "fields": {
+        "title": "Фаршированные перцы",
+        "image_url": null,
+        "cook_time": 60,
+        "servings": 4,
+        "calories": 320,
+        "protein": "18.0",
+        "fat": "14.0",
+        "carbs": "28.0",
+        "diet_types": [
+            1,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 17,
+    "fields": {
+        "title": "Шакшука",
+        "image_url": null,
+        "cook_time": 20,
+        "servings": 2,
+        "calories": 250,
+        "protein": "14.0",
+        "fat": "16.0",
+        "carbs": "12.0",
+        "diet_types": [
+            2,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 18,
+    "fields": {
+        "title": "Грибное ризотто",
+        "image_url": null,
+        "cook_time": 35,
+        "servings": 3,
+        "calories": 380,
+        "protein": "10.0",
+        "fat": "15.0",
+        "carbs": "50.0",
+        "diet_types": [
+            2,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 19,
+    "fields": {
+        "title": "Классические тонкие блины",
+        "image_url": null,
+        "cook_time": 30,
+        "servings": 4,
+        "calories": 220,
+        "protein": "6.0",
+        "fat": "8.0",
+        "carbs": "30.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 20,
+    "fields": {
+        "title": "Салат Капрезе с песто",
+        "image_url": null,
+        "cook_time": 5,
+        "servings": 2,
+        "calories": 280,
+        "protein": "14.0",
+        "fat": "22.0",
+        "carbs": "4.0",
+        "diet_types": [
+            2,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 21,
+    "fields": {
+        "title": "Паста Песто с черри",
+        "image_url": null,
+        "cook_time": 15,
+        "servings": 2,
+        "calories": 450,
+        "protein": "12.0",
+        "fat": "18.0",
+        "carbs": "60.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 22,
+    "fields": {
+        "title": "Тайский Том Ям с креветками",
+        "image_url": null,
+        "cook_time": 25,
+        "servings": 2,
+        "calories": 280,
+        "protein": "20.0",
+        "fat": "18.0",
+        "carbs": "10.0",
+        "diet_types": [
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 23,
+    "fields": {
+        "title": "Классические кабачковые оладьи",
+        "image_url": null,
+        "cook_time": 20,
+        "servings": 2,
+        "calories": 190,
+        "protein": "7.0",
+        "fat": "9.0",
+        "carbs": "20.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 24,
+    "fields": {
+        "title": "Стейк из тунца в кунжуте",
+        "image_url": null,
+        "cook_time": 10,
+        "servings": 2,
+        "calories": 310,
+        "protein": "45.0",
+        "fat": "12.0",
+        "carbs": "2.0",
+        "diet_types": [
+            4,
+            5,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 25,
+    "fields": {
+        "title": "Турецкий чечевичный крем-суп (Мерджимек)",
+        "image_url": null,
+        "cook_time": 40,
+        "servings": 4,
+        "calories": 240,
+        "protein": "14.0",
+        "fat": "5.0",
+        "carbs": "35.0",
+        "diet_types": [
+            3,
+            4,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 26,
+    "fields": {
+        "title": "Диетические куриные котлеты на пару",
+        "image_url": null,
+        "cook_time": 30,
+        "servings": 3,
+        "calories": 180,
+        "protein": "28.0",
+        "fat": "4.0",
+        "carbs": "5.0",
+        "diet_types": [
+            1,
+            4,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 27,
+    "fields": {
+        "title": "Легкий салат с тунцом",
+        "image_url": null,
+        "cook_time": 15,
+        "servings": 2,
+        "calories": 220,
+        "protein": "25.0",
+        "fat": "10.0",
+        "carbs": "6.0",
+        "diet_types": [
+            4,
+            5,
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 28,
+    "fields": {
+        "title": "Классическая творожная запеканка",
+        "image_url": null,
+        "cook_time": 50,
+        "servings": 4,
+        "calories": 290,
+        "protein": "18.0",
+        "fat": "10.0",
+        "carbs": "30.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 29,
+    "fields": {
+        "title": "Гуляш из говядины с подливкой",
+        "image_url": null,
+        "cook_time": 90,
+        "servings": 4,
+        "calories": 350,
+        "protein": "28.0",
+        "fat": "22.0",
+        "carbs": "8.0",
+        "diet_types": [
+            6
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 30,
+    "fields": {
+        "title": "Ленивая овсянка с ягодами (на ночь)",
+        "image_url": null,
+        "cook_time": 720,
+        "servings": 1,
+        "calories": 320,
+        "protein": "12.0",
+        "fat": "8.0",
+        "carbs": "50.0",
+        "diet_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 1,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 1,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 2,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 3,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 3,
+        "amount": "30.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 4,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 4,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 5,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 5,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 6,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 6,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 7,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 7,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 8,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 8,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 9,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 9,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 10,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 10,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 11,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 11,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 12,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 12,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 13,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 5,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 14,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 14,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 15,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 15,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 16,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 16,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 17,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 10,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 18,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 17,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 19,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 18,
+        "amount": "300.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 20,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 21,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 19,
+        "amount": "3.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 22,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 20,
+        "amount": "1.00",
+        "unit": 10
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 23,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 21,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 24,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 22,
+        "amount": "300.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 25,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 23,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 26,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 24,
+        "amount": "2.00",
+        "unit": 11
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 27,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 10,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 28,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 6,
+        "amount": "2.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 29,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 25,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 30,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 26,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 31,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 2,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 32,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 27,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 33,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 28,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 34,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 29,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 35,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 30,
+        "amount": "400.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 36,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 31,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 37,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 32,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 38,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 33,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 39,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 34,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 40,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 35,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 41,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 36,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 42,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 37,
+        "amount": "250.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 43,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 14,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 44,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 38,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 45,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 39,
+        "amount": "3.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 46,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 40,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 47,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 41,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 48,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 42,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 49,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 43,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 50,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 44,
+        "amount": "100.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 51,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 45,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 52,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 46,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 53,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 7,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 54,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 47,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 55,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 48,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 56,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 27,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 57,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 36,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 58,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 49,
+        "amount": "3.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 59,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 50,
+        "amount": "250.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 60,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 10,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 61,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 35,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 62,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 24,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 63,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 28,
+        "amount": "2.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 64,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 6,
+        "amount": "2.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 65,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 51,
+        "amount": "500.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 66,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 2,
+        "amount": "3.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 67,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 52,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 68,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 53,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 69,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 28,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 70,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 54,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 71,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 55,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 72,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 5,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 73,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 56,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 74,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 57,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 75,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 58,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 76,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 59,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 77,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 2,
+        "amount": "3.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 78,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 60,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 79,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 61,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 80,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 3,
+        "amount": "30.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 81,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 35,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 82,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 6,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 83,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 62,
+        "amount": "500.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 84,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 63,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 85,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 64,
+        "amount": "300.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 86,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 30,
+        "amount": "3.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 87,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 31,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 88,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 32,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 89,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 65,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 90,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 66,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 91,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 14,
+        "amount": "4.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 92,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 67,
+        "amount": "400.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 93,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 68,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 94,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 32,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 95,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 31,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 96,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 65,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 97,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 2,
+        "amount": "4.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 98,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 5,
+        "amount": "3.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 99,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 14,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 100,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 32,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 101,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 28,
+        "amount": "2.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 102,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 69,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 103,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 70,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 104,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 60,
+        "amount": "250.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 105,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 71,
+        "amount": "800.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 106,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 32,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 107,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 27,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 108,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 35,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 109,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 3,
+        "amount": "500.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 110,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 72,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 111,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 2,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 112,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 44,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 113,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 73,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 114,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 6,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 115,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 74,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 116,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 5,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 117,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 75,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 118,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 10,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 119,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 76,
+        "amount": "5.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 120,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 77,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 121,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 75,
+        "amount": "3.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 122,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 48,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 123,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 28,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 124,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 27,
+        "amount": "20.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 125,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 78,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 126,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 79,
+        "amount": "400.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 127,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 80,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 128,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 60,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 129,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 48,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 130,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 58,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 131,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 51,
+        "amount": "400.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 132,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 133,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 72,
+        "amount": "3.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 134,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 28,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 135,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 44,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 136,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 6,
+        "amount": "2.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 137,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 81,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 138,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 41,
+        "amount": "4.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 139,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 39,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 140,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 10,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 141,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 29,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 142,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 82,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 143,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 32,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 144,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 31,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 145,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 65,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 146,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 34,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 147,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 83,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 148,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 84,
+        "amount": "500.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 149,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 32,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 150,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 151,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 1,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 152,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 6,
+        "amount": "1.00",
+        "unit": 9
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 153,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 85,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 154,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 2,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 155,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 12,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 156,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 86,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 157,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 10,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 158,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 87,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 159,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 18,
+        "amount": "500.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 160,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 2,
+        "amount": "2.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 161,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 88,
+        "amount": "3.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 162,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 73,
+        "amount": "3.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 163,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 53,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 164,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 89,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 165,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 90,
+        "amount": "600.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 166,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 32,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 167,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 31,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 168,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 65,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 169,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 72,
+        "amount": "1.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 170,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 44,
+        "amount": "2.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 171,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 91,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 172,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 3,
+        "amount": "100.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 173,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 92,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 174,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 43,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 175,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 93,
+        "amount": "1.00",
+        "unit": 7
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 1,
+    "fields": {
+        "recipe": 1,
+        "step_number": 1,
+        "description": "Овсяные хлопья измельчить в блендере (не в пыль).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 2,
+    "fields": {
+        "recipe": 1,
+        "step_number": 2,
+        "description": "Смешать яйцо, молоко и овсянку. Добавить щепотку соли.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 3,
+    "fields": {
+        "recipe": 1,
+        "step_number": 3,
+        "description": "Вылить смесь на разогретую антипригарную сковороду. Обжарить 2-3 минуты с одной стороны.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 4,
+    "fields": {
+        "recipe": 1,
+        "step_number": 4,
+        "description": "Перевернуть блин. На одну половину выложить тертый сыр и нарезанный кружочками помидор.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 5,
+    "fields": {
+        "recipe": 1,
+        "step_number": 5,
+        "description": "Накрыть начинку второй половиной блина, подержать на сковороде еще 1 минуту, чтобы сыр расплавился.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 6,
+    "fields": {
+        "recipe": 2,
+        "step_number": 1,
+        "description": "Киноа промыть и отварить в кипящей воде (около 15 минут).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 7,
+    "fields": {
+        "recipe": 2,
+        "step_number": 2,
+        "description": "Куриное филе нарезать кубиками, натереть солью, перцем и паприкой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 8,
+    "fields": {
+        "recipe": 2,
+        "step_number": 3,
+        "description": "Обжарить курицу на оливковом масле до золотистой корочки (7-10 минут).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 9,
+    "fields": {
+        "recipe": 2,
+        "step_number": 4,
+        "description": "Брокколи разобрать на соцветия и отварить в подсоленной воде 3-5 минут (или приготовить на пару).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 10,
+    "fields": {
+        "recipe": 2,
+        "step_number": 5,
+        "description": "Выложить на тарелку готовую киноа, курицу и брокколи.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 11,
+    "fields": {
+        "recipe": 3,
+        "step_number": 1,
+        "description": "Огурцы, помидоры и болгарский перец нарезать крупными кубиками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 12,
+    "fields": {
+        "recipe": 3,
+        "step_number": 2,
+        "description": "Фету также нарезать аккуратными кубиками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 13,
+    "fields": {
+        "recipe": 3,
+        "step_number": 3,
+        "description": "В глубокой миске смешать овощи и целые маслины.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 14,
+    "fields": {
+        "recipe": 3,
+        "step_number": 4,
+        "description": "Заправить оливковым маслом, посыпать орегано и аккуратно перемешать.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 15,
+    "fields": {
+        "recipe": 3,
+        "step_number": 5,
+        "description": "Сверху выложить кубики феты (чтобы они не раскрошились при перемешивании).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 16,
+    "fields": {
+        "recipe": 4,
+        "step_number": 1,
+        "description": "Творог хорошо размять вилкой, добавить яйцо, подсластитель и ванилин. Тщательно перемешать.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 17,
+    "fields": {
+        "recipe": 4,
+        "step_number": 2,
+        "description": "Добавить 2 столовые ложки рисовой муки в массу и замесить творожное тесто.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 18,
+    "fields": {
+        "recipe": 4,
+        "step_number": 3,
+        "description": "Оставшуюся ложку муки высыпать на стол. Сформировать небольшие сырники и обвалять их в муке.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 19,
+    "fields": {
+        "recipe": 4,
+        "step_number": 4,
+        "description": "Выложить сырники на противень, застеленный пергаментом.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 20,
+    "fields": {
+        "recipe": 4,
+        "step_number": 5,
+        "description": "Запекать в разогретой до 180 градусов духовке 20-25 минут до золотистой корочки.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 21,
+    "fields": {
+        "recipe": 5,
+        "step_number": 1,
+        "description": "Стейки лосося промыть и обсушить бумажным полотенцем.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 22,
+    "fields": {
+        "recipe": 5,
+        "step_number": 2,
+        "description": "Смазать рыбу оливковым маслом, посолить и поперчить со всех сторон.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 23,
+    "fields": {
+        "recipe": 5,
+        "step_number": 3,
+        "description": "Лимон нарезать тонкими кружочками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 24,
+    "fields": {
+        "recipe": 5,
+        "step_number": 4,
+        "description": "На фольгу выложить пару кружочков лимона и веточку розмарина, сверху положить стейк лосося. Завернуть фольгу \"лодочкой\" (сверху оставить открытым).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 25,
+    "fields": {
+        "recipe": 5,
+        "step_number": 5,
+        "description": "Запекать в духовке при 190 градусах 15-20 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 26,
+    "fields": {
+        "recipe": 6,
+        "step_number": 1,
+        "description": "Отварить спагетти в подсоленной воде до состояния аль-денте (на 1-2 минуты меньше, чем указано на упаковке).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 27,
+    "fields": {
+        "recipe": 6,
+        "step_number": 2,
+        "description": "Бекон нарезать небольшими полосками. Чеснок раздавить плоской стороной ножа.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 28,
+    "fields": {
+        "recipe": 6,
+        "step_number": 3,
+        "description": "Обжарить бекон с чесноком на сухой сковороде до золотистого цвета (около 5 минут). Чеснок затем убрать.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 29,
+    "fields": {
+        "recipe": 6,
+        "step_number": 4,
+        "description": "В миске взбить яйца с половиной натертого пармезана и черным перцем.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 30,
+    "fields": {
+        "recipe": 6,
+        "step_number": 5,
+        "description": "Переложить горячие спагетти в сковороду к бекону (сковороду снять с огня!). Сразу влить яично-сырную смесь и быстро перемешать, чтобы соус загустел, но яйца не свернулись.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 31,
+    "fields": {
+        "recipe": 7,
+        "step_number": 1,
+        "description": "Картофель очистить, нарезать кубиками и поставить вариться в 1 литре воды.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 32,
+    "fields": {
+        "recipe": 7,
+        "step_number": 2,
+        "description": "Лук мелко нарезать, морковь натереть на терке. Обжарить их на сливочном масле до мягкости.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 33,
+    "fields": {
+        "recipe": 7,
+        "step_number": 3,
+        "description": "Добавить обжаренные овощи к картофелю и варить до готовности картошки (около 15 минут).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 34,
+    "fields": {
+        "recipe": 7,
+        "step_number": 4,
+        "description": "Плавленый сыр нарезать кусочками и добавить в суп. Помешивать, пока сыр полностью не растворится.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 35,
+    "fields": {
+        "recipe": 7,
+        "step_number": 5,
+        "description": "Снять суп с огня и пробить блендером до состояния пюре. Подавать с сухариками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 36,
+    "fields": {
+        "recipe": 8,
+        "step_number": 1,
+        "description": "Тофу нарезать крупными кубиками и слегка обсушить бумажным полотенцем.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 37,
+    "fields": {
+        "recipe": 8,
+        "step_number": 2,
+        "description": "Болгарский перец нарезать соломкой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 38,
+    "fields": {
+        "recipe": 8,
+        "step_number": 3,
+        "description": "На разогретой сковороде с маслом обжарить тофу со всех сторон до золотистой корочки (около 5-7 минут), переложить на тарелку.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 39,
+    "fields": {
+        "recipe": 8,
+        "step_number": 4,
+        "description": "В ту же сковороду выложить перец и стручковую фасоль, обжаривать 5 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 40,
+    "fields": {
+        "recipe": 8,
+        "step_number": 5,
+        "description": "Вернуть тофу к овощам, влить соевый соус, перемешать и тушить еще 2 минуты. При подаче посыпать кунжутом.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 41,
+    "fields": {
+        "recipe": 9,
+        "step_number": 1,
+        "description": "Банан (желательно предварительно замороженный) нарезать кружочками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 42,
+    "fields": {
+        "recipe": 9,
+        "step_number": 2,
+        "description": "В чашу блендера сложить банан, замороженные ягоды и влить растительное молоко.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 43,
+    "fields": {
+        "recipe": 9,
+        "step_number": 3,
+        "description": "Взбить всё до однородной густой консистенции (как мороженое).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 44,
+    "fields": {
+        "recipe": 9,
+        "step_number": 4,
+        "description": "Переложить массу в глубокую миску.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 45,
+    "fields": {
+        "recipe": 9,
+        "step_number": 5,
+        "description": "Сверху украсить семенами чиа, орехами и кусочками свежих фруктов по желанию.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 46,
+    "fields": {
+        "recipe": 10,
+        "step_number": 1,
+        "description": "Куриное филе посолить, поперчить и обжарить на сковороде до готовности (по 5-7 минут с каждой стороны). Остудить и нарезать слайсами.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 47,
+    "fields": {
+        "recipe": 10,
+        "step_number": 2,
+        "description": "Листья салата Айсберг порвать руками на крупные куски и выложить на дно тарелки.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 48,
+    "fields": {
+        "recipe": 10,
+        "step_number": 3,
+        "description": "Помидоры черри разрезать пополам и выложить поверх салата.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 49,
+    "fields": {
+        "recipe": 10,
+        "step_number": 4,
+        "description": "Добавить нарезанную курицу и сухарики.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 50,
+    "fields": {
+        "recipe": 10,
+        "step_number": 5,
+        "description": "Заправить салат соусом Цезарь и щедро посыпать тертым пармезаном.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 51,
+    "fields": {
+        "recipe": 11,
+        "step_number": 1,
+        "description": "Стейк достать из холодильника за 30 минут до готовки, чтобы он стал комнатной температуры. Обсушить салфеткой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 52,
+    "fields": {
+        "recipe": 11,
+        "step_number": 2,
+        "description": "Разогреть сковороду с оливковым маслом до появления легкого дымка.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 53,
+    "fields": {
+        "recipe": 11,
+        "step_number": 3,
+        "description": "Выложить мясо. Жарить по 2-3 минуты с каждой стороны для прожарки Medium.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 54,
+    "fields": {
+        "recipe": 11,
+        "step_number": 4,
+        "description": "За минуту до готовности добавить в сковороду сливочное масло, раздавленный чеснок и веточку розмарина.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 55,
+    "fields": {
+        "recipe": 11,
+        "step_number": 5,
+        "description": "Поливать стейк растопленным ароматным маслом. Снять с огня, посолить, поперчить и дать мясу \"отдохнуть\" 5 минут перед подачей.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 56,
+    "fields": {
+        "recipe": 12,
+        "step_number": 1,
+        "description": "Кабачки натереть на крупной терке, посолить и оставить на 10 минут. Затем тщательно отжать лишнюю жидкость.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 57,
+    "fields": {
+        "recipe": 12,
+        "step_number": 2,
+        "description": "Сыр натереть на терке, зелень и чеснок мелко порубить.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 58,
+    "fields": {
+        "recipe": 12,
+        "step_number": 3,
+        "description": "В миске взбить яйца со сметаной, добавить половину тертого сыра, чеснок и зелень.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 59,
+    "fields": {
+        "recipe": 12,
+        "step_number": 4,
+        "description": "Смешать яично-сырную массу с отжатыми кабачками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 60,
+    "fields": {
+        "recipe": 12,
+        "step_number": 5,
+        "description": "Выложить смесь в форму для запекания, посыпать оставшимся сыром. Запекать при 180 градусах 30-35 минут до румяной корочки.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 61,
+    "fields": {
+        "recipe": 13,
+        "step_number": 1,
+        "description": "Авокадо разрезать пополам, удалить косточку и выскрести мякоть ложкой в миску.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 62,
+    "fields": {
+        "recipe": 13,
+        "step_number": 2,
+        "description": "Размять мякоть авокадо вилкой, сразу полить соком лайма, чтобы не потемнело.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 63,
+    "fields": {
+        "recipe": 13,
+        "step_number": 3,
+        "description": "Помидор и красный лук нарезать очень мелкими кубиками. Кинзу измельчить.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 64,
+    "fields": {
+        "recipe": 13,
+        "step_number": 4,
+        "description": "Смешать все ингредиенты с авокадо, добавить соль и перец по вкусу.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 65,
+    "fields": {
+        "recipe": 13,
+        "step_number": 5,
+        "description": "Подавать готовый соус гуакамоле вместе с кукурузными чипсами начос.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 66,
+    "fields": {
+        "recipe": 14,
+        "step_number": 1,
+        "description": "Грибы нарезать тонкими пластинками и обжарить на сливочном масле до золотистости (3-4 минуты).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 67,
+    "fields": {
+        "recipe": 14,
+        "step_number": 2,
+        "description": "Добавить к грибам листья свежего шпината и готовить еще 1 минуту, пока шпинат не осядет.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 68,
+    "fields": {
+        "recipe": 14,
+        "step_number": 3,
+        "description": "В отдельной миске взбить яйца с молоком и солью.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 69,
+    "fields": {
+        "recipe": 14,
+        "step_number": 4,
+        "description": "Влить яичную смесь в сковороду поверх грибов и шпината.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 70,
+    "fields": {
+        "recipe": 14,
+        "step_number": 5,
+        "description": "Накрыть крышкой и готовить на слабом огне 3-5 минут до готовности яиц.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 71,
+    "fields": {
+        "recipe": 15,
+        "step_number": 1,
+        "description": "Мясо залить 2.5 л воды, довести до кипения, снять пену и варить на медленном огне 1.5 часа. Затем мясо достать, нарезать и вернуть в процеженный бульон.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 72,
+    "fields": {
+        "recipe": 15,
+        "step_number": 2,
+        "description": "Картофель нарезать кубиками, капусту нашинковать. Добавить в кипящий бульон.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 73,
+    "fields": {
+        "recipe": 15,
+        "step_number": 3,
+        "description": "Свеклу и морковь натереть на терке, лук мелко нарезать.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 74,
+    "fields": {
+        "recipe": 15,
+        "step_number": 4,
+        "description": "Обжарить лук с морковью на масле 5 минут, добавить свеклу и томатную пасту. Тушить 10 минут, добавив половник бульона.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 75,
+    "fields": {
+        "recipe": 15,
+        "step_number": 5,
+        "description": "Переложить зажарку в кастрюлю. Варить еще 10 минут. Выключить огонь и дать борщу настояться 20-30 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 76,
+    "fields": {
+        "recipe": 16,
+        "step_number": 1,
+        "description": "Рис отварить до полуготовности (10 минут). Смешать с сырым фаршем.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 77,
+    "fields": {
+        "recipe": 16,
+        "step_number": 2,
+        "description": "У перцев срезать верхушки, очистить от семян. Плотно начинить их фаршем с рисом.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 78,
+    "fields": {
+        "recipe": 16,
+        "step_number": 3,
+        "description": "Лук и морковь измельчить, обжарить 5 минут. Добавить томатную пасту и немного воды, протушить 2 минуты.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 79,
+    "fields": {
+        "recipe": 16,
+        "step_number": 4,
+        "description": "В глубокую кастрюлю вертикально составить перцы, залить получившимся томатным соусом (и добавить воды, чтобы перцы были покрыты на 2/3).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 80,
+    "fields": {
+        "recipe": 16,
+        "step_number": 5,
+        "description": "Тушить под крышкой на слабом огне 40 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 81,
+    "fields": {
+        "recipe": 17,
+        "step_number": 1,
+        "description": "Мелко нарезать лук, чеснок и болгарский перец. Помидоры обдать кипятком, снять кожицу и нарезать кубиками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 82,
+    "fields": {
+        "recipe": 17,
+        "step_number": 2,
+        "description": "На сковороде обжарить лук, чеснок и перец до мягкости (5-7 минут). Добавить зиру.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 83,
+    "fields": {
+        "recipe": 17,
+        "step_number": 3,
+        "description": "Добавить помидоры, убавить огонь и тушить соус 10 минут, пока он не загустеет.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 84,
+    "fields": {
+        "recipe": 17,
+        "step_number": 4,
+        "description": "Ложкой сделать в соусе 4 углубления и аккуратно вбить в них яйца. Посолить.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 85,
+    "fields": {
+        "recipe": 17,
+        "step_number": 5,
+        "description": "Готовить без крышки 5-7 минут, чтобы белок схватился, а желток остался жидким.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 86,
+    "fields": {
+        "recipe": 18,
+        "step_number": 1,
+        "description": "Грибы нарезать пластинками и обжарить на сковороде до золотистости. Переложить в тарелку.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 87,
+    "fields": {
+        "recipe": 18,
+        "step_number": 2,
+        "description": "В той же сковороде обжарить мелко нарезанный лук до прозрачности.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 88,
+    "fields": {
+        "recipe": 18,
+        "step_number": 3,
+        "description": "Всыпать сухой рис, прогреть его 1 минуту, постоянно помешивая.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 89,
+    "fields": {
+        "recipe": 18,
+        "step_number": 4,
+        "description": "Постепенно, по одному половнику, вливать горячий бульон. Следующий половник добавлять только когда впитается предыдущий. Постоянно мешать (около 20 минут).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 90,
+    "fields": {
+        "recipe": 18,
+        "step_number": 5,
+        "description": "Когда рис готов (аль-денте), снять с огня, вмешать сливочное масло, тертый пармезан и готовые грибы.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 91,
+    "fields": {
+        "recipe": 19,
+        "step_number": 1,
+        "description": "В глубокой миске взбить яйца с сахаром и солью.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 92,
+    "fields": {
+        "recipe": 19,
+        "step_number": 2,
+        "description": "Влить половину теплого молока и хорошо перемешать",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 93,
+    "fields": {
+        "recipe": 19,
+        "step_number": 3,
+        "description": "Постепенно всыпать просеянную муку, постоянно помешивая венчиком, чтобы не было комочков.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 94,
+    "fields": {
+        "recipe": 19,
+        "step_number": 4,
+        "description": "Влить оставшееся молоко и растительное масло. Дать тесту отдохнуть 15 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 95,
+    "fields": {
+        "recipe": 19,
+        "step_number": 5,
+        "description": "Выпекать на раскаленной сковороде по 1-2 минуты с каждой стороны до румяности.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 96,
+    "fields": {
+        "recipe": 20,
+        "step_number": 1,
+        "description": "Моцареллу нарезать кружочками толщиной около 5-7 мм.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 97,
+    "fields": {
+        "recipe": 20,
+        "step_number": 2,
+        "description": "Помидоры вымыть и нарезать такими же кружочками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 98,
+    "fields": {
+        "recipe": 20,
+        "step_number": 3,
+        "description": "На плоскую тарелку выложить, чередуя, кружочки помидора и сыра.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 99,
+    "fields": {
+        "recipe": 20,
+        "step_number": 4,
+        "description": "Сверху выложить капли соуса песто.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 100,
+    "fields": {
+        "recipe": 20,
+        "step_number": 5,
+        "description": "Сбрызнуть оливковым маслом, посолить, поперчить и украсить листиками свежего базилика.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 101,
+    "fields": {
+        "recipe": 21,
+        "step_number": 1,
+        "description": "Отварить макароны в подсоленной воде согласно инструкции на упаковке. Сохранить 50 мл воды от макарон.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 102,
+    "fields": {
+        "recipe": 21,
+        "step_number": 2,
+        "description": "Черри разрезать пополам. Чеснок измельчить.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 103,
+    "fields": {
+        "recipe": 21,
+        "step_number": 3,
+        "description": "На сковороде слегка обжарить чеснок и черри (2 минуты).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 104,
+    "fields": {
+        "recipe": 21,
+        "step_number": 4,
+        "description": "Добавить в сковороду готовую пасту, соус Песто и немного оставленной воды от макарон.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 105,
+    "fields": {
+        "recipe": 21,
+        "step_number": 5,
+        "description": "Прогреть всё вместе 1 минуту. При подаче посыпать тертым пармезаном.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 106,
+    "fields": {
+        "recipe": 22,
+        "step_number": 1,
+        "description": "В кастрюле разогреть кокосовое молоко (если слишком густое, добавить немного воды) и растворить в нем пасту Том Ям.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 107,
+    "fields": {
+        "recipe": 22,
+        "step_number": 2,
+        "description": "Довести до кипения, добавить разрезанные на четвертинки шампиньоны. Варить 5 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 108,
+    "fields": {
+        "recipe": 22,
+        "step_number": 3,
+        "description": "Добавить половинки черри и очищенные креветки.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 109,
+    "fields": {
+        "recipe": 22,
+        "step_number": 4,
+        "description": "Варить еще 3-4 минуты (до готовности креветок, они должны стать розовыми).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 110,
+    "fields": {
+        "recipe": 22,
+        "step_number": 5,
+        "description": "Снять с огня, добавить сок лайма по вкусу. При подаче щедро посыпать свежей кинзой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 111,
+    "fields": {
+        "recipe": 23,
+        "step_number": 1,
+        "description": "Кабачок натереть на крупной терке. Посолить, оставить на 5 минут, затем крепко отжать руками весь выделившийся сок.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 112,
+    "fields": {
+        "recipe": 23,
+        "step_number": 2,
+        "description": "Добавить к отжатому кабачку яйцо, измельченный чеснок и муку. Тщательно перемешать тесто.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 113,
+    "fields": {
+        "recipe": 23,
+        "step_number": 3,
+        "description": "Разогреть сковороду с растительным маслом.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 114,
+    "fields": {
+        "recipe": 23,
+        "step_number": 4,
+        "description": "Выкладывать тесто столовой ложкой, формируя плоские оладьи.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 115,
+    "fields": {
+        "recipe": 23,
+        "step_number": 5,
+        "description": "Жарить на среднем огне по 3-4 минуты с каждой стороны до золотистой корочки. Подавать со сметаной.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 116,
+    "fields": {
+        "recipe": 24,
+        "step_number": 1,
+        "description": "Стейки тунца обсушить, смазать оливковым маслом и поперчить. (Солить не нужно, подаем с соевым соусом).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 117,
+    "fields": {
+        "recipe": 24,
+        "step_number": 2,
+        "description": "Высыпать кунжут на плоскую тарелку. Хорошо обвалять стейки в кунжуте со всех сторон, слегка придавливая.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 118,
+    "fields": {
+        "recipe": 24,
+        "step_number": 3,
+        "description": "Сильно раскалить сухую сковороду (или с каплей масла).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 119,
+    "fields": {
+        "recipe": 24,
+        "step_number": 4,
+        "description": "Обжарить тунец буквально по 1-1.5 минуты с каждой стороны. Внутри он должен остаться ярко-красным и сырым!",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 120,
+    "fields": {
+        "recipe": 24,
+        "step_number": 5,
+        "description": "Снять с огня, нарезать тонкими ломтиками и подавать с соевым соусом.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 121,
+    "fields": {
+        "recipe": 25,
+        "step_number": 1,
+        "description": "Красную чечевицу хорошо промыть холодной водой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 122,
+    "fields": {
+        "recipe": 25,
+        "step_number": 2,
+        "description": "Лук и морковь крупно нарезать. Обжарить их прямо в кастрюле на ложке масла около 5 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 123,
+    "fields": {
+        "recipe": 25,
+        "step_number": 3,
+        "description": "Добавить томатную пасту и чечевицу, залить водой. Довести до кипения.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 124,
+    "fields": {
+        "recipe": 25,
+        "step_number": 4,
+        "description": "Варить под крышкой на медленном огне 20-25 минут (чечевица должна полностью развариться).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 125,
+    "fields": {
+        "recipe": 25,
+        "step_number": 5,
+        "description": "Снять с огня, добавить соль, перец и сушеную мяту. Пробить всё блендером до состояния нежного пюре. При подаче сбрызнуть лимонным соком.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 126,
+    "fields": {
+        "recipe": 26,
+        "step_number": 1,
+        "description": "Овсяные хлопья залить 2 ложками кипятка и оставить на 5 минут для набухания.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 127,
+    "fields": {
+        "recipe": 26,
+        "step_number": 2,
+        "description": "Лук измельчить в блендере в пюре или натереть на мелкой терке (для сочности).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 128,
+    "fields": {
+        "recipe": 26,
+        "step_number": 3,
+        "description": "Смешать куриный фарш, яйцо, измельченный лук, набухшую овсянку, соль и перец.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 129,
+    "fields": {
+        "recipe": 26,
+        "step_number": 4,
+        "description": "Влажными руками сформировать небольшие котлеты.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 130,
+    "fields": {
+        "recipe": 26,
+        "step_number": 5,
+        "description": "Выложить в пароварку (или мультиварку на режим \"На пару\") и готовить 20-25 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 131,
+    "fields": {
+        "recipe": 27,
+        "step_number": 1,
+        "description": "Яйца отварить вкрутую (10 минут), остудить, очистить и нарезать дольками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 132,
+    "fields": {
+        "recipe": 27,
+        "step_number": 2,
+        "description": "С консервированного тунца слить жидкость и слегка размять рыбу вилкой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 133,
+    "fields": {
+        "recipe": 27,
+        "step_number": 3,
+        "description": "Огурец нарезать полукружочками, листья салата порвать руками.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 134,
+    "fields": {
+        "recipe": 27,
+        "step_number": 4,
+        "description": "Выложить на тарелку зелень, огурец, тунец и дольки яиц.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 135,
+    "fields": {
+        "recipe": 27,
+        "step_number": 5,
+        "description": "Для заправки смешать оливковое масло, лимонный сок, соль и перец. Полить салат перед подачей.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 136,
+    "fields": {
+        "recipe": 28,
+        "step_number": 1,
+        "description": "Изюм промыть и залить кипятком на 10 минут, затем обсушить. Манку смешать со сметаной и оставить набухать на 15 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 137,
+    "fields": {
+        "recipe": 28,
+        "step_number": 2,
+        "description": "В глубокой миске соединить творог, яйца, сахар и набухшую манку. Пробить всё погружным блендером до однородной кремовой массы.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 138,
+    "fields": {
+        "recipe": 28,
+        "step_number": 3,
+        "description": "Вмешать в творожную массу подготовленный изюм.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 139,
+    "fields": {
+        "recipe": 28,
+        "step_number": 4,
+        "description": "Форму для выпечки смазать сливочным маслом и слегка присыпать манкой. Выложить массу и разровнять.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 140,
+    "fields": {
+        "recipe": 28,
+        "step_number": 5,
+        "description": "Выпекать в разогретой до 180 градусов духовке 35-40 минут до золотистой корочки.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 141,
+    "fields": {
+        "recipe": 29,
+        "step_number": 1,
+        "description": "Говядину нарезать средними кубиками и обжарить на сильном огне до румяной корочки (около 10 минут).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 142,
+    "fields": {
+        "recipe": 29,
+        "step_number": 2,
+        "description": "Добавить к мясу измельченный лук и натертую морковь. Обжаривать всё вместе еще 5 минут.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 143,
+    "fields": {
+        "recipe": 29,
+        "step_number": 3,
+        "description": "Посыпать мясо с овощами мукой, хорошо перемешать и готовить 1 минуту.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 144,
+    "fields": {
+        "recipe": 29,
+        "step_number": 4,
+        "description": "Добавить томатную пасту, соль, перец и залить горячей водой так, чтобы она почти полностью покрывала мясо.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 145,
+    "fields": {
+        "recipe": 29,
+        "step_number": 5,
+        "description": "Накрыть крышкой, убавить огонь до минимума и тушить гуляш 1 - 1.5 часа до мягкости говядины. Подавать с картофельным пюре или гречкой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 146,
+    "fields": {
+        "recipe": 30,
+        "step_number": 1,
+        "description": "Взять стеклянную банку или удобный контейнер с крышкой.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 147,
+    "fields": {
+        "recipe": 30,
+        "step_number": 2,
+        "description": "Насыпать на дно овсяные хлопья.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 148,
+    "fields": {
+        "recipe": 30,
+        "step_number": 3,
+        "description": "Залить хлопья молоком и добавить йогурт. Положить ложку меда.",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 149,
+    "fields": {
+        "recipe": 30,
+        "step_number": 4,
+        "description": "Сверху выложить ягоды. Закрыть крышкой и хорошо потрясти (или перемешать ложкой).",
+        "image_url": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 150,
+    "fields": {
+        "recipe": 30,
+        "step_number": 5,
+        "description": "Убрать банку в холодильник на ночь. Утром вас будет ждать готовый, густой и вкусный завтрак!",
+        "image_url": null
+    }
+}
+]
