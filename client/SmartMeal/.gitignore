@@ -1,15 +1,51 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# Gradle files
+.gradle/
+build/
+/*/build/
 local.properties
+
+# Kotlin
+.kotlin/
+kotlin-js-store/
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Исключаем специфичные файлы IDEA, если вы решите их оставить в будущем, 
+# но для Android-проектов на Gradle вся .idea обычно генерируется заново.
+# Если нужно оставить общие конфигурации запуска:
+# !.idea/runConfigurations/
+
+# Captures and logs
+captures/
+*.log
+
+# Unit test reports
+**/build/reports/
+**/build/test-results/
+
+# Instrumentation test reports
+**/build/outputs/connected_android_test_apps/
+**/build/outputs/androidTest-results/
+
+# APK / Bundle outputs
+**/build/outputs/apk/
+**/build/outputs/bundle/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Secrets (Important!)
+google-services.json
+*.keystore
+*.jks
+secrets.properties
