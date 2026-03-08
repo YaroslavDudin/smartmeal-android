@@ -49,7 +49,10 @@ class WelcomeScreenTest {
             }
         }
 
-        
+        composeTestRule
+            .onNodeWithText("Начать")
+            .performScrollTo()
+            .performClick()
 
         assert(clicked)
     }
