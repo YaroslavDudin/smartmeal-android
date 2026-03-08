@@ -43,21 +43,18 @@ jobs:
       fail-fast: false # Все устройства тестируются независимо друг от друга
       matrix:
         device:
-          # Добавляем маленький телефон
+          # Маленький старый телефон (4.7", 768x1280)
           - name: 'Small-Phone'
-            profile: 'Nexus 4' # (Small-Phone): Это классический смартфон с небольшим экраном (4.7 дюйма, 768x1280).
-            
-          # Большой телефон
+            profile: 'Nexus 4' 
+          # Широкий классический телефон (5.96", 1440x2560)
           - name: 'Large-Phone'
-            profile: 'Nexus 6' # (Large-Phone): Это крупный смартфон (почти 6 дюймов, 1440x2560)
-
-          # Современный вытянутый телефон
+            profile: 'Nexus 6'
+          # Современный вытянутый телефон (6.4", 1080x2400)
           - name: 'Modern-Phone'
-            profile: 'Pixel 6' # (Modern-Phone):  Это обычный телефон ( 1080x2400)
-
-          # Планшет
+            profile: 'Pixel 6'
+          # Планшет (10.2", 2560x1800)
           - name: 'Tablet'
-            profile: 'pixel_c' # (Tablet): Это полноценный 10-дюймовый планшет (2560x1800)
+            profile: 'pixel_c'
 
     steps:
       - name: Checkout code
