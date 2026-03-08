@@ -45,13 +45,19 @@ jobs:
         device:
           # Добавляем маленький телефон
           - name: 'Small-Phone'
-            profile: 'Nexus 4' 
+            profile: 'Nexus 4' # (Small-Phone): Это классический смартфон с небольшим экраном (4.7 дюйма, 768x1280).
+            
           # Большой телефон
           - name: 'Large-Phone'
-            profile: 'Nexus 6'
+            profile: 'Nexus 6' # (Large-Phone): Это крупный смартфон (почти 6 дюймов, 1440x2560)
+
+          # Современный вытянутый телефон
+          - name: 'Modern-Phone'
+            profile: 'Pixel 6' # (Modern-Phone):  Это обычный телефон ( 1080x2400)
+
           # Планшет
           - name: 'Tablet'
-            profile: 'pixel_c'
+            profile: 'pixel_c' # (Tablet): Это полноценный 10-дюймовый планшет (2560x1800)
 
     steps:
       - name: Checkout code
