@@ -26,7 +26,7 @@ jobs:
         run: chmod +x ./client/SmartMeal/gradlew
 
       - name: Run Unit Tests
-        run: ./client/SmartMeal/gradlew -p ./client/SmartMeal testDebugUnitTest
+        run: ./client/SmartMeal/gradlew -p ./client/SmartMeal :app:testDebugUnitTest
 
       - name: Upload Unit Test Results
         if: always()
@@ -69,7 +69,7 @@ jobs:
           disable-animations: true
           working-directory: ./client/SmartMeal
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          script: ./gradlew connectedAndroidTest
+          script: ./gradlew :app:connectedDebugAndroidTest
 
       - name: Upload Instrumented Test Results
         if: always()
