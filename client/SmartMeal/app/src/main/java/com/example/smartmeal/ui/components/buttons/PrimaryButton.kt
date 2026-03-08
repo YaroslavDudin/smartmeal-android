@@ -1,4 +1,4 @@
-package com.example.smartmeal.ui.components
+package com.example.smartmeal.ui.components.buttons
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

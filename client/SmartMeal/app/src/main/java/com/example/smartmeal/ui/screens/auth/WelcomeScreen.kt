@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.smartmeal.ui.components.PrimaryButton
+import com.example.smartmeal.ui.components.buttons.PrimaryButton
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import androidx.compose.ui.res.painterResource
 import com.example.smartmeal.R
