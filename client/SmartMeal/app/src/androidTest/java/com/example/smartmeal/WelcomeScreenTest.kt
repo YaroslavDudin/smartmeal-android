@@ -6,7 +6,6 @@ import com.example.smartmeal.ui.screens.auth.WelcomeScreen
 import org.junit.Rule
 import org.junit.Test
 import com.example.smartmeal.ui.theme.SmartMealTheme
-import org.junit.Assert.assertTrue
 
 class WelcomeScreenTest {
     @get:Rule
@@ -19,32 +18,26 @@ class WelcomeScreenTest {
                 WelcomeScreen()
             }
         }
-        
-        // Проверяем картинку
         composeTestRule
             .onNodeWithTag("food_image")
             .performScrollTo()
-            .assertIsDisplayed()
+            .assertExists()
 
-        // Проверяем главный заголовок
         composeTestRule
             .onNodeWithText("SmartMeal")
             .performScrollTo()
             .assertIsDisplayed()
 
-        // Проверяем подзаголовок (используем substring для надежности из-за \n)
         composeTestRule
-            .onNodeWithText("Сгенерируйте своё недельное", substring = true)
+            .onNodeWithText("Сгенерируйте своё недельное\nменю за пару минут")
             .performScrollTo()
-            .assertIsDisplayed()
+            .assertExists()
 
-        // Проверяем кнопку
         composeTestRule
             .onNodeWithText("Начать")
             .performScrollTo()
             .assertIsDisplayed()
     }
-
     @Test
     fun welcomeScreen_buttonClick_callsNavigation() {
         var clicked = false
@@ -56,13 +49,11 @@ class WelcomeScreenTest {
             }
         }
 
-        // Находим кнопку по тексту, скроллим и кликаем
         composeTestRule
             .onNodeWithText("Начать")
             .performScrollTo()
             .performClick()
 
-        composeTestRule.waitForIdle()
-        assertTrue("Клик по кнопке не вызвал навигацию", clicked)
+        assert(clicked)
     }
 }

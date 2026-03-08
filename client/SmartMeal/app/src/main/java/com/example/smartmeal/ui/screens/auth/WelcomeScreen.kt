@@ -61,8 +61,7 @@ fun WelcomeScreen(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
-                lineHeight = 46.sp,
-                modifier = Modifier.testTag("welcome_title")
+                lineHeight = 46.sp
             )
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -72,8 +71,7 @@ fun WelcomeScreen(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.testTag("welcome_subtitle")
+                textAlign = TextAlign.Center
             )
         }
 
@@ -82,8 +80,7 @@ fun WelcomeScreen(
         PrimaryButton(
             text = "Начать",
             onClick = onNavigateNext,
-            containerColor = Color(0xFF4CAF50),
-            modifier = Modifier.testTag("start_button")
+            containerColor = Color(0xFF4CAF50)
         )
     }
 }
