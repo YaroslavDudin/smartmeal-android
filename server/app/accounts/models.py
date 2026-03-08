@@ -24,6 +24,7 @@ class DietType(models.Model):
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, max_length=255)
+    password = models.CharField(max_length=255)
     portion_size = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -50,4 +51,4 @@ class UserFavorite(models.Model):
     
     class Meta:
         db_table = 'user_favorite'
-        unique_together = [['user'], ['recipe']]
+        unique_together = ('user', 'recipe')

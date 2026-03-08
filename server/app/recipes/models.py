@@ -22,7 +22,7 @@ class Unit(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     category = models.ForeignKey(IngredientCategory, on_delete=models.RESTRICT, related_name='ingredients')
     unit = models.ForeignKey(Unit, on_delete=models.RESTRICT, related_name='ingredients')
 
@@ -60,7 +60,7 @@ class RecipeIngredient(models.Model):
 
     class Meta:
         db_table = 'recipe_ingredient'
-        unique_together = [['recipe', 'ingredient']]
+        unique_together = ('recipe', 'ingredient')
 
     def __str__(self):
         return f"{self.amount} {self.unit} of {self.ingredient.name} for {self.recipe.title}"
@@ -75,7 +75,7 @@ class RecipeStep(models.Model):
     class Meta:
         db_table = 'recipe_step'
         ordering = ['step_number']
-        unique_together = [['recipe', 'step_number']]
+        unique_together = ('recipe', 'step_number')
 
     def __str__(self):
         return f"Step {self.step_number} for {self.recipe.title}"

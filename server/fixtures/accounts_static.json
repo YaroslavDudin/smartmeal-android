@@ -1,0 +1,100 @@
+[
+{
+    "model": "accounts.allergy",
+    "pk": 1,
+    "fields": {
+        "name": "Лактоза"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 2,
+    "fields": {
+        "name": "Яйца"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 3,
+    "fields": {
+        "name": "Рыба"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 4,
+    "fields": {
+        "name": "Морепродукты"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 5,
+    "fields": {
+        "name": "Арахис"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 6,
+    "fields": {
+        "name": "Лесные орехи"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 7,
+    "fields": {
+        "name": "Соя"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 8,
+    "fields": {
+        "name": "Глютен"
+    }
+},
+{
+    "model": "accounts.allergy",
+    "pk": 9,
+    "fields": {
+        "name": "Цитрусовые"
+    }
+},
+{
+    "model": "accounts.diettype",
+    "pk": 1,
+    "fields": {
+        "name": "Веганство"
+    }
+},
+{
+    "model": "accounts.diettype",
+    "pk": 2,
+    "fields": {
+        "name": "Вегетерианство"
+    }
+},
+{
+    "model": "accounts.diettype",
+    "pk": 3,
+    "fields": {
+        "name": "Кето"
+    }
+},
+{
+    "model": "accounts.diettype",
+    "pk": 4,
+    "fields": {
+        "name": "Палео"
+    }
+},
+{
+    "model": "accounts.diettype",
+    "pk": 5,
+    "fields": {
+        "name": "Халяль"
+    }
+}
+]
