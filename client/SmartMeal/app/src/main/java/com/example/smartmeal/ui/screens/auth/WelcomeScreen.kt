@@ -20,14 +20,19 @@ import com.example.smartmeal.ui.components.PrimaryButton
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import androidx.compose.ui.res.painterResource
 import com.example.smartmeal.R
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 @Composable
 fun WelcomeScreen(
     onNavigateNext: () -> Unit = {}
 ) {
+    val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(scrollState)
             .padding(horizontal = 24.dp, vertical = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
@@ -42,7 +47,10 @@ fun WelcomeScreen(
             Image(
                 painter = painterResource(id = R.drawable.food),
                 contentDescription = "Food illustration",
-                modifier = Modifier.size(350.dp).testTag("food_image")
+                modifier = Modifier
+                    .sizeIn(maxHeight = 350.dp)
+                    .fillMaxWidth()
+                    .testTag("food_image")
             )
 
             Spacer(modifier = Modifier.height(48.dp))
@@ -66,6 +74,8 @@ fun WelcomeScreen(
                 textAlign = TextAlign.Center
             )
         }
+
+        Spacer(modifier = Modifier.height(40.dp))
 
         PrimaryButton(
             text = "Начать",
