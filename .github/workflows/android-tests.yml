@@ -36,8 +36,23 @@ jobs:
           path: client/SmartMeal/app/build/reports/tests/testDebugUnitTest/
 
   instrumented-tests:
-    name: Run Instrumented Tests
+    name: Run UI Tests on ${{ matrix.device.name }}
     runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false # Все устройства тестируются независимо друг от друга
+      matrix:
+        device:
+          # Добавляем маленький телефон
+          - name: 'Small-Phone'
+            profile: 'Nexus 4' 
+          # Большой телефон
+          - name: 'Large-Phone'
+            profile: 'Nexus 6'
+          # Планшет
+          - name: 'Tablet'
+            profile: 'pixel_c'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -66,6 +81,7 @@ jobs:
           api-level: 30
           target: google_apis
           arch: x86_64
+          profile: ${{ matrix.device.profile }} # Сюда автоматически подставится профиль из матрицы
           disable-animations: true
           working-directory: ./client/SmartMeal
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
@@ -75,5 +91,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: android-test-reports
+          name: android-test-reports-${{ matrix.device.name }}
           path: client/SmartMeal/app/build/reports/androidTests/connected/
