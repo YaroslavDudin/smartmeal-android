@@ -49,9 +49,9 @@ jobs:
           # Широкий классический телефон (5.96", 1440x2560)
           - name: 'Large-Phone'
             profile: 'Nexus 6'
-          # Современный вытянутый телефон (6.4", 1080x2400)
+          # Современный вытянутый телефон (1080x2340)
           - name: 'Modern-Phone'
-            profile: 'Pixel 6'
+            profile: 'pixel_5'
           # Планшет (10.2", 2560x1800)
           - name: 'Tablet'
             profile: 'pixel_c'
