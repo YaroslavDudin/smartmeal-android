@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -95,7 +96,8 @@ fun CircleIconButton(
             containerColor = backgroundColor,
             contentColor = contentColor
         ),
-        interactionSource = interactionSource
+        interactionSource = interactionSource ,
+        contentPadding = PaddingValues(0.dp)
     ) {
         Icon(
             imageVector = icon,
