@@ -13,7 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.smartmeal.ui.components.buttons.*
 import com.example.smartmeal.ui.components.feedback.*
 import com.example.smartmeal.ui.components.chips_filters.*
+import com.example.smartmeal.ui.theme.IconConstants
+import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
+import com.example.smartmeal.ui.theme.AccentOrange
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun TestScreen() {
@@ -23,7 +27,7 @@ fun TestScreen() {
     var selectedChip by remember { mutableStateOf(false) }
     var selectedNoGluten by remember { mutableStateOf(false) }
     var selectedVegan by remember { mutableStateOf(false) }
-    var quantity by remember { mutableStateOf(3) }
+    var quantity by remember { mutableIntStateOf(3) }
     var isFavorite by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
 
@@ -45,7 +49,7 @@ fun TestScreen() {
                 text = "🎨 Тестирование компонентов",
                 style = MaterialTheme.typography.headlineMedium
             )
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
         }
 
         // 1. SmartMealButton - все вариации
@@ -67,7 +71,6 @@ fun TestScreen() {
                         style = MaterialTheme.typography.titleLarge
                     )
 
-                    // Primary Green
                     SmartMealButton(
                         text = "Primary Green (Сгенерировать)",
                         onClick = { showButtonTap("Нажата Primary Green кнопка") },
@@ -75,7 +78,6 @@ fun TestScreen() {
                         color = SmartMealButtonColor.GREEN
                     )
 
-                    // Primary Orange
                     SmartMealButton(
                         text = "Primary Orange (Заказать)",
                         onClick = { showButtonTap("Нажата Primary Orange кнопка") },
@@ -83,7 +85,6 @@ fun TestScreen() {
                         color = SmartMealButtonColor.ORANGE
                     )
 
-                    // Secondary
                     SmartMealButton(
                         text = "Secondary (Прозрачная)",
                         onClick = { showButtonTap("Нажата Secondary кнопка") },
@@ -91,7 +92,6 @@ fun TestScreen() {
                         color = SmartMealButtonColor.GREEN
                     )
 
-                    // Outlined
                     SmartMealButton(
                         text = "Outlined (С обводкой)",
                         onClick = { showButtonTap("Нажата Outlined кнопка") },
@@ -99,7 +99,6 @@ fun TestScreen() {
                         color = SmartMealButtonColor.ORANGE
                     )
 
-                    // Disabled state
                     SmartMealButton(
                         text = "Disabled кнопка",
                         onClick = { showButtonTap("Эта кнопка не должна нажиматься") },
@@ -109,7 +108,7 @@ fun TestScreen() {
             }
         }
 
-        // 2. CircleIconButton
+        // 2. CircleIconButton -(Не работает отображение иконок)
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -121,19 +120,20 @@ fun TestScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "2️⃣ CircleIconButton",
+                        text = "2️⃣ CircleIconButton (Material Icons + Анимация)",
                         style = MaterialTheme.typography.titleLarge
                     )
 
+                    // Стандартные кнопки (размер из констант - 48dp)
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Избранное (toggle)
+                        // Избранное с переключением
                         CircleIconButton(
                             iconType = CircleIconType.FAVORITE,
                             onClick = {
@@ -157,9 +157,94 @@ fun TestScreen() {
                     }
 
                     Text(
-                        text = "❤️ - toggle избранного (сейчас ${if (isFavorite) "в избранном" else "не в избранном"})",
+                        text = "Стандартный размер (${IconConstants.BUTTON_SIZE_MEDIUM}dp) с анимацией",
                         style = MaterialTheme.typography.bodySmall
                     )
+
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                    // Разные размеры кнопок
+                    Text(
+                        text = "Разные размеры:",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Маленькая
+                        CircleIconButton(
+                            iconType = CircleIconType.FAVORITE,
+                            onClick = { showButtonTap("Маленькая кнопка избранного") },
+                            isSelected = true,
+                            size = IconConstants.BUTTON_SIZE_SMALL
+                        )
+
+                        // Средняя (по умолчанию)
+                        CircleIconButton(
+                            iconType = CircleIconType.REPLACE,
+                            onClick = { showButtonTap("Средняя кнопка замены") },
+                            size = IconConstants.BUTTON_SIZE_MEDIUM
+                        )
+
+                        // Большая
+                        CircleIconButton(
+                            iconType = CircleIconType.BACK,
+                            onClick = { showButtonTap("Большая кнопка назад") },
+                            size = IconConstants.BUTTON_SIZE_LARGE
+                        )
+                    }
+
+                    Text(
+                        text = "Маленькая (${IconConstants.BUTTON_SIZE_SMALL}dp) • Средняя (${IconConstants.BUTTON_SIZE_MEDIUM}dp) • Большая (${IconConstants.BUTTON_SIZE_LARGE}dp)",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                    // Кастомные цвета
+                    Text(
+                        text = "Кастомные цвета:",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Зеленая на белом (стандарт)
+                        CircleIconButton(
+                            iconType = CircleIconType.FAVORITE,
+                            onClick = { showButtonTap("Стандартные цвета") },
+                            isSelected = true
+                        )
+
+                        // Белая на зеленом
+                        CircleIconButton(
+                            iconType = CircleIconType.REPLACE,
+                            onClick = { showButtonTap("Инвертированные цвета") },
+                            backgroundColor = PrimaryGreen,
+                            contentColor = Color.White
+                        )
+
+                        // Оранжевая тема
+                        CircleIconButton(
+                            iconType = CircleIconType.BACK,
+                            onClick = { showButtonTap("Оранжевая тема") },
+                            backgroundColor = AccentOrange,
+                            contentColor = Color.White
+                        )
+
+                        // Черно-белая
+                        CircleIconButton(
+                            iconType = CircleIconType.FAVORITE,
+                            onClick = { showButtonTap ("Черно-белая тема") },
+                            backgroundColor = Color.Black,
+                            contentColor = Color.White,
+                            isSelected = true
+                        )
+                    }
                 }
             }
         }
@@ -198,10 +283,10 @@ fun TestScreen() {
                         FilterChip(
                             label = "Веган",
                             isSelected = selectedVegan,
-
                             onClick = {
                                 selectedVegan = !selectedVegan
-                                showButtonTap("Фильтр Веган: ${if (selectedVegan) "выбран" else "снят"}") }
+                                showButtonTap("Фильтр Веган: ${if (selectedVegan) "выбран" else "снят"}")
+                            }
                         )
 
                         FilterChip(
@@ -209,7 +294,8 @@ fun TestScreen() {
                             isSelected = selectedNoGluten,
                             onClick = {
                                 selectedNoGluten = !selectedNoGluten
-                                showButtonTap("Фильтр Без глютена: ${if (selectedNoGluten) "выбран" else "снят"}") }
+                                showButtonTap("Фильтр Без глютена: ${if (selectedNoGluten) "выбран" else "снят"}")
+                            }
                         )
                     }
                 }
@@ -277,7 +363,6 @@ fun TestScreen() {
                         style = MaterialTheme.typography.titleLarge
                     )
 
-                    // Кнопка для переключения загрузки
                     SmartMealButton(
                         text = if (isLoading) "Показать контент" else "Показать загрузку",
                         onClick = { isLoading = !isLoading },
@@ -286,7 +371,6 @@ fun TestScreen() {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Демонстрация скелетона
                     if (isLoading) {
                         RecipeCardShimmer()
                     } else {

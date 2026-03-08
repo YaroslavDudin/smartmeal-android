@@ -1,28 +1,39 @@
 package com.example.smartmeal.ui.components.buttons
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
 
 enum class CircleIconType {
-    FAVORITE,   // ❤️
-    REPLACE,    // 🔄
-    BACK        // ⬅️
+    FAVORITE,
+    REPLACE,
+    BACK
 }
 
 @Composable
@@ -30,31 +41,67 @@ fun CircleIconButton(
     iconType: CircleIconType,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isSelected: Boolean = false, // Для избранного (❤️ vs 🖤)
+    isSelected: Boolean = false,
     backgroundColor: Color = Color.White,
-    contentColor: Color = PrimaryGreen
+    contentColor: Color = PrimaryGreen,
+    size: Int = 48
 ) {
+    // Состояние для анимации нажатия
+    var isPressed by remember { mutableStateOf(false) }
+
+    // Анимируем размер кнопки при нажатии
+    val animatedSize by animateDpAsState(
+        targetValue = if (isPressed) (size - 4).dp else size.dp,
+        animationSpec = tween(durationMillis = 100),
+        label = "button_size_animation"
+    )
+
+    // Выбираем иконку
     val icon = when (iconType) {
-        CircleIconType.FAVORITE -> if (isSelected) "❤️" else "🖤"
-        CircleIconType.REPLACE -> "🔄"
-        CircleIconType.BACK -> "⬅️"
+        CircleIconType.FAVORITE -> {
+            if (isSelected) Icons.Filled.Favorite
+            else Icons.Outlined.FavoriteBorder
+        }
+        CircleIconType.REPLACE -> Icons.Filled.Refresh
+        CircleIconType.BACK -> Icons.Filled.ArrowBack
+    }
+
+    // Описание для accessibility
+    val contentDescription = when (iconType) {
+        CircleIconType.FAVORITE -> if (isSelected) "Убрать из избранного" else "Добавить в избранное"
+        CircleIconType.REPLACE -> "Заменить"
+        CircleIconType.BACK -> "Назад"
+    }
+
+    // Создаем источник взаимодействий для отслеживания нажатий
+    val interactionSource = remember { MutableInteractionSource() }
+
+    // Следим за нажатиями
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { interaction ->
+            when (interaction) {
+                is PressInteraction.Press -> isPressed = true
+                is PressInteraction.Release -> isPressed = false
+                is PressInteraction.Cancel -> isPressed = false
+            }
+        }
     }
 
     Button(
         onClick = onClick,
-        modifier = modifier.size(48.dp),
+        modifier = modifier.size(animatedSize),
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
             contentColor = contentColor
-        )
+        ),
+        interactionSource = interactionSource
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Text(
-                text = icon,
-                fontSize = 24.sp
-            )
-        }
+        Icon(
+            imageVector = icon,
+            contentDescription = contentDescription,
+            modifier = Modifier.size(24.dp)
+        )
     }
 }
 
@@ -62,7 +109,7 @@ fun CircleIconButton(
 @Composable
 fun CircleIconButtonPreview() {
     SmartMealTheme {
-        Box(modifier = Modifier.padding(16.dp)) {
+        Box(modifier = Modifier.size(100.dp)) {
             CircleIconButton(
                 iconType = CircleIconType.FAVORITE,
                 onClick = {},
