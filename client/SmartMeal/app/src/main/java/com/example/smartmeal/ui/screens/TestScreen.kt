@@ -26,7 +26,7 @@ fun TestScreen() {
         )
         Spacer(modifier = Modifier.height(32.dp))
         Button(onClick = { /* TODO: Действие */ }) {
-            Text("Жду макет!")
+            Text("Жду макет!!")
         }
     }
 }
