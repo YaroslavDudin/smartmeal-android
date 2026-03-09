@@ -1,0 +1,101 @@
+[
+{
+    "model": "menus.menu",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "period": "('day', 'Day')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "period": "('day', 'Day')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 3,
+    "fields": {
+        "user": 3,
+        "period": "('week', 'Week')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 4,
+    "fields": {
+        "user": 4,
+        "period": "('week', 'Week')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 5,
+    "fields": {
+        "user": 5,
+        "period": "('day', 'Day')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 6,
+    "fields": {
+        "user": 6,
+        "period": "('week', 'Week')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 7,
+    "fields": {
+        "user": 7,
+        "period": "('week', 'Week')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 8,
+    "fields": {
+        "user": 8,
+        "period": "('week', 'Week')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 9,
+    "fields": {
+        "user": 9,
+        "period": "('day', 'Day')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 10,
+    "fields": {
+        "user": 10,
+        "period": "('day', 'Day')",
+        "start_date": "2026-03-08"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 11,
+    "fields": {
+        "user": 11,
+        "period": "('week', 'Week')",
+        "start_date": "2026-03-08"
+    }
+}
+]

@@ -1,0 +1,7372 @@
+[
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 1,
+    "fields": {
+        "name": "Овощи"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 2,
+    "fields": {
+        "name": "Фрукты"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 3,
+    "fields": {
+        "name": "Молочные продукты"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 4,
+    "fields": {
+        "name": "Мясо"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 5,
+    "fields": {
+        "name": "Рыба"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 6,
+    "fields": {
+        "name": "Зерновые"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 7,
+    "fields": {
+        "name": "Специи"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 8,
+    "fields": {
+        "name": "Масла"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 9,
+    "fields": {
+        "name": "Напитки"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 10,
+    "fields": {
+        "name": "Сладости"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 1,
+    "fields": {
+        "name": "г"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 2,
+    "fields": {
+        "name": "кг"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 3,
+    "fields": {
+        "name": "шт"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 4,
+    "fields": {
+        "name": "ст.л."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 5,
+    "fields": {
+        "name": "ч.л."
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 6,
+    "fields": {
+        "name": "мл"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 7,
+    "fields": {
+        "name": "стакан"
+    }
+},
+{
+    "model": "recipes.unit",
+    "pk": 8,
+    "fields": {
+        "name": "щепотка"
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 1,
+    "fields": {
+        "name": "Картофель",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 2,
+    "fields": {
+        "name": "Морковь",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 3,
+    "fields": {
+        "name": "Лук репчатый",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 4,
+    "fields": {
+        "name": "Чеснок",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 5,
+    "fields": {
+        "name": "Помидор",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 6,
+    "fields": {
+        "name": "Огурец",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 7,
+    "fields": {
+        "name": "Перец болгарский",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 8,
+    "fields": {
+        "name": "Капуста белокочанная",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 9,
+    "fields": {
+        "name": "Брокколи",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 10,
+    "fields": {
+        "name": "Тыква",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 11,
+    "fields": {
+        "name": "Кабачок",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 12,
+    "fields": {
+        "name": "Баклажан",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 13,
+    "fields": {
+        "name": "Свёкла",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 14,
+    "fields": {
+        "name": "Зелень (укроп, петрушка)",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 15,
+    "fields": {
+        "name": "Яблоко",
+        "category": 2,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 16,
+    "fields": {
+        "name": "Банан",
+        "category": 2,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 17,
+    "fields": {
+        "name": "Апельсин",
+        "category": 2,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 18,
+    "fields": {
+        "name": "Лимон",
+        "category": 2,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 19,
+    "fields": {
+        "name": "Груша",
+        "category": 2,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 20,
+    "fields": {
+        "name": "Клубника",
+        "category": 2,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 21,
+    "fields": {
+        "name": "Виноград",
+        "category": 2,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 22,
+    "fields": {
+        "name": "Авокадо",
+        "category": 2,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 23,
+    "fields": {
+        "name": "Курица (филе)",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 24,
+    "fields": {
+        "name": "Куриные бёдра",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 25,
+    "fields": {
+        "name": "Говядина",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 26,
+    "fields": {
+        "name": "Свинина",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 27,
+    "fields": {
+        "name": "Фарш мясной",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 28,
+    "fields": {
+        "name": "Бекон",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 29,
+    "fields": {
+        "name": "Колбаса варёная",
+        "category": 4,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 30,
+    "fields": {
+        "name": "Лосось",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 31,
+    "fields": {
+        "name": "Треска",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 32,
+    "fields": {
+        "name": "Тунец консервированный",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 33,
+    "fields": {
+        "name": "Креветки",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 34,
+    "fields": {
+        "name": "Мидии",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 35,
+    "fields": {
+        "name": "Кальмары",
+        "category": 5,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 36,
+    "fields": {
+        "name": "Молоко",
+        "category": 3,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 37,
+    "fields": {
+        "name": "Сливки",
+        "category": 3,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 38,
+    "fields": {
+        "name": "Йогурт",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 39,
+    "fields": {
+        "name": "Творог",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 40,
+    "fields": {
+        "name": "Сыр твёрдый",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 41,
+    "fields": {
+        "name": "Сливочное масло",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 42,
+    "fields": {
+        "name": "Яйцо",
+        "category": 3,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 43,
+    "fields": {
+        "name": "Сметана",
+        "category": 3,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 44,
+    "fields": {
+        "name": "Рис",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 45,
+    "fields": {
+        "name": "Гречка",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 46,
+    "fields": {
+        "name": "Овсянка",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 47,
+    "fields": {
+        "name": "Макароны",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 48,
+    "fields": {
+        "name": "Лапша",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 49,
+    "fields": {
+        "name": "Кускус",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 50,
+    "fields": {
+        "name": "Булгур",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 51,
+    "fields": {
+        "name": "Соль",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 52,
+    "fields": {
+        "name": "Перец чёрный",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 53,
+    "fields": {
+        "name": "Паприка",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 54,
+    "fields": {
+        "name": "Куркума",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 55,
+    "fields": {
+        "name": "Корица",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 56,
+    "fields": {
+        "name": "Ванилин",
+        "category": 7,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 57,
+    "fields": {
+        "name": "Лавровый лист",
+        "category": 7,
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 58,
+    "fields": {
+        "name": "Масло оливковое",
+        "category": 8,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 59,
+    "fields": {
+        "name": "Масло подсолнечное",
+        "category": 8,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 60,
+    "fields": {
+        "name": "Масло кунжутное",
+        "category": 8,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 61,
+    "fields": {
+        "name": "Масло кокосовое",
+        "category": 8,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 62,
+    "fields": {
+        "name": "Вода",
+        "category": 9,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 63,
+    "fields": {
+        "name": "Чай",
+        "category": 9,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 64,
+    "fields": {
+        "name": "Кофе",
+        "category": 9,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 65,
+    "fields": {
+        "name": "Сок",
+        "category": 9,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 66,
+    "fields": {
+        "name": "Мёд",
+        "category": 10,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 67,
+    "fields": {
+        "name": "Сахар",
+        "category": 10,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 68,
+    "fields": {
+        "name": "Шоколад",
+        "category": 10,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 69,
+    "fields": {
+        "name": "Варенье",
+        "category": 10,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 70,
+    "fields": {
+        "name": "Какао-порошок",
+        "category": 10,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 71,
+    "fields": {
+        "name": "Мука",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 72,
+    "fields": {
+        "name": "Дрожжи",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 73,
+    "fields": {
+        "name": "Разрыхлитель",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 74,
+    "fields": {
+        "name": "Панировочные сухари",
+        "category": 6,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 75,
+    "fields": {
+        "name": "Томатная паста",
+        "category": 1,
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 76,
+    "fields": {
+        "name": "Соевый соус",
+        "category": 7,
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 1,
+    "fields": {
+        "title": "Ризотто",
+        "image_url": "https://placekitten.com/417/328",
+        "cook_time": 24,
+        "servings": 5,
+        "calories": 478,
+        "protein": "29.5",
+        "fat": "10.2",
+        "carbs": "39.9",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 2,
+    "fields": {
+        "title": "Куриный суп",
+        "image_url": "https://picsum.photos/927/261",
+        "cook_time": 32,
+        "servings": 1,
+        "calories": 285,
+        "protein": "29.7",
+        "fat": "28.9",
+        "carbs": "15.6",
+        "diet_types": [
+            2,
+            3,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 3,
+    "fields": {
+        "title": "Шашлык",
+        "image_url": "https://placekitten.com/796/533",
+        "cook_time": 56,
+        "servings": 2,
+        "calories": 283,
+        "protein": "5.6",
+        "fat": "29.7",
+        "carbs": "68.7",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 4,
+    "fields": {
+        "title": "Драники",
+        "image_url": "https://picsum.photos/820/454",
+        "cook_time": 90,
+        "servings": 3,
+        "calories": 616,
+        "protein": "17.2",
+        "fat": "2.4",
+        "carbs": "65.9",
+        "diet_types": [
+            1,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 5,
+    "fields": {
+        "title": "Морс",
+        "image_url": "https://dummyimage.com/259x129",
+        "cook_time": 71,
+        "servings": 4,
+        "calories": 405,
+        "protein": "13.6",
+        "fat": "29.0",
+        "carbs": "64.9",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 6,
+    "fields": {
+        "title": "Куриный суп",
+        "image_url": "https://picsum.photos/699/319",
+        "cook_time": 18,
+        "servings": 3,
+        "calories": 472,
+        "protein": "27.4",
+        "fat": "6.3",
+        "carbs": "54.7",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 7,
+    "fields": {
+        "title": "Борщ",
+        "image_url": "https://dummyimage.com/875x781",
+        "cook_time": 62,
+        "servings": 1,
+        "calories": 647,
+        "protein": "5.3",
+        "fat": "28.8",
+        "carbs": "64.8",
+        "diet_types": [
+            2,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 8,
+    "fields": {
+        "title": "Паста карбонара",
+        "image_url": "https://dummyimage.com/658x888",
+        "cook_time": 49,
+        "servings": 1,
+        "calories": 174,
+        "protein": "29.4",
+        "fat": "20.7",
+        "carbs": "56.1",
+        "diet_types": [
+            1,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 9,
+    "fields": {
+        "title": "Ризотто",
+        "image_url": "https://placekitten.com/274/521",
+        "cook_time": 46,
+        "servings": 3,
+        "calories": 799,
+        "protein": "23.4",
+        "fat": "7.8",
+        "carbs": "49.7",
+        "diet_types": [
+            1,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 10,
+    "fields": {
+        "title": "Рис с овощами",
+        "image_url": "https://picsum.photos/260/1012",
+        "cook_time": 84,
+        "servings": 4,
+        "calories": 387,
+        "protein": "29.5",
+        "fat": "21.6",
+        "carbs": "61.6",
+        "diet_types": [
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 11,
+    "fields": {
+        "title": "Оладьи",
+        "image_url": "https://placekitten.com/267/338",
+        "cook_time": 74,
+        "servings": 5,
+        "calories": 532,
+        "protein": "22.7",
+        "fat": "20.0",
+        "carbs": "71.6",
+        "diet_types": [
+            1,
+            2,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 12,
+    "fields": {
+        "title": "Морс",
+        "image_url": "https://placekitten.com/644/3",
+        "cook_time": 50,
+        "servings": 1,
+        "calories": 542,
+        "protein": "31.6",
+        "fat": "20.9",
+        "carbs": "35.4",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 13,
+    "fields": {
+        "title": "Спагетти болоньезе",
+        "image_url": "https://placekitten.com/662/409",
+        "cook_time": 86,
+        "servings": 5,
+        "calories": 448,
+        "protein": "13.1",
+        "fat": "4.6",
+        "carbs": "62.6",
+        "diet_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 14,
+    "fields": {
+        "title": "Чай с лимоном",
+        "image_url": "https://placekitten.com/220/25",
+        "cook_time": 61,
+        "servings": 3,
+        "calories": 287,
+        "protein": "22.9",
+        "fat": "16.3",
+        "carbs": "63.8",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 15,
+    "fields": {
+        "title": "Борщ",
+        "image_url": "https://picsum.photos/517/753",
+        "cook_time": 86,
+        "servings": 4,
+        "calories": 611,
+        "protein": "6.3",
+        "fat": "12.0",
+        "carbs": "17.0",
+        "diet_types": [
+            2,
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 16,
+    "fields": {
+        "title": "Ризотто",
+        "image_url": "https://dummyimage.com/675x135",
+        "cook_time": 21,
+        "servings": 3,
+        "calories": 602,
+        "protein": "25.3",
+        "fat": "18.1",
+        "carbs": "10.9",
+        "diet_types": [
+            1,
+            3,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 17,
+    "fields": {
+        "title": "Ризотто",
+        "image_url": "https://placekitten.com/548/234",
+        "cook_time": 61,
+        "servings": 4,
+        "calories": 273,
+        "protein": "15.4",
+        "fat": "17.9",
+        "carbs": "23.1",
+        "diet_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 18,
+    "fields": {
+        "title": "Драники",
+        "image_url": "https://dummyimage.com/673x477",
+        "cook_time": 67,
+        "servings": 6,
+        "calories": 300,
+        "protein": "37.6",
+        "fat": "11.9",
+        "carbs": "58.8",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 19,
+    "fields": {
+        "title": "Омлет",
+        "image_url": "https://picsum.photos/188/19",
+        "cook_time": 37,
+        "servings": 1,
+        "calories": 649,
+        "protein": "19.9",
+        "fat": "5.9",
+        "carbs": "78.7",
+        "diet_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 20,
+    "fields": {
+        "title": "Оладьи",
+        "image_url": "https://placekitten.com/333/893",
+        "cook_time": 38,
+        "servings": 3,
+        "calories": 331,
+        "protein": "31.0",
+        "fat": "26.3",
+        "carbs": "58.3",
+        "diet_types": [
+            2,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 21,
+    "fields": {
+        "title": "Чай с лимоном",
+        "image_url": "https://picsum.photos/250/133",
+        "cook_time": 67,
+        "servings": 5,
+        "calories": 485,
+        "protein": "22.3",
+        "fat": "5.2",
+        "carbs": "10.5",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 22,
+    "fields": {
+        "title": "Морс",
+        "image_url": "https://placekitten.com/868/187",
+        "cook_time": 27,
+        "servings": 1,
+        "calories": 343,
+        "protein": "14.1",
+        "fat": "16.8",
+        "carbs": "62.7",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 23,
+    "fields": {
+        "title": "Овощной суп",
+        "image_url": "https://dummyimage.com/299x980",
+        "cook_time": 85,
+        "servings": 4,
+        "calories": 366,
+        "protein": "32.1",
+        "fat": "20.0",
+        "carbs": "41.6",
+        "diet_types": [
+            3,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 24,
+    "fields": {
+        "title": "Уха",
+        "image_url": "https://dummyimage.com/877x275",
+        "cook_time": 43,
+        "servings": 6,
+        "calories": 512,
+        "protein": "8.1",
+        "fat": "7.6",
+        "carbs": "32.6",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 25,
+    "fields": {
+        "title": "Пельмени",
+        "image_url": "https://picsum.photos/483/735",
+        "cook_time": 49,
+        "servings": 3,
+        "calories": 595,
+        "protein": "29.4",
+        "fat": "19.8",
+        "carbs": "11.1",
+        "diet_types": [
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 26,
+    "fields": {
+        "title": "Котлеты с пюре",
+        "image_url": "https://placekitten.com/927/706",
+        "cook_time": 58,
+        "servings": 1,
+        "calories": 489,
+        "protein": "11.1",
+        "fat": "28.3",
+        "carbs": "62.2",
+        "diet_types": [
+            1,
+            2,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 27,
+    "fields": {
+        "title": "Сырники",
+        "image_url": "https://placekitten.com/585/996",
+        "cook_time": 40,
+        "servings": 2,
+        "calories": 539,
+        "protein": "17.9",
+        "fat": "13.0",
+        "carbs": "24.3",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 28,
+    "fields": {
+        "title": "Жаркое по-домашнему",
+        "image_url": "https://dummyimage.com/494x262",
+        "cook_time": 77,
+        "servings": 5,
+        "calories": 162,
+        "protein": "28.1",
+        "fat": "23.8",
+        "carbs": "53.9",
+        "diet_types": [
+            3,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 29,
+    "fields": {
+        "title": "Котлеты с пюре",
+        "image_url": "https://dummyimage.com/374x814",
+        "cook_time": 31,
+        "servings": 3,
+        "calories": 251,
+        "protein": "14.1",
+        "fat": "6.1",
+        "carbs": "42.1",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 30,
+    "fields": {
+        "title": "Плов",
+        "image_url": "https://picsum.photos/445/768",
+        "cook_time": 61,
+        "servings": 3,
+        "calories": 330,
+        "protein": "5.7",
+        "fat": "4.4",
+        "carbs": "12.5",
+        "diet_types": [
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 31,
+    "fields": {
+        "title": "Спагетти болоньезе",
+        "image_url": "https://dummyimage.com/836x952",
+        "cook_time": 17,
+        "servings": 1,
+        "calories": 189,
+        "protein": "32.5",
+        "fat": "22.0",
+        "carbs": "31.1",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 32,
+    "fields": {
+        "title": "Салат Цезарь",
+        "image_url": "https://picsum.photos/197/772",
+        "cook_time": 17,
+        "servings": 6,
+        "calories": 495,
+        "protein": "32.8",
+        "fat": "7.8",
+        "carbs": "52.9",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 33,
+    "fields": {
+        "title": "Драники",
+        "image_url": "https://placekitten.com/372/250",
+        "cook_time": 60,
+        "servings": 2,
+        "calories": 485,
+        "protein": "35.1",
+        "fat": "4.9",
+        "carbs": "48.5",
+        "diet_types": [
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 34,
+    "fields": {
+        "title": "Плов",
+        "image_url": "https://dummyimage.com/413x222",
+        "cook_time": 87,
+        "servings": 6,
+        "calories": 352,
+        "protein": "15.7",
+        "fat": "27.1",
+        "carbs": "25.8",
+        "diet_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 35,
+    "fields": {
+        "title": "Компот",
+        "image_url": "https://dummyimage.com/695x880",
+        "cook_time": 81,
+        "servings": 1,
+        "calories": 234,
+        "protein": "25.9",
+        "fat": "23.9",
+        "carbs": "60.1",
+        "diet_types": [
+            1,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 36,
+    "fields": {
+        "title": "Чай с лимоном",
+        "image_url": "https://dummyimage.com/486x888",
+        "cook_time": 15,
+        "servings": 2,
+        "calories": 724,
+        "protein": "24.3",
+        "fat": "24.3",
+        "carbs": "43.8",
+        "diet_types": [
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 37,
+    "fields": {
+        "title": "Ризотто",
+        "image_url": "https://dummyimage.com/181x183",
+        "cook_time": 19,
+        "servings": 3,
+        "calories": 184,
+        "protein": "7.3",
+        "fat": "8.4",
+        "carbs": "13.1",
+        "diet_types": [
+            1,
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 38,
+    "fields": {
+        "title": "Лазанья",
+        "image_url": "https://placekitten.com/823/601",
+        "cook_time": 47,
+        "servings": 5,
+        "calories": 445,
+        "protein": "13.1",
+        "fat": "13.5",
+        "carbs": "67.7",
+        "diet_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 39,
+    "fields": {
+        "title": "Салат Цезарь",
+        "image_url": "https://dummyimage.com/128x207",
+        "cook_time": 63,
+        "servings": 4,
+        "calories": 404,
+        "protein": "19.0",
+        "fat": "27.8",
+        "carbs": "67.4",
+        "diet_types": [
+            2,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 40,
+    "fields": {
+        "title": "Запеканка творожная",
+        "image_url": "https://dummyimage.com/283x614",
+        "cook_time": 65,
+        "servings": 3,
+        "calories": 462,
+        "protein": "15.4",
+        "fat": "24.5",
+        "carbs": "15.2",
+        "diet_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 41,
+    "fields": {
+        "title": "Спагетти болоньезе",
+        "image_url": "https://dummyimage.com/645x792",
+        "cook_time": 89,
+        "servings": 4,
+        "calories": 745,
+        "protein": "31.1",
+        "fat": "7.2",
+        "carbs": "30.5",
+        "diet_types": [
+            1,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 42,
+    "fields": {
+        "title": "Компот",
+        "image_url": "https://dummyimage.com/545x731",
+        "cook_time": 41,
+        "servings": 4,
+        "calories": 217,
+        "protein": "9.2",
+        "fat": "6.5",
+        "carbs": "11.9",
+        "diet_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 43,
+    "fields": {
+        "title": "Овощной суп",
+        "image_url": "https://dummyimage.com/434x233",
+        "cook_time": 68,
+        "servings": 4,
+        "calories": 464,
+        "protein": "22.6",
+        "fat": "25.6",
+        "carbs": "22.2",
+        "diet_types": [
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 44,
+    "fields": {
+        "title": "Борщ",
+        "image_url": "https://placekitten.com/238/465",
+        "cook_time": 39,
+        "servings": 1,
+        "calories": 396,
+        "protein": "28.2",
+        "fat": "29.7",
+        "carbs": "16.3",
+        "diet_types": [
+            2,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 45,
+    "fields": {
+        "title": "Вареники",
+        "image_url": "https://dummyimage.com/258x165",
+        "cook_time": 85,
+        "servings": 2,
+        "calories": 489,
+        "protein": "11.6",
+        "fat": "29.7",
+        "carbs": "15.0",
+        "diet_types": [
+            1,
+            2,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 46,
+    "fields": {
+        "title": "Жаркое по-домашнему",
+        "image_url": "https://picsum.photos/437/773",
+        "cook_time": 22,
+        "servings": 2,
+        "calories": 688,
+        "protein": "18.4",
+        "fat": "9.3",
+        "carbs": "67.2",
+        "diet_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 47,
+    "fields": {
+        "title": "Блины",
+        "image_url": "https://dummyimage.com/797x335",
+        "cook_time": 48,
+        "servings": 1,
+        "calories": 282,
+        "protein": "31.1",
+        "fat": "17.2",
+        "carbs": "30.9",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 48,
+    "fields": {
+        "title": "Блины",
+        "image_url": "https://picsum.photos/602/534",
+        "cook_time": 47,
+        "servings": 3,
+        "calories": 174,
+        "protein": "18.3",
+        "fat": "20.6",
+        "carbs": "15.4",
+        "diet_types": [
+            3,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 49,
+    "fields": {
+        "title": "Шашлык",
+        "image_url": "https://dummyimage.com/750x959",
+        "cook_time": 48,
+        "servings": 1,
+        "calories": 550,
+        "protein": "6.7",
+        "fat": "29.6",
+        "carbs": "49.4",
+        "diet_types": [
+            1,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 50,
+    "fields": {
+        "title": "Рыба запечённая",
+        "image_url": "https://picsum.photos/743/735",
+        "cook_time": 40,
+        "servings": 5,
+        "calories": 261,
+        "protein": "38.1",
+        "fat": "5.6",
+        "carbs": "63.3",
+        "diet_types": [
+            1,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 51,
+    "fields": {
+        "title": "Ризотто",
+        "image_url": "https://placekitten.com/105/804",
+        "cook_time": 71,
+        "servings": 5,
+        "calories": 623,
+        "protein": "31.5",
+        "fat": "24.9",
+        "carbs": "18.7",
+        "diet_types": [
+            2,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 52,
+    "fields": {
+        "title": "Греческий салат",
+        "image_url": "https://placekitten.com/980/1011",
+        "cook_time": 33,
+        "servings": 5,
+        "calories": 555,
+        "protein": "16.2",
+        "fat": "4.5",
+        "carbs": "33.1",
+        "diet_types": [
+            1,
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 53,
+    "fields": {
+        "title": "Вареники",
+        "image_url": "https://placekitten.com/981/837",
+        "cook_time": 47,
+        "servings": 5,
+        "calories": 465,
+        "protein": "31.6",
+        "fat": "10.5",
+        "carbs": "78.2",
+        "diet_types": [
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 54,
+    "fields": {
+        "title": "Уха",
+        "image_url": "https://dummyimage.com/285x42",
+        "cook_time": 42,
+        "servings": 6,
+        "calories": 772,
+        "protein": "17.4",
+        "fat": "19.4",
+        "carbs": "47.9",
+        "diet_types": [
+            1,
+            2,
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 55,
+    "fields": {
+        "title": "Морс",
+        "image_url": "https://dummyimage.com/41x969",
+        "cook_time": 71,
+        "servings": 1,
+        "calories": 767,
+        "protein": "20.9",
+        "fat": "27.3",
+        "carbs": "59.0",
+        "diet_types": [
+            1,
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 56,
+    "fields": {
+        "title": "Спагетти болоньезе",
+        "image_url": "https://picsum.photos/320/392",
+        "cook_time": 84,
+        "servings": 2,
+        "calories": 395,
+        "protein": "6.9",
+        "fat": "4.8",
+        "carbs": "42.5",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 57,
+    "fields": {
+        "title": "Запеканка творожная",
+        "image_url": "https://dummyimage.com/117x103",
+        "cook_time": 70,
+        "servings": 1,
+        "calories": 345,
+        "protein": "28.7",
+        "fat": "19.3",
+        "carbs": "60.2",
+        "diet_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 58,
+    "fields": {
+        "title": "Омлет",
+        "image_url": "https://dummyimage.com/820x884",
+        "cook_time": 81,
+        "servings": 1,
+        "calories": 154,
+        "protein": "38.6",
+        "fat": "26.8",
+        "carbs": "27.7",
+        "diet_types": [
+            1,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 59,
+    "fields": {
+        "title": "Запеканка творожная",
+        "image_url": "https://dummyimage.com/243x147",
+        "cook_time": 52,
+        "servings": 1,
+        "calories": 788,
+        "protein": "13.0",
+        "fat": "11.8",
+        "carbs": "71.4",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 60,
+    "fields": {
+        "title": "Ризотто",
+        "image_url": "https://dummyimage.com/171x371",
+        "cook_time": 70,
+        "servings": 1,
+        "calories": 280,
+        "protein": "6.5",
+        "fat": "11.3",
+        "carbs": "61.5",
+        "diet_types": []
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 1,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 28,
+        "amount": "104.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 2,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 65,
+        "amount": "53.40",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 3,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 25,
+        "amount": "188.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 4,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 20,
+        "amount": "110.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 5,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 34,
+        "amount": "120.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 6,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 63,
+        "amount": "232.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 7,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 59,
+        "amount": "54.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 8,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 4,
+        "amount": "272.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 9,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 57,
+        "amount": "210.70",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 10,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 3,
+        "amount": "50.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 11,
+    "fields": {
+        "recipe": 2,
+        "ingredient": 22,
+        "amount": "266.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 12,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 69,
+        "amount": "296.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 13,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 49,
+        "amount": "56.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 14,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 9,
+        "amount": "93.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 15,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 12,
+        "amount": "94.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 16,
+    "fields": {
+        "recipe": 3,
+        "ingredient": 74,
+        "amount": "253.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 17,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 64,
+        "amount": "91.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 18,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 24,
+        "amount": "267.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 19,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 58,
+        "amount": "125.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 20,
+    "fields": {
+        "recipe": 4,
+        "ingredient": 54,
+        "amount": "299.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 21,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 15,
+        "amount": "265.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 22,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 32,
+        "amount": "154.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 23,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 74,
+        "amount": "182.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 24,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 21,
+        "amount": "63.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 25,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 3,
+        "amount": "125.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 26,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 4,
+        "amount": "299.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 27,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 63,
+        "amount": "164.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 28,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 44,
+        "amount": "73.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 29,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 28,
+        "amount": "222.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 30,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 52,
+        "amount": "53.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 31,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 35,
+        "amount": "154.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 32,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 38,
+        "amount": "140.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 33,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 37,
+        "amount": "144.40",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 34,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 60,
+        "amount": "248.60",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 35,
+    "fields": {
+        "recipe": 7,
+        "ingredient": 71,
+        "amount": "271.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 36,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 71,
+        "amount": "123.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 37,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 44,
+        "amount": "222.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 38,
+    "fields": {
+        "recipe": 8,
+        "ingredient": 21,
+        "amount": "278.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 39,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 47,
+        "amount": "272.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 40,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 52,
+        "amount": "215.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 41,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 9,
+        "amount": "187.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 42,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 10,
+        "amount": "220.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 43,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 21,
+        "amount": "150.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 44,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 53,
+        "amount": "154.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 45,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 41,
+        "amount": "135.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 46,
+    "fields": {
+        "recipe": 10,
+        "ingredient": 61,
+        "amount": "57.60",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 47,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 9,
+        "amount": "267.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 48,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 10,
+        "amount": "195.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 49,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 42,
+        "amount": "129.30",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 50,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 19,
+        "amount": "68.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 51,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 20,
+        "amount": "236.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 52,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 58,
+        "amount": "246.50",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 53,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 19,
+        "amount": "183.80",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 54,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 41,
+        "amount": "136.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 55,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 49,
+        "amount": "164.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 56,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 17,
+        "amount": "175.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 57,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 25,
+        "amount": "131.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 58,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 67,
+        "amount": "289.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 59,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 21,
+        "amount": "279.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 60,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 50,
+        "amount": "61.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 61,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 27,
+        "amount": "225.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 62,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 4,
+        "amount": "189.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 63,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 52,
+        "amount": "159.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 64,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 58,
+        "amount": "56.20",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 65,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 26,
+        "amount": "221.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 66,
+    "fields": {
+        "recipe": 14,
+        "ingredient": 56,
+        "amount": "183.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 67,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 74,
+        "amount": "62.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 68,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 21,
+        "amount": "249.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 69,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 33,
+        "amount": "117.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 70,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 23,
+        "amount": "103.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 71,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 31,
+        "amount": "153.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 72,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 41,
+        "amount": "161.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 73,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 55,
+        "amount": "53.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 74,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 51,
+        "amount": "54.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 75,
+    "fields": {
+        "recipe": 16,
+        "ingredient": 61,
+        "amount": "103.70",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 76,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 40,
+        "amount": "120.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 77,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 13,
+        "amount": "210.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 78,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 75,
+        "amount": "101.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 79,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 69,
+        "amount": "168.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 80,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 62,
+        "amount": "141.20",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 81,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 21,
+        "amount": "168.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 82,
+    "fields": {
+        "recipe": 17,
+        "ingredient": 33,
+        "amount": "181.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 83,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 18,
+        "amount": "259.70",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 84,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 48,
+        "amount": "95.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 85,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 12,
+        "amount": "72.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 86,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 3,
+        "amount": "206.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 87,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 67,
+        "amount": "88.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 88,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 42,
+        "amount": "124.30",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 89,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 13,
+        "amount": "213.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 90,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 43,
+        "amount": "209.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 91,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 56,
+        "amount": "295.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 92,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 68,
+        "amount": "192.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 93,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 73,
+        "amount": "166.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 94,
+    "fields": {
+        "recipe": 19,
+        "ingredient": 54,
+        "amount": "243.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 95,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 52,
+        "amount": "80.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 96,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 10,
+        "amount": "191.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 97,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 22,
+        "amount": "197.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 98,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 43,
+        "amount": "284.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 99,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 68,
+        "amount": "150.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 100,
+    "fields": {
+        "recipe": 20,
+        "ingredient": 54,
+        "amount": "169.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 101,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 57,
+        "amount": "188.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 102,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 61,
+        "amount": "270.50",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 103,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 39,
+        "amount": "101.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 104,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 62,
+        "amount": "66.90",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 105,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 20,
+        "amount": "178.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 106,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 40,
+        "amount": "57.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 107,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 3,
+        "amount": "99.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 108,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 55,
+        "amount": "291.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 109,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 51,
+        "amount": "201.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 110,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 14,
+        "amount": "154.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 111,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 6,
+        "amount": "151.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 112,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 53,
+        "amount": "102.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 113,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 16,
+        "amount": "243.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 114,
+    "fields": {
+        "recipe": 23,
+        "ingredient": 5,
+        "amount": "220.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 115,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 40,
+        "amount": "274.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 116,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 11,
+        "amount": "284.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 117,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 15,
+        "amount": "282.70",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 118,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 26,
+        "amount": "59.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 119,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 57,
+        "amount": "254.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 120,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 21,
+        "amount": "54.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 121,
+    "fields": {
+        "recipe": 25,
+        "ingredient": 48,
+        "amount": "257.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 122,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 60,
+        "amount": "236.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 123,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 6,
+        "amount": "61.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 124,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 24,
+        "amount": "250.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 125,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 59,
+        "amount": "153.30",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 126,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 21,
+        "amount": "265.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 127,
+    "fields": {
+        "recipe": 26,
+        "ingredient": 76,
+        "amount": "58.40",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 128,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 66,
+        "amount": "260.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 129,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 22,
+        "amount": "269.60",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 130,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 26,
+        "amount": "215.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 131,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 53,
+        "amount": "119.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 132,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 63,
+        "amount": "218.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 133,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 8,
+        "amount": "106.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 134,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 70,
+        "amount": "152.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 135,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 41,
+        "amount": "220.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 136,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 51,
+        "amount": "252.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 137,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 27,
+        "amount": "286.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 138,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 35,
+        "amount": "222.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 139,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 51,
+        "amount": "95.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 140,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 49,
+        "amount": "205.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 141,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 31,
+        "amount": "158.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 142,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 55,
+        "amount": "286.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 143,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 50,
+        "amount": "271.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 144,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 73,
+        "amount": "128.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 145,
+    "fields": {
+        "recipe": 29,
+        "ingredient": 35,
+        "amount": "124.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 146,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 76,
+        "amount": "182.90",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 147,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 42,
+        "amount": "75.70",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 148,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 29,
+        "amount": "250.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 149,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 8,
+        "amount": "102.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 150,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 67,
+        "amount": "121.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 151,
+    "fields": {
+        "recipe": 30,
+        "ingredient": 22,
+        "amount": "277.60",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 152,
+    "fields": {
+        "recipe": 31,
+        "ingredient": 32,
+        "amount": "175.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 153,
+    "fields": {
+        "recipe": 31,
+        "ingredient": 43,
+        "amount": "139.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 154,
+    "fields": {
+        "recipe": 31,
+        "ingredient": 56,
+        "amount": "165.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 155,
+    "fields": {
+        "recipe": 31,
+        "ingredient": 50,
+        "amount": "172.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 156,
+    "fields": {
+        "recipe": 31,
+        "ingredient": 66,
+        "amount": "276.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 157,
+    "fields": {
+        "recipe": 32,
+        "ingredient": 49,
+        "amount": "135.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 158,
+    "fields": {
+        "recipe": 32,
+        "ingredient": 41,
+        "amount": "221.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 159,
+    "fields": {
+        "recipe": 32,
+        "ingredient": 67,
+        "amount": "117.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 160,
+    "fields": {
+        "recipe": 32,
+        "ingredient": 65,
+        "amount": "71.60",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 161,
+    "fields": {
+        "recipe": 32,
+        "ingredient": 23,
+        "amount": "86.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 162,
+    "fields": {
+        "recipe": 32,
+        "ingredient": 56,
+        "amount": "62.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 163,
+    "fields": {
+        "recipe": 32,
+        "ingredient": 24,
+        "amount": "250.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 164,
+    "fields": {
+        "recipe": 33,
+        "ingredient": 49,
+        "amount": "280.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 165,
+    "fields": {
+        "recipe": 33,
+        "ingredient": 18,
+        "amount": "261.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 166,
+    "fields": {
+        "recipe": 33,
+        "ingredient": 42,
+        "amount": "106.80",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 167,
+    "fields": {
+        "recipe": 34,
+        "ingredient": 4,
+        "amount": "114.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 168,
+    "fields": {
+        "recipe": 34,
+        "ingredient": 74,
+        "amount": "196.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 169,
+    "fields": {
+        "recipe": 34,
+        "ingredient": 18,
+        "amount": "148.80",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 170,
+    "fields": {
+        "recipe": 34,
+        "ingredient": 24,
+        "amount": "51.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 171,
+    "fields": {
+        "recipe": 34,
+        "ingredient": 7,
+        "amount": "63.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 172,
+    "fields": {
+        "recipe": 34,
+        "ingredient": 25,
+        "amount": "264.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 173,
+    "fields": {
+        "recipe": 35,
+        "ingredient": 48,
+        "amount": "136.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 174,
+    "fields": {
+        "recipe": 35,
+        "ingredient": 29,
+        "amount": "95.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 175,
+    "fields": {
+        "recipe": 35,
+        "ingredient": 13,
+        "amount": "171.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 176,
+    "fields": {
+        "recipe": 35,
+        "ingredient": 6,
+        "amount": "218.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 177,
+    "fields": {
+        "recipe": 35,
+        "ingredient": 68,
+        "amount": "202.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 178,
+    "fields": {
+        "recipe": 35,
+        "ingredient": 62,
+        "amount": "131.70",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 179,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 61,
+        "amount": "259.40",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 180,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 34,
+        "amount": "66.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 181,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 76,
+        "amount": "244.70",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 182,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 58,
+        "amount": "138.40",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 183,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 4,
+        "amount": "213.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 184,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 8,
+        "amount": "84.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 185,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 18,
+        "amount": "280.20",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 186,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 75,
+        "amount": "65.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 187,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 66,
+        "amount": "216.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 188,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 61,
+        "amount": "125.50",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 189,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 25,
+        "amount": "182.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 190,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 48,
+        "amount": "62.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 191,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 44,
+        "amount": "298.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 192,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 13,
+        "amount": "282.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 193,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 65,
+        "amount": "66.10",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 194,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 41,
+        "amount": "98.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 195,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 10,
+        "amount": "189.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 196,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 13,
+        "amount": "115.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 197,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 36,
+        "amount": "155.40",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 198,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 19,
+        "amount": "290.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 199,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 47,
+        "amount": "265.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 200,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 9,
+        "amount": "200.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 201,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 56,
+        "amount": "138.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 202,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 5,
+        "amount": "236.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 203,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 14,
+        "amount": "233.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 204,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 7,
+        "amount": "132.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 205,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 31,
+        "amount": "58.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 206,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 21,
+        "amount": "256.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 207,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 49,
+        "amount": "130.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 208,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 43,
+        "amount": "136.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 209,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 26,
+        "amount": "171.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 210,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 63,
+        "amount": "168.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 211,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 44,
+        "amount": "240.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 212,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 11,
+        "amount": "65.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 213,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 56,
+        "amount": "224.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 214,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 47,
+        "amount": "158.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 215,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 15,
+        "amount": "263.60",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 216,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 50,
+        "amount": "122.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 217,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 49,
+        "amount": "150.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 218,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 25,
+        "amount": "97.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 219,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 4,
+        "amount": "198.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 220,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 47,
+        "amount": "194.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 221,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 20,
+        "amount": "227.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 222,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 25,
+        "amount": "145.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 223,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 28,
+        "amount": "246.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 224,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 55,
+        "amount": "269.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 225,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 18,
+        "amount": "61.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 226,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 59,
+        "amount": "273.80",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 227,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 66,
+        "amount": "153.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 228,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 64,
+        "amount": "197.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 229,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 69,
+        "amount": "217.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 230,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 13,
+        "amount": "79.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 231,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 1,
+        "amount": "68.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 232,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 30,
+        "amount": "84.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 233,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 75,
+        "amount": "286.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 234,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 71,
+        "amount": "221.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 235,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 8,
+        "amount": "90.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 236,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 74,
+        "amount": "220.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 237,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 45,
+        "amount": "135.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 238,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 63,
+        "amount": "194.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 239,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 51,
+        "amount": "154.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 240,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 53,
+        "amount": "89.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 241,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 34,
+        "amount": "228.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 242,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 75,
+        "amount": "129.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 243,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 64,
+        "amount": "277.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 244,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 26,
+        "amount": "187.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 245,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 65,
+        "amount": "180.90",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 246,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 50,
+        "amount": "70.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 247,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 25,
+        "amount": "163.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 248,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 15,
+        "amount": "293.20",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 249,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 33,
+        "amount": "139.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 250,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 34,
+        "amount": "235.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 251,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 47,
+        "amount": "245.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 252,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 29,
+        "amount": "220.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 253,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 30,
+        "amount": "140.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 254,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 70,
+        "amount": "214.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 255,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 71,
+        "amount": "297.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 256,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 31,
+        "amount": "94.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 257,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 44,
+        "amount": "165.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 258,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 1,
+        "amount": "69.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 259,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 52,
+        "amount": "144.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 260,
+    "fields": {
+        "recipe": 53,
+        "ingredient": 65,
+        "amount": "233.70",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 261,
+    "fields": {
+        "recipe": 53,
+        "ingredient": 6,
+        "amount": "58.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 262,
+    "fields": {
+        "recipe": 53,
+        "ingredient": 52,
+        "amount": "176.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 263,
+    "fields": {
+        "recipe": 53,
+        "ingredient": 19,
+        "amount": "61.30",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 264,
+    "fields": {
+        "recipe": 53,
+        "ingredient": 33,
+        "amount": "55.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 265,
+    "fields": {
+        "recipe": 54,
+        "ingredient": 35,
+        "amount": "247.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 266,
+    "fields": {
+        "recipe": 54,
+        "ingredient": 64,
+        "amount": "136.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 267,
+    "fields": {
+        "recipe": 54,
+        "ingredient": 59,
+        "amount": "297.30",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 268,
+    "fields": {
+        "recipe": 54,
+        "ingredient": 63,
+        "amount": "261.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 269,
+    "fields": {
+        "recipe": 54,
+        "ingredient": 37,
+        "amount": "120.60",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 270,
+    "fields": {
+        "recipe": 55,
+        "ingredient": 37,
+        "amount": "215.90",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 271,
+    "fields": {
+        "recipe": 55,
+        "ingredient": 61,
+        "amount": "204.80",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 272,
+    "fields": {
+        "recipe": 55,
+        "ingredient": 26,
+        "amount": "64.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 273,
+    "fields": {
+        "recipe": 55,
+        "ingredient": 6,
+        "amount": "223.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 274,
+    "fields": {
+        "recipe": 55,
+        "ingredient": 54,
+        "amount": "281.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 275,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 14,
+        "amount": "298.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 276,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 2,
+        "amount": "131.90",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 277,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 6,
+        "amount": "210.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 278,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 9,
+        "amount": "91.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 279,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 24,
+        "amount": "108.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 280,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 30,
+        "amount": "195.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 281,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 46,
+        "amount": "210.30",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 282,
+    "fields": {
+        "recipe": 57,
+        "ingredient": 40,
+        "amount": "226.10",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 283,
+    "fields": {
+        "recipe": 57,
+        "ingredient": 74,
+        "amount": "190.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 284,
+    "fields": {
+        "recipe": 57,
+        "ingredient": 6,
+        "amount": "231.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 285,
+    "fields": {
+        "recipe": 57,
+        "ingredient": 66,
+        "amount": "184.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 286,
+    "fields": {
+        "recipe": 57,
+        "ingredient": 71,
+        "amount": "168.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 287,
+    "fields": {
+        "recipe": 57,
+        "ingredient": 35,
+        "amount": "257.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 288,
+    "fields": {
+        "recipe": 57,
+        "ingredient": 60,
+        "amount": "75.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 289,
+    "fields": {
+        "recipe": 58,
+        "ingredient": 56,
+        "amount": "269.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 290,
+    "fields": {
+        "recipe": 58,
+        "ingredient": 71,
+        "amount": "284.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 291,
+    "fields": {
+        "recipe": 58,
+        "ingredient": 32,
+        "amount": "169.60",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 292,
+    "fields": {
+        "recipe": 58,
+        "ingredient": 50,
+        "amount": "149.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 293,
+    "fields": {
+        "recipe": 58,
+        "ingredient": 21,
+        "amount": "226.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 294,
+    "fields": {
+        "recipe": 59,
+        "ingredient": 73,
+        "amount": "172.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 295,
+    "fields": {
+        "recipe": 59,
+        "ingredient": 15,
+        "amount": "153.10",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 296,
+    "fields": {
+        "recipe": 59,
+        "ingredient": 3,
+        "amount": "275.20",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 297,
+    "fields": {
+        "recipe": 59,
+        "ingredient": 63,
+        "amount": "181.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 298,
+    "fields": {
+        "recipe": 59,
+        "ingredient": 19,
+        "amount": "122.90",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 299,
+    "fields": {
+        "recipe": 59,
+        "ingredient": 10,
+        "amount": "246.50",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 300,
+    "fields": {
+        "recipe": 60,
+        "ingredient": 48,
+        "amount": "270.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 301,
+    "fields": {
+        "recipe": 60,
+        "ingredient": 73,
+        "amount": "128.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 302,
+    "fields": {
+        "recipe": 60,
+        "ingredient": 7,
+        "amount": "191.70",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 303,
+    "fields": {
+        "recipe": 60,
+        "ingredient": 30,
+        "amount": "288.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 304,
+    "fields": {
+        "recipe": 60,
+        "ingredient": 8,
+        "amount": "192.40",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 305,
+    "fields": {
+        "recipe": 60,
+        "ingredient": 47,
+        "amount": "58.80",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 1,
+    "fields": {
+        "recipe": 1,
+        "step_number": 1,
+        "description": "Господь выражение спалить. Второй радость поставить.",
+        "image_url": "https://placekitten.com/906/852"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 2,
+    "fields": {
+        "recipe": 1,
+        "step_number": 2,
+        "description": "Миф палата кузнец упорно даль тесно. Процесс понятный кожа.",
+        "image_url": "https://picsum.photos/746/780"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 3,
+    "fields": {
+        "recipe": 1,
+        "step_number": 3,
+        "description": "Посидеть встать наступать очко похороны собеседник.",
+        "image_url": "https://picsum.photos/64/537"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 4,
+    "fields": {
+        "recipe": 1,
+        "step_number": 4,
+        "description": "Возможно страсть исследование ложиться ручей.",
+        "image_url": "https://picsum.photos/753/41"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 5,
+    "fields": {
+        "recipe": 1,
+        "step_number": 5,
+        "description": "Свежий следовательно тревога мимо бак граница хозяйка. Житель тюрьма коричневый выраженный юный опасность тысяча цель.",
+        "image_url": "https://placekitten.com/255/723"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 6,
+    "fields": {
+        "recipe": 2,
+        "step_number": 1,
+        "description": "Слишком вывести неожиданно банда степь функция. Правый а ход коричневый торговля аллея бок.",
+        "image_url": "https://picsum.photos/193/92"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 7,
+    "fields": {
+        "recipe": 2,
+        "step_number": 2,
+        "description": "Крыса соответствие функция идея.",
+        "image_url": "https://dummyimage.com/870x784"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 8,
+    "fields": {
+        "recipe": 2,
+        "step_number": 3,
+        "description": "Число мгновение деловой предоставить что сопровождаться зато.",
+        "image_url": "https://picsum.photos/289/598"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 9,
+    "fields": {
+        "recipe": 3,
+        "step_number": 1,
+        "description": "Кожа полевой мотоцикл умирать головной. Пропаганда прошептать ягода сравнение помолчать.",
+        "image_url": "https://picsum.photos/22/876"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 10,
+    "fields": {
+        "recipe": 3,
+        "step_number": 2,
+        "description": "Манера выкинуть промолчать карман выкинуть поздравлять.",
+        "image_url": "https://picsum.photos/521/841"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 11,
+    "fields": {
+        "recipe": 3,
+        "step_number": 3,
+        "description": "Выражаться сустав кидать академик. Близко угодный выбирать роса голубчик хозяйка крутой бок.",
+        "image_url": "https://picsum.photos/955/956"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 12,
+    "fields": {
+        "recipe": 4,
+        "step_number": 1,
+        "description": "Место радость художественный второй тесно покидать палата передо.",
+        "image_url": "https://dummyimage.com/546x565"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 13,
+    "fields": {
+        "recipe": 4,
+        "step_number": 2,
+        "description": "Постоянный какой лететь около войти мягкий хотеть.",
+        "image_url": "https://dummyimage.com/665x356"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 14,
+    "fields": {
+        "recipe": 4,
+        "step_number": 3,
+        "description": "Посвятить мрачно мусор похороны горький непривычный витрина разнообразный.",
+        "image_url": "https://picsum.photos/132/400"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 15,
+    "fields": {
+        "recipe": 5,
+        "step_number": 1,
+        "description": "Запеть факультет важный вперед поколение славный.",
+        "image_url": "https://dummyimage.com/553x419"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 16,
+    "fields": {
+        "recipe": 5,
+        "step_number": 2,
+        "description": "Горький космос забирать исполнять расстегнуть. Пропадать ныне направо непривычный направо подземный картинка.",
+        "image_url": "https://placekitten.com/996/432"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 17,
+    "fields": {
+        "recipe": 6,
+        "step_number": 1,
+        "description": "Исследование около мера успокоиться.",
+        "image_url": "https://picsum.photos/326/369"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 18,
+    "fields": {
+        "recipe": 6,
+        "step_number": 2,
+        "description": "Вскинуть смертельный народ хозяйка легко славный манера художественный.",
+        "image_url": "https://placekitten.com/97/999"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 19,
+    "fields": {
+        "recipe": 6,
+        "step_number": 3,
+        "description": "Промолчать изредка девка неправда ложиться плод засунуть. Разнообразный мягкий отъезд госпожа за намерение.",
+        "image_url": "https://placekitten.com/665/448"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 20,
+    "fields": {
+        "recipe": 7,
+        "step_number": 1,
+        "description": "Бровь отражение ломать невозможно. Невозможно порода выражение умолять направо ночь.",
+        "image_url": "https://picsum.photos/962/858"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 21,
+    "fields": {
+        "recipe": 7,
+        "step_number": 2,
+        "description": "Невыносимый грудь за спорт. Район команда совещание функция пропаганда демократия вывести.",
+        "image_url": "https://placekitten.com/132/533"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 22,
+    "fields": {
+        "recipe": 7,
+        "step_number": 3,
+        "description": "Бочок за запустить желание актриса.",
+        "image_url": "https://picsum.photos/435/648"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 23,
+    "fields": {
+        "recipe": 8,
+        "step_number": 1,
+        "description": "Светило приятель ночь казнь экзамен. Белье помимо приходить район выраженный.",
+        "image_url": "https://placekitten.com/596/146"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 24,
+    "fields": {
+        "recipe": 8,
+        "step_number": 2,
+        "description": "Протягивать даль бабочка полюбить.",
+        "image_url": "https://placekitten.com/261/157"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 25,
+    "fields": {
+        "recipe": 8,
+        "step_number": 3,
+        "description": "Падаль монета гулять штаб спорт роса.",
+        "image_url": "https://picsum.photos/283/659"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 26,
+    "fields": {
+        "recipe": 8,
+        "step_number": 4,
+        "description": "Дружно четыре сустав ленинград.",
+        "image_url": "https://picsum.photos/779/921"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 27,
+    "fields": {
+        "recipe": 8,
+        "step_number": 5,
+        "description": "Лиловый привлекать карандаш устройство зеленый.",
+        "image_url": "https://dummyimage.com/1018x583"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 28,
+    "fields": {
+        "recipe": 9,
+        "step_number": 1,
+        "description": "Печатать подземный обида правильный применяться зима.",
+        "image_url": "https://dummyimage.com/253x124"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 29,
+    "fields": {
+        "recipe": 9,
+        "step_number": 2,
+        "description": "Экзамен еврейский умолять основание.",
+        "image_url": "https://dummyimage.com/705x358"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 30,
+    "fields": {
+        "recipe": 9,
+        "step_number": 3,
+        "description": "Сынок неожиданный издали а слишком монета.",
+        "image_url": "https://placekitten.com/106/488"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 31,
+    "fields": {
+        "recipe": 9,
+        "step_number": 4,
+        "description": "Невыносимый руководитель вытаскивать райком поколение желание сынок прошептать. Роса парень дурацкий карман.",
+        "image_url": "https://picsum.photos/759/962"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 32,
+    "fields": {
+        "recipe": 9,
+        "step_number": 5,
+        "description": "Металл картинка бригада страсть.",
+        "image_url": "https://dummyimage.com/29x207"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 33,
+    "fields": {
+        "recipe": 10,
+        "step_number": 1,
+        "description": "Одиннадцать встать сравнение сустав умирать пятеро.",
+        "image_url": "https://dummyimage.com/540x514"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 34,
+    "fields": {
+        "recipe": 10,
+        "step_number": 2,
+        "description": "Постоянный приятель бровь военный кожа тесно. Слать посвятить более салон.",
+        "image_url": "https://picsum.photos/926/715"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 35,
+    "fields": {
+        "recipe": 11,
+        "step_number": 1,
+        "description": "Миф неудобно лететь медицина аж.",
+        "image_url": "https://picsum.photos/453/972"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 36,
+    "fields": {
+        "recipe": 11,
+        "step_number": 2,
+        "description": "Чувство исследование ночь упор пространство растеряться неправда.",
+        "image_url": "https://dummyimage.com/471x421"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 37,
+    "fields": {
+        "recipe": 11,
+        "step_number": 3,
+        "description": "Костер госпожа более приятель плавно пространство миф.",
+        "image_url": "https://placekitten.com/314/464"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 38,
+    "fields": {
+        "recipe": 11,
+        "step_number": 4,
+        "description": "Неудобно собеседник изба функция. Иной очко монета еврейский страсть.",
+        "image_url": "https://placekitten.com/353/699"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 39,
+    "fields": {
+        "recipe": 12,
+        "step_number": 1,
+        "description": "Настать одиннадцать неожиданный волк миг.",
+        "image_url": "https://dummyimage.com/50x97"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 40,
+    "fields": {
+        "recipe": 12,
+        "step_number": 2,
+        "description": "Сынок падать упорно неправда тысяча беспомощный реклама. Выгнать расстройство соответствие кпсс тревога стакан способ монета.",
+        "image_url": "https://dummyimage.com/253x6"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 41,
+    "fields": {
+        "recipe": 12,
+        "step_number": 3,
+        "description": "Коммунизм полюбить плясать ученый остановить танцевать настать.",
+        "image_url": "https://placekitten.com/259/146"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 42,
+    "fields": {
+        "recipe": 12,
+        "step_number": 4,
+        "description": "Исследование способ командующий мусор.",
+        "image_url": "https://picsum.photos/268/815"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 43,
+    "fields": {
+        "recipe": 12,
+        "step_number": 5,
+        "description": "Магазин горький расстройство легко хлеб командир печатать.",
+        "image_url": "https://placekitten.com/388/589"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 44,
+    "fields": {
+        "recipe": 12,
+        "step_number": 6,
+        "description": "Правление пропасть цепочка помимо. Художественный господь мера запретить указанный.",
+        "image_url": "https://picsum.photos/416/722"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 45,
+    "fields": {
+        "recipe": 13,
+        "step_number": 1,
+        "description": "Порт вывести пропасть важный.",
+        "image_url": "https://picsum.photos/199/495"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 46,
+    "fields": {
+        "recipe": 13,
+        "step_number": 2,
+        "description": "Выкинуть очко вскакивать. Возмутиться нервно полностью командование медицина факультет лететь.",
+        "image_url": "https://placekitten.com/76/979"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 47,
+    "fields": {
+        "recipe": 13,
+        "step_number": 3,
+        "description": "Художественный выраженный проход жидкий написать дружно магазин правление.",
+        "image_url": "https://dummyimage.com/854x63"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 48,
+    "fields": {
+        "recipe": 14,
+        "step_number": 1,
+        "description": "Провал шлем помимо виднеться. Рабочий белье предоставить горький радость сравнение мелькнуть.",
+        "image_url": "https://picsum.photos/219/459"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 49,
+    "fields": {
+        "recipe": 14,
+        "step_number": 2,
+        "description": "При дурацкий трясти что.",
+        "image_url": "https://dummyimage.com/598x987"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 50,
+    "fields": {
+        "recipe": 14,
+        "step_number": 3,
+        "description": "Число хлеб сутки вперед полюбить зачем налево. Засунуть чем магазин школьный следовательно рис.",
+        "image_url": "https://dummyimage.com/85x342"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 51,
+    "fields": {
+        "recipe": 14,
+        "step_number": 4,
+        "description": "Наткнуться эпоха монета пропадать указанный некоторый коробка. Нажать совет дружно встать.",
+        "image_url": "https://dummyimage.com/389x851"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 52,
+    "fields": {
+        "recipe": 15,
+        "step_number": 1,
+        "description": "Выраженный указанный поймать правильный песня полностью.",
+        "image_url": "https://picsum.photos/727/475"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 53,
+    "fields": {
+        "recipe": 15,
+        "step_number": 2,
+        "description": "Неудобно эпоха смеяться издали.",
+        "image_url": "https://picsum.photos/148/487"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 54,
+    "fields": {
+        "recipe": 15,
+        "step_number": 3,
+        "description": "Руководитель пространство страсть деньги интеллектуальный указанный цель.",
+        "image_url": "https://picsum.photos/565/10"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 55,
+    "fields": {
+        "recipe": 15,
+        "step_number": 4,
+        "description": "Один выгнать армейский солнце левый поймать. Светило ход славный уточнить.",
+        "image_url": "https://dummyimage.com/396x355"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 56,
+    "fields": {
+        "recipe": 16,
+        "step_number": 1,
+        "description": "Мимо развернуться карман нож. Результат миллиард затянуться стакан.",
+        "image_url": "https://picsum.photos/695/482"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 57,
+    "fields": {
+        "recipe": 16,
+        "step_number": 2,
+        "description": "Гулять ленинград низкий потом ленинград прощение изменение.",
+        "image_url": "https://picsum.photos/165/49"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 58,
+    "fields": {
+        "recipe": 16,
+        "step_number": 3,
+        "description": "Порт забирать головка выраженный достоинство сомнительный невозможно.",
+        "image_url": "https://picsum.photos/222/625"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 59,
+    "fields": {
+        "recipe": 16,
+        "step_number": 4,
+        "description": "Передо пламя задрать висеть редактор бок. Торговля совещание аж.",
+        "image_url": "https://placekitten.com/154/667"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 60,
+    "fields": {
+        "recipe": 16,
+        "step_number": 5,
+        "description": "Художественный грустный выбирать призыв. Трясти головной палата поезд невозможно.",
+        "image_url": "https://dummyimage.com/953x311"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 61,
+    "fields": {
+        "recipe": 17,
+        "step_number": 1,
+        "description": "Холодно провал дыхание кожа. Сопровождаться вздрагивать граница жить холодно избегать призыв.",
+        "image_url": "https://placekitten.com/110/552"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 62,
+    "fields": {
+        "recipe": 17,
+        "step_number": 2,
+        "description": "Космос покидать ребятишки строительство пятеро угроза хлеб.",
+        "image_url": "https://placekitten.com/560/976"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 63,
+    "fields": {
+        "recipe": 17,
+        "step_number": 3,
+        "description": "Палата актриса очко термин белье банда райком миф.",
+        "image_url": "https://dummyimage.com/169x855"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 64,
+    "fields": {
+        "recipe": 17,
+        "step_number": 4,
+        "description": "Решение отражение академик виднеться видимо обида.",
+        "image_url": "https://picsum.photos/891/838"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 65,
+    "fields": {
+        "recipe": 17,
+        "step_number": 5,
+        "description": "Плавно костер господь невозможно тута. Означать разуметься ведь механический пламя.",
+        "image_url": "https://dummyimage.com/146x713"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 66,
+    "fields": {
+        "recipe": 17,
+        "step_number": 6,
+        "description": "Грудь голубчик вывести процесс.",
+        "image_url": "https://dummyimage.com/163x896"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 67,
+    "fields": {
+        "recipe": 18,
+        "step_number": 1,
+        "description": "Ленинград задрать ход изучить выраженный.",
+        "image_url": "https://placekitten.com/45/202"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 68,
+    "fields": {
+        "recipe": 18,
+        "step_number": 2,
+        "description": "Кпсс смертельный чувство умирать помимо потянуться вперед помимо.",
+        "image_url": "https://dummyimage.com/637x387"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 69,
+    "fields": {
+        "recipe": 18,
+        "step_number": 3,
+        "description": "Экзамен теория жестокий мера. Бак упорно провинция очко запустить.",
+        "image_url": "https://placekitten.com/461/643"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 70,
+    "fields": {
+        "recipe": 18,
+        "step_number": 4,
+        "description": "Сходить налево пространство угол заявление. Райком сбросить точно дрогнуть секунда виднеться кидать.",
+        "image_url": "https://picsum.photos/615/497"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 71,
+    "fields": {
+        "recipe": 18,
+        "step_number": 5,
+        "description": "Песенка приходить господь медицина.",
+        "image_url": "https://picsum.photos/108/337"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 72,
+    "fields": {
+        "recipe": 19,
+        "step_number": 1,
+        "description": "Разуметься дошлый назначить бочок четко сынок интеллектуальный жидкий. Головка о изменение написать командование.",
+        "image_url": "https://placekitten.com/1001/814"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 73,
+    "fields": {
+        "recipe": 19,
+        "step_number": 2,
+        "description": "Сынок полоска процесс.",
+        "image_url": "https://placekitten.com/174/155"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 74,
+    "fields": {
+        "recipe": 19,
+        "step_number": 3,
+        "description": "Ребятишки сустав порода картинка демократия выразить. Смелый устройство сверкающий около назначить рис.",
+        "image_url": "https://dummyimage.com/515x878"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 75,
+    "fields": {
+        "recipe": 19,
+        "step_number": 4,
+        "description": "Неожиданно пробовать ботинок нажать. Граница тюрьма тяжелый беспомощный.",
+        "image_url": "https://picsum.photos/642/151"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 76,
+    "fields": {
+        "recipe": 19,
+        "step_number": 5,
+        "description": "Вряд художественный остановить новый возникновение сравнение. Сверкать степь неожиданно.",
+        "image_url": "https://placekitten.com/967/74"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 77,
+    "fields": {
+        "recipe": 20,
+        "step_number": 1,
+        "description": "Сбросить командующий выражение развитый мгновение степь точно. Райком карандаш мотоцикл факультет кожа.",
+        "image_url": "https://placekitten.com/386/992"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 78,
+    "fields": {
+        "recipe": 20,
+        "step_number": 2,
+        "description": "Головной плод избегать выражение сустав важный заявление.",
+        "image_url": "https://picsum.photos/697/124"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 79,
+    "fields": {
+        "recipe": 20,
+        "step_number": 3,
+        "description": "Равнодушный материя житель. Лапа за направо понятный зачем.",
+        "image_url": "https://placekitten.com/829/1023"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 80,
+    "fields": {
+        "recipe": 21,
+        "step_number": 1,
+        "description": "Спасть а подробность вперед. Хотеть головка запеть невыносимый торговля а функция подземный.",
+        "image_url": "https://placekitten.com/653/392"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 81,
+    "fields": {
+        "recipe": 21,
+        "step_number": 2,
+        "description": "При прелесть потом второй пропадать госпожа. Избегать провал привлекать бригада сверкающий строительство заработать.",
+        "image_url": "https://picsum.photos/551/630"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 82,
+    "fields": {
+        "recipe": 21,
+        "step_number": 3,
+        "description": "Бак торопливый куча функция. Госпожа присесть сохранять.",
+        "image_url": "https://picsum.photos/204/180"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 83,
+    "fields": {
+        "recipe": 21,
+        "step_number": 4,
+        "description": "Металл горький полюбить. Монета исполнять июнь шлем.",
+        "image_url": "https://placekitten.com/172/874"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 84,
+    "fields": {
+        "recipe": 21,
+        "step_number": 5,
+        "description": "Выгнать инфекция тюрьма трясти вчера.",
+        "image_url": "https://placekitten.com/821/861"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 85,
+    "fields": {
+        "recipe": 22,
+        "step_number": 1,
+        "description": "Палец остановить светило тусклый наслаждение танцевать.",
+        "image_url": "https://dummyimage.com/321x35"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 86,
+    "fields": {
+        "recipe": 22,
+        "step_number": 2,
+        "description": "Куча покидать мягкий человечек следовательно монета граница. Намерение демократия ремень падать сутки смеяться возможно.",
+        "image_url": "https://dummyimage.com/897x247"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 87,
+    "fields": {
+        "recipe": 22,
+        "step_number": 3,
+        "description": "Казнь вытаскивать привлекать вскинуть. Через бетонный умирать.",
+        "image_url": "https://dummyimage.com/79x186"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 88,
+    "fields": {
+        "recipe": 22,
+        "step_number": 4,
+        "description": "Увеличиваться плод мера умолять остановить. Постоянный угроза возникновение через уточнить спасть.",
+        "image_url": "https://picsum.photos/1014/410"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 89,
+    "fields": {
+        "recipe": 23,
+        "step_number": 1,
+        "description": "Новый бегать недостаток вообще заработать дьявол.",
+        "image_url": "https://dummyimage.com/23x226"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 90,
+    "fields": {
+        "recipe": 23,
+        "step_number": 2,
+        "description": "Привлекать пробовать находить.",
+        "image_url": "https://picsum.photos/856/702"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 91,
+    "fields": {
+        "recipe": 23,
+        "step_number": 3,
+        "description": "Тревога волк упор песенка хотеть вообще.",
+        "image_url": "https://dummyimage.com/181x372"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 92,
+    "fields": {
+        "recipe": 23,
+        "step_number": 4,
+        "description": "Результат цвет торопливый спалить дрогнуть.",
+        "image_url": "https://dummyimage.com/722x5"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 93,
+    "fields": {
+        "recipe": 24,
+        "step_number": 1,
+        "description": "Встать реклама изредка плясать головной.",
+        "image_url": "https://dummyimage.com/214x667"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 94,
+    "fields": {
+        "recipe": 24,
+        "step_number": 2,
+        "description": "Угроза житель через добиться.",
+        "image_url": "https://placekitten.com/651/543"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 95,
+    "fields": {
+        "recipe": 25,
+        "step_number": 1,
+        "description": "Угодный спешить кпсс.",
+        "image_url": "https://placekitten.com/256/442"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 96,
+    "fields": {
+        "recipe": 25,
+        "step_number": 2,
+        "description": "Висеть каюта выраженный провал витрина сходить отметить. Полоска танцевать потрясти покидать социалистический рот.",
+        "image_url": "https://picsum.photos/774/119"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 97,
+    "fields": {
+        "recipe": 25,
+        "step_number": 3,
+        "description": "Изредка помолчать зато блин пастух. Жестокий коробка художественный ярко более ремень.",
+        "image_url": "https://dummyimage.com/667x473"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 98,
+    "fields": {
+        "recipe": 25,
+        "step_number": 4,
+        "description": "Редактор правление зима.",
+        "image_url": "https://placekitten.com/55/350"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 99,
+    "fields": {
+        "recipe": 25,
+        "step_number": 5,
+        "description": "Команда плясать исследование валюта скользить применяться за при.",
+        "image_url": "https://picsum.photos/934/399"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 100,
+    "fields": {
+        "recipe": 25,
+        "step_number": 6,
+        "description": "Выражаться инфекция ведь металл механический назначить. Художественный валюта увеличиваться смелый костер серьезный остановить.",
+        "image_url": "https://placekitten.com/29/891"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 101,
+    "fields": {
+        "recipe": 26,
+        "step_number": 1,
+        "description": "Ремень смертельный шлем зима.",
+        "image_url": "https://placekitten.com/269/315"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 102,
+    "fields": {
+        "recipe": 26,
+        "step_number": 2,
+        "description": "Посидеть народ понятный сходить товар лапа четыре. Хлеб передо инвалид манера мимо.",
+        "image_url": "https://picsum.photos/578/126"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 103,
+    "fields": {
+        "recipe": 27,
+        "step_number": 1,
+        "description": "Головка непривычный изучить число мотоцикл призыв.",
+        "image_url": "https://picsum.photos/803/447"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 104,
+    "fields": {
+        "recipe": 27,
+        "step_number": 2,
+        "description": "Плод передо расстройство счастье четыре. Триста похороны реклама.",
+        "image_url": "https://placekitten.com/566/683"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 105,
+    "fields": {
+        "recipe": 27,
+        "step_number": 3,
+        "description": "Правление банк головной вывести пробовать мимо. Пастух потом реклама нервно совещание дружно.",
+        "image_url": "https://dummyimage.com/101x153"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 106,
+    "fields": {
+        "recipe": 27,
+        "step_number": 4,
+        "description": "Торговля функция команда выбирать карандаш. Рис порода заложить расстегнуть промолчать похороны лиловый.",
+        "image_url": "https://placekitten.com/472/967"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 107,
+    "fields": {
+        "recipe": 27,
+        "step_number": 5,
+        "description": "Эффект песенка запеть анализ.",
+        "image_url": "https://picsum.photos/573/783"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 108,
+    "fields": {
+        "recipe": 28,
+        "step_number": 1,
+        "description": "Советовать монета господь сопровождаться перебивать банк.",
+        "image_url": "https://placekitten.com/645/404"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 109,
+    "fields": {
+        "recipe": 28,
+        "step_number": 2,
+        "description": "Беспомощный экзамен порядок свежий.",
+        "image_url": "https://dummyimage.com/934x26"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 110,
+    "fields": {
+        "recipe": 28,
+        "step_number": 3,
+        "description": "Решение триста важный зачем вряд головка. Порт труп вздрагивать танцевать.",
+        "image_url": "https://picsum.photos/531/957"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 111,
+    "fields": {
+        "recipe": 29,
+        "step_number": 1,
+        "description": "Да бетонный механический торопливый.",
+        "image_url": "https://picsum.photos/959/381"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 112,
+    "fields": {
+        "recipe": 29,
+        "step_number": 2,
+        "description": "Деловой расстегнуть хлеб тюрьма очко деньги потом.",
+        "image_url": "https://dummyimage.com/191x486"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 113,
+    "fields": {
+        "recipe": 29,
+        "step_number": 3,
+        "description": "Академик ручей упорно холодно вытаскивать белье хотеть. Банк снимать пасть эффект столетие.",
+        "image_url": "https://placekitten.com/604/49"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 114,
+    "fields": {
+        "recipe": 29,
+        "step_number": 4,
+        "description": "Куча покидать сверкающий металл миллиард спорт мелькнуть.",
+        "image_url": "https://dummyimage.com/298x223"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 115,
+    "fields": {
+        "recipe": 29,
+        "step_number": 5,
+        "description": "Пол невыносимый картинка песенка интеллектуальный очко человечек.",
+        "image_url": "https://dummyimage.com/809x387"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 116,
+    "fields": {
+        "recipe": 29,
+        "step_number": 6,
+        "description": "Выбирать дорогой пропадать снимать сбросить. Тревога упор функция цепочка покинуть блин.",
+        "image_url": "https://placekitten.com/211/956"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 117,
+    "fields": {
+        "recipe": 30,
+        "step_number": 1,
+        "description": "Поймать господь ученый следовательно.",
+        "image_url": "https://placekitten.com/699/762"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 118,
+    "fields": {
+        "recipe": 30,
+        "step_number": 2,
+        "description": "Дьявол конструкция процесс собеседник кидать. Головка успокоиться поговорить боец совет разводить прошептать тюрьма.",
+        "image_url": "https://placekitten.com/672/353"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 119,
+    "fields": {
+        "recipe": 30,
+        "step_number": 3,
+        "description": "Легко монета намерение грустный.",
+        "image_url": "https://dummyimage.com/536x741"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 120,
+    "fields": {
+        "recipe": 30,
+        "step_number": 4,
+        "description": "Самостоятельно редактор четыре написать.",
+        "image_url": "https://dummyimage.com/198x750"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 121,
+    "fields": {
+        "recipe": 31,
+        "step_number": 1,
+        "description": "Ученый появление освобождение мусор ботинок смертельный.",
+        "image_url": "https://placekitten.com/689/948"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 122,
+    "fields": {
+        "recipe": 31,
+        "step_number": 2,
+        "description": "Устройство палата торговля важный поколение. Адвокат заплакать развитый товар прежде табак чувство.",
+        "image_url": "https://picsum.photos/682/48"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 123,
+    "fields": {
+        "recipe": 31,
+        "step_number": 3,
+        "description": "Одиннадцать рота торговля желание. Потянуться потрясти сохранять механический.",
+        "image_url": "https://dummyimage.com/847x822"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 124,
+    "fields": {
+        "recipe": 31,
+        "step_number": 4,
+        "description": "Зачем точно неудобно вытаскивать манера бровь что эпоха. Роса уронить близко поздравлять висеть.",
+        "image_url": "https://placekitten.com/1017/8"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 125,
+    "fields": {
+        "recipe": 32,
+        "step_number": 1,
+        "description": "Совещание ночь премьера важный инфекция уточнить сбросить. Возможно блин свежий дурацкий лапа точно песня.",
+        "image_url": "https://dummyimage.com/57x193"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 126,
+    "fields": {
+        "recipe": 32,
+        "step_number": 2,
+        "description": "Порт тута растеряться пол отъезд зеленый господь.",
+        "image_url": "https://dummyimage.com/293x495"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 127,
+    "fields": {
+        "recipe": 32,
+        "step_number": 3,
+        "description": "Очутиться аллея чем изредка более. Рот висеть возмутиться иной пересечь актриса.",
+        "image_url": "https://picsum.photos/111/178"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 128,
+    "fields": {
+        "recipe": 32,
+        "step_number": 4,
+        "description": "Космос пересечь ручей наступать понятный жить.",
+        "image_url": "https://placekitten.com/103/322"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 129,
+    "fields": {
+        "recipe": 32,
+        "step_number": 5,
+        "description": "Торговля кузнец блин поколение возможно падать поколение. Столетие невыносимый цепочка остановить видимо деловой оставить.",
+        "image_url": "https://picsum.photos/356/62"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 130,
+    "fields": {
+        "recipe": 32,
+        "step_number": 6,
+        "description": "Цепочка военный танцевать мелочь левый трясти.",
+        "image_url": "https://picsum.photos/184/160"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 131,
+    "fields": {
+        "recipe": 33,
+        "step_number": 1,
+        "description": "Тусклый около прежде эффект военный инструкция. Налево процесс зеленый приятель вариант.",
+        "image_url": "https://placekitten.com/416/364"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 132,
+    "fields": {
+        "recipe": 33,
+        "step_number": 2,
+        "description": "Мусор спорт правый казнь конструкция порядок.",
+        "image_url": "https://dummyimage.com/858x403"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 133,
+    "fields": {
+        "recipe": 33,
+        "step_number": 3,
+        "description": "Некоторый адвокат низкий командование появление тесно.",
+        "image_url": "https://picsum.photos/1014/147"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 134,
+    "fields": {
+        "recipe": 33,
+        "step_number": 4,
+        "description": "Руководитель счастье тревога. При степь экзамен дурацкий число изучить торговля.",
+        "image_url": "https://placekitten.com/327/760"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 135,
+    "fields": {
+        "recipe": 34,
+        "step_number": 1,
+        "description": "Расстройство выраженный темнеть правление.",
+        "image_url": "https://placekitten.com/172/630"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 136,
+    "fields": {
+        "recipe": 34,
+        "step_number": 2,
+        "description": "Блин нервно кидать спичка болото скользить самостоятельно. Команда трубка виднеться отъезд непривычный зато.",
+        "image_url": "https://picsum.photos/569/131"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 137,
+    "fields": {
+        "recipe": 34,
+        "step_number": 3,
+        "description": "Задержать постоянный изредка возмутиться боец лететь банда.",
+        "image_url": "https://dummyimage.com/134x212"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 138,
+    "fields": {
+        "recipe": 34,
+        "step_number": 4,
+        "description": "Покинуть холодно написать выдержать кожа кузнец.",
+        "image_url": "https://placekitten.com/525/286"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 139,
+    "fields": {
+        "recipe": 35,
+        "step_number": 1,
+        "description": "Подземный пища хозяйка вытаскивать госпожа функция ведь. Более угроза секунда стакан художественный.",
+        "image_url": "https://placekitten.com/138/78"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 140,
+    "fields": {
+        "recipe": 35,
+        "step_number": 2,
+        "description": "Дьявол пища интеллектуальный угодный школьный. Перебивать исследование упорно палата строительство.",
+        "image_url": "https://dummyimage.com/113x679"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 141,
+    "fields": {
+        "recipe": 35,
+        "step_number": 3,
+        "description": "Господь место функция возможно аж.",
+        "image_url": "https://picsum.photos/667/846"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 142,
+    "fields": {
+        "recipe": 35,
+        "step_number": 4,
+        "description": "Адвокат спешить кожа командир ярко точно. Сверкать порт палка подробность рота а.",
+        "image_url": "https://placekitten.com/124/342"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 143,
+    "fields": {
+        "recipe": 35,
+        "step_number": 5,
+        "description": "Слать близко девка. Рот выраженный избегать выраженный дошлый понятный.",
+        "image_url": "https://picsum.photos/477/903"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 144,
+    "fields": {
+        "recipe": 36,
+        "step_number": 1,
+        "description": "Дрогнуть рай премьера тысяча сынок.",
+        "image_url": "https://placekitten.com/735/428"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 145,
+    "fields": {
+        "recipe": 36,
+        "step_number": 2,
+        "description": "Более полюбить покидать очко. Левый полностью горький тревога передо еврейский.",
+        "image_url": "https://picsum.photos/35/696"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 146,
+    "fields": {
+        "recipe": 36,
+        "step_number": 3,
+        "description": "Невыносимый затянуться призыв направо опасность рассуждение посвятить.",
+        "image_url": "https://placekitten.com/924/649"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 147,
+    "fields": {
+        "recipe": 36,
+        "step_number": 4,
+        "description": "Висеть рис лапа вздрагивать. Порода инструкция тусклый поставить академик сбросить металл.",
+        "image_url": "https://dummyimage.com/843x52"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 148,
+    "fields": {
+        "recipe": 36,
+        "step_number": 5,
+        "description": "Неожиданно слишком ягода багровый вряд плясать ставить.",
+        "image_url": "https://dummyimage.com/826x931"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 149,
+    "fields": {
+        "recipe": 36,
+        "step_number": 6,
+        "description": "Написать миг сохранять функция исполнять.",
+        "image_url": "https://dummyimage.com/735x725"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 150,
+    "fields": {
+        "recipe": 37,
+        "step_number": 1,
+        "description": "Рис художественный костер горький невозможно рассуждение. Видимо передо запретить премьера изменение серьезный.",
+        "image_url": "https://placekitten.com/496/792"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 151,
+    "fields": {
+        "recipe": 37,
+        "step_number": 2,
+        "description": "Вскинуть вариант домашний построить. Советовать степь бегать уничтожение.",
+        "image_url": "https://picsum.photos/957/828"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 152,
+    "fields": {
+        "recipe": 38,
+        "step_number": 1,
+        "description": "Сохранять настать военный полностью ночь запустить затянуться. Коммунизм отдел вряд поколение кольцо вытаскивать правление пространство.",
+        "image_url": "https://picsum.photos/17/460"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 153,
+    "fields": {
+        "recipe": 38,
+        "step_number": 2,
+        "description": "Уточнить миллиард юный функция провал правление академик рассуждение.",
+        "image_url": "https://placekitten.com/169/441"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 154,
+    "fields": {
+        "recipe": 38,
+        "step_number": 3,
+        "description": "Рис миф налево намерение.",
+        "image_url": "https://placekitten.com/642/656"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 155,
+    "fields": {
+        "recipe": 38,
+        "step_number": 4,
+        "description": "Терапия что салон. Неожиданно руководитель выражаться трубка.",
+        "image_url": "https://dummyimage.com/241x634"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 156,
+    "fields": {
+        "recipe": 39,
+        "step_number": 1,
+        "description": "Интеллектуальный успокоиться о поговорить приятель. Миг манера ночь невыносимый командующий реклама разнообразный.",
+        "image_url": "https://placekitten.com/271/266"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 157,
+    "fields": {
+        "recipe": 39,
+        "step_number": 2,
+        "description": "Мягкий написать указанный поговорить сохранять.",
+        "image_url": "https://picsum.photos/985/933"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 158,
+    "fields": {
+        "recipe": 40,
+        "step_number": 1,
+        "description": "Пропаганда сверкающий отражение.",
+        "image_url": "https://picsum.photos/14/603"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 159,
+    "fields": {
+        "recipe": 40,
+        "step_number": 2,
+        "description": "Легко роса художественный эффект пространство господь. Полоска привлекать запустить процесс.",
+        "image_url": "https://placekitten.com/491/488"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 160,
+    "fields": {
+        "recipe": 40,
+        "step_number": 3,
+        "description": "Зима заявление сверкать трясти инструкция выражение. Возникновение интеллектуальный командование господь деньги карандаш.",
+        "image_url": "https://dummyimage.com/1019x766"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 161,
+    "fields": {
+        "recipe": 40,
+        "step_number": 4,
+        "description": "Район мелькнуть тесно следовательно покидать кпсс сравнение. Страсть полюбить другой равнодушный протягивать одиннадцать прощение.",
+        "image_url": "https://dummyimage.com/236x42"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 162,
+    "fields": {
+        "recipe": 40,
+        "step_number": 5,
+        "description": "Магазин слишком научить. Висеть заработать ботинок правильный трубка вчера степь.",
+        "image_url": "https://placekitten.com/772/23"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 163,
+    "fields": {
+        "recipe": 40,
+        "step_number": 6,
+        "description": "Другой приходить мягкий кпсс войти вариант армейский сутки. Вряд выражаться премьера достоинство казнь настать пространство.",
+        "image_url": "https://dummyimage.com/212x315"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 164,
+    "fields": {
+        "recipe": 41,
+        "step_number": 1,
+        "description": "Дьявол бетонный спасть виднеться поймать естественный вскакивать. Плясать светило близко выбирать еврейский.",
+        "image_url": "https://dummyimage.com/470x692"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 165,
+    "fields": {
+        "recipe": 41,
+        "step_number": 2,
+        "description": "Заведение эпоха опасность триста тесно.",
+        "image_url": "https://placekitten.com/156/879"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 166,
+    "fields": {
+        "recipe": 41,
+        "step_number": 3,
+        "description": "Висеть левый более палец освободить магазин. Угол протягивать правый человечек увеличиваться поймать пища.",
+        "image_url": "https://placekitten.com/709/962"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 167,
+    "fields": {
+        "recipe": 42,
+        "step_number": 1,
+        "description": "Промолчать носок зима естественный рота редактор.",
+        "image_url": "https://dummyimage.com/96x311"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 168,
+    "fields": {
+        "recipe": 42,
+        "step_number": 2,
+        "description": "Пропасть собеседник дрогнуть кпсс угодный тюрьма трубка. Успокоиться исполнять задержать трубка.",
+        "image_url": "https://dummyimage.com/611x807"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 169,
+    "fields": {
+        "recipe": 42,
+        "step_number": 3,
+        "description": "Художественный следовательно командир запеть полностью.",
+        "image_url": "https://placekitten.com/830/510"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 170,
+    "fields": {
+        "recipe": 42,
+        "step_number": 4,
+        "description": "Решетка похороны вариант карман другой падаль изба идея.",
+        "image_url": "https://placekitten.com/476/819"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 171,
+    "fields": {
+        "recipe": 43,
+        "step_number": 1,
+        "description": "Подземный сынок задержать казнь кидать непривычный банк песня. Дрогнуть зачем другой.",
+        "image_url": "https://placekitten.com/78/621"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 172,
+    "fields": {
+        "recipe": 43,
+        "step_number": 2,
+        "description": "Термин кожа видимо. Дыхание товар грустный монета желание.",
+        "image_url": "https://dummyimage.com/746x463"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 173,
+    "fields": {
+        "recipe": 43,
+        "step_number": 3,
+        "description": "Пропасть протягивать порядок привлекать боец. Интернет монета совет банк единый мелочь.",
+        "image_url": "https://picsum.photos/89/514"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 174,
+    "fields": {
+        "recipe": 43,
+        "step_number": 4,
+        "description": "Банк демократия неправда снимать подробность дыхание неправда. Умирать тута снимать спорт вперед полевой полностью.",
+        "image_url": "https://dummyimage.com/128x456"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 175,
+    "fields": {
+        "recipe": 44,
+        "step_number": 1,
+        "description": "Передо мотоцикл потом ныне парень манера. Блин инструкция командир домашний набор.",
+        "image_url": "https://placekitten.com/27/784"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 176,
+    "fields": {
+        "recipe": 44,
+        "step_number": 2,
+        "description": "Вряд мимо песенка поздравлять труп спорт очутиться. Ягода а смеяться точно.",
+        "image_url": "https://dummyimage.com/664x794"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 177,
+    "fields": {
+        "recipe": 44,
+        "step_number": 3,
+        "description": "Командир понятный полоска банда космос отъезд кидать. Поговорить промолчать помимо совещание одиннадцать.",
+        "image_url": "https://placekitten.com/86/441"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 178,
+    "fields": {
+        "recipe": 44,
+        "step_number": 4,
+        "description": "Карандаш солнце выкинуть грудь правильный. Процесс подробность бочок запустить задрать набор командующий.",
+        "image_url": "https://picsum.photos/669/281"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 179,
+    "fields": {
+        "recipe": 45,
+        "step_number": 1,
+        "description": "Материя промолчать потом висеть хлеб исследование приличный.",
+        "image_url": "https://dummyimage.com/602x671"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 180,
+    "fields": {
+        "recipe": 45,
+        "step_number": 2,
+        "description": "Бетонный сохранять актриса назначить миг. Единый построить ход правый промолчать команда.",
+        "image_url": "https://dummyimage.com/827x452"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 181,
+    "fields": {
+        "recipe": 45,
+        "step_number": 3,
+        "description": "Тюрьма функция избегать товар способ секунда.",
+        "image_url": "https://placekitten.com/469/45"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 182,
+    "fields": {
+        "recipe": 45,
+        "step_number": 4,
+        "description": "Назначить упор похороны степь зеленый тусклый невозможно.",
+        "image_url": "https://placekitten.com/605/733"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 183,
+    "fields": {
+        "recipe": 46,
+        "step_number": 1,
+        "description": "Вряд демократия уточнить. Господь лететь каюта близко опасность ход.",
+        "image_url": "https://placekitten.com/325/593"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 184,
+    "fields": {
+        "recipe": 46,
+        "step_number": 2,
+        "description": "Рабочий указанный дружно сомнительный а. Ныне нервно ночь палка вперед выраженный.",
+        "image_url": "https://placekitten.com/643/169"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 185,
+    "fields": {
+        "recipe": 46,
+        "step_number": 3,
+        "description": "Приходить девка сходить монета некоторый полюбить появление. Шлем народ пятеро миллиард.",
+        "image_url": "https://picsum.photos/463/877"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 186,
+    "fields": {
+        "recipe": 46,
+        "step_number": 4,
+        "description": "Умирать налево заявление выгнать мальчишка выраженный спорт.",
+        "image_url": "https://dummyimage.com/699x215"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 187,
+    "fields": {
+        "recipe": 46,
+        "step_number": 5,
+        "description": "Головной выраженный тусклый умолять народ помимо. Космос куча степь желание прелесть дьявол.",
+        "image_url": "https://picsum.photos/635/822"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 188,
+    "fields": {
+        "recipe": 47,
+        "step_number": 1,
+        "description": "Очередной миллиард место висеть соответствие вздрогнуть что.",
+        "image_url": "https://picsum.photos/837/15"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 189,
+    "fields": {
+        "recipe": 47,
+        "step_number": 2,
+        "description": "Пропасть школьный ведь командующий невозможно.",
+        "image_url": "https://placekitten.com/91/866"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 190,
+    "fields": {
+        "recipe": 47,
+        "step_number": 3,
+        "description": "Палец необычный протягивать инфекция адвокат.",
+        "image_url": "https://picsum.photos/209/733"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 191,
+    "fields": {
+        "recipe": 47,
+        "step_number": 4,
+        "description": "Крыса легко задрать за пламя.",
+        "image_url": "https://picsum.photos/742/7"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 192,
+    "fields": {
+        "recipe": 47,
+        "step_number": 5,
+        "description": "Налево функция теория мотоцикл.",
+        "image_url": "https://placekitten.com/374/761"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 193,
+    "fields": {
+        "recipe": 47,
+        "step_number": 6,
+        "description": "Умирать трясти космос крутой зато запеть.",
+        "image_url": "https://picsum.photos/361/984"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 194,
+    "fields": {
+        "recipe": 48,
+        "step_number": 1,
+        "description": "Карман бак возбуждение точно.",
+        "image_url": "https://dummyimage.com/106x647"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 195,
+    "fields": {
+        "recipe": 48,
+        "step_number": 2,
+        "description": "Постоянный неудобно трубка что.",
+        "image_url": "https://placekitten.com/482/587"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 196,
+    "fields": {
+        "recipe": 48,
+        "step_number": 3,
+        "description": "Правление вообще тревога крыса степь терапия.",
+        "image_url": "https://dummyimage.com/603x281"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 197,
+    "fields": {
+        "recipe": 48,
+        "step_number": 4,
+        "description": "Багровый госпожа вперед тревога пятеро.",
+        "image_url": "https://placekitten.com/326/453"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 198,
+    "fields": {
+        "recipe": 49,
+        "step_number": 1,
+        "description": "Сверкающий космос кидать даль да рабочий о.",
+        "image_url": "https://placekitten.com/696/745"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 199,
+    "fields": {
+        "recipe": 49,
+        "step_number": 2,
+        "description": "Результат снимать помолчать блин запустить конференция. Присесть возникновение порода прежний волк заработать.",
+        "image_url": "https://dummyimage.com/343x593"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 200,
+    "fields": {
+        "recipe": 49,
+        "step_number": 3,
+        "description": "Прошептать поставить отъезд вряд плод.",
+        "image_url": "https://placekitten.com/914/204"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 201,
+    "fields": {
+        "recipe": 49,
+        "step_number": 4,
+        "description": "Вообще дошлый социалистический прелесть второй белье равнодушный. Степь виднеться неправда выкинуть.",
+        "image_url": "https://dummyimage.com/524x392"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 202,
+    "fields": {
+        "recipe": 49,
+        "step_number": 5,
+        "description": "Тяжелый дружно человечек пол космос.",
+        "image_url": "https://placekitten.com/621/498"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 203,
+    "fields": {
+        "recipe": 50,
+        "step_number": 1,
+        "description": "Карман зарплата недостаток.",
+        "image_url": "https://dummyimage.com/104x212"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 204,
+    "fields": {
+        "recipe": 50,
+        "step_number": 2,
+        "description": "Магазин наслаждение приходить материя чем применяться фонарик райком.",
+        "image_url": "https://picsum.photos/842/71"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 205,
+    "fields": {
+        "recipe": 50,
+        "step_number": 3,
+        "description": "Светило сомнительный совет вздрагивать сохранять о.",
+        "image_url": "https://dummyimage.com/756x74"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 206,
+    "fields": {
+        "recipe": 50,
+        "step_number": 4,
+        "description": "Похороны бегать слишком изучить.",
+        "image_url": "https://picsum.photos/907/289"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 207,
+    "fields": {
+        "recipe": 50,
+        "step_number": 5,
+        "description": "Пламя совет палата провал танцевать приятель мусор.",
+        "image_url": "https://picsum.photos/4/473"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 208,
+    "fields": {
+        "recipe": 51,
+        "step_number": 1,
+        "description": "Подробность мягкий функция что провал палата.",
+        "image_url": "https://dummyimage.com/482x459"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 209,
+    "fields": {
+        "recipe": 51,
+        "step_number": 2,
+        "description": "Встать вскинуть приятель потом.",
+        "image_url": "https://placekitten.com/944/296"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 210,
+    "fields": {
+        "recipe": 51,
+        "step_number": 3,
+        "description": "Интеллектуальный четко оставить проход прощение.",
+        "image_url": "https://picsum.photos/872/1009"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 211,
+    "fields": {
+        "recipe": 51,
+        "step_number": 4,
+        "description": "Князь слишком зима место. Плясать другой дошлый а одиннадцать палата.",
+        "image_url": "https://picsum.photos/366/370"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 212,
+    "fields": {
+        "recipe": 52,
+        "step_number": 1,
+        "description": "Неожиданно вперед райком. Вообще перебивать пространство термин печатать руководитель важный.",
+        "image_url": "https://picsum.photos/259/516"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 213,
+    "fields": {
+        "recipe": 52,
+        "step_number": 2,
+        "description": "Потом нож поколение одиннадцать. Мучительно товар появление исследование.",
+        "image_url": "https://placekitten.com/9/912"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 214,
+    "fields": {
+        "recipe": 52,
+        "step_number": 3,
+        "description": "Смеяться функция умирать счастье полевой дошлый.",
+        "image_url": "https://placekitten.com/668/108"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 215,
+    "fields": {
+        "recipe": 52,
+        "step_number": 4,
+        "description": "Девка легко мотоцикл заведение. Интеллектуальный дорогой бак носок приятель тревога успокоиться новый.",
+        "image_url": "https://picsum.photos/301/43"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 216,
+    "fields": {
+        "recipe": 53,
+        "step_number": 1,
+        "description": "Бак доставать житель грудь хозяйка. За функция освобождение зачем разуметься.",
+        "image_url": "https://dummyimage.com/579x995"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 217,
+    "fields": {
+        "recipe": 53,
+        "step_number": 2,
+        "description": "Результат мелочь расстройство намерение граница торопливый порог.",
+        "image_url": "https://picsum.photos/73/56"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 218,
+    "fields": {
+        "recipe": 53,
+        "step_number": 3,
+        "description": "Табак фонарик близко.",
+        "image_url": "https://placekitten.com/189/827"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 219,
+    "fields": {
+        "recipe": 53,
+        "step_number": 4,
+        "description": "Ярко расстегнуть выразить ночь плод. Освобождение второй выражение заведение факультет проход самостоятельно.",
+        "image_url": "https://dummyimage.com/818x167"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 220,
+    "fields": {
+        "recipe": 53,
+        "step_number": 5,
+        "description": "Успокоиться хозяйка отдел а.",
+        "image_url": "https://placekitten.com/488/735"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 221,
+    "fields": {
+        "recipe": 53,
+        "step_number": 6,
+        "description": "Дрогнуть способ художественный падаль.",
+        "image_url": "https://dummyimage.com/645x833"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 222,
+    "fields": {
+        "recipe": 54,
+        "step_number": 1,
+        "description": "Деньги остановить ведь демократия. Коричневый правый радость проход.",
+        "image_url": "https://placekitten.com/671/181"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 223,
+    "fields": {
+        "recipe": 54,
+        "step_number": 2,
+        "description": "Космос дьявол карман костер смертельный миг пересечь.",
+        "image_url": "https://placekitten.com/688/341"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 224,
+    "fields": {
+        "recipe": 55,
+        "step_number": 1,
+        "description": "Самостоятельно сомнительный волк наслаждение ученый витрина какой.",
+        "image_url": "https://dummyimage.com/769x957"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 225,
+    "fields": {
+        "recipe": 55,
+        "step_number": 2,
+        "description": "Страсть труп настать. Сохранять лиловый слишком грудь способ.",
+        "image_url": "https://placekitten.com/300/1011"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 226,
+    "fields": {
+        "recipe": 55,
+        "step_number": 3,
+        "description": "Боец ботинок пропаганда жить миллиард непривычный. Войти непривычный изучить социалистический песенка.",
+        "image_url": "https://dummyimage.com/667x1017"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 227,
+    "fields": {
+        "recipe": 55,
+        "step_number": 4,
+        "description": "Следовательно скользить провал присесть падаль. Вскинуть точно слать стакан коробка.",
+        "image_url": "https://placekitten.com/565/1003"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 228,
+    "fields": {
+        "recipe": 55,
+        "step_number": 5,
+        "description": "Что боец парень недостаток правление недостаток. Рабочий сопровождаться пища мотоцикл.",
+        "image_url": "https://picsum.photos/443/209"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 229,
+    "fields": {
+        "recipe": 56,
+        "step_number": 1,
+        "description": "Факультет доставать желание житель. Ярко волк привлекать слать провинция сверкать функция.",
+        "image_url": "https://dummyimage.com/489x107"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 230,
+    "fields": {
+        "recipe": 56,
+        "step_number": 2,
+        "description": "Пространство пересечь эпоха приятель.",
+        "image_url": "https://placekitten.com/72/366"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 231,
+    "fields": {
+        "recipe": 56,
+        "step_number": 3,
+        "description": "Некоторый анализ единый изучить вскинуть сутки. Перебивать означать наткнуться через запеть ученый.",
+        "image_url": "https://dummyimage.com/33x371"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 232,
+    "fields": {
+        "recipe": 56,
+        "step_number": 4,
+        "description": "Некоторый привлекать выраженный торопливый социалистический механический порода. Дурацкий иной банда пересечь свежий белье фонарик означать.",
+        "image_url": "https://picsum.photos/724/749"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 233,
+    "fields": {
+        "recipe": 57,
+        "step_number": 1,
+        "description": "Правильный отъезд миллиард премьера дурацкий.",
+        "image_url": "https://picsum.photos/66/460"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 234,
+    "fields": {
+        "recipe": 57,
+        "step_number": 2,
+        "description": "Запустить демократия невыносимый вперед выбирать.",
+        "image_url": "https://placekitten.com/326/1021"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 235,
+    "fields": {
+        "recipe": 57,
+        "step_number": 3,
+        "description": "Командующий наткнуться интернет лапа ученый.",
+        "image_url": "https://picsum.photos/862/986"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 236,
+    "fields": {
+        "recipe": 58,
+        "step_number": 1,
+        "description": "А мгновение привлекать нож перебивать освободить горький поймать.",
+        "image_url": "https://picsum.photos/145/488"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 237,
+    "fields": {
+        "recipe": 58,
+        "step_number": 2,
+        "description": "Миллиард дорогой смертельный кольцо.",
+        "image_url": "https://dummyimage.com/517x371"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 238,
+    "fields": {
+        "recipe": 58,
+        "step_number": 3,
+        "description": "Наткнуться передо волк один темнеть витрина лететь.",
+        "image_url": "https://placekitten.com/567/953"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 239,
+    "fields": {
+        "recipe": 59,
+        "step_number": 1,
+        "description": "Сходить необычный банда полоска мера назначить. Жестокий коробка терапия падаль армейский.",
+        "image_url": "https://dummyimage.com/8x307"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 240,
+    "fields": {
+        "recipe": 59,
+        "step_number": 2,
+        "description": "Выражение изба ставить добиться отдел. Жестокий девка близко головка плясать солнце.",
+        "image_url": "https://picsum.photos/831/326"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 241,
+    "fields": {
+        "recipe": 59,
+        "step_number": 3,
+        "description": "Вскинуть командующий премьера штаб нож приятель. Магазин мучительно полевой пространство зарплата.",
+        "image_url": "https://dummyimage.com/59x357"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 242,
+    "fields": {
+        "recipe": 60,
+        "step_number": 1,
+        "description": "Разнообразный избегать ленинград степь левый картинка налоговый. Вперед неправда уточнить.",
+        "image_url": "https://picsum.photos/499/134"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 243,
+    "fields": {
+        "recipe": 60,
+        "step_number": 2,
+        "description": "Очутиться шлем устройство миг неправда спичка равнодушный что. Бак тревога смелый упор около полностью бетонный да.",
+        "image_url": "https://placekitten.com/80/394"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 244,
+    "fields": {
+        "recipe": 60,
+        "step_number": 3,
+        "description": "Достоинство выраженный число нажать отъезд грудь цвет.",
+        "image_url": "https://placekitten.com/940/856"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 245,
+    "fields": {
+        "recipe": 60,
+        "step_number": 4,
+        "description": "Сходить академик зато порядок выражаться посидеть. Шлем выраженный ход падаль.",
+        "image_url": "https://dummyimage.com/220x103"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 246,
+    "fields": {
+        "recipe": 60,
+        "step_number": 5,
+        "description": "Табак при тусклый космос. Уронить приятель научить поезд эффект.",
+        "image_url": "https://dummyimage.com/899x645"
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 247,
+    "fields": {
+        "recipe": 60,
+        "step_number": 6,
+        "description": "Казнь жидкий недостаток. Скрытый разуметься зачем монета плавно горький.",
+        "image_url": "https://dummyimage.com/905x396"
+    }
+}
+]

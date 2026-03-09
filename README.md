@@ -46,38 +46,8 @@ SmartMeal/
 ## 🚀 Как запустить проект локально
 
 ### Запуск Backend (Django)
-Откройте терминал и перейдите в папку сервера: `cd server`
-
-#### Установка зависимостей:
-1. Создайте виртуальное окружение: 
-   * Windows: `python -m venv venv`
-   * Mac/Linux: `python3 -m venv venv`
-2. Активируйте окружение:
-   * Windows: `venv\Scripts\activate`
-   * Mac/Linux: `source venv/bin/activate`
-3. Установите зависимости: `pip install -r requirements.txt`
-
-#### Задать переменные окружения:
-1. Скопировать файл `cp .env.exampe .env`
-2. Указать значения переменных окружения
-
-#### База данных:
-1. Существующая в PostgreSQL или создать вручную новую
-2. Указать имя бд, пароль и пользователя в PostgreSQL, порт (если отличается от дефолтного) в файле .env
-
-#### Генерация secret key:
-1. Запустить консоль `python manage.py shell`
-2. В консоли:
-```bash
-from django.core.management.utils import get_random_secret_key
-get_random_secret_key()
-``` 
-3. Скопировать сгенерированный ключ и вставить в .env SECRET_KEY
-
-#### Старт сервера:
-1. Сделайте миграции `python manage.py migrate`
-2. Запустите локальный сервер: `python manage.py runserver`
-3. Сервер будет доступен по адресу: `http://127.0.0.1:8000/`
+1. Откройте терминал и перейдите в папку сервера: `cd server`
+2. Подробная инструкция по запуску доступна в instruction
 
 ### Запуск Frontend (Android)
 1. Откройте папку `client/SmartMeal` в VS Code (или Android Studio).
