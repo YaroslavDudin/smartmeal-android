@@ -4,9 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.smartmeal.ui.screens.TestScreen
-import com.example.smartmeal.ui.screens.auth.WelcomeScreen
-import com.example.smartmeal.ui.screens.auth.LoginRegisterForm
+import com.example.smartmeal.feature.auth.presentation.WelcomeScreen
+import com.example.smartmeal.feature.auth.presentation.LoginRegisterForm
 
 /**
  * Отдельный компонент для управления навигацией.

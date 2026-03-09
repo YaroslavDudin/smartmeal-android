@@ -1,4 +1,4 @@
-package com.example.smartmeal.ui.screens.auth
+package com.example.smartmeal.feature.auth.presentation
 import androidx.compose.runtime.Composable
 
 
