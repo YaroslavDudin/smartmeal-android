@@ -1,4 +1,4 @@
-package com.example.smartmeal.ui.screens
+package com.example.smartmeal.feature.sandbox
 
 
 import androidx.compose.foundation.layout.*

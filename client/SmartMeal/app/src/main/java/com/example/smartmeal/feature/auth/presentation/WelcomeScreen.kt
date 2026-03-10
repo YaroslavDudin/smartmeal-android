@@ -1,59 +1,60 @@
-package com.example.smartmeal.ui.screens.auth
+package com.example.smartmeal.feature.auth.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.smartmeal.R
 import com.example.smartmeal.ui.components.buttons.PrimaryButton
 import com.example.smartmeal.ui.theme.SmartMealTheme
-import androidx.compose.ui.res.painterResource
-import com.example.smartmeal.R
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 
 @Composable
 fun WelcomeScreen(
     onNavigateNext: () -> Unit = {}
 ) {
-    val scrollState = rememberScrollState()
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(scrollState)
-            .padding(horizontal = 24.dp, vertical = 40.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        
+
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
+
+            Spacer(modifier = Modifier.weight(0.5f))
 
             Image(
                 painter = painterResource(id = R.drawable.food),
                 contentDescription = "Food illustration",
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .sizeIn(maxHeight = 350.dp)
+                    .widthIn(max = 400.dp)
                     .fillMaxWidth()
+                    .weight(3f)
                     .testTag("food_image")
             )
 
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.weight(0.5f))
 
             Text(
                 text = "SmartMeal",
@@ -64,7 +65,7 @@ fun WelcomeScreen(
                 lineHeight = 46.sp
             )
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Сгенерируйте своё недельное\nменю за пару минут",
@@ -73,19 +74,21 @@ fun WelcomeScreen(
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            PrimaryButton(
+                text = "Начать",
+                onClick = onNavigateNext,
+                containerColor = Color(0xFF4CAF50),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
         }
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        PrimaryButton(
-            text = "Начать",
-            onClick = onNavigateNext,
-            containerColor = Color(0xFF4CAF50)
-        )
     }
 }
-
-@Preview(showBackground = true, showSystemUi = true, name = "Welcome Screen")
+@Preview(showBackground = true, showSystemUi = true, name = "Welcome Screen Normal")
 @Composable
 fun WelcomeScreenPreview() {
     SmartMealTheme {

@@ -2,7 +2,7 @@ package com.example.smartmeal
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.example.smartmeal.ui.screens.auth.WelcomeScreen
+import com.example.smartmeal.feature.auth.presentation.WelcomeScreen
 import org.junit.Rule
 import org.junit.Test
 import com.example.smartmeal.ui.theme.SmartMealTheme

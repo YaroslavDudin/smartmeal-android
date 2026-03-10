@@ -113,7 +113,7 @@ fun CircleIconButtonPreview() {
     SmartMealTheme {
         Box(modifier = Modifier.size(100.dp)) {
             CircleIconButton(
-                iconType = CircleIconType.FAVORITE,
+                iconType = CircleIconType.BACK,
                 onClick = {},
                 isSelected = true
             )
