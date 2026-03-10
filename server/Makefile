@@ -128,10 +128,10 @@ gen_static:
 	$(VENV_PYTHON) manage.py fill_accounts_static
 	$(VENV_PYTHON) manage.py fill_recipes_static
 
-gen_10_users: gen_static
+gen_10_users:
 	$(VENV_PYTHON) manage.py fill_test_users --users 10
 
-gen_30_recipes: gen_static
+gen_30_recipes:
 	$(VENV_PYTHON) manage.py fill_test_recipes --recipes 30
 
 gen_data: gen_static

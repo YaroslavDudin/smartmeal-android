@@ -3,55 +3,46 @@
     "model": "accounts.user",
     "pk": 1,
     "fields": {
-        "last_login": "2026-03-08T10:16:46.509Z",
+        "password": "pbkdf2_sha256$1200000$haJTc7YSLvcEYiTvmOwsJx$QGDIOhEmVJekr3rDbVq51HpOyQUuiXvtJ6K8/HQnixY=",
+        "last_login": null,
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
         "last_name": "",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:00.857Z",
+        "date_joined": "2026-03-10T17:03:34.552Z",
         "email": "test@admin.com",
-        "password": "pbkdf2_sha256$1200000$gktS54aWTmzu6LO3qTibsH$+rsKRnlVIbI86KiTcmfZ34cYI2QZ3KhXRb8WH+PsE3M=",
         "portion_size": 1,
-        "created_at": "2026-03-08T09:18:00.857Z",
+        "created_at": "2026-03-10T17:03:34.552Z",
+        "diet_type": null,
         "groups": [],
         "user_permissions": [],
-        "allergies": [],
-        "diet_types": []
+        "allergies": []
     }
 },
 {
     "model": "accounts.user",
     "pk": 2,
     "fields": {
+        "password": "pbkdf2_sha256$1200000$Grr3SE6543SMBKcpRtaZYP$d1hENPVJwCoXATacnOsQCeCS9zclipAbf+jv3sxR6mA=",
         "last_login": null,
         "is_superuser": false,
-        "username": "Твердислав",
+        "username": "Юлий",
         "first_name": "",
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:02.012Z",
-        "email": "timofeevapollinari@example.com",
-        "password": "pbkdf2_sha256$1200000$HdWTxQN1AYQFBsxlnpCuE9$yaHQl5vkhCpXQGNaUToUAOF+iqlj/A0+4SJu+tqcaTE=",
+        "date_joined": "2026-03-10T17:03:35.653Z",
+        "email": "idoronin@example.net",
         "portion_size": 5,
-        "created_at": "2026-03-08T09:18:03.107Z",
+        "created_at": "2026-03-10T17:03:36.729Z",
+        "diet_type": 5,
         "groups": [],
         "user_permissions": [],
         "allergies": [
             1,
-            2,
-            6,
-            7,
-            8,
-            9
-        ],
-        "diet_types": [
-            2,
-            3,
-            4,
-            5
+            6
         ]
     }
 },
@@ -59,33 +50,25 @@
     "model": "accounts.user",
     "pk": 3,
     "fields": {
+        "password": "pbkdf2_sha256$1200000$uoQ2cjMxoM8LFn24f17TSr$7hSHjs5QHJ0ubKJt895A5ip+U5MlSrHljxstL19mF6M=",
         "last_login": null,
         "is_superuser": false,
-        "username": "Христофор",
+        "username": "Андрон",
         "first_name": "",
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:03.119Z",
-        "email": "visheslav_11@example.net",
-        "password": "pbkdf2_sha256$1200000$C0fFfJDAalDUPQlZn0Lzts$9HiADL1su9ZSJRd+LtvGX5wK8j+UvZd4EhZpC9Yv5EA=",
-        "portion_size": 2,
-        "created_at": "2026-03-08T09:18:04.190Z",
+        "date_joined": "2026-03-10T17:03:36.740Z",
+        "email": "nikonovafevronija@example.com",
+        "portion_size": 6,
+        "created_at": "2026-03-10T17:03:37.846Z",
+        "diet_type": 3,
         "groups": [],
         "user_permissions": [],
         "allergies": [
-            1,
-            2,
-            3,
-            4,
-            5,
             6,
-            7,
-            8,
+            4,
             9
-        ],
-        "diet_types": [
-            5
         ]
     }
 },
@@ -93,28 +76,27 @@
     "model": "accounts.user",
     "pk": 4,
     "fields": {
+        "password": "pbkdf2_sha256$1200000$6tjOQADuNCtmiqP5PaCk8R$fHHIQLX8LLAWOxHRGRW341W2fVmyxszaHKYGWxnkzR4=",
         "last_login": null,
         "is_superuser": false,
-        "username": "Изот",
+        "username": "Любовь",
         "first_name": "",
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:04.205Z",
-        "email": "elizavetafadeeva@example.org",
-        "password": "pbkdf2_sha256$1200000$ijCFyQlpamuG9oEpBEiTho$3G96jmSd6gZjB8jtW2LQSp13KOZ0IIMUehCjG0Ui+EE=",
-        "portion_size": 5,
-        "created_at": "2026-03-08T09:18:05.289Z",
+        "date_joined": "2026-03-10T17:03:37.853Z",
+        "email": "alinanekrasova@example.org",
+        "portion_size": 4,
+        "created_at": "2026-03-10T17:03:38.927Z",
+        "diet_type": 2,
         "groups": [],
         "user_permissions": [],
         "allergies": [
-            2,
             5,
+            8,
             6,
-            7
-        ],
-        "diet_types": [
-            1,
+            4,
+            9,
             2
         ]
     }
@@ -123,30 +105,27 @@
     "model": "accounts.user",
     "pk": 5,
     "fields": {
+        "password": "pbkdf2_sha256$1200000$MLzSmEU50b5BhMLjBniLEQ$cu/esUMDunhN/Zvd2HkvJrXluraaM8NYm9m9NLN+S5c=",
         "last_login": null,
         "is_superuser": false,
-        "username": "Самсон",
+        "username": "Дарья",
         "first_name": "",
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:05.302Z",
-        "email": "kirlihachev@example.com",
-        "password": "pbkdf2_sha256$1200000$MuwPMaqrW0nVolSzyo4bun$GyloGCWxuGS1clSgCV1b4r20l1HNuKWflapHrg0XXjY=",
+        "date_joined": "2026-03-10T17:03:38.935Z",
+        "email": "miron_53@example.com",
         "portion_size": 2,
-        "created_at": "2026-03-08T09:18:06.375Z",
+        "created_at": "2026-03-10T17:03:40.015Z",
+        "diet_type": 1,
         "groups": [],
         "user_permissions": [],
         "allergies": [
-            9,
-            2,
-            6
-        ],
-        "diet_types": [
-            1,
-            2,
-            3,
-            4
+            5,
+            8,
+            4,
+            7,
+            9
         ]
     }
 },
@@ -154,71 +133,7 @@
     "model": "accounts.user",
     "pk": 6,
     "fields": {
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Марфа",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-08T09:18:06.383Z",
-        "email": "mstislav1986@example.com",
-        "password": "pbkdf2_sha256$1200000$yrVwjPmS9XzwtsQBTQna51$n84MUBZVsUF1qclrGzr8h8cv0o3gjblL6lxvyC6LVFc=",
-        "portion_size": 1,
-        "created_at": "2026-03-08T09:18:07.455Z",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            1,
-            2,
-            4,
-            6,
-            8,
-            9
-        ],
-        "diet_types": [
-            2,
-            3,
-            4,
-            5
-        ]
-    }
-},
-{
-    "model": "accounts.user",
-    "pk": 7,
-    "fields": {
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Святополк",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-08T09:18:07.464Z",
-        "email": "andronik2018@example.com",
-        "password": "pbkdf2_sha256$1200000$ofKCwEIvhrK4QE3leforGr$MV80OXFz/Vhi1WMkwJMsL/IDEDOELyjndkd/HUxsiO8=",
-        "portion_size": 1,
-        "created_at": "2026-03-08T09:18:08.535Z",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            1,
-            2,
-            3,
-            5,
-            6,
-            7,
-            8,
-            9
-        ],
-        "diet_types": []
-    }
-},
-{
-    "model": "accounts.user",
-    "pk": 8,
-    "fields": {
+        "password": "pbkdf2_sha256$1200000$IA60N0ftMCgEV1sbDX30jR$4wJtf5QXP0ezSUzDh9PEb6TNIOUMBeMEdA84/5q2JSI=",
         "last_login": null,
         "is_superuser": false,
         "username": "Амос",
@@ -226,49 +141,94 @@
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:08.548Z",
-        "email": "julikarpov@example.org",
-        "password": "pbkdf2_sha256$1200000$4IJrlWgqds5sihDuydeOsK$b4eodbHeV+RdZDzD+AALxBAbl6yj7yk20sXf8YTvTB0=",
-        "portion_size": 5,
-        "created_at": "2026-03-08T09:18:09.623Z",
+        "date_joined": "2026-03-10T17:03:40.029Z",
+        "email": "vbeljaeva@example.com",
+        "portion_size": 4,
+        "created_at": "2026-03-10T17:03:41.101Z",
+        "diet_type": 5,
+        "groups": [],
+        "user_permissions": [],
+        "allergies": []
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 7,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$V1YoIBAEH6hdbZUmDnpKvz$Oh3z3F92CLV9OS2PxhrmN0NFSTb53TAOkVn5B8ZnqK8=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Оксана",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-03-10T17:03:41.106Z",
+        "email": "nikifor50@example.org",
+        "portion_size": 2,
+        "created_at": "2026-03-10T17:03:42.180Z",
+        "diet_type": 4,
         "groups": [],
         "user_permissions": [],
         "allergies": [
-            9
-        ],
-        "diet_types": []
+            7,
+            2
+        ]
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 8,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$bSk4KX8ITtr94lzHXCq0hL$WjQmasNOvpY7MINKOxAaNjAp6DylOOajZyg5BFFGxCw=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Полина",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-03-10T17:03:42.186Z",
+        "email": "avgust2025@example.org",
+        "portion_size": 5,
+        "created_at": "2026-03-10T17:03:43.265Z",
+        "diet_type": 5,
+        "groups": [],
+        "user_permissions": [],
+        "allergies": [
+            5,
+            8,
+            1,
+            6,
+            4,
+            3,
+            7,
+            9,
+            2
+        ]
     }
 },
 {
     "model": "accounts.user",
     "pk": 9,
     "fields": {
+        "password": "pbkdf2_sha256$1200000$KUa9dhDHHnklOtjZtWufiB$E3QxNZ4sTSx+SxHv3IfZ+z5fH2WHzY9WI4gZUsd+QvY=",
         "last_login": null,
         "is_superuser": false,
-        "username": "Феофан",
+        "username": "Викентий",
         "first_name": "",
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:09.630Z",
-        "email": "vladislav49@example.com",
-        "password": "pbkdf2_sha256$1200000$0y1QvQD3rWKTLSgO5EIXCS$SULPDe8uAfx7LDgNIOqM+hfg6rtyN3bk71Gp4FrOTLg=",
-        "portion_size": 6,
-        "created_at": "2026-03-08T09:18:10.711Z",
+        "date_joined": "2026-03-10T17:03:43.272Z",
+        "email": "poljakovanatalja@example.com",
+        "portion_size": 1,
+        "created_at": "2026-03-10T17:03:44.351Z",
+        "diet_type": 1,
         "groups": [],
         "user_permissions": [],
         "allergies": [
-            1,
-            3,
-            4,
-            6,
-            7
-        ],
-        "diet_types": [
-            1,
-            3,
-            4,
-            5
+            2
         ]
     }
 },
@@ -276,97 +236,67 @@
     "model": "accounts.user",
     "pk": 10,
     "fields": {
+        "password": "pbkdf2_sha256$1200000$6jFDzvWNAEtZmqQQFMCAEO$rUv2RaFTLZvnRiDTQ6J1oh24DNzTfUpDDJz6Crd4h2o=",
         "last_login": null,
         "is_superuser": false,
-        "username": "Варфоломей",
+        "username": "Радислав",
         "first_name": "",
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:10.726Z",
-        "email": "tamarafomina@example.com",
-        "password": "pbkdf2_sha256$1200000$BP5cA7pwZcfmjRLZ97hHXx$5LhHkseAf43oIzlCmQ6ZUBX5yTsWolQ6QCr2sKkRfE0=",
-        "portion_size": 2,
-        "created_at": "2026-03-08T09:18:11.797Z",
+        "date_joined": "2026-03-10T17:03:44.358Z",
+        "email": "varlaamzhuravlev@example.net",
+        "portion_size": 1,
+        "created_at": "2026-03-10T17:03:45.430Z",
+        "diet_type": 1,
         "groups": [],
         "user_permissions": [],
-        "allergies": [
-            1,
-            3,
-            5,
-            7,
-            8
-        ],
-        "diet_types": [
-            1,
-            4,
-            5
-        ]
+        "allergies": []
     }
 },
 {
     "model": "accounts.user",
     "pk": 11,
     "fields": {
+        "password": "pbkdf2_sha256$1200000$qeKbn4tn2XDG9vxaX7VhbY$1Qrjhq8mdrxwVkXqUhQs1cLaRZf6i5Kvuw/x7ELDmfw=",
         "last_login": null,
         "is_superuser": false,
-        "username": "Людмила",
+        "username": "Евгения",
         "first_name": "",
         "last_name": "",
         "is_staff": false,
         "is_active": true,
-        "date_joined": "2026-03-08T09:18:11.806Z",
-        "email": "morozovaklavdija@example.net",
-        "password": "pbkdf2_sha256$1200000$D62rVjrUKNEhhl6GFsmPuD$vwmkirCjyidUEgo9RSVQTraRGDpguWizBYfY+qc0xRM=",
-        "portion_size": 2,
-        "created_at": "2026-03-08T09:18:12.881Z",
+        "date_joined": "2026-03-10T17:03:45.435Z",
+        "email": "lavrentevalukija@example.com",
+        "portion_size": 1,
+        "created_at": "2026-03-10T17:03:46.510Z",
+        "diet_type": 1,
         "groups": [],
         "user_permissions": [],
         "allergies": [
-            8,
-            6
-        ],
-        "diet_types": []
-    }
-},
-{
-    "model": "accounts.user",
-    "pk": 12,
-    "fields": {
-        "last_login": null,
-        "is_superuser": false,
-        "username": "ИзАдминкиЧерезДокерДобавлен",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-08T10:19:17.783Z",
-        "email": "",
-        "password": "pbkdf2_sha256$1200000$pYeobROofLsClzo08Xm5US$Yx2kbyl3sedc2jbNULomwwZhOhDJPODHidVLxJdN43Q=",
-        "portion_size": 1,
-        "created_at": "2026-03-08T10:19:18.466Z",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [],
-        "diet_types": []
+            5,
+            1,
+            6,
+            4
+        ]
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 1,
     "fields": {
-        "user": 3,
+        "user": 2,
         "recipe": 6,
-        "created_at": "2026-03-08T09:18:04.198Z"
+        "created_at": "2026-03-10T17:03:36.736Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 2,
     "fields": {
-        "user": 3,
-        "recipe": 48,
-        "created_at": "2026-03-08T09:18:04.201Z"
+        "user": 2,
+        "recipe": 1,
+        "created_at": "2026-03-10T17:03:36.736Z"
     }
 },
 {
@@ -374,8 +304,8 @@
     "pk": 3,
     "fields": {
         "user": 3,
-        "recipe": 12,
-        "created_at": "2026-03-08T09:18:04.203Z"
+        "recipe": 13,
+        "created_at": "2026-03-10T17:03:37.851Z"
     }
 },
 {
@@ -383,35 +313,35 @@
     "pk": 4,
     "fields": {
         "user": 4,
-        "recipe": 3,
-        "created_at": "2026-03-08T09:18:05.295Z"
+        "recipe": 15,
+        "created_at": "2026-03-10T17:03:38.933Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 5,
     "fields": {
-        "user": 4,
-        "recipe": 50,
-        "created_at": "2026-03-08T09:18:05.297Z"
+        "user": 5,
+        "recipe": 28,
+        "created_at": "2026-03-10T17:03:40.026Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 6,
     "fields": {
-        "user": 4,
-        "recipe": 42,
-        "created_at": "2026-03-08T09:18:05.299Z"
+        "user": 5,
+        "recipe": 30,
+        "created_at": "2026-03-10T17:03:40.026Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 7,
     "fields": {
-        "user": 4,
-        "recipe": 2,
-        "created_at": "2026-03-08T09:18:05.300Z"
+        "user": 6,
+        "recipe": 25,
+        "created_at": "2026-03-10T17:03:41.104Z"
     }
 },
 {
@@ -419,8 +349,8 @@
     "pk": 8,
     "fields": {
         "user": 6,
-        "recipe": 8,
-        "created_at": "2026-03-08T09:18:07.462Z"
+        "recipe": 24,
+        "created_at": "2026-03-10T17:03:41.104Z"
     }
 },
 {
@@ -428,8 +358,8 @@
     "pk": 9,
     "fields": {
         "user": 7,
-        "recipe": 36,
-        "created_at": "2026-03-08T09:18:08.542Z"
+        "recipe": 12,
+        "created_at": "2026-03-10T17:03:42.184Z"
     }
 },
 {
@@ -437,26 +367,26 @@
     "pk": 10,
     "fields": {
         "user": 7,
-        "recipe": 31,
-        "created_at": "2026-03-08T09:18:08.543Z"
+        "recipe": 29,
+        "created_at": "2026-03-10T17:03:42.184Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 11,
     "fields": {
-        "user": 7,
-        "recipe": 57,
-        "created_at": "2026-03-08T09:18:08.545Z"
+        "user": 8,
+        "recipe": 25,
+        "created_at": "2026-03-10T17:03:43.270Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 12,
     "fields": {
-        "user": 8,
-        "recipe": 37,
-        "created_at": "2026-03-08T09:18:09.628Z"
+        "user": 9,
+        "recipe": 22,
+        "created_at": "2026-03-10T17:03:44.356Z"
     }
 },
 {
@@ -464,8 +394,8 @@
     "pk": 13,
     "fields": {
         "user": 9,
-        "recipe": 59,
-        "created_at": "2026-03-08T09:18:10.717Z"
+        "recipe": 30,
+        "created_at": "2026-03-10T17:03:44.356Z"
     }
 },
 {
@@ -473,8 +403,8 @@
     "pk": 14,
     "fields": {
         "user": 9,
-        "recipe": 48,
-        "created_at": "2026-03-08T09:18:10.719Z"
+        "recipe": 29,
+        "created_at": "2026-03-10T17:03:44.356Z"
     }
 },
 {
@@ -482,8 +412,8 @@
     "pk": 15,
     "fields": {
         "user": 9,
-        "recipe": 17,
-        "created_at": "2026-03-08T09:18:10.721Z"
+        "recipe": 26,
+        "created_at": "2026-03-10T17:03:44.356Z"
     }
 },
 {
@@ -491,17 +421,17 @@
     "pk": 16,
     "fields": {
         "user": 9,
-        "recipe": 39,
-        "created_at": "2026-03-08T09:18:10.722Z"
+        "recipe": 16,
+        "created_at": "2026-03-10T17:03:44.356Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 17,
     "fields": {
-        "user": 9,
-        "recipe": 46,
-        "created_at": "2026-03-08T09:18:10.724Z"
+        "user": 10,
+        "recipe": 21,
+        "created_at": "2026-03-10T17:03:45.433Z"
     }
 },
 {
@@ -509,26 +439,26 @@
     "pk": 18,
     "fields": {
         "user": 10,
-        "recipe": 49,
-        "created_at": "2026-03-08T09:18:11.804Z"
+        "recipe": 19,
+        "created_at": "2026-03-10T17:03:45.433Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 19,
     "fields": {
-        "user": 11,
-        "recipe": 21,
-        "created_at": "2026-03-08T09:18:12.886Z"
+        "user": 10,
+        "recipe": 10,
+        "created_at": "2026-03-10T17:03:45.433Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 20,
     "fields": {
-        "user": 11,
-        "recipe": 30,
-        "created_at": "2026-03-08T09:18:12.888Z"
+        "user": 10,
+        "recipe": 22,
+        "created_at": "2026-03-10T17:03:45.433Z"
     }
 },
 {
@@ -536,8 +466,8 @@
     "pk": 21,
     "fields": {
         "user": 11,
-        "recipe": 2,
-        "created_at": "2026-03-08T09:18:12.889Z"
+        "recipe": 6,
+        "created_at": "2026-03-10T17:03:46.514Z"
     }
 },
 {
@@ -545,8 +475,8 @@
     "pk": 22,
     "fields": {
         "user": 11,
-        "recipe": 36,
-        "created_at": "2026-03-08T09:18:12.891Z"
+        "recipe": 13,
+        "created_at": "2026-03-10T17:03:46.514Z"
     }
 }
 ]

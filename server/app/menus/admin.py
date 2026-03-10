@@ -14,5 +14,5 @@ class MenuAdmin(admin.ModelAdmin):
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ('menu', 'day', 'meal_type', 'recipe')
-    list_filter = ('day', 'meal_type')
+    list_display = ('menu', 'day_offset', 'meal_type', 'recipe')
+    list_filter = ('day_offset', 'meal_type')

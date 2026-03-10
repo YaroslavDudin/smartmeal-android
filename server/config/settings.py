@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'app.cart',
 ]
 
-AUTH_USER_MODEL = 'accounts.user'
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

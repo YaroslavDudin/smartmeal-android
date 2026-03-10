@@ -4,9 +4,9 @@
     "pk": 1,
     "fields": {
         "user": 11,
-        "ingredient": 50,
-        "total_amount": "122.50",
-        "unit": 1,
+        "ingredient": 6,
+        "total_amount": "176.70",
+        "unit": 7,
         "is_checked": true
     }
 },
@@ -15,9 +15,9 @@
     "pk": 2,
     "fields": {
         "user": 11,
-        "ingredient": 49,
-        "total_amount": "150.30",
-        "unit": 1,
+        "ingredient": 44,
+        "total_amount": "179.50",
+        "unit": 7,
         "is_checked": true
     }
 },
@@ -26,9 +26,9 @@
     "pk": 3,
     "fields": {
         "user": 11,
-        "ingredient": 25,
-        "total_amount": "97.10",
-        "unit": 1,
+        "ingredient": 73,
+        "total_amount": "267.50",
+        "unit": 7,
         "is_checked": true
     }
 },
@@ -36,10 +36,10 @@
     "model": "cart.cartitem",
     "pk": 4,
     "fields": {
-        "user": 1,
-        "ingredient": 58,
-        "total_amount": "138.40",
-        "unit": 6,
+        "user": 11,
+        "ingredient": 64,
+        "total_amount": "165.60",
+        "unit": 7,
         "is_checked": true
     }
 },
@@ -47,10 +47,10 @@
     "model": "cart.cartitem",
     "pk": 5,
     "fields": {
-        "user": 1,
-        "ingredient": 4,
-        "total_amount": "213.30",
-        "unit": 1,
+        "user": 11,
+        "ingredient": 63,
+        "total_amount": "287.70",
+        "unit": 7,
         "is_checked": true
     }
 },
@@ -58,10 +58,10 @@
     "model": "cart.cartitem",
     "pk": 6,
     "fields": {
-        "user": 1,
-        "ingredient": 8,
-        "total_amount": "84.70",
-        "unit": 1,
+        "user": 11,
+        "ingredient": 52,
+        "total_amount": "273.30",
+        "unit": 7,
         "is_checked": true
     }
 },
@@ -69,43 +69,43 @@
     "model": "cart.cartitem",
     "pk": 7,
     "fields": {
-        "user": 1,
-        "ingredient": 18,
-        "total_amount": "280.20",
-        "unit": 3,
-        "is_checked": true
+        "user": 10,
+        "ingredient": 59,
+        "total_amount": "99.20",
+        "unit": 7,
+        "is_checked": false
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 8,
     "fields": {
-        "user": 1,
-        "ingredient": 75,
-        "total_amount": "65.70",
-        "unit": 1,
-        "is_checked": true
+        "user": 10,
+        "ingredient": 2,
+        "total_amount": "208.70",
+        "unit": 7,
+        "is_checked": false
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 9,
     "fields": {
-        "user": 1,
-        "ingredient": 66,
-        "total_amount": "216.00",
-        "unit": 1,
-        "is_checked": true
+        "user": 10,
+        "ingredient": 17,
+        "total_amount": "204.20",
+        "unit": 7,
+        "is_checked": false
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 10,
     "fields": {
-        "user": 1,
-        "ingredient": 61,
-        "total_amount": "125.50",
-        "unit": 6,
+        "user": 9,
+        "ingredient": 2,
+        "total_amount": "210.00",
+        "unit": 7,
         "is_checked": true
     }
 },
@@ -113,109 +113,109 @@
     "model": "cart.cartitem",
     "pk": 11,
     "fields": {
-        "user": 4,
-        "ingredient": 73,
-        "total_amount": "172.80",
-        "unit": 1,
-        "is_checked": false
+        "user": 9,
+        "ingredient": 27,
+        "total_amount": "144.00",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 12,
     "fields": {
-        "user": 4,
-        "ingredient": 15,
-        "total_amount": "153.10",
-        "unit": 3,
-        "is_checked": false
+        "user": 9,
+        "ingredient": 30,
+        "total_amount": "139.90",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 13,
     "fields": {
-        "user": 4,
-        "ingredient": 3,
-        "total_amount": "275.20",
-        "unit": 1,
-        "is_checked": false
+        "user": 9,
+        "ingredient": 61,
+        "total_amount": "167.70",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 14,
     "fields": {
-        "user": 4,
-        "ingredient": 63,
-        "total_amount": "181.80",
-        "unit": 1,
-        "is_checked": false
+        "user": 8,
+        "ingredient": 12,
+        "total_amount": "92.60",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 15,
     "fields": {
-        "user": 4,
-        "ingredient": 19,
-        "total_amount": "122.90",
-        "unit": 3,
-        "is_checked": false
+        "user": 8,
+        "ingredient": 77,
+        "total_amount": "209.40",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 16,
     "fields": {
-        "user": 4,
-        "ingredient": 10,
-        "total_amount": "246.50",
-        "unit": 1,
-        "is_checked": false
+        "user": 8,
+        "ingredient": 26,
+        "total_amount": "217.90",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 17,
     "fields": {
-        "user": 9,
-        "ingredient": 9,
-        "total_amount": "267.80",
-        "unit": 1,
-        "is_checked": false
+        "user": 8,
+        "ingredient": 75,
+        "total_amount": "200.60",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 18,
     "fields": {
-        "user": 9,
-        "ingredient": 10,
-        "total_amount": "195.10",
-        "unit": 1,
-        "is_checked": false
+        "user": 8,
+        "ingredient": 48,
+        "total_amount": "287.20",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 19,
     "fields": {
-        "user": 9,
-        "ingredient": 42,
-        "total_amount": "129.30",
-        "unit": 3,
-        "is_checked": false
+        "user": 8,
+        "ingredient": 37,
+        "total_amount": "71.20",
+        "unit": 7,
+        "is_checked": true
     }
 },
 {
     "model": "cart.cartitem",
     "pk": 20,
     "fields": {
-        "user": 9,
-        "ingredient": 19,
-        "total_amount": "68.10",
-        "unit": 3,
+        "user": 7,
+        "ingredient": 9,
+        "total_amount": "245.70",
+        "unit": 7,
         "is_checked": false
     }
 },
@@ -223,10 +223,10 @@
     "model": "cart.cartitem",
     "pk": 21,
     "fields": {
-        "user": 9,
-        "ingredient": 20,
-        "total_amount": "236.50",
-        "unit": 1,
+        "user": 7,
+        "ingredient": 2,
+        "total_amount": "56.10",
+        "unit": 7,
         "is_checked": false
     }
 },
@@ -234,10 +234,10 @@
     "model": "cart.cartitem",
     "pk": 22,
     "fields": {
-        "user": 8,
-        "ingredient": 32,
-        "total_amount": "175.30",
-        "unit": 1,
+        "user": 7,
+        "ingredient": 48,
+        "total_amount": "80.00",
+        "unit": 7,
         "is_checked": false
     }
 },
@@ -245,10 +245,10 @@
     "model": "cart.cartitem",
     "pk": 23,
     "fields": {
-        "user": 8,
-        "ingredient": 43,
-        "total_amount": "139.10",
-        "unit": 1,
+        "user": 7,
+        "ingredient": 27,
+        "total_amount": "71.00",
+        "unit": 7,
         "is_checked": false
     }
 },
@@ -256,10 +256,10 @@
     "model": "cart.cartitem",
     "pk": 24,
     "fields": {
-        "user": 8,
-        "ingredient": 56,
-        "total_amount": "165.20",
-        "unit": 1,
+        "user": 7,
+        "ingredient": 45,
+        "total_amount": "233.40",
+        "unit": 7,
         "is_checked": false
     }
 },
@@ -267,10 +267,10 @@
     "model": "cart.cartitem",
     "pk": 25,
     "fields": {
-        "user": 8,
-        "ingredient": 50,
-        "total_amount": "172.50",
-        "unit": 1,
+        "user": 6,
+        "ingredient": 15,
+        "total_amount": "227.50",
+        "unit": 7,
         "is_checked": false
     }
 },
@@ -278,11 +278,286 @@
     "model": "cart.cartitem",
     "pk": 26,
     "fields": {
-        "user": 8,
-        "ingredient": 66,
-        "total_amount": "276.10",
-        "unit": 1,
+        "user": 6,
+        "ingredient": 74,
+        "total_amount": "169.90",
+        "unit": 7,
         "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 27,
+    "fields": {
+        "user": 6,
+        "ingredient": 69,
+        "total_amount": "223.60",
+        "unit": 7,
+        "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 28,
+    "fields": {
+        "user": 6,
+        "ingredient": 24,
+        "total_amount": "121.30",
+        "unit": 7,
+        "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 29,
+    "fields": {
+        "user": 6,
+        "ingredient": 43,
+        "total_amount": "270.30",
+        "unit": 7,
+        "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 30,
+    "fields": {
+        "user": 5,
+        "ingredient": 12,
+        "total_amount": "92.60",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 31,
+    "fields": {
+        "user": 5,
+        "ingredient": 77,
+        "total_amount": "209.40",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 32,
+    "fields": {
+        "user": 5,
+        "ingredient": 26,
+        "total_amount": "217.90",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 33,
+    "fields": {
+        "user": 5,
+        "ingredient": 75,
+        "total_amount": "200.60",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 34,
+    "fields": {
+        "user": 5,
+        "ingredient": 48,
+        "total_amount": "287.20",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 35,
+    "fields": {
+        "user": 5,
+        "ingredient": 37,
+        "total_amount": "71.20",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 36,
+    "fields": {
+        "user": 4,
+        "ingredient": 60,
+        "total_amount": "87.20",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 37,
+    "fields": {
+        "user": 4,
+        "ingredient": 48,
+        "total_amount": "250.80",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 38,
+    "fields": {
+        "user": 4,
+        "ingredient": 41,
+        "total_amount": "63.10",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 39,
+    "fields": {
+        "user": 4,
+        "ingredient": 74,
+        "total_amount": "188.30",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 40,
+    "fields": {
+        "user": 3,
+        "ingredient": 4,
+        "total_amount": "162.50",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 41,
+    "fields": {
+        "user": 3,
+        "ingredient": 43,
+        "total_amount": "295.10",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 42,
+    "fields": {
+        "user": 3,
+        "ingredient": 27,
+        "total_amount": "243.70",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 43,
+    "fields": {
+        "user": 3,
+        "ingredient": 16,
+        "total_amount": "188.80",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 44,
+    "fields": {
+        "user": 3,
+        "ingredient": 33,
+        "total_amount": "97.00",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 45,
+    "fields": {
+        "user": 2,
+        "ingredient": 2,
+        "total_amount": "210.00",
+        "unit": 7,
+        "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 46,
+    "fields": {
+        "user": 2,
+        "ingredient": 27,
+        "total_amount": "144.00",
+        "unit": 7,
+        "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 47,
+    "fields": {
+        "user": 2,
+        "ingredient": 30,
+        "total_amount": "139.90",
+        "unit": 7,
+        "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 48,
+    "fields": {
+        "user": 2,
+        "ingredient": 61,
+        "total_amount": "167.70",
+        "unit": 7,
+        "is_checked": false
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 49,
+    "fields": {
+        "user": 1,
+        "ingredient": 59,
+        "total_amount": "99.20",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 50,
+    "fields": {
+        "user": 1,
+        "ingredient": 2,
+        "total_amount": "208.70",
+        "unit": 7,
+        "is_checked": true
+    }
+},
+{
+    "model": "cart.cartitem",
+    "pk": 51,
+    "fields": {
+        "user": 1,
+        "ingredient": 17,
+        "total_amount": "204.20",
+        "unit": 7,
+        "is_checked": true
     }
 }
 ]
