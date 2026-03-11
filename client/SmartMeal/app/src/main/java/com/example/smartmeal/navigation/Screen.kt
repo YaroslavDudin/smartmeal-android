@@ -8,7 +8,6 @@ sealed class Screen(val route: String) {
     object Welcome : Screen("welcome_screen")
     object Test : Screen("test_screen")
     object AuthForm : Screen("login_register_form")
-    // В будущем тут появятся:
-    // object Home : Screen("home_screen")
+    object Home : Screen("home_screen")
     // object RecipeDetail : Screen("recipe_detail/{recipeId}") 
 }
