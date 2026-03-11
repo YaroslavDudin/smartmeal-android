@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.data.models.LoginRequest
 import com.example.smartmeal.feature.auth.data.models.RegisterRequest
+import com.example.smartmeal.data.local.TokenManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 sealed class AuthState {
     object Idle : AuthState()
@@ -16,7 +18,10 @@ sealed class AuthState {
     data class Error(val message: String) : AuthState()
 }
 
-class AuthViewModel(private val authApi: AuthApi) : ViewModel() {
+class AuthViewModel(
+    private val authApi: AuthApi,
+    private val tokenManager: TokenManager
+) : ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState
 
@@ -26,10 +31,17 @@ class AuthViewModel(private val authApi: AuthApi) : ViewModel() {
             try {
                 val response = authApi.login(LoginRequest(email, pass))
                 if (response.isSuccessful) {
-                    val token = response.body()?.access
-                    _authState.value = AuthState.Success(token)
+                    val loginResponse = response.body()
+                    val access = loginResponse?.access
+                    val refresh = loginResponse?.refresh
+                    if (access != null && refresh != null) {
+                        tokenManager.saveTokens(access, refresh)
+                        _authState.value = AuthState.Success(access)
+                    } else {
+                        _authState.value = AuthState.Error("Пустой ответ от сервера")
+                    }
                 } else {
-                    _authState.value = AuthState.Error("Ошибка авторизации")
+                    _authState.value = AuthState.Error(parseError(response.errorBody()?.string()))
                 }
             } catch (e: Exception) {
                 _authState.value = AuthState.Error("Ошибка сети: ${e.message}")
@@ -44,13 +56,64 @@ class AuthViewModel(private val authApi: AuthApi) : ViewModel() {
                 val req = RegisterRequest(user, email, pass, pass) 
                 val response = authApi.register(req)
                 if (response.isSuccessful) {
-                    login(email, pass)
+                    val registerResponse = response.body()
+                    val access = registerResponse?.access
+                    val refresh = registerResponse?.refresh
+                    if (access != null && refresh != null) {
+                        tokenManager.saveTokens(access, refresh)
+                        _authState.value = AuthState.Success(access)
+                    } else {
+                        _authState.value = AuthState.Error("Ошибка: токены не получены")
+                    }
                 } else {
-                    _authState.value = AuthState.Error("Ошибка регистрации")
+                    _authState.value = AuthState.Error(parseError(response.errorBody()?.string()))
                 }
             } catch (e: Exception) {
                 _authState.value = AuthState.Error("Ошибка сети: ${e.message}")
             }
+        }
+    }
+
+    private fun parseError(errorJson: String?): String {
+        return try {
+            val json = JSONObject(errorJson ?: "{}")
+            
+            // Вспомогательная функция для получения строки из JSON (даже если это массив)
+            fun getMsg(key: String): String {
+                val obj = json.get(key)
+                return if (obj is org.json.JSONArray) obj.getString(0) else obj.toString()
+            }
+
+            // Вспомогательная функция для перевода текста ошибок
+            fun translate(text: String, fieldName: String = ""): String {
+                val t = text.lowercase()
+                return when {
+                    t.contains("email_not_found") -> "Аккаунт с таким email не зарегистрирован"
+                    t.contains("wrong_password") -> "Пароль не верный"
+                    t.contains("already exists") -> if (fieldName == "email") "Этот email уже зарегистрирован" else "Это имя уже занято"
+                    t.contains("required") || t.contains("blank") -> "Это поле обязательно для заполнения"
+                    t.contains("valid email") -> "Введите корректный адрес электронной почты"
+                    t.contains("too short") || t.contains("at least") -> "Слишком короткий текст (минимум 8 символов)"
+                    t.contains("too common") -> "Пароль слишком простой"
+                    t.contains("numeric") -> "Пароль не может состоять только из цифр"
+                    t.contains("don't match") -> "Пароли не совпадают"
+                    t.contains("no active account found") -> "Аккаунт с такими данными не найден"
+                    t.contains("token is invalid") -> "Сессия истекла, войдите снова"
+                    else -> text
+                }
+            }
+
+            when {
+                json.has("detail") -> translate(getMsg("detail"))
+                json.has("non_field_errors") -> translate(getMsg("non_field_errors"))
+                json.has("email") -> "Email: " + translate(getMsg("email"), "email")
+                json.has("username") -> "Имя пользователя: " + translate(getMsg("username"), "username")
+                json.has("password") -> "Пароль: " + translate(getMsg("password"), "password")
+                json.has("password_confirm") -> "Подтверждение пароля: " + translate(getMsg("password_confirm"))
+                else -> "Ошибка сервера: $errorJson"
+            }
+        } catch (e: Exception) {
+            "Неизвестная ошибка: $errorJson"
         }
     }
 }

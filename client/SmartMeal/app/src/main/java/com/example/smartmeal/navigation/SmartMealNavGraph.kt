@@ -27,10 +27,12 @@ fun SmartMealNavGraph(navController: NavHostController) {
     
     // В реальном приложении лучше использовать DI (Hilt/Koin)
     // Сейчас создаем ViewModel "вручную" для демонстрации
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val tokenManager = remember { com.example.smartmeal.data.local.TokenManager(context) }
     val authApi = remember { RetrofitClient.createService(AuthApi::class.java) }
     val authViewModel: AuthViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-            return AuthViewModel(authApi) as T
+            return AuthViewModel(authApi, tokenManager) as T
         }
     })
 

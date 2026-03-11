@@ -7,6 +7,26 @@ from django.contrib.auth.password_validation import validate_password
 User = get_user_model()
 
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import authenticate
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        email = attrs.get(self.username_field)
+        password = attrs.get("password")
+
+        user_exists = User.objects.filter(email=email).exists()
+        
+        if not user_exists:
+            raise serializers.ValidationError({"detail": "email_not_found"})
+        
+        user = authenticate(request=self.context.get("request"), email=email, password=password)
+        
+        if not user:
+            raise serializers.ValidationError({"detail": "wrong_password"})
+
+        return super().validate(attrs)
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password_confirm = serializers.CharField(write_only=True, required=True)

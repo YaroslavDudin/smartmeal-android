@@ -22,6 +22,7 @@ fun LoginRegisterForm(
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var validationError by remember { mutableStateOf<String?>(null) }
 
     val authState by viewModel.authState.collectAsState()
 
@@ -49,7 +50,10 @@ fun LoginRegisterForm(
         AnimatedVisibility(visible = !isLoginMode) {
             OutlinedTextField(
                 value = username,
-                onValueChange = { username = it },
+                onValueChange = { 
+                    username = it 
+                    validationError = null
+                },
                 label = { Text("Имя пользователя") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -62,7 +66,10 @@ fun LoginRegisterForm(
 
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { 
+                email = it 
+                validationError = null
+            },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -73,7 +80,10 @@ fun LoginRegisterForm(
 
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { 
+                password = it 
+                validationError = null
+            },
             label = { Text("Пароль") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
@@ -89,6 +99,30 @@ fun LoginRegisterForm(
             SmartMealButton(
                 text = if (isLoginMode) "Войти" else "Зарегистрироваться",
                 onClick = {
+                    validationError = null
+                    
+                    if (email.isBlank()) {
+                        validationError = "Вы не заполнили поле email"
+                        return@SmartMealButton
+                    }
+                    if (password.isBlank()) {
+                        validationError = "Вы не заполнили поле пароль"
+                        return@SmartMealButton
+                    }
+                    
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                        validationError = "Некорректный email"
+                        return@SmartMealButton
+                    }
+                    if (password.length < 8) {
+                        validationError = "Пароль должен быть не менее 8 символов"
+                        return@SmartMealButton
+                    }
+                    if (!isLoginMode && username.isBlank()) {
+                        validationError = "Введите имя пользователя"
+                        return@SmartMealButton
+                    }
+
                     if (isLoginMode) {
                         viewModel.login(email, password)
                     } else {
@@ -98,17 +132,21 @@ fun LoginRegisterForm(
             )
         }
 
-        if (authState is AuthState.Error) {
+        if (validationError != null || authState is AuthState.Error) {
+            val errorText = validationError ?: (authState as AuthState.Error).message
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = (authState as AuthState.Error).message,
+                text = errorText,
                 color = MaterialTheme.colorScheme.error
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextButton(onClick = { isLoginMode = !isLoginMode }) {
+        TextButton(onClick = { 
+            isLoginMode = !isLoginMode 
+            validationError = null
+        }) {
             Text(
                 text = if (isLoginMode) "Нет аккаунта? Создать" else "Уже есть аккаунт? Войти",
                 style = MaterialTheme.typography.bodyMedium

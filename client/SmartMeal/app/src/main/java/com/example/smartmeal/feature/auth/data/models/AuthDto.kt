@@ -16,6 +16,8 @@ data class LoginRequest(
 // --- Responses ---
 data class RegisterResponse(
     val user: UserDto,
+    val access: String,
+    val refresh: String,
     val message: String
 )
 
