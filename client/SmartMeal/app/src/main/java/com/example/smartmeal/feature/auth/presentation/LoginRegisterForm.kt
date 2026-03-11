@@ -22,7 +22,7 @@ fun LoginRegisterForm(
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var validationError by remember { mutableStateOf<String?>(null) }
+    var confirmPassword by remember { mutableStateOf("") }
 
     val authState by viewModel.authState.collectAsState()
 
@@ -52,7 +52,6 @@ fun LoginRegisterForm(
                 value = username,
                 onValueChange = { 
                     username = it 
-                    validationError = null
                 },
                 label = { Text("Имя пользователя") },
                 modifier = Modifier.fillMaxWidth(),
@@ -68,7 +67,6 @@ fun LoginRegisterForm(
             value = email,
             onValueChange = { 
                 email = it 
-                validationError = null
             },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
@@ -82,7 +80,6 @@ fun LoginRegisterForm(
             value = password,
             onValueChange = { 
                 password = it 
-                validationError = null
             },
             label = { Text("Пароль") },
             visualTransformation = PasswordVisualTransformation(),
@@ -90,6 +87,23 @@ fun LoginRegisterForm(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             singleLine = true
         )
+
+        AnimatedVisibility(visible = !isLoginMode) {
+            Column {
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = confirmPassword,
+                    onValueChange = { 
+                        confirmPassword = it 
+                    },
+                    label = { Text("Повторите пароль") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    singleLine = true
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -99,41 +113,17 @@ fun LoginRegisterForm(
             SmartMealButton(
                 text = if (isLoginMode) "Войти" else "Зарегистрироваться",
                 onClick = {
-                    validationError = null
-                    
-                    if (email.isBlank()) {
-                        validationError = "Вы не заполнили поле email"
-                        return@SmartMealButton
-                    }
-                    if (password.isBlank()) {
-                        validationError = "Вы не заполнили поле пароль"
-                        return@SmartMealButton
-                    }
-                    
-                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                        validationError = "Некорректный email"
-                        return@SmartMealButton
-                    }
-                    if (password.length < 8) {
-                        validationError = "Пароль должен быть не менее 8 символов"
-                        return@SmartMealButton
-                    }
-                    if (!isLoginMode && username.isBlank()) {
-                        validationError = "Введите имя пользователя"
-                        return@SmartMealButton
-                    }
-
                     if (isLoginMode) {
                         viewModel.login(email, password)
                     } else {
-                        viewModel.register(username, email, password)
+                        viewModel.register(username, email, password, confirmPassword)
                     }
                 }
             )
         }
 
-        if (validationError != null || authState is AuthState.Error) {
-            val errorText = validationError ?: (authState as AuthState.Error).message
+        if (authState is AuthState.Error) {
+            val errorText = (authState as AuthState.Error).message
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = errorText,
@@ -145,7 +135,6 @@ fun LoginRegisterForm(
 
         TextButton(onClick = { 
             isLoginMode = !isLoginMode 
-            validationError = null
         }) {
             Text(
                 text = if (isLoginMode) "Нет аккаунта? Создать" else "Уже есть аккаунт? Войти",

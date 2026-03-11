@@ -15,85 +15,97 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     private const val BASE_URL = "http://10.0.2.2:8000/"
+    private var tokenManager: TokenManager? = null
+
+    fun init(manager: TokenManager) {
+        tokenManager = manager
+    }
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private fun createHttpClient(tokenManager: TokenManager?): OkHttpClient {
-        val builder = OkHttpClient.Builder()
+    private val client: OkHttpClient by lazy {
+        OkHttpClient.Builder()
             .addInterceptor(logging)
-
-        if (tokenManager != null) {
-            builder.addInterceptor(Interceptor { chain ->
+            .addInterceptor(Interceptor { chain ->
                 val original = chain.request()
-                val token = tokenManager.getAccessToken()
+                val token = tokenManager?.getAccessToken()
                 if (token != null) {
                     val request = original.newBuilder()
                         .header("Authorization", "Bearer $token")
-                        .method(original.method, original.body)
                         .build()
                     chain.proceed(request)
                 } else {
                     chain.proceed(original)
                 }
             })
-
-            builder.authenticator(object : Authenticator {
+            .authenticator(object : Authenticator {
                 override fun authenticate(route: Route?, response: Response): Request? {
-                    if (response.code == 401) {
-                        val refreshToken = tokenManager.getRefreshToken() ?: return null
-                        
-                        // We need a separate Retrofit instance for refreshing to avoid infinite loops
-                        val refreshRetrofit = Retrofit.Builder()
-                            .baseUrl(BASE_URL)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build()
-                        
-                        val authApi = refreshRetrofit.create(AuthApi::class.java)
-                        
-                        return try {
-                            val refreshResponse = kotlinx.coroutines.runBlocking {
-                                authApi.refreshToken(RefreshRequest(refreshToken))
-                            }
+                    synchronized(this) {
+                        if (response.code == 401) {
+                            val manager = tokenManager ?: return null
+                            val refreshToken = manager.getRefreshToken() ?: return null
                             
-                            if (refreshResponse.isSuccessful) {
-                                val newAccess = refreshResponse.body()?.access ?: return null
-                                val currentRefresh = tokenManager.getRefreshToken() ?: refreshToken
-                                tokenManager.saveTokens(newAccess, currentRefresh)
-                                
-                                response.request.newBuilder()
-                                    .header("Authorization", "Bearer $newAccess")
+                            // Check if token was already refreshed by another thread
+                            val currentAccessToken = manager.getAccessToken()
+                            val requestAccessToken = response.request.header("Authorization")?.removePrefix("Bearer ")
+                            
+                            if (currentAccessToken != requestAccessToken) {
+                                return response.request.newBuilder()
+                                    .header("Authorization", "Bearer $currentAccessToken")
                                     .build()
-                            } else {
+                            }
+
+                            val refreshRetrofit = Retrofit.Builder()
+                                .baseUrl(BASE_URL)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build()
+                            
+                            val authApi = refreshRetrofit.create(AuthApi::class.java)
+                            
+                            return try {
+                                val refreshResponse = kotlinx.coroutines.runBlocking {
+                                    authApi.refreshToken(RefreshRequest(refreshToken))
+                                }
+                                
+                                if (refreshResponse.isSuccessful) {
+                                    val newAccess = refreshResponse.body()?.access ?: return null
+                                    val currentRefresh = manager.getRefreshToken() ?: refreshToken
+                                    manager.saveTokens(newAccess, currentRefresh)
+                                    
+                                    response.request.newBuilder()
+                                        .header("Authorization", "Bearer $newAccess")
+                                        .build()
+                                } else {
+                                    null
+                                }
+                            } catch (e: Exception) {
                                 null
                             }
-                        } catch (e: Exception) {
-                            null
                         }
                     }
                     return null
                 }
             })
-        }
-
-        return builder.build()
+            .build()
     }
 
-    private var retrofit: Retrofit? = null
-
-    private fun getRetrofit(tokenManager: TokenManager?): Retrofit {
-        if (retrofit == null) {
-            retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(createHttpClient(tokenManager))
-                .build()
-        }
-        return retrofit!!
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
     }
 
-    fun <T> createService(serviceClass: Class<T>, tokenManager: TokenManager? = null): T {
-        return getRetrofit(tokenManager).create(serviceClass)
+    fun <T> createService(serviceClass: Class<T>): T {
+        return retrofit.create(serviceClass)
+    }
+
+    // Deprecated but kept for compatibility during migration if needed
+    fun <T> createService(serviceClass: Class<T>, manager: TokenManager? = null): T {
+        manager?.let { init(it) }
+        return createService(serviceClass)
     }
 }

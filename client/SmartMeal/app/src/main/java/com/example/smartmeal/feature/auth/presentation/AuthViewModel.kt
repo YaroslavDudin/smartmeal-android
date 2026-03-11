@@ -26,6 +26,8 @@ class AuthViewModel(
     val authState: StateFlow<AuthState> = _authState
 
     fun login(email: String, pass: String) {
+        if (!validateLogin(email, pass)) return
+        
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             try {
@@ -49,11 +51,13 @@ class AuthViewModel(
         }
     }
 
-    fun register(user: String, email: String, pass: String) {
+    fun register(user: String, email: String, pass: String, passConfirm: String) {
+        if (!validateRegister(user, email, pass, passConfirm)) return
+
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             try {
-                val req = RegisterRequest(user, email, pass, pass) 
+                val req = RegisterRequest(user, email, pass, passConfirm) 
                 val response = authApi.register(req)
                 if (response.isSuccessful) {
                     val registerResponse = response.body()
@@ -74,17 +78,52 @@ class AuthViewModel(
         }
     }
 
+    private fun validateLogin(email: String, pass: String): Boolean {
+        if (email.isBlank()) {
+            _authState.value = AuthState.Error("Вы не заполнили поле email")
+            return false
+        }
+        if (pass.isBlank()) {
+            _authState.value = AuthState.Error("Вы не заполнили поле пароль")
+            return false
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            _authState.value = AuthState.Error("Некорректный email")
+            return false
+        }
+        return true
+    }
+
+    private fun validateRegister(user: String, email: String, pass: String, passConfirm: String): Boolean {
+        if (!validateLogin(email, pass)) return false
+        if (user.isBlank()) {
+            _authState.value = AuthState.Error("Введите имя пользователя")
+            return false
+        }
+        if (pass.length < 8) {
+            _authState.value = AuthState.Error("Пароль должен быть не менее 8 символов")
+            return false
+        }
+        if (pass != passConfirm) {
+            _authState.value = AuthState.Error("Пароли не совпадают")
+            return false
+        }
+        return true
+    }
+
     private fun parseError(errorJson: String?): String {
         return try {
             val json = JSONObject(errorJson ?: "{}")
             
-            // Вспомогательная функция для получения строки из JSON (даже если это массив)
             fun getMsg(key: String): String {
-                val obj = json.get(key)
-                return if (obj is org.json.JSONArray) obj.getString(0) else obj.toString()
+                val obj = json.opt(key)
+                return when (obj) {
+                    is org.json.JSONArray -> obj.optString(0)
+                    null -> ""
+                    else -> obj.toString()
+                }
             }
 
-            // Вспомогательная функция для перевода текста ошибок
             fun translate(text: String, fieldName: String = ""): String {
                 val t = text.lowercase()
                 return when {
@@ -110,10 +149,22 @@ class AuthViewModel(
                 json.has("username") -> "Имя пользователя: " + translate(getMsg("username"), "username")
                 json.has("password") -> "Пароль: " + translate(getMsg("password"), "password")
                 json.has("password_confirm") -> "Подтверждение пароля: " + translate(getMsg("password_confirm"))
-                else -> "Ошибка сервера: $errorJson"
+                else -> {
+                    val firstKey = json.keys().asSequence().firstOrNull()
+                    if (firstKey != null) {
+                        translate(getMsg(firstKey), firstKey)
+                    } else {
+                        "Ошибка сервера: $errorJson"
+                    }
+                }
             }
         } catch (e: Exception) {
             "Неизвестная ошибка: $errorJson"
         }
+    }
+
+    fun logout() {
+        tokenManager.clearTokens()
+        _authState.value = AuthState.Idle
     }
 }

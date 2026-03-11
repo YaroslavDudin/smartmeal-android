@@ -29,17 +29,28 @@ fun SmartMealNavGraph(navController: NavHostController) {
     // Сейчас создаем ViewModel "вручную" для демонстрации
     val context = androidx.compose.ui.platform.LocalContext.current
     val tokenManager = remember { com.example.smartmeal.data.local.TokenManager(context) }
-    val authApi = remember { RetrofitClient.createService(AuthApi::class.java, tokenManager) }
+    
+    // Инициализируем RetrofitClient один раз при старте графа
+    RetrofitClient.init(tokenManager)
+    
+    val authApi = remember { RetrofitClient.createService(AuthApi::class.java) }
     val authViewModel: AuthViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
             return AuthViewModel(authApi, tokenManager) as T
         }
     })
 
+    // Определяем стартовый экран на основе наличия токена
+    val startDestination = if (tokenManager.getAccessToken() != null) {
+        Screen.Home.route
+    } else {
+        Screen.Welcome.route
+    }
+
     // NavHost - это "контейнер", в котором сменяются экраны
     NavHost(
         navController = navController,
-        startDestination = Screen.Welcome.route // Указываем, откуда стартует приложение
+        startDestination = startDestination // Указываем, откуда стартует приложение
     ) {
         
         // --- ЗОНА АВТОРИЗАЦИИ / ОНБОРДИНГА ---
