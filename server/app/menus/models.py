@@ -18,7 +18,7 @@ class Menu(models.Model):
 
 class MenuItem(models.Model):
     MEAL_TYPE_CHOICES = [
-        ('beakfast', 'Breakfast'),
+        ('breakfast', 'Breakfast'),
         ('lunch', 'Lunch'),
         ('dinner', 'Dinner'),
         ('snack', 'Snack'),

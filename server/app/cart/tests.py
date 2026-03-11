@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from app.cart.models import CartItem
-from app.recipes.models import Ingredient, Unit
+from app.recipes.models import Ingredient, Unit, IngredientCategory
 
 User = get_user_model()
 
@@ -15,9 +15,11 @@ class CartItemModelTests(TestCase):
         )
         
         self.unit = Unit.objects.create(name='кг')
+        self.category = IngredientCategory.objects.create(name='Овощи')
         self.ingredient = Ingredient.objects.create(
             name='Картофель', 
-            unit=self.unit
+            unit=self.unit,
+            category=self.category
         )
 
     def test_create_cart_item(self):
