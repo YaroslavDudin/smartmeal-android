@@ -59,4 +59,4 @@ class UserFavorite(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.user} - {self.recipe}'
+        return f'User ID: {self.user_id} - Recipe ID: {self.recipe_id}'

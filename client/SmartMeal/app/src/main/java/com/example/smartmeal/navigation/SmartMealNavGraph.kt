@@ -29,7 +29,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
     // Сейчас создаем ViewModel "вручную" для демонстрации
     val context = androidx.compose.ui.platform.LocalContext.current
     val tokenManager = remember { com.example.smartmeal.data.local.TokenManager(context) }
-    val authApi = remember { RetrofitClient.createService(AuthApi::class.java) }
+    val authApi = remember { RetrofitClient.createService(AuthApi::class.java, tokenManager) }
     val authViewModel: AuthViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
             return AuthViewModel(authApi, tokenManager) as T

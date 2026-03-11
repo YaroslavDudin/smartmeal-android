@@ -21,4 +21,4 @@ class CartItem(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.ingredient.name} ({self.total_amount} {self.unit}) для {self.user}'
+        return f'Ingredient ID {self.ingredient_id} ({self.total_amount} Unit ID {self.unit_id}) for User ID {self.user_id}'

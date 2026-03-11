@@ -49,7 +49,7 @@ class UnitConversion(models.Model):
         ]
     
     def __str__(self):
-        return f'Weight of {self.ingredient} in grams: {self.grams_per_unit}'
+        return f'Weight of Ingredient ID {self.ingredient_id} in Unit ID {self.unit_id} in grams: {self.grams_per_unit}'
 
 
 class Ingredient(models.Model):
@@ -83,7 +83,7 @@ class IngredientNutrition(models.Model):
             self.fat * CALORIES_PER_GRAM['fat']
 
     def __str__(self):
-        return f'{self.ingredient} имеет {self.protein} г белка, {self.carbs} г углеводов и {self.fat} г жира, калорийность на {self.base_weight_g}: {self.calories}'
+        return f'Nutrition for Ingredient ID {self.ingredient_id}: {self.protein}g protein, {self.carbs}g carbs, {self.fat}g fat, calories per {self.base_weight_g}g: {self.calories}'
 
 
 class RecipeQuerySet(models.QuerySet):
@@ -223,7 +223,7 @@ class RecipeIngredient(models.Model):
             self.fat * CALORIES_PER_GRAM['fat']
 
     def __str__(self):
-        return f'{self.amount} {self.unit} ингредиента {self.ingredient} для {self.recipe.title}'
+        return f'{self.amount} (Unit ID {self.unit_id}) of Ingredient ID {self.ingredient_id} for Recipe ID {self.recipe_id}'
 
 
 class RecipeStep(models.Model):
@@ -241,4 +241,4 @@ class RecipeStep(models.Model):
         ]
 
     def __str__(self):
-        return f'Шаг №{self.step_number} для {self.recipe.title}'
+        return f'Step №{self.step_number} for Recipe ID {self.recipe_id}'

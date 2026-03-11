@@ -24,7 +24,7 @@ class Menu(models.Model):
     start_date = models.DateField()
 
     def __str__(self):
-        return f'Меню для {self.user} (начало: {self.start_date}, длительность: {self.period})'
+        return f'Menu for User ID {self.user_id} (start: {self.start_date}, period: {self.period})'
     
     class Meta:
         db_table = 'menu'
@@ -48,4 +48,4 @@ class MenuItem(models.Model):
         return start_date + timedelta(days=self.day_offset)
 
     def __str__(self):
-        return f'{self.get_meal_type_display()} на {self.actual_date} - {self.recipe.title}'
+        return f'{self.get_meal_type_display()} on Day Offset {self.day_offset} for Menu ID {self.menu_id} - Recipe ID {self.recipe_id}'

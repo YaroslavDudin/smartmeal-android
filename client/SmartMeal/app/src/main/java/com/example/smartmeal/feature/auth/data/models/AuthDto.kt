@@ -13,6 +13,10 @@ data class LoginRequest(
     val password: String
 )
 
+data class RefreshRequest(
+    val refresh: String
+)
+
 // --- Responses ---
 data class RegisterResponse(
     val user: UserDto,
@@ -29,4 +33,8 @@ data class UserDto(
 data class LoginResponse(
     val access: String,
     val refresh: String
+)
+
+data class RefreshResponse(
+    val access: String
 )
