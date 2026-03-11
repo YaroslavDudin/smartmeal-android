@@ -31,14 +31,6 @@ class Menu(models.Model):
 
 
 class MenuItem(models.Model):
-    MEAL_TYPE_CHOICES = [
-        ('beakfast', 'Breakfast'),
-        ('lunch', 'Lunch'),
-        ('dinner', 'Dinner'),
-        ('snack', 'Snack'),
-        ('drink', 'Drink'),
-    ]
-
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='items')
     recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE, related_name='menu_items')
     day_offset = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(6)])
