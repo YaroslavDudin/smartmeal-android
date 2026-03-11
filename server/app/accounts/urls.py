@@ -6,5 +6,5 @@ from app.accounts.views import RegisterView
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('token/', TokenObtainPairView.as_view(), name='token_pair_obtain'),
-    path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
