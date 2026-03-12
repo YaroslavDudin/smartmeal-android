@@ -31,13 +31,15 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 't')
-#Накините своих хостов
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') if os.getenv('ALLOWED_HOSTS') else [
-    '10.0.2.2',    # Специальный IP-адрес эмулятора Android, который ссылается на localhost компьютера
-    '127.0.0.1',   # Стандартный localhost
-    'localhost',
-    '*'            # Разрешает запросы отовсюду (полезно для тестирования с физического телефона в одной Wi-Fi сети)
-]
+# В production задайте ALLOWED_HOSTS через переменную окружения (через запятую).
+# Например: ALLOWED_HOSTS=api.example.com,10.0.2.2
+# '*' разрешён только в режиме DEBUG (удобно при тестировании с физического телефона).
+# В production всегда используйте точный список хостов через env-переменную.
+_default_hosts = ['10.0.2.2', '127.0.0.1', 'localhost']
+if DEBUG:
+    _default_hosts.append('*')
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') if os.getenv('ALLOWED_HOSTS') else _default_hosts
 
 # Application definition
 
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -61,6 +64,8 @@ AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # CorsMiddleware должен стоять как можно выше — до CommonMiddleware.
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,6 +73,18 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# CORS — нужен для браузерных запросов и WebView в Android.
+# Эмулятор Android обращается к серверу через 10.0.2.2 (это localhost хост-машины).
+# На реальном устройстве используй IP компьютера в локальной сети.
+CORS_ALLOWED_ORIGINS = [
+    'http://10.0.2.2:8000',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
+if DEBUG:
+    # В DEBUG открываем все origins — удобно при тестировании с физического телефона.
+    CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'config.urls'
 
@@ -97,7 +114,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'USER_ID_FIELD': 'email',
+    # USER_ID_FIELD intentionally omitted — defaults to 'id' (PK).
+    # Login-by-email is handled via User.USERNAME_FIELD = 'email'.
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
@@ -162,5 +180,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL =  'media/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # нужно для `python manage.py collectstatic` в production
+MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
