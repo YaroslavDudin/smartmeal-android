@@ -7,7 +7,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'username', 'portion_size', 'is_staff')
     search_fields = ('email', 'username')
     fieldsets = UserAdmin.fieldsets + (
-        ('Дополнительная информация', {'fields': ('portion_size', 'allergies', 'diet_types')}),
+        ('Дополнительная информация', {'fields': ('portion_size', 'allergies', 'diet_type')}),
     )
 
 @admin.register(Allergy)
