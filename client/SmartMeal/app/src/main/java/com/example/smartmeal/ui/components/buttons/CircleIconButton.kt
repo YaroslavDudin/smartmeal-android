@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -64,7 +64,7 @@ fun CircleIconButton(
             else Icons.Outlined.FavoriteBorder
         }
         CircleIconType.REPLACE -> Icons.Filled.Refresh
-        CircleIconType.BACK -> Icons.Filled.ArrowBack
+        CircleIconType.BACK -> Icons.AutoMirrored.Filled.ArrowBack
     }
 
     // Описание для accessibility
