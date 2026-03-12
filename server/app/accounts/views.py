@@ -50,10 +50,7 @@ class RegisterView(generics.CreateAPIView):
         refresh = RefreshToken.for_user(user)
 
         return Response({
-            'user': {
-                'username': user.username,
-                'email': user.email,
-            },
+            'user': UserSerializer(user).data,
             'access': str(refresh.access_token),
             'refresh': str(refresh),
             'message': 'Пользователь был успешно создан',
