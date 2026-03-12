@@ -2,8 +2,9 @@ import pytest
 
 pytestmark = pytest.mark.django_db
 
+
 class TestLogin:
-    url = '/auth/login/'
+    url = '/api/accounts/token/'
 
     def test_login_success(self, api_client, test_user):
         data = {
@@ -24,7 +25,6 @@ class TestLogin:
         assert response.status_code == 401
 
     def test_protected_route_without_token(self, api_client):
-        protected_url = '/auth/profile/'
+        protected_url = '/api/accounts/me/'
         response = api_client.get(protected_url)
         assert response.status_code == 401
-        
