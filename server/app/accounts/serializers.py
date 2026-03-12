@@ -3,9 +3,22 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from app.accounts.models import DietType, Allergy
 
 
 User = get_user_model()
+
+
+class DietTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DietType
+        fields = ('id', 'name')
+
+
+class AllergySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Allergy
+        fields = ('id', 'name')
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

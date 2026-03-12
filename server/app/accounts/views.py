@@ -3,7 +3,11 @@ from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-from app.accounts.serializers import UserRegistrationSerializer, CustomTokenObtainPairSerializer, UserSerializer
+from app.accounts.models import DietType, Allergy
+from app.accounts.serializers import (
+    UserRegistrationSerializer, CustomTokenObtainPairSerializer,
+    UserSerializer, DietTypeSerializer, AllergySerializer,
+)
 
 
 User = get_user_model()
@@ -36,6 +40,18 @@ class CurrentUserView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         # Оптимизируем получение данных для конкретного пользователя
         return User.objects.select_related('diet_type').prefetch_related('allergies').get(pk=self.request.user.pk)
+
+
+class DietTypeListView(generics.ListAPIView):
+    serializer_class = DietTypeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = DietType.objects.all()
+
+
+class AllergyListView(generics.ListAPIView):
+    serializer_class = AllergySerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Allergy.objects.all()
 
 
 class RegisterView(generics.CreateAPIView):
