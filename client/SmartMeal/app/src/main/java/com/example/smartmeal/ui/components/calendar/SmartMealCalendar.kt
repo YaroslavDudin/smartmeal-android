@@ -40,10 +40,6 @@ private val MONTH_NAMES = listOf(
 )
 private val DAY_LABELS = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
 
-/**
- * Возвращает первый день недели (понедельник) для заданного дня.
- * Calendar.DAY_OF_WEEK: 1=Sun, 2=Mon, ..., 7=Sat
- */
 private fun mondayOfWeek(year: Int, month: Int, day: Int): Int {
     val cal = Calendar.getInstance()
     cal.set(year, month, day)
@@ -94,8 +90,10 @@ fun SmartMealCalendar(
     val rawFirstDay = cal.get(Calendar.DAY_OF_WEEK)
     val firstDayOffset = if (rawFirstDay == Calendar.SUNDAY) 6 else rawFirstDay - 2  // Mon=0
 
-    val weekStart = selectedDay?.let { mondayOfWeek(year, month, it) }
-    val weekEnd = selectedDay?.let { sundayOfWeek(year, month, it) }
+    // Для WEEKLY: выбранный день — это начало, конец — через 6 дней (всего 7 дней)
+    // Ограничиваем концом месяца для корректного отображения в текущей сетке
+    val weekStart = selectedDay
+    val weekEnd = selectedDay?.let { (it + 6).coerceAtMost(daysInMonth) }
 
     Column(modifier = modifier) {
         // --- Header: month name + navigation ---
@@ -155,7 +153,7 @@ fun SmartMealCalendar(
                             isSelected = selectedDay == day || selectedEndDay == day,
                             isInWeek = periodType == PeriodType.WEEKLY &&
                                     weekStart != null && weekEnd != null &&
-                                    day in weekStart..weekEnd,
+                                    day > weekStart && day < weekEnd,
                             isWeekStart = periodType == PeriodType.WEEKLY && day == weekStart,
                             isWeekEnd = periodType == PeriodType.WEEKLY && day == weekEnd,
                             isInRange = isCustomRangeActive && day in (selectedDay!! + 1) until selectedEndDay!!,
@@ -185,10 +183,9 @@ private fun CalendarDayCell(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    val bgColor = when {
-        isInWeek || isInRange -> PrimaryGreen.copy(alpha = 0.15f)
-        else -> Color.Transparent
-    }
+    // Подсветка фона (бледно-зеленый) для всех дней в выбранном диапазоне (неделя или кастом)
+    val isInAnySelection = isInWeek || isInRange || isWeekStart || isWeekEnd || isRangeStart || isRangeEnd
+    val bgColor = if (isInAnySelection) PrimaryGreen.copy(alpha = 0.15f) else Color.Transparent
 
     val rowShape = when {
         isWeekStart || isRangeStart -> RoundedCornerShape(topStart = 50.dp, bottomStart = 50.dp)
@@ -199,12 +196,14 @@ private fun CalendarDayCell(
     Box(
         modifier = modifier
             .aspectRatio(1f)
-            .background(bgColor, if (isWeekStart || isWeekEnd) rowShape else RoundedCornerShape(0.dp))
+            .background(bgColor, rowShape)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        if (isSelected) {
-            // Green circle for the selected day
+        val isSelectionRoot = (periodType == PeriodType.WEEKLY && isWeekStart) ||
+                (periodType != PeriodType.WEEKLY && isSelected)
+
+        if (isSelectionRoot) {
             Box(
                 modifier = Modifier
                     .size(36.dp)
@@ -224,7 +223,7 @@ private fun CalendarDayCell(
                 text = day.toString(),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp,
-                color = if (isInWeek) PrimaryGreen else MaterialTheme.colorScheme.onBackground,
+                color = if (isInAnySelection) PrimaryGreen else MaterialTheme.colorScheme.onBackground,
             )
         }
     }
