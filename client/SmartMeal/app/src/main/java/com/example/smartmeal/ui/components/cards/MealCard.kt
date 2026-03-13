@@ -36,7 +36,7 @@ fun MealCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(100.dp) 
+            .height(100.dp)
             .testTag("meal_card"),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -94,7 +94,6 @@ fun MealCard(
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun MealCardPreview() {
