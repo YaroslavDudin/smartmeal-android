@@ -71,3 +71,33 @@ class RegisterView(generics.CreateAPIView):
             'refresh': str(refresh),
             'message': 'Пользователь был успешно создан',
         }, status=status.HTTP_201_CREATED)
+
+
+class LogoutView(generics.GenericAPIView):
+    """
+    Выход из системы (инвалидация refresh токена).
+    Клиент должен также удалить access и refresh токены из локального хранилища.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data.get("refresh")
+            if not refresh_token:
+                return Response(
+                    {"detail": "Refresh token is required."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(
+                {"detail": "Successfully logged out."},
+                status=status.HTTP_200_OK
+            )
+        except Exception:
+            return Response(
+                {"detail": "Invalid or expired token."},
+                status=status.HTTP_400_BAD_REQUEST
+            )

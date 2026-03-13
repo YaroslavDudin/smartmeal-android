@@ -19,6 +19,7 @@ import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.presentation.AuthViewModel
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterForm
 import com.example.smartmeal.feature.auth.presentation.WelcomeScreen
+import com.example.smartmeal.feature.home.presentation.HomeScreen
 import com.example.smartmeal.feature.setup.data.api.SetupApi
 import com.example.smartmeal.feature.setup.presentation.SetupIntroScreen
 import com.example.smartmeal.feature.setup.presentation.SetupStep1Screen
@@ -132,24 +133,15 @@ fun SmartMealNavGraph(navController: NavHostController) {
         // --- Зона основного приложения ---
 
         composable(route = Screen.Home.route) {
-            // TODO: заменить заглушку на реальный HomeScreen
-            androidx.compose.foundation.layout.Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
-            ) {
-                Text(text = "Главный экран (в разработке)", style = MaterialTheme.typography.headlineMedium)
-                androidx.compose.foundation.layout.Spacer(modifier = Modifier.size(24.dp))
-                androidx.compose.material3.TextButton(onClick = {
+            HomeScreen(
+                onLogout = {
                     authViewModel.logout()
                     setupViewModel.reset()
                     navController.navigate(Screen.Welcome.route) {
                         popUpTo(0) { inclusive = true }
                     }
-                }) {
-                    Text(text = "Выйти из аккаунта")
                 }
-            }
+            )
         }
     }
 }

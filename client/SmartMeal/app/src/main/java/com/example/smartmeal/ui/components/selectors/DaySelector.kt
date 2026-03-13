@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
+import com.example.smartmeal.ui.components.chips_filters.FilterChip
 
 @Composable
 fun DaySelector(
@@ -25,32 +26,22 @@ fun DaySelector(
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(scrollState)
-            .padding(horizontal = 8.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(horizontal = 10.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        days.forEach { day ->
-            val selected = day == selectedDay
 
-            Button(
-                onClick = { onDaySelected(day) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selected) Color(0xFF2E7D32) else Color(0xFFE0E0E0)
-                ),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier
-                    .defaultMinSize(minWidth = 48.dp, minHeight = 40.dp)
-            ) {
-                Text(
-                    text = day,
-                    color = if (selected) Color.White else Color.Black,
-                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                    maxLines = 1
-                )
-            }
+        days.forEach { day ->
+
+            FilterChip(
+                label = day,
+                isSelected = day == selectedDay,
+                onClick = { onDaySelected(day) }
+            )
+
         }
+
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

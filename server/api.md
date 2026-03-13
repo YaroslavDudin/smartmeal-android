@@ -89,6 +89,31 @@ Authorization: Bearer <access_token>
 
 ---
 
+### POST `/api/accounts/logout/`
+Выход из системы. Инвалидирует `refresh` токен, добавляя его в черный список.
+
+**Тело запроса:**
+```json
+{
+  "refresh": "<jwt_refresh_token>"
+}
+```
+
+**Ответ 200:**
+```json
+{
+  "detail": "Successfully logged out."
+}
+```
+
+**Ошибки:**
+- `401 Unauthorized`: если не передан валидный `access` токен в заголовке `Authorization`.
+- `400 Bad Request`: если `refresh` токен не передан, невалиден или уже просрочен.
+
+> **Важно:** После успешного запроса клиентское приложение должно удалить оба токена (`access` и `refresh`) из своего локального хранилища.
+
+---
+
 ### GET `/api/accounts/me/`
 Получить профиль текущего пользователя.
 

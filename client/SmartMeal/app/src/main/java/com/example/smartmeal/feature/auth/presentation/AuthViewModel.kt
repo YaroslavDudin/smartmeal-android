@@ -164,7 +164,21 @@ class AuthViewModel(
     }
 
     fun logout() {
-        tokenManager.clearTokens()
-        _authState.value = AuthState.Idle
+        val refreshToken = tokenManager.getRefreshToken()
+        if (refreshToken != null) {
+            viewModelScope.launch {
+                try {
+                    authApi.logout(com.example.smartmeal.feature.auth.data.models.RefreshRequest(refreshToken))
+                } catch (e: Exception) {
+                    // Игнорируем ошибки при выходе (например, отсутствие сети)
+                } finally {
+                    tokenManager.clearTokens()
+                    _authState.value = AuthState.Idle
+                }
+            }
+        } else {
+            tokenManager.clearTokens()
+            _authState.value = AuthState.Idle
+        }
     }
 }
