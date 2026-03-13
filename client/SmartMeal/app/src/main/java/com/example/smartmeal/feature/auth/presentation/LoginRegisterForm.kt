@@ -1,7 +1,6 @@
 package com.example.smartmeal.feature.auth.presentation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +32,7 @@ import com.example.smartmeal.R
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
+import com.example.smartmeal.ui.theme.*
 
 @Composable
 fun LoginRegisterForm(
@@ -44,7 +44,7 @@ fun LoginRegisterForm(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-
+    
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isConfirmPasswordVisible by remember { mutableStateOf(false) }
 
@@ -60,13 +60,13 @@ fun LoginRegisterForm(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFBFBFB)) // Светло-серый фон как на макете
+            .background(BgLightGray)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = Padding.SCREEN),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(40.dp))
@@ -76,7 +76,7 @@ fun LoginRegisterForm(
                 painter = painterResource(id = R.drawable.food),
                 contentDescription = "Food logo",
                 modifier = Modifier
-                    .size(180.dp)
+                    .size(IconSize.LOGO)
                     .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Fit
             )
@@ -153,7 +153,7 @@ fun LoginRegisterForm(
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = "Забыли пароль?",
-                    color = Color(0xFF4CAF50), // Зеленый цвет как на макете
+                    color = PrimaryGreen,
                     fontSize = 16.sp,
                     modifier = Modifier
                         .align(Alignment.Start)
@@ -175,7 +175,7 @@ fun LoginRegisterForm(
 
             // 7. Кнопка действия
             if (authState is AuthState.Loading) {
-                CircularProgressIndicator(color = Color(0xFF4CAF50))
+                CircularProgressIndicator(color = PrimaryGreen)
             } else {
                 SmartMealButton(
                     text = if (isLoginMode) "Войти" else "Создать аккаунт",
@@ -206,7 +206,7 @@ fun AuthToggleSwitch(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
-            .background(Color(0xFFEFEFEF), RoundedCornerShape(25.dp)) // Серый фон переключателя
+            .background(SurfaceGray, RoundedCornerShape(25.dp))
             .padding(4.dp)
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
@@ -223,7 +223,7 @@ fun AuthToggleSwitch(
             ) {
                 Text(
                     text = "Вход",
-                    color = if (isLoginMode) Color.Black else Color.Gray,
+                    color = if (isLoginMode) Color.Black else HintGray,
                     fontWeight = if (isLoginMode) FontWeight.Medium else FontWeight.Normal
                 )
             }
@@ -240,7 +240,7 @@ fun AuthToggleSwitch(
             ) {
                 Text(
                     text = "Регистрация",
-                    color = if (!isLoginMode) Color.Black else Color.Gray,
+                    color = if (!isLoginMode) Color.Black else HintGray,
                     fontWeight = if (!isLoginMode) FontWeight.Medium else FontWeight.Normal
                 )
             }
@@ -266,17 +266,17 @@ fun CustomTextField(
         placeholder = { 
             Text(
                 text = label, 
-                color = Color.LightGray,
+                color = HintGray,
                 fontSize = 16.sp
             ) 
         },
         modifier = modifier
             .fillMaxWidth()
             .height(60.dp),
-        shape = RoundedCornerShape(12.dp), // По макету скругление не экстремальное, но заметное
+        shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedBorderColor = Color(0xFFE0E0E0),
-            focusedBorderColor = Color(0xFF4CAF50),
+            unfocusedBorderColor = BorderGray,
+            focusedBorderColor = PrimaryGreen,
             unfocusedContainerColor = Color.White,
             focusedContainerColor = Color.White
         ),
@@ -289,7 +289,8 @@ fun CustomTextField(
                     Icon(
                         imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                         contentDescription = "Toggle password visibility",
-                        tint = Color.Gray
+                        tint = HintGray,
+                        modifier = Modifier.size(IconSize.MEDIUM)
                     )
                 }
             }

@@ -137,7 +137,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
                 onLogout = {
                     authViewModel.logout()
                     setupViewModel.reset()
-                    navController.navigate(Screen.Welcome.route) {
+                    navController.navigate(Screen.AuthForm.route) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
