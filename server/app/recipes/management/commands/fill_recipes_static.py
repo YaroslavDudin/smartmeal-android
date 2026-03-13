@@ -233,9 +233,9 @@ class Command(BaseCommand):
 
         ingredients = {}
         for ing_name, cat_name in ingredient_data:
-            ing, _ = Ingredient.objects.get_or_create(
+            ing, _ = Ingredient.objects.update_or_create(
                 name=ing_name,
-                category=categories.get(cat_name),
+                defaults={'category': categories.get(cat_name)}
             )
             ingredients[ing_name] = ing
         self.stdout.write(self.style.SUCCESS('Ингредиенты созданы.'))
