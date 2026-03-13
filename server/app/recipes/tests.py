@@ -6,11 +6,7 @@ class RecipesModelTests(TestCase):
         recipe = Recipe.objects.create(
             title="Жареное мясо злокрыса",
             cook_time=10,
-            servings=1,
-            calories=150,
-            protein=10.5,
-            fat=12.0,
-            carbs=2.0
+            servings=1
         )
         self.assertEqual(recipe.title, "Жареное мясо злокрыса")
         self.assertEqual(recipe.cook_time, 10)

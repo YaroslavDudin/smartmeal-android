@@ -5,13 +5,14 @@ User = get_user_model()
 pytestmark = pytest.mark.django_db
 
 class TestRegistration:
-    url = '/auth/register/'
+    url = '/api/accounts/register/'
 
     def test_register_success(self, api_client):
         data = {
             'username': 'newuser',
             'email': 'new@example.com',
-            'password': 'SecurePassword123!'
+            'password': 'SecurePassword123!',
+            'password_confirm': 'SecurePassword123!'
         }
         response = api_client.post(self.url, data)
         assert response.status_code == 201
@@ -21,7 +22,8 @@ class TestRegistration:
         data = {
             'username': 'weakling',
             'email': 'new@example.com',
-            'password': '123'
+            'password': '123',
+            'password_confirm': '123'
         }
         response = api_client.post(self.url, data)
         assert response.status_code == 400
@@ -30,7 +32,8 @@ class TestRegistration:
         data = {
             'username': 'anotheruser',
             'email': test_user.email,
-            'password': 'SecurePassword123!'
+            'password': 'SecurePassword123!',
+            'password_confirm': 'SecurePassword123!'
         }
         response = api_client.post(self.url, data)
         assert response.status_code == 400
