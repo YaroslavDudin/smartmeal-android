@@ -3,7 +3,7 @@
     "model": "accounts.user",
     "pk": 1,
     "fields": {
-        "password": "test",
+        "password": "pbkdf2_sha256$1200000$HSb6Ieljmx4R3VLnpHPNf9$rDx7gcslGkpScVvTW6tndjBnFh+6j0SK1M0OxMtORMM=",
         "last_login": "2026-03-13T16:13:26.153Z",
         "is_superuser": true,
         "username": "admin",
@@ -13,19 +13,21 @@
         "is_active": true,
         "date_joined": "2026-03-10T17:03:34.552Z",
         "email": "test@admin.com",
-        "portion_size": 1,
+        "portion_size": 2,
         "created_at": "2026-03-10T17:03:34.552Z",
-        "diet_type": null,
+        "diet_type": 1,
         "groups": [],
         "user_permissions": [],
-        "allergies": []
+        "allergies": [
+            3
+        ]
     }
 },
 {
     "model": "accounts.user",
     "pk": 2,
     "fields": {
-        "password": "password2",
+        "password": "pbkdf2_sha256$1200000$erfYYJJIN4e9B72aA5vAgi$nYB8PR1y7ES5l9C4eO0+iU/tPvlCev+iADCQRfy23BU=",
         "last_login": null,
         "is_superuser": false,
         "username": "Юлий",
@@ -50,7 +52,7 @@
     "model": "accounts.user",
     "pk": 3,
     "fields": {
-        "password": "password3",
+        "password": "pbkdf2_sha256$1200000$j6KPpN1LBZPEGaZ63bGsZi$Jh8qd8e3z9b0L0sn7AzIP2UO6eKf1BwxVy1EwHqLPy4=",
         "last_login": null,
         "is_superuser": false,
         "username": "Андрон",
@@ -76,7 +78,7 @@
     "model": "accounts.user",
     "pk": 4,
     "fields": {
-        "password": "password4",
+        "password": "pbkdf2_sha256$1200000$WqfQpwtLSdPHtGRrpnQXSr$woqLXOYvPG4KmwtFjXzia3ningTRB+qPH8I76FHTIA4=",
         "last_login": null,
         "is_superuser": false,
         "username": "Любовь",
@@ -105,7 +107,7 @@
     "model": "accounts.user",
     "pk": 5,
     "fields": {
-        "password": "password5",
+        "password": "pbkdf2_sha256$1200000$n447rXctByVkvLWS5VmpqZ$c8Sb3F28s7hDC64r8CalTMRCP4EswjnZaWrk7LQl0KU=",
         "last_login": null,
         "is_superuser": false,
         "username": "Дарья",
@@ -133,7 +135,7 @@
     "model": "accounts.user",
     "pk": 6,
     "fields": {
-        "password": "password6",
+        "password": "pbkdf2_sha256$1200000$8ZXMj5hdoqI82kwq48wZ3r$cRXYdrlBGu4kO77oamxuNOewEYw56bdTzvwayFsjmB8=",
         "last_login": null,
         "is_superuser": false,
         "username": "Амос",
@@ -155,7 +157,7 @@
     "model": "accounts.user",
     "pk": 7,
     "fields": {
-        "password": "password7",
+        "password": "pbkdf2_sha256$1200000$V1C18dk6zHlMYsIBP8IPvo$1Bm3/IwiYZm5TWn4tjpsiGdvFKG12o9EYtOe6dPy18w=",
         "last_login": null,
         "is_superuser": false,
         "username": "Оксана",
@@ -180,7 +182,7 @@
     "model": "accounts.user",
     "pk": 8,
     "fields": {
-        "password": "password8",
+        "password": "pbkdf2_sha256$1200000$0TqPMjgXetsEfWfh4BSfKB$ApxCP7AM8yzOOSEl88ouV9+bQvzCQ0hyJqJGrcVVDAA=",
         "last_login": null,
         "is_superuser": false,
         "username": "Полина",
@@ -212,7 +214,7 @@
     "model": "accounts.user",
     "pk": 9,
     "fields": {
-        "password": "password9",
+        "password": "pbkdf2_sha256$1200000$G46rqSQ7aFWAW5uz9o0H8L$zunODOeEo40u078vtMQoKEWqjiXx4+ZTtghYVA/pbJU=",
         "last_login": null,
         "is_superuser": false,
         "username": "Викентий",
@@ -236,7 +238,7 @@
     "model": "accounts.user",
     "pk": 10,
     "fields": {
-        "password": "password10",
+        "password": "pbkdf2_sha256$1200000$YUNqDKsMfk2AXq7y38q7PT$TBq9oJ3QNqQOIwyOFMCm6d7uFxaVzTQgdvz8udyWtdw=",
         "last_login": null,
         "is_superuser": false,
         "username": "Радислав",
@@ -258,7 +260,7 @@
     "model": "accounts.user",
     "pk": 11,
     "fields": {
-        "password": "password11",
+        "password": "pbkdf2_sha256$1200000$X7prKng10zoDP070bwko3E$79wmsSwkO9cZLOJDNDi5NLCMqXsignwzd7muMxn9nMI=",
         "last_login": null,
         "is_superuser": false,
         "username": "Евгения",
