@@ -61,7 +61,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
     val startDestination = if (tokenManager.getAccessToken() != null) {
         Screen.SetupIntro.route
     } else {
-        Screen.Welcome.route
+        Screen.AuthForm.route
     }
 
     NavHost(
@@ -82,7 +82,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
                 viewModel = authViewModel,
                 onAuthSuccess = {
                     navController.navigate(Screen.SetupIntro.route) {
-                        popUpTo(Screen.Welcome.route) { inclusive = true }
+                        popUpTo(Screen.AuthForm.route) { inclusive = true }
                     }
                 }
             )
