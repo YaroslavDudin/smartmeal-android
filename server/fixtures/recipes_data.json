@@ -1,6022 +1,2172 @@
 [
-  {
+{
     "model": "recipes.ingredientcategory",
     "pk": 1,
     "fields": {
-      "name": "Овощи"
+        "name": "Овощи"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 2,
     "fields": {
-      "name": "Фрукты"
+        "name": "Фрукты"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 3,
     "fields": {
-      "name": "Молочные продукты"
+        "name": "Молочные продукты"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 4,
     "fields": {
-      "name": "Мясо"
+        "name": "Мясо"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 5,
     "fields": {
-      "name": "Рыба"
+        "name": "Рыба"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 6,
     "fields": {
-      "name": "Зерновые"
+        "name": "Зерновые"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 7,
     "fields": {
-      "name": "Специи"
+        "name": "Специи"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 8,
     "fields": {
-      "name": "Масла"
+        "name": "Масла"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 9,
     "fields": {
-      "name": "Напитки"
+        "name": "Напитки"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientcategory",
     "pk": 10,
     "fields": {
-      "name": "Сладости"
+        "name": "Сладости"
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 1,
     "fields": {
-      "name": "г",
-      "is_base": true
+        "name": "г",
+        "is_base": true
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 2,
     "fields": {
-      "name": "кг",
-      "is_base": false
+        "name": "кг",
+        "is_base": false
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 3,
     "fields": {
-      "name": "шт",
-      "is_base": false
+        "name": "шт",
+        "is_base": false
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 4,
     "fields": {
-      "name": "ст.л.",
-      "is_base": false
+        "name": "ст.л.",
+        "is_base": false
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 5,
     "fields": {
-      "name": "ч.л.",
-      "is_base": false
+        "name": "ч.л.",
+        "is_base": false
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 6,
     "fields": {
-      "name": "мл",
-      "is_base": true
+        "name": "мл",
+        "is_base": true
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 7,
     "fields": {
-      "name": "стакан",
-      "is_base": false
+        "name": "стакан",
+        "is_base": false
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 8,
     "fields": {
-      "name": "щепотка",
-      "is_base": false
+        "name": "щепотка",
+        "is_base": false
     }
-  },
-  {
+},
+{
     "model": "recipes.unit",
     "pk": 9,
     "fields": {
-      "name": "пучок",
-      "is_base": false
+        "name": "пучок",
+        "is_base": false
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 1,
     "fields": {
-      "ingredient": 1,
-      "unit": 3,
-      "grams_per_unit": "150.00"
+        "ingredient": 1,
+        "unit": 3,
+        "grams_per_unit": "150.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 2,
     "fields": {
-      "ingredient": 2,
-      "unit": 3,
-      "grams_per_unit": "75.00"
+        "ingredient": 2,
+        "unit": 3,
+        "grams_per_unit": "75.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 3,
     "fields": {
-      "ingredient": 3,
-      "unit": 3,
-      "grams_per_unit": "100.00"
+        "ingredient": 3,
+        "unit": 3,
+        "grams_per_unit": "100.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 4,
     "fields": {
-      "ingredient": 4,
-      "unit": 3,
-      "grams_per_unit": "5.00"
+        "ingredient": 4,
+        "unit": 3,
+        "grams_per_unit": "5.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 5,
     "fields": {
-      "ingredient": 5,
-      "unit": 3,
-      "grams_per_unit": "100.00"
+        "ingredient": 5,
+        "unit": 3,
+        "grams_per_unit": "100.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 6,
     "fields": {
-      "ingredient": 6,
-      "unit": 3,
-      "grams_per_unit": "100.00"
+        "ingredient": 6,
+        "unit": 3,
+        "grams_per_unit": "100.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 7,
     "fields": {
-      "ingredient": 7,
-      "unit": 3,
-      "grams_per_unit": "150.00"
+        "ingredient": 7,
+        "unit": 3,
+        "grams_per_unit": "150.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 8,
     "fields": {
-      "ingredient": 8,
-      "unit": 3,
-      "grams_per_unit": "1500.00"
+        "ingredient": 8,
+        "unit": 3,
+        "grams_per_unit": "1500.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 9,
     "fields": {
-      "ingredient": 9,
-      "unit": 3,
-      "grams_per_unit": "500.00"
+        "ingredient": 9,
+        "unit": 3,
+        "grams_per_unit": "500.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 10,
     "fields": {
-      "ingredient": 10,
-      "unit": 3,
-      "grams_per_unit": "3000.00"
+        "ingredient": 10,
+        "unit": 3,
+        "grams_per_unit": "3000.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 11,
     "fields": {
-      "ingredient": 11,
-      "unit": 3,
-      "grams_per_unit": "300.00"
+        "ingredient": 11,
+        "unit": 3,
+        "grams_per_unit": "300.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 12,
     "fields": {
-      "ingredient": 12,
-      "unit": 3,
-      "grams_per_unit": "200.00"
+        "ingredient": 12,
+        "unit": 3,
+        "grams_per_unit": "200.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 13,
     "fields": {
-      "ingredient": 13,
-      "unit": 3,
-      "grams_per_unit": "150.00"
+        "ingredient": 13,
+        "unit": 3,
+        "grams_per_unit": "150.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 14,
     "fields": {
-      "ingredient": 14,
-      "unit": 9,
-      "grams_per_unit": "50.00"
+        "ingredient": 14,
+        "unit": 9,
+        "grams_per_unit": "50.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 15,
     "fields": {
-      "ingredient": 15,
-      "unit": 3,
-      "grams_per_unit": "200.00"
+        "ingredient": 15,
+        "unit": 3,
+        "grams_per_unit": "200.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 16,
     "fields": {
-      "ingredient": 16,
-      "unit": 3,
-      "grams_per_unit": "150.00"
+        "ingredient": 16,
+        "unit": 3,
+        "grams_per_unit": "150.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 17,
     "fields": {
-      "ingredient": 17,
-      "unit": 3,
-      "grams_per_unit": "200.00"
+        "ingredient": 17,
+        "unit": 3,
+        "grams_per_unit": "200.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 18,
     "fields": {
-      "ingredient": 18,
-      "unit": 3,
-      "grams_per_unit": "100.00"
+        "ingredient": 18,
+        "unit": 3,
+        "grams_per_unit": "100.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 19,
     "fields": {
-      "ingredient": 19,
-      "unit": 3,
-      "grams_per_unit": "150.00"
+        "ingredient": 19,
+        "unit": 3,
+        "grams_per_unit": "150.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 20,
     "fields": {
-      "ingredient": 22,
-      "unit": 3,
-      "grams_per_unit": "200.00"
+        "ingredient": 22,
+        "unit": 3,
+        "grams_per_unit": "200.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 21,
     "fields": {
-      "ingredient": 23,
-      "unit": 3,
-      "grams_per_unit": "200.00"
+        "ingredient": 23,
+        "unit": 3,
+        "grams_per_unit": "200.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 22,
     "fields": {
-      "ingredient": 24,
-      "unit": 3,
-      "grams_per_unit": "150.00"
+        "ingredient": 24,
+        "unit": 3,
+        "grams_per_unit": "150.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 23,
     "fields": {
-      "ingredient": 42,
-      "unit": 3,
-      "grams_per_unit": "50.00"
+        "ingredient": 42,
+        "unit": 3,
+        "grams_per_unit": "50.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 24,
     "fields": {
-      "ingredient": 51,
-      "unit": 4,
-      "grams_per_unit": "15.00"
+        "ingredient": 51,
+        "unit": 4,
+        "grams_per_unit": "15.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 25,
     "fields": {
-      "ingredient": 51,
-      "unit": 5,
-      "grams_per_unit": "5.00"
+        "ingredient": 51,
+        "unit": 5,
+        "grams_per_unit": "5.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 26,
     "fields": {
-      "ingredient": 52,
-      "unit": 5,
-      "grams_per_unit": "2.00"
+        "ingredient": 52,
+        "unit": 5,
+        "grams_per_unit": "2.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 27,
     "fields": {
-      "ingredient": 53,
-      "unit": 4,
-      "grams_per_unit": "8.00"
+        "ingredient": 53,
+        "unit": 4,
+        "grams_per_unit": "8.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 28,
     "fields": {
-      "ingredient": 53,
-      "unit": 5,
-      "grams_per_unit": "3.00"
+        "ingredient": 53,
+        "unit": 5,
+        "grams_per_unit": "3.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 29,
     "fields": {
-      "ingredient": 54,
-      "unit": 5,
-      "grams_per_unit": "2.00"
+        "ingredient": 54,
+        "unit": 5,
+        "grams_per_unit": "2.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 30,
     "fields": {
-      "ingredient": 55,
-      "unit": 5,
-      "grams_per_unit": "2.00"
+        "ingredient": 55,
+        "unit": 5,
+        "grams_per_unit": "2.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 31,
     "fields": {
-      "ingredient": 56,
-      "unit": 8,
-      "grams_per_unit": "1.00"
+        "ingredient": 56,
+        "unit": 8,
+        "grams_per_unit": "1.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 32,
     "fields": {
-      "ingredient": 57,
-      "unit": 3,
-      "grams_per_unit": "0.50"
+        "ingredient": 57,
+        "unit": 3,
+        "grams_per_unit": "0.50"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 33,
     "fields": {
-      "ingredient": 72,
-      "unit": 4,
-      "grams_per_unit": "10.00"
+        "ingredient": 72,
+        "unit": 4,
+        "grams_per_unit": "10.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 34,
     "fields": {
-      "ingredient": 72,
-      "unit": 5,
-      "grams_per_unit": "3.00"
+        "ingredient": 72,
+        "unit": 5,
+        "grams_per_unit": "3.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 35,
     "fields": {
-      "ingredient": 72,
-      "unit": 7,
-      "grams_per_unit": "130.00"
+        "ingredient": 72,
+        "unit": 7,
+        "grams_per_unit": "130.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 36,
     "fields": {
-      "ingredient": 67,
-      "unit": 4,
-      "grams_per_unit": "12.00"
+        "ingredient": 67,
+        "unit": 4,
+        "grams_per_unit": "12.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 37,
     "fields": {
-      "ingredient": 67,
-      "unit": 5,
-      "grams_per_unit": "4.00"
+        "ingredient": 67,
+        "unit": 5,
+        "grams_per_unit": "4.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 38,
     "fields": {
-      "ingredient": 67,
-      "unit": 7,
-      "grams_per_unit": "200.00"
+        "ingredient": 67,
+        "unit": 7,
+        "grams_per_unit": "200.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 39,
     "fields": {
-      "ingredient": 44,
-      "unit": 7,
-      "grams_per_unit": "180.00"
+        "ingredient": 44,
+        "unit": 7,
+        "grams_per_unit": "180.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 40,
     "fields": {
-      "ingredient": 44,
-      "unit": 4,
-      "grams_per_unit": "15.00"
+        "ingredient": 44,
+        "unit": 4,
+        "grams_per_unit": "15.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 41,
     "fields": {
-      "ingredient": 45,
-      "unit": 7,
-      "grams_per_unit": "170.00"
+        "ingredient": 45,
+        "unit": 7,
+        "grams_per_unit": "170.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 42,
     "fields": {
-      "ingredient": 45,
-      "unit": 4,
-      "grams_per_unit": "14.00"
+        "ingredient": 45,
+        "unit": 4,
+        "grams_per_unit": "14.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 43,
     "fields": {
-      "ingredient": 46,
-      "unit": 7,
-      "grams_per_unit": "80.00"
+        "ingredient": 46,
+        "unit": 7,
+        "grams_per_unit": "80.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 44,
     "fields": {
-      "ingredient": 46,
-      "unit": 4,
-      "grams_per_unit": "7.00"
+        "ingredient": 46,
+        "unit": 4,
+        "grams_per_unit": "7.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 45,
     "fields": {
-      "ingredient": 47,
-      "unit": 7,
-      "grams_per_unit": "100.00"
+        "ingredient": 47,
+        "unit": 7,
+        "grams_per_unit": "100.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 46,
     "fields": {
-      "ingredient": 71,
-      "unit": 4,
-      "grams_per_unit": "12.00"
+        "ingredient": 71,
+        "unit": 4,
+        "grams_per_unit": "12.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 47,
     "fields": {
-      "ingredient": 71,
-      "unit": 7,
-      "grams_per_unit": "160.00"
+        "ingredient": 71,
+        "unit": 7,
+        "grams_per_unit": "160.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 48,
     "fields": {
-      "ingredient": 36,
-      "unit": 7,
-      "grams_per_unit": "240.00"
+        "ingredient": 36,
+        "unit": 7,
+        "grams_per_unit": "240.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 49,
     "fields": {
-      "ingredient": 36,
-      "unit": 4,
-      "grams_per_unit": "15.00"
+        "ingredient": 36,
+        "unit": 4,
+        "grams_per_unit": "15.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 50,
     "fields": {
-      "ingredient": 37,
-      "unit": 7,
-      "grams_per_unit": "240.00"
+        "ingredient": 37,
+        "unit": 7,
+        "grams_per_unit": "240.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 51,
     "fields": {
-      "ingredient": 37,
-      "unit": 4,
-      "grams_per_unit": "15.00"
+        "ingredient": 37,
+        "unit": 4,
+        "grams_per_unit": "15.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 52,
     "fields": {
-      "ingredient": 62,
-      "unit": 7,
-      "grams_per_unit": "240.00"
+        "ingredient": 62,
+        "unit": 7,
+        "grams_per_unit": "240.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 53,
     "fields": {
-      "ingredient": 62,
-      "unit": 4,
-      "grams_per_unit": "15.00"
+        "ingredient": 62,
+        "unit": 4,
+        "grams_per_unit": "15.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 54,
     "fields": {
-      "ingredient": 58,
-      "unit": 4,
-      "grams_per_unit": "14.00"
+        "ingredient": 58,
+        "unit": 4,
+        "grams_per_unit": "14.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 55,
     "fields": {
-      "ingredient": 58,
-      "unit": 7,
-      "grams_per_unit": "210.00"
+        "ingredient": 58,
+        "unit": 7,
+        "grams_per_unit": "210.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 56,
     "fields": {
-      "ingredient": 59,
-      "unit": 4,
-      "grams_per_unit": "14.00"
+        "ingredient": 59,
+        "unit": 4,
+        "grams_per_unit": "14.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 57,
     "fields": {
-      "ingredient": 59,
-      "unit": 7,
-      "grams_per_unit": "210.00"
+        "ingredient": 59,
+        "unit": 7,
+        "grams_per_unit": "210.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 58,
     "fields": {
-      "ingredient": 41,
-      "unit": 4,
-      "grams_per_unit": "20.00"
+        "ingredient": 41,
+        "unit": 4,
+        "grams_per_unit": "20.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 59,
     "fields": {
-      "ingredient": 66,
-      "unit": 4,
-      "grams_per_unit": "25.00"
+        "ingredient": 66,
+        "unit": 4,
+        "grams_per_unit": "25.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 60,
     "fields": {
-      "ingredient": 66,
-      "unit": 5,
-      "grams_per_unit": "8.00"
+        "ingredient": 66,
+        "unit": 5,
+        "grams_per_unit": "8.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 61,
     "fields": {
-      "ingredient": 70,
-      "unit": 4,
-      "grams_per_unit": "8.00"
+        "ingredient": 70,
+        "unit": 4,
+        "grams_per_unit": "8.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 62,
     "fields": {
-      "ingredient": 70,
-      "unit": 5,
-      "grams_per_unit": "3.00"
+        "ingredient": 70,
+        "unit": 5,
+        "grams_per_unit": "3.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 63,
     "fields": {
-      "ingredient": 76,
-      "unit": 4,
-      "grams_per_unit": "15.00"
+        "ingredient": 76,
+        "unit": 4,
+        "grams_per_unit": "15.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.unitconversion",
     "pk": 64,
     "fields": {
-      "ingredient": 77,
-      "unit": 4,
-      "grams_per_unit": "15.00"
+        "ingredient": 77,
+        "unit": 4,
+        "grams_per_unit": "15.00"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 1,
     "fields": {
-      "name": "Картофель",
-      "category": 1
+        "name": "Картофель",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 2,
     "fields": {
-      "name": "Морковь",
-      "category": 1
+        "name": "Морковь",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 3,
     "fields": {
-      "name": "Лук репчатый",
-      "category": 1
+        "name": "Лук репчатый",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 4,
     "fields": {
-      "name": "Чеснок",
-      "category": 1
+        "name": "Чеснок",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 5,
     "fields": {
-      "name": "Помидор",
-      "category": 1
+        "name": "Помидор",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 6,
     "fields": {
-      "name": "Огурец",
-      "category": 1
+        "name": "Огурец",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 7,
     "fields": {
-      "name": "Перец болгарский",
-      "category": 1
+        "name": "Перец болгарский",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 8,
     "fields": {
-      "name": "Капуста белокочанная",
-      "category": 1
+        "name": "Капуста белокочанная",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 9,
     "fields": {
-      "name": "Брокколи",
-      "category": 1
+        "name": "Брокколи",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 10,
     "fields": {
-      "name": "Тыква",
-      "category": 1
+        "name": "Тыква",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 11,
     "fields": {
-      "name": "Кабачок",
-      "category": 1
+        "name": "Кабачок",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 12,
     "fields": {
-      "name": "Баклажан",
-      "category": 1
+        "name": "Баклажан",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 13,
     "fields": {
-      "name": "Свёкла",
-      "category": 1
+        "name": "Свёкла",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 14,
     "fields": {
-      "name": "Зелень (укроп, петрушка)",
-      "category": 1
+        "name": "Зелень (укроп, петрушка)",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 15,
     "fields": {
-      "name": "Яблоко",
-      "category": 2
+        "name": "Яблоко",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 16,
     "fields": {
-      "name": "Банан",
-      "category": 2
+        "name": "Банан",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 17,
     "fields": {
-      "name": "Апельсин",
-      "category": 2
+        "name": "Апельсин",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 18,
     "fields": {
-      "name": "Лимон",
-      "category": 2
+        "name": "Лимон",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 19,
     "fields": {
-      "name": "Груша",
-      "category": 2
+        "name": "Груша",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 20,
     "fields": {
-      "name": "Клубника",
-      "category": 2
+        "name": "Клубника",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 21,
     "fields": {
-      "name": "Виноград",
-      "category": 2
+        "name": "Виноград",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 22,
     "fields": {
-      "name": "Авокадо",
-      "category": 2
+        "name": "Авокадо",
+        "category": 2
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 23,
     "fields": {
-      "name": "Курица (филе)",
-      "category": 4
+        "name": "Курица (филе)",
+        "category": 4
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 24,
     "fields": {
-      "name": "Куриные бёдра",
-      "category": 4
+        "name": "Куриные бёдра",
+        "category": 4
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 25,
     "fields": {
-      "name": "Говядина",
-      "category": 4
+        "name": "Говядина",
+        "category": 4
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 26,
     "fields": {
-      "name": "Свинина",
-      "category": 4
+        "name": "Свинина",
+        "category": 4
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 27,
     "fields": {
-      "name": "Фарш мясной",
-      "category": 4
+        "name": "Фарш мясной",
+        "category": 4
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 28,
     "fields": {
-      "name": "Бекон",
-      "category": 4
+        "name": "Бекон",
+        "category": 4
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 29,
     "fields": {
-      "name": "Колбаса варёная",
-      "category": 4
+        "name": "Колбаса варёная",
+        "category": 4
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 30,
     "fields": {
-      "name": "Лосось",
-      "category": 5
+        "name": "Лосось",
+        "category": 5
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 31,
     "fields": {
-      "name": "Треска",
-      "category": 5
+        "name": "Треска",
+        "category": 5
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 32,
     "fields": {
-      "name": "Тунец консервированный",
-      "category": 5
+        "name": "Тунец консервированный",
+        "category": 5
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 33,
     "fields": {
-      "name": "Креветки",
-      "category": 5
+        "name": "Креветки",
+        "category": 5
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 34,
     "fields": {
-      "name": "Мидии",
-      "category": 5
+        "name": "Мидии",
+        "category": 5
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 35,
     "fields": {
-      "name": "Кальмары",
-      "category": 5
+        "name": "Кальмары",
+        "category": 5
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 36,
     "fields": {
-      "name": "Молоко",
-      "category": 3
+        "name": "Молоко",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 37,
     "fields": {
-      "name": "Сливки",
-      "category": 3
+        "name": "Сливки",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 38,
     "fields": {
-      "name": "Йогурт",
-      "category": 3
+        "name": "Йогурт",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 39,
     "fields": {
-      "name": "Творог",
-      "category": 3
+        "name": "Творог",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 40,
     "fields": {
-      "name": "Сыр твёрдый",
-      "category": 3
+        "name": "Сыр твёрдый",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 41,
     "fields": {
-      "name": "Масло сливочное",
-      "category": 3
+        "name": "Масло сливочное",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 42,
     "fields": {
-      "name": "Яйцо",
-      "category": 3
+        "name": "Яйцо",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 43,
     "fields": {
-      "name": "Сметана",
-      "category": 3
+        "name": "Сметана",
+        "category": 3
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 44,
     "fields": {
-      "name": "Рис",
-      "category": 6
+        "name": "Рис",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 45,
     "fields": {
-      "name": "Гречка",
-      "category": 6
+        "name": "Гречка",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 46,
     "fields": {
-      "name": "Овсянка",
-      "category": 6
+        "name": "Овсянка",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 47,
     "fields": {
-      "name": "Макароны",
-      "category": 6
+        "name": "Макароны",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 48,
     "fields": {
-      "name": "Лапша",
-      "category": 6
+        "name": "Лапша",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 49,
     "fields": {
-      "name": "Кускус",
-      "category": 6
+        "name": "Кускус",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 50,
     "fields": {
-      "name": "Булгур",
-      "category": 6
+        "name": "Булгур",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 51,
     "fields": {
-      "name": "Соль",
-      "category": 7
+        "name": "Соль",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 52,
     "fields": {
-      "name": "Перец чёрный",
-      "category": 7
+        "name": "Перец чёрный",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 53,
     "fields": {
-      "name": "Паприка",
-      "category": 7
+        "name": "Паприка",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 54,
     "fields": {
-      "name": "Куркума",
-      "category": 7
+        "name": "Куркума",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 55,
     "fields": {
-      "name": "Корица",
-      "category": 7
+        "name": "Корица",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 56,
     "fields": {
-      "name": "Ванилин",
-      "category": 7
+        "name": "Ванилин",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 57,
     "fields": {
-      "name": "Лавровый лист",
-      "category": 7
+        "name": "Лавровый лист",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 58,
     "fields": {
-      "name": "Масло оливковое",
-      "category": 8
+        "name": "Масло оливковое",
+        "category": 8
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 59,
     "fields": {
-      "name": "Масло подсолнечное",
-      "category": 8
+        "name": "Масло подсолнечное",
+        "category": 8
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 60,
     "fields": {
-      "name": "Масло кунжутное",
-      "category": 8
+        "name": "Масло кунжутное",
+        "category": 8
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 61,
     "fields": {
-      "name": "Масло кокосовое",
-      "category": 8
+        "name": "Масло кокосовое",
+        "category": 8
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 62,
     "fields": {
-      "name": "Вода",
-      "category": 9
+        "name": "Вода",
+        "category": 9
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 63,
     "fields": {
-      "name": "Чай",
-      "category": 9
+        "name": "Чай",
+        "category": 9
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 64,
     "fields": {
-      "name": "Кофе",
-      "category": 9
+        "name": "Кофе",
+        "category": 9
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 65,
     "fields": {
-      "name": "Сок",
-      "category": 9
+        "name": "Сок",
+        "category": 9
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 66,
     "fields": {
-      "name": "Мёд",
-      "category": 10
+        "name": "Мёд",
+        "category": 10
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 67,
     "fields": {
-      "name": "Сахар",
-      "category": 10
+        "name": "Сахар",
+        "category": 10
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 68,
     "fields": {
-      "name": "Шоколад",
-      "category": 10
+        "name": "Шоколад",
+        "category": 10
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 69,
     "fields": {
-      "name": "Варенье",
-      "category": 10
+        "name": "Варенье",
+        "category": 10
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 70,
     "fields": {
-      "name": "Какао-порошок",
-      "category": 10
+        "name": "Какао-порошок",
+        "category": 10
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 71,
     "fields": {
-      "name": "Манка",
-      "category": 6
+        "name": "Манка",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 72,
     "fields": {
-      "name": "Мука",
-      "category": 6
+        "name": "Мука",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 73,
     "fields": {
-      "name": "Дрожжи",
-      "category": 6
+        "name": "Дрожжи",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 74,
     "fields": {
-      "name": "Разрыхлитель",
-      "category": 6
+        "name": "Разрыхлитель",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 75,
     "fields": {
-      "name": "Панировочные сухари",
-      "category": 6
+        "name": "Панировочные сухари",
+        "category": 6
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 76,
     "fields": {
-      "name": "Томатная паста",
-      "category": 1
+        "name": "Томатная паста",
+        "category": 1
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredient",
     "pk": 77,
     "fields": {
-      "name": "Соевый соус",
-      "category": 7
+        "name": "Соевый соус",
+        "category": 7
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 1,
     "fields": {
-      "ingredient": 1,
-      "base_weight_g": 100,
-      "protein": "2.0",
-      "fat": "0.4",
-      "carbs": "17.0"
+        "ingredient": 1,
+        "base_weight_g": 100,
+        "protein": "2.0",
+        "fat": "0.4",
+        "carbs": "17.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 2,
     "fields": {
-      "ingredient": 2,
-      "base_weight_g": 100,
-      "protein": "1.3",
-      "fat": "0.1",
-      "carbs": "7.0"
+        "ingredient": 2,
+        "base_weight_g": 100,
+        "protein": "1.3",
+        "fat": "0.1",
+        "carbs": "7.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 3,
     "fields": {
-      "ingredient": 3,
-      "base_weight_g": 100,
-      "protein": "1.4",
-      "fat": "0.0",
-      "carbs": "8.2"
+        "ingredient": 3,
+        "base_weight_g": 100,
+        "protein": "1.4",
+        "fat": "0.0",
+        "carbs": "8.2"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 4,
     "fields": {
-      "ingredient": 4,
-      "base_weight_g": 100,
-      "protein": "6.5",
-      "fat": "0.5",
-      "carbs": "30.0"
+        "ingredient": 4,
+        "base_weight_g": 100,
+        "protein": "6.5",
+        "fat": "0.5",
+        "carbs": "30.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 5,
     "fields": {
-      "ingredient": 5,
-      "base_weight_g": 100,
-      "protein": "1.1",
-      "fat": "0.2",
-      "carbs": "3.8"
+        "ingredient": 5,
+        "base_weight_g": 100,
+        "protein": "1.1",
+        "fat": "0.2",
+        "carbs": "3.8"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 6,
     "fields": {
-      "ingredient": 6,
-      "base_weight_g": 100,
-      "protein": "0.8",
-      "fat": "0.1",
-      "carbs": "2.5"
+        "ingredient": 6,
+        "base_weight_g": 100,
+        "protein": "0.8",
+        "fat": "0.1",
+        "carbs": "2.5"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 7,
     "fields": {
-      "ingredient": 7,
-      "base_weight_g": 100,
-      "protein": "1.3",
-      "fat": "0.0",
-      "carbs": "5.3"
+        "ingredient": 7,
+        "base_weight_g": 100,
+        "protein": "1.3",
+        "fat": "0.0",
+        "carbs": "5.3"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 8,
     "fields": {
-      "ingredient": 8,
-      "base_weight_g": 100,
-      "protein": "1.8",
-      "fat": "0.1",
-      "carbs": "4.7"
+        "ingredient": 8,
+        "base_weight_g": 100,
+        "protein": "1.8",
+        "fat": "0.1",
+        "carbs": "4.7"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 9,
     "fields": {
-      "ingredient": 9,
-      "base_weight_g": 100,
-      "protein": "2.8",
-      "fat": "0.4",
-      "carbs": "6.6"
+        "ingredient": 9,
+        "base_weight_g": 100,
+        "protein": "2.8",
+        "fat": "0.4",
+        "carbs": "6.6"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 10,
     "fields": {
-      "ingredient": 10,
-      "base_weight_g": 100,
-      "protein": "1.0",
-      "fat": "0.1",
-      "carbs": "6.5"
+        "ingredient": 10,
+        "base_weight_g": 100,
+        "protein": "1.0",
+        "fat": "0.1",
+        "carbs": "6.5"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 11,
     "fields": {
-      "ingredient": 11,
-      "base_weight_g": 100,
-      "protein": "0.6",
-      "fat": "0.3",
-      "carbs": "4.6"
+        "ingredient": 11,
+        "base_weight_g": 100,
+        "protein": "0.6",
+        "fat": "0.3",
+        "carbs": "4.6"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 12,
     "fields": {
-      "ingredient": 12,
-      "base_weight_g": 100,
-      "protein": "1.2",
-      "fat": "0.1",
-      "carbs": "4.5"
+        "ingredient": 12,
+        "base_weight_g": 100,
+        "protein": "1.2",
+        "fat": "0.1",
+        "carbs": "4.5"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 13,
     "fields": {
-      "ingredient": 13,
-      "base_weight_g": 100,
-      "protein": "1.5",
-      "fat": "0.1",
-      "carbs": "9.0"
+        "ingredient": 13,
+        "base_weight_g": 100,
+        "protein": "1.5",
+        "fat": "0.1",
+        "carbs": "9.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 14,
     "fields": {
-      "ingredient": 14,
-      "base_weight_g": 100,
-      "protein": "2.5",
-      "fat": "0.5",
-      "carbs": "4.0"
+        "ingredient": 14,
+        "base_weight_g": 100,
+        "protein": "2.5",
+        "fat": "0.5",
+        "carbs": "4.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 15,
     "fields": {
-      "ingredient": 15,
-      "base_weight_g": 100,
-      "protein": "0.4",
-      "fat": "0.4",
-      "carbs": "10.0"
+        "ingredient": 15,
+        "base_weight_g": 100,
+        "protein": "0.4",
+        "fat": "0.4",
+        "carbs": "10.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 16,
     "fields": {
-      "ingredient": 16,
-      "base_weight_g": 100,
-      "protein": "1.5",
-      "fat": "0.2",
-      "carbs": "21.0"
+        "ingredient": 16,
+        "base_weight_g": 100,
+        "protein": "1.5",
+        "fat": "0.2",
+        "carbs": "21.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 17,
     "fields": {
-      "ingredient": 17,
-      "base_weight_g": 100,
-      "protein": "0.9",
-      "fat": "0.2",
-      "carbs": "8.1"
+        "ingredient": 17,
+        "base_weight_g": 100,
+        "protein": "0.9",
+        "fat": "0.2",
+        "carbs": "8.1"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 18,
     "fields": {
-      "ingredient": 18,
-      "base_weight_g": 100,
-      "protein": "0.9",
-      "fat": "0.1",
-      "carbs": "3.0"
+        "ingredient": 18,
+        "base_weight_g": 100,
+        "protein": "0.9",
+        "fat": "0.1",
+        "carbs": "3.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 19,
     "fields": {
-      "ingredient": 19,
-      "base_weight_g": 100,
-      "protein": "0.4",
-      "fat": "0.3",
-      "carbs": "10.0"
+        "ingredient": 19,
+        "base_weight_g": 100,
+        "protein": "0.4",
+        "fat": "0.3",
+        "carbs": "10.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 20,
     "fields": {
-      "ingredient": 20,
-      "base_weight_g": 100,
-      "protein": "0.8",
-      "fat": "0.4",
-      "carbs": "7.5"
+        "ingredient": 20,
+        "base_weight_g": 100,
+        "protein": "0.8",
+        "fat": "0.4",
+        "carbs": "7.5"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 21,
     "fields": {
-      "ingredient": 21,
-      "base_weight_g": 100,
-      "protein": "0.6",
-      "fat": "0.2",
-      "carbs": "16.0"
+        "ingredient": 21,
+        "base_weight_g": 100,
+        "protein": "0.6",
+        "fat": "0.2",
+        "carbs": "16.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 22,
     "fields": {
-      "ingredient": 22,
-      "base_weight_g": 100,
-      "protein": "2.0",
-      "fat": "15.0",
-      "carbs": "2.0"
+        "ingredient": 22,
+        "base_weight_g": 100,
+        "protein": "2.0",
+        "fat": "15.0",
+        "carbs": "2.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 23,
     "fields": {
-      "ingredient": 23,
-      "base_weight_g": 100,
-      "protein": "23.0",
-      "fat": "1.2",
-      "carbs": "0.5"
+        "ingredient": 23,
+        "base_weight_g": 100,
+        "protein": "23.0",
+        "fat": "1.2",
+        "carbs": "0.5"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 24,
     "fields": {
-      "ingredient": 24,
-      "base_weight_g": 100,
-      "protein": "21.0",
-      "fat": "8.0",
-      "carbs": "0.5"
+        "ingredient": 24,
+        "base_weight_g": 100,
+        "protein": "21.0",
+        "fat": "8.0",
+        "carbs": "0.5"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 25,
     "fields": {
-      "ingredient": 25,
-      "base_weight_g": 100,
-      "protein": "19.0",
-      "fat": "15.0",
-      "carbs": "0.0"
+        "ingredient": 25,
+        "base_weight_g": 100,
+        "protein": "19.0",
+        "fat": "15.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 26,
     "fields": {
-      "ingredient": 26,
-      "base_weight_g": 100,
-      "protein": "16.0",
-      "fat": "21.0",
-      "carbs": "0.0"
+        "ingredient": 26,
+        "base_weight_g": 100,
+        "protein": "16.0",
+        "fat": "21.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 27,
     "fields": {
-      "ingredient": 27,
-      "base_weight_g": 100,
-      "protein": "17.0",
-      "fat": "20.0",
-      "carbs": "0.0"
+        "ingredient": 27,
+        "base_weight_g": 100,
+        "protein": "17.0",
+        "fat": "20.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 28,
     "fields": {
-      "ingredient": 28,
-      "base_weight_g": 100,
-      "protein": "23.0",
-      "fat": "45.0",
-      "carbs": "0.0"
+        "ingredient": 28,
+        "base_weight_g": 100,
+        "protein": "23.0",
+        "fat": "45.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 29,
     "fields": {
-      "ingredient": 29,
-      "base_weight_g": 100,
-      "protein": "12.0",
-      "fat": "20.0",
-      "carbs": "2.0"
+        "ingredient": 29,
+        "base_weight_g": 100,
+        "protein": "12.0",
+        "fat": "20.0",
+        "carbs": "2.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 30,
     "fields": {
-      "ingredient": 30,
-      "base_weight_g": 100,
-      "protein": "20.0",
-      "fat": "13.0",
-      "carbs": "0.0"
+        "ingredient": 30,
+        "base_weight_g": 100,
+        "protein": "20.0",
+        "fat": "13.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 31,
     "fields": {
-      "ingredient": 31,
-      "base_weight_g": 100,
-      "protein": "18.0",
-      "fat": "0.7",
-      "carbs": "0.0"
+        "ingredient": 31,
+        "base_weight_g": 100,
+        "protein": "18.0",
+        "fat": "0.7",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 32,
     "fields": {
-      "ingredient": 32,
-      "base_weight_g": 100,
-      "protein": "23.0",
-      "fat": "1.0",
-      "carbs": "0.0"
+        "ingredient": 32,
+        "base_weight_g": 100,
+        "protein": "23.0",
+        "fat": "1.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 33,
     "fields": {
-      "ingredient": 33,
-      "base_weight_g": 100,
-      "protein": "18.0",
-      "fat": "1.0",
-      "carbs": "0.0"
+        "ingredient": 33,
+        "base_weight_g": 100,
+        "protein": "18.0",
+        "fat": "1.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 34,
     "fields": {
-      "ingredient": 34,
-      "base_weight_g": 100,
-      "protein": "11.0",
-      "fat": "2.0",
-      "carbs": "3.0"
+        "ingredient": 34,
+        "base_weight_g": 100,
+        "protein": "11.0",
+        "fat": "2.0",
+        "carbs": "3.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 35,
     "fields": {
-      "ingredient": 35,
-      "base_weight_g": 100,
-      "protein": "18.0",
-      "fat": "2.0",
-      "carbs": "2.0"
+        "ingredient": 35,
+        "base_weight_g": 100,
+        "protein": "18.0",
+        "fat": "2.0",
+        "carbs": "2.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 36,
     "fields": {
-      "ingredient": 36,
-      "base_weight_g": 100,
-      "protein": "3.2",
-      "fat": "3.6",
-      "carbs": "4.8"
+        "ingredient": 36,
+        "base_weight_g": 100,
+        "protein": "3.2",
+        "fat": "3.6",
+        "carbs": "4.8"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 37,
     "fields": {
-      "ingredient": 37,
-      "base_weight_g": 100,
-      "protein": "2.5",
-      "fat": "20.0",
-      "carbs": "4.0"
+        "ingredient": 37,
+        "base_weight_g": 100,
+        "protein": "2.5",
+        "fat": "20.0",
+        "carbs": "4.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 38,
     "fields": {
-      "ingredient": 38,
-      "base_weight_g": 100,
-      "protein": "5.0",
-      "fat": "3.0",
-      "carbs": "6.0"
+        "ingredient": 38,
+        "base_weight_g": 100,
+        "protein": "5.0",
+        "fat": "3.0",
+        "carbs": "6.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 39,
     "fields": {
-      "ingredient": 39,
-      "base_weight_g": 100,
-      "protein": "18.0",
-      "fat": "9.0",
-      "carbs": "3.0"
+        "ingredient": 39,
+        "base_weight_g": 100,
+        "protein": "18.0",
+        "fat": "9.0",
+        "carbs": "3.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 40,
     "fields": {
-      "ingredient": 40,
-      "base_weight_g": 100,
-      "protein": "25.0",
-      "fat": "30.0",
-      "carbs": "0.0"
+        "ingredient": 40,
+        "base_weight_g": 100,
+        "protein": "25.0",
+        "fat": "30.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 41,
     "fields": {
-      "ingredient": 41,
-      "base_weight_g": 100,
-      "protein": "0.5",
-      "fat": "82.5",
-      "carbs": "0.8"
+        "ingredient": 41,
+        "base_weight_g": 100,
+        "protein": "0.5",
+        "fat": "82.5",
+        "carbs": "0.8"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 42,
     "fields": {
-      "ingredient": 42,
-      "base_weight_g": 100,
-      "protein": "12.7",
-      "fat": "11.5",
-      "carbs": "0.7"
+        "ingredient": 42,
+        "base_weight_g": 100,
+        "protein": "12.7",
+        "fat": "11.5",
+        "carbs": "0.7"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 43,
     "fields": {
-      "ingredient": 43,
-      "base_weight_g": 100,
-      "protein": "2.8",
-      "fat": "20.0",
-      "carbs": "3.2"
+        "ingredient": 43,
+        "base_weight_g": 100,
+        "protein": "2.8",
+        "fat": "20.0",
+        "carbs": "3.2"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 44,
     "fields": {
-      "ingredient": 44,
-      "base_weight_g": 100,
-      "protein": "6.8",
-      "fat": "0.6",
-      "carbs": "78.0"
+        "ingredient": 44,
+        "base_weight_g": 100,
+        "protein": "6.8",
+        "fat": "0.6",
+        "carbs": "78.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 45,
     "fields": {
-      "ingredient": 45,
-      "base_weight_g": 100,
-      "protein": "12.6",
-      "fat": "3.3",
-      "carbs": "62.0"
+        "ingredient": 45,
+        "base_weight_g": 100,
+        "protein": "12.6",
+        "fat": "3.3",
+        "carbs": "62.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 46,
     "fields": {
-      "ingredient": 46,
-      "base_weight_g": 100,
-      "protein": "11.0",
-      "fat": "6.0",
-      "carbs": "60.0"
+        "ingredient": 46,
+        "base_weight_g": 100,
+        "protein": "11.0",
+        "fat": "6.0",
+        "carbs": "60.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 47,
     "fields": {
-      "ingredient": 47,
-      "base_weight_g": 100,
-      "protein": "10.4",
-      "fat": "1.1",
-      "carbs": "70.0"
+        "ingredient": 47,
+        "base_weight_g": 100,
+        "protein": "10.4",
+        "fat": "1.1",
+        "carbs": "70.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 48,
     "fields": {
-      "ingredient": 48,
-      "base_weight_g": 100,
-      "protein": "10.0",
-      "fat": "1.0",
-      "carbs": "68.0"
+        "ingredient": 48,
+        "base_weight_g": 100,
+        "protein": "10.0",
+        "fat": "1.0",
+        "carbs": "68.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 49,
     "fields": {
-      "ingredient": 49,
-      "base_weight_g": 100,
-      "protein": "12.8",
-      "fat": "0.6",
-      "carbs": "72.0"
+        "ingredient": 49,
+        "base_weight_g": 100,
+        "protein": "12.8",
+        "fat": "0.6",
+        "carbs": "72.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 50,
     "fields": {
-      "ingredient": 50,
-      "base_weight_g": 100,
-      "protein": "12.3",
-      "fat": "1.3",
-      "carbs": "76.0"
+        "ingredient": 50,
+        "base_weight_g": 100,
+        "protein": "12.3",
+        "fat": "1.3",
+        "carbs": "76.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 51,
     "fields": {
-      "ingredient": 51,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "0.0",
-      "carbs": "0.0"
+        "ingredient": 51,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "0.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 52,
     "fields": {
-      "ingredient": 52,
-      "base_weight_g": 100,
-      "protein": "10.0",
-      "fat": "3.0",
-      "carbs": "65.0"
+        "ingredient": 52,
+        "base_weight_g": 100,
+        "protein": "10.0",
+        "fat": "3.0",
+        "carbs": "65.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 53,
     "fields": {
-      "ingredient": 53,
-      "base_weight_g": 100,
-      "protein": "14.0",
-      "fat": "13.0",
-      "carbs": "54.0"
+        "ingredient": 53,
+        "base_weight_g": 100,
+        "protein": "14.0",
+        "fat": "13.0",
+        "carbs": "54.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 54,
     "fields": {
-      "ingredient": 54,
-      "base_weight_g": 100,
-      "protein": "8.0",
-      "fat": "10.0",
-      "carbs": "65.0"
+        "ingredient": 54,
+        "base_weight_g": 100,
+        "protein": "8.0",
+        "fat": "10.0",
+        "carbs": "65.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 55,
     "fields": {
-      "ingredient": 55,
-      "base_weight_g": 100,
-      "protein": "4.0",
-      "fat": "1.0",
-      "carbs": "80.0"
+        "ingredient": 55,
+        "base_weight_g": 100,
+        "protein": "4.0",
+        "fat": "1.0",
+        "carbs": "80.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 56,
     "fields": {
-      "ingredient": 56,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "0.0",
-      "carbs": "0.0"
+        "ingredient": 56,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "0.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 57,
     "fields": {
-      "ingredient": 57,
-      "base_weight_g": 100,
-      "protein": "7.6",
-      "fat": "8.4",
-      "carbs": "48.7"
+        "ingredient": 57,
+        "base_weight_g": 100,
+        "protein": "7.6",
+        "fat": "8.4",
+        "carbs": "48.7"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 58,
     "fields": {
-      "ingredient": 58,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "99.8",
-      "carbs": "0.0"
+        "ingredient": 58,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "99.8",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 59,
     "fields": {
-      "ingredient": 59,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "99.9",
-      "carbs": "0.0"
+        "ingredient": 59,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "99.9",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 60,
     "fields": {
-      "ingredient": 60,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "99.7",
-      "carbs": "0.0"
+        "ingredient": 60,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "99.7",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 61,
     "fields": {
-      "ingredient": 61,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "99.0",
-      "carbs": "0.0"
+        "ingredient": 61,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "99.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 62,
     "fields": {
-      "ingredient": 62,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "0.0",
-      "carbs": "0.0"
+        "ingredient": 62,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "0.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 63,
     "fields": {
-      "ingredient": 63,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "0.0",
-      "carbs": "0.0"
+        "ingredient": 63,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "0.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 64,
     "fields": {
-      "ingredient": 64,
-      "base_weight_g": 100,
-      "protein": "0.2",
-      "fat": "0.0",
-      "carbs": "0.0"
+        "ingredient": 64,
+        "base_weight_g": 100,
+        "protein": "0.2",
+        "fat": "0.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 65,
     "fields": {
-      "ingredient": 65,
-      "base_weight_g": 100,
-      "protein": "0.5",
-      "fat": "0.2",
-      "carbs": "10.0"
+        "ingredient": 65,
+        "base_weight_g": 100,
+        "protein": "0.5",
+        "fat": "0.2",
+        "carbs": "10.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 66,
     "fields": {
-      "ingredient": 66,
-      "base_weight_g": 100,
-      "protein": "0.3",
-      "fat": "0.0",
-      "carbs": "80.0"
+        "ingredient": 66,
+        "base_weight_g": 100,
+        "protein": "0.3",
+        "fat": "0.0",
+        "carbs": "80.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 67,
     "fields": {
-      "ingredient": 67,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "0.0",
-      "carbs": "100.0"
+        "ingredient": 67,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "0.0",
+        "carbs": "100.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 68,
     "fields": {
-      "ingredient": 68,
-      "base_weight_g": 100,
-      "protein": "5.0",
-      "fat": "30.0",
-      "carbs": "55.0"
+        "ingredient": 68,
+        "base_weight_g": 100,
+        "protein": "5.0",
+        "fat": "30.0",
+        "carbs": "55.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 69,
     "fields": {
-      "ingredient": 69,
-      "base_weight_g": 100,
-      "protein": "0.3",
-      "fat": "0.2",
-      "carbs": "65.0"
+        "ingredient": 69,
+        "base_weight_g": 100,
+        "protein": "0.3",
+        "fat": "0.2",
+        "carbs": "65.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 70,
     "fields": {
-      "ingredient": 70,
-      "base_weight_g": 100,
-      "protein": "20.0",
-      "fat": "15.0",
-      "carbs": "30.0"
+        "ingredient": 70,
+        "base_weight_g": 100,
+        "protein": "20.0",
+        "fat": "15.0",
+        "carbs": "30.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 71,
     "fields": {
-      "ingredient": 72,
-      "base_weight_g": 100,
-      "protein": "10.0",
-      "fat": "1.0",
-      "carbs": "70.0"
+        "ingredient": 72,
+        "base_weight_g": 100,
+        "protein": "10.0",
+        "fat": "1.0",
+        "carbs": "70.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 72,
     "fields": {
-      "ingredient": 73,
-      "base_weight_g": 100,
-      "protein": "12.0",
-      "fat": "0.5",
-      "carbs": "18.0"
+        "ingredient": 73,
+        "base_weight_g": 100,
+        "protein": "12.0",
+        "fat": "0.5",
+        "carbs": "18.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 73,
     "fields": {
-      "ingredient": 74,
-      "base_weight_g": 100,
-      "protein": "0.0",
-      "fat": "0.0",
-      "carbs": "0.0"
+        "ingredient": 74,
+        "base_weight_g": 100,
+        "protein": "0.0",
+        "fat": "0.0",
+        "carbs": "0.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 74,
     "fields": {
-      "ingredient": 75,
-      "base_weight_g": 100,
-      "protein": "12.0",
-      "fat": "3.0",
-      "carbs": "70.0"
+        "ingredient": 75,
+        "base_weight_g": 100,
+        "protein": "12.0",
+        "fat": "3.0",
+        "carbs": "70.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 75,
     "fields": {
-      "ingredient": 76,
-      "base_weight_g": 100,
-      "protein": "5.0",
-      "fat": "0.5",
-      "carbs": "20.0"
+        "ingredient": 76,
+        "base_weight_g": 100,
+        "protein": "5.0",
+        "fat": "0.5",
+        "carbs": "20.0"
     }
-  },
-  {
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 76,
     "fields": {
-      "ingredient": 77,
-      "base_weight_g": 100,
-      "protein": "7.0",
-      "fat": "0.0",
-      "carbs": "8.0"
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 1,
-    "fields": {
-      "title": "Грибной Манка",
-      "image_url": "",
-      "cook_time": 78,
-      "servings": 3,
-      "diet_types": [
-        4,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 2,
-    "fields": {
-      "title": "Ореховый Шоколад под Рыбный Лапша",
-      "image_url": "",
-      "cook_time": 84,
-      "servings": 2,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 3,
-    "fields": {
-      "title": "Солёный Огурец под Фаршированный Рис",
-      "image_url": "",
-      "cook_time": 41,
-      "servings": 3,
-      "diet_types": [
-        1,
-        3
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 4,
-    "fields": {
-      "title": "Хрустящий Лавровый лист под Запечённый Брокколи",
-      "image_url": "",
-      "cook_time": 39,
-      "servings": 4,
-      "diet_types": [
-        4,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 5,
-    "fields": {
-      "title": "Мясной Творог под Маринованный Шоколад",
-      "image_url": "",
-      "cook_time": 53,
-      "servings": 4,
-      "diet_types": [
-        2,
-        4,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 6,
-    "fields": {
-      "title": "Фруктовый Чеснок под Кислый Сметана",
-      "image_url": "",
-      "cook_time": 18,
-      "servings": 1,
-      "diet_types": [
-        1,
-        2,
-        4
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 7,
-    "fields": {
-      "title": "Вяленый Паприка под Шоколадный Картофель",
-      "image_url": "",
-      "cook_time": 38,
-      "servings": 2,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 8,
-    "fields": {
-      "title": "Овощной Морковь под Вяленый Фарш мясной",
-      "image_url": "",
-      "cook_time": 42,
-      "servings": 6,
-      "diet_types": [
-        2,
-        3,
-        4
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 9,
-    "fields": {
-      "title": "Жареный Ванилин под Запечённый Шоколад",
-      "image_url": "",
-      "cook_time": 53,
-      "servings": 1,
-      "diet_types": [
-        1,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 10,
-    "fields": {
-      "title": "Рыбный Лавровый лист",
-      "image_url": "",
-      "cook_time": 70,
-      "servings": 1,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 11,
-    "fields": {
-      "title": "Сливочный Куриные бёдра",
-      "image_url": "",
-      "cook_time": 65,
-      "servings": 4,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 12,
-    "fields": {
-      "title": "Рыбный Масло подсолнечное",
-      "image_url": "",
-      "cook_time": 42,
-      "servings": 4,
-      "diet_types": [
-        1,
-        4,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 13,
-    "fields": {
-      "title": "Медовый Лимон под Маринованный Клубника",
-      "image_url": "",
-      "cook_time": 27,
-      "servings": 1,
-      "diet_types": [
-        2,
-        3
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 14,
-    "fields": {
-      "title": "Сырный Треска",
-      "image_url": "",
-      "cook_time": 18,
-      "servings": 1,
-      "diet_types": [
-        3
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 15,
-    "fields": {
-      "title": "Карамельный Масло кунжутное с Лапша",
-      "image_url": "",
-      "cook_time": 23,
-      "servings": 2,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 16,
-    "fields": {
-      "title": "Рыбный Зелень (укроп, петрушка)",
-      "image_url": "",
-      "cook_time": 39,
-      "servings": 2,
-      "diet_types": [
-        2,
-        3
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 17,
-    "fields": {
-      "title": "Ягодный Масло сливочное с Соль",
-      "image_url": "",
-      "cook_time": 61,
-      "servings": 4,
-      "diet_types": [
-        1,
-        3,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 18,
-    "fields": {
-      "title": "Тушёный Перец чёрный с Сметана",
-      "image_url": "",
-      "cook_time": 89,
-      "servings": 1,
-      "diet_types": [
-        2,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 19,
-    "fields": {
-      "title": "Ореховый Кабачок под Пряный Лук репчатый",
-      "image_url": "",
-      "cook_time": 58,
-      "servings": 2,
-      "diet_types": [
-        1,
-        4,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 20,
-    "fields": {
-      "title": "Ягодный Масло оливковое с Креветки",
-      "image_url": "",
-      "cook_time": 71,
-      "servings": 3,
-      "diet_types": [
-        3,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 21,
-    "fields": {
-      "title": "Медовый Сливки с Паприка",
-      "image_url": "",
-      "cook_time": 83,
-      "servings": 4,
-      "diet_types": [
-        1,
-        3,
-        5
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 22,
-    "fields": {
-      "title": "Мясной Мука под Медовый Чай",
-      "image_url": "",
-      "cook_time": 24,
-      "servings": 1,
-      "diet_types": [
-        1
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 23,
-    "fields": {
-      "title": "Варёный Масло подсолнечное с Ванилин",
-      "image_url": "",
-      "cook_time": 19,
-      "servings": 1,
-      "diet_types": [
-        2
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 24,
-    "fields": {
-      "title": "Свежий Баклажан с Соевый соус",
-      "image_url": "",
-      "cook_time": 86,
-      "servings": 3,
-      "diet_types": [
-        3
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 25,
-    "fields": {
-      "title": "Острый Кабачок под Карамельный Масло кунжутное",
-      "image_url": "",
-      "cook_time": 20,
-      "servings": 5,
-      "diet_types": [
-        1,
-        2,
-        3
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 26,
-    "fields": {
-      "title": "Нежный Яблоко с Разрыхлитель",
-      "image_url": "",
-      "cook_time": 46,
-      "servings": 1,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 27,
-    "fields": {
-      "title": "Варёный Брокколи с Морковь",
-      "image_url": "",
-      "cook_time": 51,
-      "servings": 5,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 28,
-    "fields": {
-      "title": "Сырный Масло оливковое с Тунец консервированный",
-      "image_url": "",
-      "cook_time": 16,
-      "servings": 5,
-      "diet_types": [
-        4
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 29,
-    "fields": {
-      "title": "Пряный Яблоко под Мясной Тунец консервированный",
-      "image_url": "",
-      "cook_time": 79,
-      "servings": 2,
-      "diet_types": [
-        3,
-        4
-      ]
-    }
-  },
-  {
-    "model": "recipes.recipe",
-    "pk": 30,
-    "fields": {
-      "title": "Нежный Шоколад под Сырный Сыр твёрдый",
-      "image_url": "",
-      "cook_time": 44,
-      "servings": 5,
-      "diet_types": []
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 1,
-    "fields": {
-      "recipe": 1,
-      "ingredient": 71,
-      "amount": "191.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 2,
-    "fields": {
-      "recipe": 1,
-      "ingredient": 25,
-      "amount": "211.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 3,
-    "fields": {
-      "recipe": 1,
-      "ingredient": 58,
-      "amount": "144.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 4,
-    "fields": {
-      "recipe": 1,
-      "ingredient": 67,
-      "amount": "128.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 5,
-    "fields": {
-      "recipe": 2,
-      "ingredient": 68,
-      "amount": "131.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 6,
-    "fields": {
-      "recipe": 2,
-      "ingredient": 48,
-      "amount": "259.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 7,
-    "fields": {
-      "recipe": 2,
-      "ingredient": 75,
-      "amount": "230.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 8,
-    "fields": {
-      "recipe": 2,
-      "ingredient": 34,
-      "amount": "137.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 9,
-    "fields": {
-      "recipe": 2,
-      "ingredient": 30,
-      "amount": "121.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 10,
-    "fields": {
-      "recipe": 3,
-      "ingredient": 6,
-      "amount": "176.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 11,
-    "fields": {
-      "recipe": 3,
-      "ingredient": 44,
-      "amount": "179.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 12,
-    "fields": {
-      "recipe": 3,
-      "ingredient": 73,
-      "amount": "267.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 13,
-    "fields": {
-      "recipe": 3,
-      "ingredient": 64,
-      "amount": "165.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 14,
-    "fields": {
-      "recipe": 3,
-      "ingredient": 63,
-      "amount": "287.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 15,
-    "fields": {
-      "recipe": 3,
-      "ingredient": 52,
-      "amount": "273.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 16,
-    "fields": {
-      "recipe": 4,
-      "ingredient": 57,
-      "amount": "280.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 17,
-    "fields": {
-      "recipe": 4,
-      "ingredient": 9,
-      "amount": "224.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 18,
-    "fields": {
-      "recipe": 4,
-      "ingredient": 12,
-      "amount": "180.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 19,
-    "fields": {
-      "recipe": 4,
-      "ingredient": 36,
-      "amount": "254.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 20,
-    "fields": {
-      "recipe": 5,
-      "ingredient": 39,
-      "amount": "278.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 21,
-    "fields": {
-      "recipe": 5,
-      "ingredient": 68,
-      "amount": "58.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 22,
-    "fields": {
-      "recipe": 5,
-      "ingredient": 75,
-      "amount": "162.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 23,
-    "fields": {
-      "recipe": 5,
-      "ingredient": 42,
-      "amount": "206.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 24,
-    "fields": {
-      "recipe": 5,
-      "ingredient": 17,
-      "amount": "262.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 25,
-    "fields": {
-      "recipe": 5,
-      "ingredient": 15,
-      "amount": "255.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 26,
-    "fields": {
-      "recipe": 6,
-      "ingredient": 4,
-      "amount": "162.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 27,
-    "fields": {
-      "recipe": 6,
-      "ingredient": 43,
-      "amount": "295.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 28,
-    "fields": {
-      "recipe": 6,
-      "ingredient": 27,
-      "amount": "243.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 29,
-    "fields": {
-      "recipe": 6,
-      "ingredient": 16,
-      "amount": "188.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 30,
-    "fields": {
-      "recipe": 6,
-      "ingredient": 33,
-      "amount": "97.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 31,
-    "fields": {
-      "recipe": 7,
-      "ingredient": 53,
-      "amount": "127.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 32,
-    "fields": {
-      "recipe": 7,
-      "ingredient": 1,
-      "amount": "248.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 33,
-    "fields": {
-      "recipe": 7,
-      "ingredient": 43,
-      "amount": "286.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 34,
-    "fields": {
-      "recipe": 7,
-      "ingredient": 54,
-      "amount": "64.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 35,
-    "fields": {
-      "recipe": 7,
-      "ingredient": 35,
-      "amount": "268.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 36,
-    "fields": {
-      "recipe": 7,
-      "ingredient": 9,
-      "amount": "250.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 37,
-    "fields": {
-      "recipe": 8,
-      "ingredient": 2,
-      "amount": "210.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 38,
-    "fields": {
-      "recipe": 8,
-      "ingredient": 27,
-      "amount": "144.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 39,
-    "fields": {
-      "recipe": 8,
-      "ingredient": 30,
-      "amount": "139.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 40,
-    "fields": {
-      "recipe": 8,
-      "ingredient": 61,
-      "amount": "167.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 41,
-    "fields": {
-      "recipe": 9,
-      "ingredient": 56,
-      "amount": "191.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 42,
-    "fields": {
-      "recipe": 9,
-      "ingredient": 68,
-      "amount": "293.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 43,
-    "fields": {
-      "recipe": 9,
-      "ingredient": 42,
-      "amount": "70.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 44,
-    "fields": {
-      "recipe": 9,
-      "ingredient": 1,
-      "amount": "129.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 45,
-    "fields": {
-      "recipe": 9,
-      "ingredient": 69,
-      "amount": "76.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 46,
-    "fields": {
-      "recipe": 10,
-      "ingredient": 57,
-      "amount": "224.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 47,
-    "fields": {
-      "recipe": 10,
-      "ingredient": 54,
-      "amount": "254.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 48,
-    "fields": {
-      "recipe": 10,
-      "ingredient": 59,
-      "amount": "134.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 49,
-    "fields": {
-      "recipe": 10,
-      "ingredient": 19,
-      "amount": "129.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 50,
-    "fields": {
-      "recipe": 10,
-      "ingredient": 7,
-      "amount": "200.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 51,
-    "fields": {
-      "recipe": 11,
-      "ingredient": 24,
-      "amount": "262.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 52,
-    "fields": {
-      "recipe": 11,
-      "ingredient": 77,
-      "amount": "84.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 53,
-    "fields": {
-      "recipe": 11,
-      "ingredient": 5,
-      "amount": "78.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 54,
-    "fields": {
-      "recipe": 11,
-      "ingredient": 8,
-      "amount": "190.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 55,
-    "fields": {
-      "recipe": 12,
-      "ingredient": 59,
-      "amount": "99.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 56,
-    "fields": {
-      "recipe": 12,
-      "ingredient": 2,
-      "amount": "208.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 57,
-    "fields": {
-      "recipe": 12,
-      "ingredient": 17,
-      "amount": "204.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 58,
-    "fields": {
-      "recipe": 13,
-      "ingredient": 18,
-      "amount": "67.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 59,
-    "fields": {
-      "recipe": 13,
-      "ingredient": 20,
-      "amount": "259.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 60,
-    "fields": {
-      "recipe": 13,
-      "ingredient": 68,
-      "amount": "175.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 61,
-    "fields": {
-      "recipe": 13,
-      "ingredient": 34,
-      "amount": "58.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 62,
-    "fields": {
-      "recipe": 13,
-      "ingredient": 75,
-      "amount": "59.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 63,
-    "fields": {
-      "recipe": 14,
-      "ingredient": 31,
-      "amount": "183.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 64,
-    "fields": {
-      "recipe": 14,
-      "ingredient": 56,
-      "amount": "184.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 65,
-    "fields": {
-      "recipe": 14,
-      "ingredient": 29,
-      "amount": "282.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 66,
-    "fields": {
-      "recipe": 14,
-      "ingredient": 12,
-      "amount": "183.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 67,
-    "fields": {
-      "recipe": 14,
-      "ingredient": 48,
-      "amount": "200.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 68,
-    "fields": {
-      "recipe": 14,
-      "ingredient": 64,
-      "amount": "282.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 69,
-    "fields": {
-      "recipe": 14,
-      "ingredient": 13,
-      "amount": "128.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 70,
-    "fields": {
-      "recipe": 15,
-      "ingredient": 60,
-      "amount": "87.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 71,
-    "fields": {
-      "recipe": 15,
-      "ingredient": 48,
-      "amount": "250.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 72,
-    "fields": {
-      "recipe": 15,
-      "ingredient": 41,
-      "amount": "63.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 73,
-    "fields": {
-      "recipe": 15,
-      "ingredient": 74,
-      "amount": "188.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 74,
-    "fields": {
-      "recipe": 16,
-      "ingredient": 14,
-      "amount": "198.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 75,
-    "fields": {
-      "recipe": 16,
-      "ingredient": 32,
-      "amount": "81.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 76,
-    "fields": {
-      "recipe": 16,
-      "ingredient": 1,
-      "amount": "212.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 77,
-    "fields": {
-      "recipe": 16,
-      "ingredient": 19,
-      "amount": "188.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 78,
-    "fields": {
-      "recipe": 16,
-      "ingredient": 23,
-      "amount": "291.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 79,
-    "fields": {
-      "recipe": 17,
-      "ingredient": 41,
-      "amount": "109.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 80,
-    "fields": {
-      "recipe": 17,
-      "ingredient": 51,
-      "amount": "155.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 81,
-    "fields": {
-      "recipe": 17,
-      "ingredient": 39,
-      "amount": "195.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 82,
-    "fields": {
-      "recipe": 17,
-      "ingredient": 73,
-      "amount": "132.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 83,
-    "fields": {
-      "recipe": 18,
-      "ingredient": 52,
-      "amount": "170.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 84,
-    "fields": {
-      "recipe": 18,
-      "ingredient": 43,
-      "amount": "151.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 85,
-    "fields": {
-      "recipe": 18,
-      "ingredient": 23,
-      "amount": "168.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 86,
-    "fields": {
-      "recipe": 18,
-      "ingredient": 51,
-      "amount": "72.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 87,
-    "fields": {
-      "recipe": 18,
-      "ingredient": 67,
-      "amount": "138.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 88,
-    "fields": {
-      "recipe": 18,
-      "ingredient": 57,
-      "amount": "107.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 89,
-    "fields": {
-      "recipe": 18,
-      "ingredient": 56,
-      "amount": "269.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 90,
-    "fields": {
-      "recipe": 19,
-      "ingredient": 11,
-      "amount": "131.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 91,
-    "fields": {
-      "recipe": 19,
-      "ingredient": 3,
-      "amount": "218.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 92,
-    "fields": {
-      "recipe": 19,
-      "ingredient": 10,
-      "amount": "182.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 93,
-    "fields": {
-      "recipe": 20,
-      "ingredient": 58,
-      "amount": "260.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 94,
-    "fields": {
-      "recipe": 20,
-      "ingredient": 33,
-      "amount": "173.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 95,
-    "fields": {
-      "recipe": 20,
-      "ingredient": 74,
-      "amount": "262.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 96,
-    "fields": {
-      "recipe": 20,
-      "ingredient": 10,
-      "amount": "298.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 97,
-    "fields": {
-      "recipe": 20,
-      "ingredient": 30,
-      "amount": "243.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 98,
-    "fields": {
-      "recipe": 21,
-      "ingredient": 37,
-      "amount": "57.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 99,
-    "fields": {
-      "recipe": 21,
-      "ingredient": 53,
-      "amount": "138.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 100,
-    "fields": {
-      "recipe": 21,
-      "ingredient": 40,
-      "amount": "162.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 101,
-    "fields": {
-      "recipe": 21,
-      "ingredient": 16,
-      "amount": "167.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 102,
-    "fields": {
-      "recipe": 21,
-      "ingredient": 48,
-      "amount": "226.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 103,
-    "fields": {
-      "recipe": 22,
-      "ingredient": 72,
-      "amount": "208.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 104,
-    "fields": {
-      "recipe": 22,
-      "ingredient": 63,
-      "amount": "158.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 105,
-    "fields": {
-      "recipe": 22,
-      "ingredient": 1,
-      "amount": "166.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 106,
-    "fields": {
-      "recipe": 23,
-      "ingredient": 59,
-      "amount": "91.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 107,
-    "fields": {
-      "recipe": 23,
-      "ingredient": 56,
-      "amount": "276.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 108,
-    "fields": {
-      "recipe": 23,
-      "ingredient": 33,
-      "amount": "141.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 109,
-    "fields": {
-      "recipe": 23,
-      "ingredient": 17,
-      "amount": "246.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 110,
-    "fields": {
-      "recipe": 23,
-      "ingredient": 14,
-      "amount": "274.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 111,
-    "fields": {
-      "recipe": 23,
-      "ingredient": 31,
-      "amount": "122.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 112,
-    "fields": {
-      "recipe": 24,
-      "ingredient": 12,
-      "amount": "92.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 113,
-    "fields": {
-      "recipe": 24,
-      "ingredient": 77,
-      "amount": "209.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 114,
-    "fields": {
-      "recipe": 24,
-      "ingredient": 26,
-      "amount": "217.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 115,
-    "fields": {
-      "recipe": 24,
-      "ingredient": 75,
-      "amount": "200.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 116,
-    "fields": {
-      "recipe": 24,
-      "ingredient": 48,
-      "amount": "287.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 117,
-    "fields": {
-      "recipe": 24,
-      "ingredient": 37,
-      "amount": "71.20",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 118,
-    "fields": {
-      "recipe": 25,
-      "ingredient": 11,
-      "amount": "194.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 119,
-    "fields": {
-      "recipe": 25,
-      "ingredient": 60,
-      "amount": "176.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 120,
-    "fields": {
-      "recipe": 25,
-      "ingredient": 68,
-      "amount": "80.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 121,
-    "fields": {
-      "recipe": 25,
-      "ingredient": 21,
-      "amount": "174.80",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 122,
-    "fields": {
-      "recipe": 25,
-      "ingredient": 63,
-      "amount": "83.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 123,
-    "fields": {
-      "recipe": 26,
-      "ingredient": 15,
-      "amount": "227.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 124,
-    "fields": {
-      "recipe": 26,
-      "ingredient": 74,
-      "amount": "169.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 125,
-    "fields": {
-      "recipe": 26,
-      "ingredient": 69,
-      "amount": "223.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 126,
-    "fields": {
-      "recipe": 26,
-      "ingredient": 24,
-      "amount": "121.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 127,
-    "fields": {
-      "recipe": 26,
-      "ingredient": 43,
-      "amount": "270.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 128,
-    "fields": {
-      "recipe": 27,
-      "ingredient": 9,
-      "amount": "245.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 129,
-    "fields": {
-      "recipe": 27,
-      "ingredient": 2,
-      "amount": "56.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 130,
-    "fields": {
-      "recipe": 27,
-      "ingredient": 48,
-      "amount": "80.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 131,
-    "fields": {
-      "recipe": 27,
-      "ingredient": 27,
-      "amount": "71.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 132,
-    "fields": {
-      "recipe": 27,
-      "ingredient": 45,
-      "amount": "233.40",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 133,
-    "fields": {
-      "recipe": 28,
-      "ingredient": 58,
-      "amount": "118.60",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 134,
-    "fields": {
-      "recipe": 28,
-      "ingredient": 32,
-      "amount": "177.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 135,
-    "fields": {
-      "recipe": 28,
-      "ingredient": 35,
-      "amount": "81.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 136,
-    "fields": {
-      "recipe": 28,
-      "ingredient": 75,
-      "amount": "171.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 137,
-    "fields": {
-      "recipe": 28,
-      "ingredient": 1,
-      "amount": "89.90",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 138,
-    "fields": {
-      "recipe": 28,
-      "ingredient": 6,
-      "amount": "153.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 139,
-    "fields": {
-      "recipe": 29,
-      "ingredient": 15,
-      "amount": "284.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 140,
-    "fields": {
-      "recipe": 29,
-      "ingredient": 32,
-      "amount": "217.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 141,
-    "fields": {
-      "recipe": 29,
-      "ingredient": 38,
-      "amount": "269.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 142,
-    "fields": {
-      "recipe": 30,
-      "ingredient": 68,
-      "amount": "264.00",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 143,
-    "fields": {
-      "recipe": 30,
-      "ingredient": 40,
-      "amount": "225.30",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 144,
-    "fields": {
-      "recipe": 30,
-      "ingredient": 12,
-      "amount": "222.70",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 145,
-    "fields": {
-      "recipe": 30,
-      "ingredient": 35,
-      "amount": "295.10",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipeingredient",
-    "pk": 146,
-    "fields": {
-      "recipe": 30,
-      "ingredient": 7,
-      "amount": "134.50",
-      "unit": 1
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 1,
-    "fields": {
-      "recipe": 1,
-      "step_number": 1,
-      "description": "Полейте Масло оливковое при температуре 233 на протяжении 17 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 2,
-    "fields": {
-      "recipe": 1,
-      "step_number": 2,
-      "description": "Готовьте Манка при температуре 187 на протяжении 23 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 3,
-    "fields": {
-      "recipe": 1,
-      "step_number": 3,
-      "description": "Готовьте Масло оливковое при температуре 204 на протяжении 42 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 4,
-    "fields": {
-      "recipe": 1,
-      "step_number": 4,
-      "description": "Добавьте Манка при температуре 213 на протяжении 6 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 5,
-    "fields": {
-      "recipe": 1,
-      "step_number": 5,
-      "description": "Тушите Сахар в течение 57.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 6,
-    "fields": {
-      "recipe": 1,
-      "step_number": 6,
-      "description": "Влейте Говядина в течение 10.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 7,
-    "fields": {
-      "recipe": 1,
-      "step_number": 7,
-      "description": "Остудите Манка при температуре 281 на протяжении 19 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 8,
-    "fields": {
-      "recipe": 2,
-      "step_number": 1,
-      "description": "Нарежьте Мидии в течение 24.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 9,
-    "fields": {
-      "recipe": 2,
-      "step_number": 2,
-      "description": "Посолите Панировочные сухари и Пряный Панировочные сухари.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 10,
-    "fields": {
-      "recipe": 2,
-      "step_number": 3,
-      "description": "Измельчите Панировочные сухари в течение 36.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 11,
-    "fields": {
-      "recipe": 2,
-      "step_number": 4,
-      "description": "Перемешайте Лосось в течение 40.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 12,
-    "fields": {
-      "recipe": 3,
-      "step_number": 1,
-      "description": "Подавайте Дрожжи и Пикантный Рис.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 13,
-    "fields": {
-      "recipe": 3,
-      "step_number": 2,
-      "description": "Взбейте Кофе в течение 50.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 14,
-    "fields": {
-      "recipe": 3,
-      "step_number": 3,
-      "description": "Накройте крышкой Огурец и Вяленый Чай.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 15,
-    "fields": {
-      "recipe": 3,
-      "step_number": 4,
-      "description": "Подавайте Огурец в течение 1.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 16,
-    "fields": {
-      "recipe": 3,
-      "step_number": 5,
-      "description": "Запеките Кофе при температуре 66 на протяжении 51 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 17,
-    "fields": {
-      "recipe": 3,
-      "step_number": 6,
-      "description": "Полейте Чай и Ягодный Дрожжи.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 18,
-    "fields": {
-      "recipe": 3,
-      "step_number": 7,
-      "description": "Нарежьте Чай и Грибной Перец чёрный.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 19,
-    "fields": {
-      "recipe": 3,
-      "step_number": 8,
-      "description": "Перемешайте Перец чёрный и Шоколадный Кофе.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 20,
-    "fields": {
-      "recipe": 4,
-      "step_number": 1,
-      "description": "Нарежьте Брокколи в течение 6.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 21,
-    "fields": {
-      "recipe": 4,
-      "step_number": 2,
-      "description": "Тушите Брокколи и Медовый Брокколи.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 22,
-    "fields": {
-      "recipe": 4,
-      "step_number": 3,
-      "description": "Перемешайте Брокколи при температуре 205 на протяжении 44 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 23,
-    "fields": {
-      "recipe": 4,
-      "step_number": 4,
-      "description": "Обжарьте Брокколи и Запечённый Баклажан.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 24,
-    "fields": {
-      "recipe": 5,
-      "step_number": 1,
-      "description": "Запеките Панировочные сухари и Грибной Яблоко.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 25,
-    "fields": {
-      "recipe": 5,
-      "step_number": 2,
-      "description": "Посолите Яблоко и Шоколадный Апельсин.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 26,
-    "fields": {
-      "recipe": 5,
-      "step_number": 3,
-      "description": "Измельчите Шоколад в течение 9.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 27,
-    "fields": {
-      "recipe": 5,
-      "step_number": 4,
-      "description": "Измельчите Творог при температуре 159 на протяжении 56 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 28,
-    "fields": {
-      "recipe": 5,
-      "step_number": 5,
-      "description": "Тушите Яйцо и Медовый Апельсин.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 29,
-    "fields": {
-      "recipe": 6,
-      "step_number": 1,
-      "description": "Влейте Чеснок и Паровой Банан.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 30,
-    "fields": {
-      "recipe": 6,
-      "step_number": 2,
-      "description": "Взбейте Сметана и Грибной Банан.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 31,
-    "fields": {
-      "recipe": 6,
-      "step_number": 3,
-      "description": "Взбейте Креветки в течение 43.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 32,
-    "fields": {
-      "recipe": 6,
-      "step_number": 4,
-      "description": "Полейте Банан и Хрустящий Банан.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 33,
-    "fields": {
-      "recipe": 6,
-      "step_number": 5,
-      "description": "Перемешайте Банан в течение 5.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 34,
-    "fields": {
-      "recipe": 7,
-      "step_number": 1,
-      "description": "Дайте настояться Картофель и Варёный Картофель.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 35,
-    "fields": {
-      "recipe": 7,
-      "step_number": 2,
-      "description": "Запеките Паприка в течение 38.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 36,
-    "fields": {
-      "recipe": 7,
-      "step_number": 3,
-      "description": "Перемешайте Кальмары в течение 49.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 37,
-    "fields": {
-      "recipe": 7,
-      "step_number": 4,
-      "description": "Отварите Куркума и Тушёный Паприка.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 38,
-    "fields": {
-      "recipe": 8,
-      "step_number": 1,
-      "description": "Добавьте Фарш мясной в течение 31.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 39,
-    "fields": {
-      "recipe": 8,
-      "step_number": 2,
-      "description": "Нарежьте Масло кокосовое и Шоколадный Масло кокосовое.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 40,
-    "fields": {
-      "recipe": 8,
-      "step_number": 3,
-      "description": "Дайте настояться Морковь и Копчёный Лосось.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 41,
-    "fields": {
-      "recipe": 8,
-      "step_number": 4,
-      "description": "Измельчите Лосось при температуре 299 на протяжении 4 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 42,
-    "fields": {
-      "recipe": 8,
-      "step_number": 5,
-      "description": "Посыпьте Лосось и Ореховый Фарш мясной.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 43,
-    "fields": {
-      "recipe": 8,
-      "step_number": 6,
-      "description": "Остудите Фарш мясной при температуре 146 на протяжении 39 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 44,
-    "fields": {
-      "recipe": 8,
-      "step_number": 7,
-      "description": "Нарежьте Лосось и Карамельный Морковь.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 45,
-    "fields": {
-      "recipe": 8,
-      "step_number": 8,
-      "description": "Остудите Масло кокосовое и Фруктовый Фарш мясной.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 46,
-    "fields": {
-      "recipe": 8,
-      "step_number": 9,
-      "description": "Взбейте Морковь в течение 34.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 47,
-    "fields": {
-      "recipe": 9,
-      "step_number": 1,
-      "description": "Добавьте Яйцо и Нежный Ванилин.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 48,
-    "fields": {
-      "recipe": 9,
-      "step_number": 2,
-      "description": "Добавьте Картофель при температуре 164 на протяжении 25 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 49,
-    "fields": {
-      "recipe": 9,
-      "step_number": 3,
-      "description": "Дайте настояться Шоколад при температуре 260 на протяжении 35 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 50,
-    "fields": {
-      "recipe": 9,
-      "step_number": 4,
-      "description": "Подавайте Картофель в течение 6.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 51,
-    "fields": {
-      "recipe": 10,
-      "step_number": 1,
-      "description": "Нарежьте Груша в течение 51.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 52,
-    "fields": {
-      "recipe": 10,
-      "step_number": 2,
-      "description": "Измельчите Лавровый лист при температуре 101 на протяжении 19 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 53,
-    "fields": {
-      "recipe": 10,
-      "step_number": 3,
-      "description": "Дайте настояться Перец болгарский в течение 14.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 54,
-    "fields": {
-      "recipe": 10,
-      "step_number": 4,
-      "description": "Тушите Масло подсолнечное при температуре 230 на протяжении 36 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 55,
-    "fields": {
-      "recipe": 10,
-      "step_number": 5,
-      "description": "Дайте настояться Перец болгарский и Грибной Перец болгарский.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 56,
-    "fields": {
-      "recipe": 11,
-      "step_number": 1,
-      "description": "Влейте Соевый соус в течение 56.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 57,
-    "fields": {
-      "recipe": 11,
-      "step_number": 2,
-      "description": "Поперчите Куриные бёдра и Сырный Капуста белокочанная.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 58,
-    "fields": {
-      "recipe": 11,
-      "step_number": 3,
-      "description": "Посыпьте Капуста белокочанная и Варёный Помидор.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 59,
-    "fields": {
-      "recipe": 11,
-      "step_number": 4,
-      "description": "Остудите Помидор в течение 11.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 60,
-    "fields": {
-      "recipe": 11,
-      "step_number": 5,
-      "description": "Перемешайте Капуста белокочанная при температуре 264 на протяжении 52 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 61,
-    "fields": {
-      "recipe": 11,
-      "step_number": 6,
-      "description": "Отварите Соевый соус при температуре 75 на протяжении 59 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 62,
-    "fields": {
-      "recipe": 11,
-      "step_number": 7,
-      "description": "Обжарьте Помидор и Медовый Помидор.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 63,
-    "fields": {
-      "recipe": 11,
-      "step_number": 8,
-      "description": "Взбейте Капуста белокочанная при температуре 271 на протяжении 46 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 64,
-    "fields": {
-      "recipe": 12,
-      "step_number": 1,
-      "description": "Перемешайте Морковь при температуре 293 на протяжении 45 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 65,
-    "fields": {
-      "recipe": 12,
-      "step_number": 2,
-      "description": "Добавьте Морковь в течение 39.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 66,
-    "fields": {
-      "recipe": 12,
-      "step_number": 3,
-      "description": "Обжарьте Масло подсолнечное и Рыбный Апельсин.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 67,
-    "fields": {
-      "recipe": 12,
-      "step_number": 4,
-      "description": "Готовьте Апельсин при температуре 67 на протяжении 35 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 68,
-    "fields": {
-      "recipe": 12,
-      "step_number": 5,
-      "description": "Перемешайте Морковь в течение 10.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 69,
-    "fields": {
-      "recipe": 12,
-      "step_number": 6,
-      "description": "Добавьте Апельсин в течение 41.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 70,
-    "fields": {
-      "recipe": 12,
-      "step_number": 7,
-      "description": "Запеките Апельсин в течение 12.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 71,
-    "fields": {
-      "recipe": 12,
-      "step_number": 8,
-      "description": "Тушите Апельсин при температуре 228 на протяжении 10 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 72,
-    "fields": {
-      "recipe": 12,
-      "step_number": 9,
-      "description": "Полейте Морковь и Карамельный Апельсин.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 73,
-    "fields": {
-      "recipe": 13,
-      "step_number": 1,
-      "description": "Поперчите Панировочные сухари и Тушёный Панировочные сухари.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 74,
-    "fields": {
-      "recipe": 13,
-      "step_number": 2,
-      "description": "Подавайте Шоколад при температуре 192 на протяжении 12 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 75,
-    "fields": {
-      "recipe": 13,
-      "step_number": 3,
-      "description": "Тушите Панировочные сухари и Нежный Панировочные сухари.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 76,
-    "fields": {
-      "recipe": 13,
-      "step_number": 4,
-      "description": "Поперчите Панировочные сухари в течение 38.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 77,
-    "fields": {
-      "recipe": 13,
-      "step_number": 5,
-      "description": "Запеките Шоколад в течение 59.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 78,
-    "fields": {
-      "recipe": 13,
-      "step_number": 6,
-      "description": "Остудите Мидии при температуре 133 на протяжении 1 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 79,
-    "fields": {
-      "recipe": 13,
-      "step_number": 7,
-      "description": "Посыпьте Клубника при температуре 142 на протяжении 44 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 80,
-    "fields": {
-      "recipe": 13,
-      "step_number": 8,
-      "description": "Накройте крышкой Лимон при температуре 96 на протяжении 25 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 81,
-    "fields": {
-      "recipe": 13,
-      "step_number": 9,
-      "description": "Подавайте Лимон при температуре 119 на протяжении 29 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 82,
-    "fields": {
-      "recipe": 14,
-      "step_number": 1,
-      "description": "Полейте Колбаса варёная при температуре 159 на протяжении 5 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 83,
-    "fields": {
-      "recipe": 14,
-      "step_number": 2,
-      "description": "Обжарьте Баклажан при температуре 123 на протяжении 25 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 84,
-    "fields": {
-      "recipe": 14,
-      "step_number": 3,
-      "description": "Полейте Колбаса варёная при температуре 188 на протяжении 24 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 85,
-    "fields": {
-      "recipe": 14,
-      "step_number": 4,
-      "description": "Накройте крышкой Баклажан и Свежий Лапша.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 86,
-    "fields": {
-      "recipe": 14,
-      "step_number": 5,
-      "description": "Посолите Свёкла при температуре 120 на протяжении 37 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 87,
-    "fields": {
-      "recipe": 14,
-      "step_number": 6,
-      "description": "Обжарьте Лапша и Тушёный Кофе.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 88,
-    "fields": {
-      "recipe": 15,
-      "step_number": 1,
-      "description": "Готовьте Лапша при температуре 222 на протяжении 30 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 89,
-    "fields": {
-      "recipe": 15,
-      "step_number": 2,
-      "description": "Влейте Лапша в течение 36.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 90,
-    "fields": {
-      "recipe": 15,
-      "step_number": 3,
-      "description": "Измельчите Масло кунжутное в течение 50.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 91,
-    "fields": {
-      "recipe": 15,
-      "step_number": 4,
-      "description": "Посолите Масло сливочное в течение 28.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 92,
-    "fields": {
-      "recipe": 15,
-      "step_number": 5,
-      "description": "Перемешайте Разрыхлитель и Тушёный Разрыхлитель.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 93,
-    "fields": {
-      "recipe": 16,
-      "step_number": 1,
-      "description": "Обжарьте Картофель при температуре 297 на протяжении 56 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 94,
-    "fields": {
-      "recipe": 16,
-      "step_number": 2,
-      "description": "Отварите Курица (филе) в течение 31.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 95,
-    "fields": {
-      "recipe": 16,
-      "step_number": 3,
-      "description": "Поперчите Зелень (укроп, петрушка) в течение 43.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 96,
-    "fields": {
-      "recipe": 16,
-      "step_number": 4,
-      "description": "Дайте настояться Курица (филе) в течение 38.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 97,
-    "fields": {
-      "recipe": 16,
-      "step_number": 5,
-      "description": "Отварите Тунец консервированный при температуре 166 на протяжении 43 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 98,
-    "fields": {
-      "recipe": 16,
-      "step_number": 6,
-      "description": "Дайте настояться Курица (филе) при температуре 145 на протяжении 12 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 99,
-    "fields": {
-      "recipe": 16,
-      "step_number": 7,
-      "description": "Взбейте Тунец консервированный и Кислый Курица (филе).",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 100,
-    "fields": {
-      "recipe": 16,
-      "step_number": 8,
-      "description": "Подавайте Тунец консервированный и Хрустящий Тунец консервированный.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 101,
-    "fields": {
-      "recipe": 17,
-      "step_number": 1,
-      "description": "Измельчите Дрожжи в течение 54.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 102,
-    "fields": {
-      "recipe": 17,
-      "step_number": 2,
-      "description": "Посыпьте Масло сливочное в течение 25.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 103,
-    "fields": {
-      "recipe": 17,
-      "step_number": 3,
-      "description": "Готовьте Дрожжи при температуре 97 на протяжении 58 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 104,
-    "fields": {
-      "recipe": 17,
-      "step_number": 4,
-      "description": "Поперчите Масло сливочное при температуре 229 на протяжении 30 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 105,
-    "fields": {
-      "recipe": 17,
-      "step_number": 5,
-      "description": "Полейте Творог в течение 43.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 106,
-    "fields": {
-      "recipe": 18,
-      "step_number": 1,
-      "description": "Тушите Ванилин в течение 43.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 107,
-    "fields": {
-      "recipe": 18,
-      "step_number": 2,
-      "description": "Обжарьте Сметана в течение 49.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 108,
-    "fields": {
-      "recipe": 18,
-      "step_number": 3,
-      "description": "Отварите Лавровый лист при температуре 224 на протяжении 41 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 109,
-    "fields": {
-      "recipe": 18,
-      "step_number": 4,
-      "description": "Измельчите Соль при температуре 297 на протяжении 41 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 110,
-    "fields": {
-      "recipe": 18,
-      "step_number": 5,
-      "description": "Отварите Ванилин в течение 40.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 111,
-    "fields": {
-      "recipe": 18,
-      "step_number": 6,
-      "description": "Нарежьте Курица (филе) в течение 30.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 112,
-    "fields": {
-      "recipe": 19,
-      "step_number": 1,
-      "description": "Полейте Лук репчатый и Сладкий Тыква.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 113,
-    "fields": {
-      "recipe": 19,
-      "step_number": 2,
-      "description": "Обжарьте Лук репчатый в течение 48.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 114,
-    "fields": {
-      "recipe": 19,
-      "step_number": 3,
-      "description": "Посыпьте Кабачок в течение 57.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 115,
-    "fields": {
-      "recipe": 19,
-      "step_number": 4,
-      "description": "Взбейте Лук репчатый при температуре 60 на протяжении 43 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 116,
-    "fields": {
-      "recipe": 19,
-      "step_number": 5,
-      "description": "Остудите Лук репчатый в течение 30.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 117,
-    "fields": {
-      "recipe": 19,
-      "step_number": 6,
-      "description": "Накройте крышкой Тыква в течение 8.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 118,
-    "fields": {
-      "recipe": 19,
-      "step_number": 7,
-      "description": "Посыпьте Тыква при температуре 79 на протяжении 23 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 119,
-    "fields": {
-      "recipe": 19,
-      "step_number": 8,
-      "description": "Полейте Лук репчатый при температуре 54 на протяжении 8 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 120,
-    "fields": {
-      "recipe": 19,
-      "step_number": 9,
-      "description": "Запеките Лук репчатый при температуре 251 на протяжении 24 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 121,
-    "fields": {
-      "recipe": 20,
-      "step_number": 1,
-      "description": "Нарежьте Креветки в течение 57.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 122,
-    "fields": {
-      "recipe": 20,
-      "step_number": 2,
-      "description": "Обжарьте Тыква при температуре 133 на протяжении 60 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 123,
-    "fields": {
-      "recipe": 20,
-      "step_number": 3,
-      "description": "Измельчите Тыква и Нежный Разрыхлитель.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 124,
-    "fields": {
-      "recipe": 20,
-      "step_number": 4,
-      "description": "Поперчите Лосось в течение 17.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 125,
-    "fields": {
-      "recipe": 21,
-      "step_number": 1,
-      "description": "Полейте Паприка в течение 40.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 126,
-    "fields": {
-      "recipe": 21,
-      "step_number": 2,
-      "description": "Влейте Сыр твёрдый и Сырный Банан.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 127,
-    "fields": {
-      "recipe": 21,
-      "step_number": 3,
-      "description": "Влейте Банан при температуре 113 на протяжении 30 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 128,
-    "fields": {
-      "recipe": 21,
-      "step_number": 4,
-      "description": "Тушите Паприка и Ореховый Лапша.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 129,
-    "fields": {
-      "recipe": 21,
-      "step_number": 5,
-      "description": "Накройте крышкой Сливки в течение 59.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 130,
-    "fields": {
-      "recipe": 21,
-      "step_number": 6,
-      "description": "Посолите Паприка при температуре 151 на протяжении 22 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 131,
-    "fields": {
-      "recipe": 22,
-      "step_number": 1,
-      "description": "Полейте Мука при температуре 200 на протяжении 18 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 132,
-    "fields": {
-      "recipe": 22,
-      "step_number": 2,
-      "description": "Запеките Мука при температуре 116 на протяжении 32 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 133,
-    "fields": {
-      "recipe": 22,
-      "step_number": 3,
-      "description": "Влейте Мука и Кислый Чай.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 134,
-    "fields": {
-      "recipe": 22,
-      "step_number": 4,
-      "description": "Тушите Мука в течение 59.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 135,
-    "fields": {
-      "recipe": 22,
-      "step_number": 5,
-      "description": "Добавьте Чай при температуре 168 на протяжении 51 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 136,
-    "fields": {
-      "recipe": 22,
-      "step_number": 6,
-      "description": "Полейте Чай и Пикантный Чай.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 137,
-    "fields": {
-      "recipe": 22,
-      "step_number": 7,
-      "description": "Готовьте Мука в течение 10.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 138,
-    "fields": {
-      "recipe": 23,
-      "step_number": 1,
-      "description": "Готовьте Ванилин в течение 18.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 139,
-    "fields": {
-      "recipe": 23,
-      "step_number": 2,
-      "description": "Взбейте Ванилин в течение 34.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 140,
-    "fields": {
-      "recipe": 23,
-      "step_number": 3,
-      "description": "Остудите Креветки при температуре 186 на протяжении 22 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 141,
-    "fields": {
-      "recipe": 23,
-      "step_number": 4,
-      "description": "Накройте крышкой Масло подсолнечное при температуре 293 на протяжении 19 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 142,
-    "fields": {
-      "recipe": 23,
-      "step_number": 5,
-      "description": "Готовьте Зелень (укроп, петрушка) и Острый Апельсин.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 143,
-    "fields": {
-      "recipe": 23,
-      "step_number": 6,
-      "description": "Отварите Апельсин при температуре 143 на протяжении 2 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 144,
-    "fields": {
-      "recipe": 23,
-      "step_number": 7,
-      "description": "Посыпьте Масло подсолнечное в течение 28.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 145,
-    "fields": {
-      "recipe": 24,
-      "step_number": 1,
-      "description": "Остудите Лапша в течение 48.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 146,
-    "fields": {
-      "recipe": 24,
-      "step_number": 2,
-      "description": "Добавьте Свинина при температуре 268 на протяжении 10 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 147,
-    "fields": {
-      "recipe": 24,
-      "step_number": 3,
-      "description": "Подавайте Соевый соус при температуре 207 на протяжении 47 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 148,
-    "fields": {
-      "recipe": 24,
-      "step_number": 4,
-      "description": "Обжарьте Баклажан в течение 1.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 149,
-    "fields": {
-      "recipe": 24,
-      "step_number": 5,
-      "description": "Остудите Свинина и Свежий Лапша.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 150,
-    "fields": {
-      "recipe": 24,
-      "step_number": 6,
-      "description": "Перемешайте Лапша в течение 29.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 151,
-    "fields": {
-      "recipe": 24,
-      "step_number": 7,
-      "description": "Взбейте Сливки при температуре 197 на протяжении 51 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 152,
-    "fields": {
-      "recipe": 25,
-      "step_number": 1,
-      "description": "Обжарьте Масло кунжутное при температуре 88 на протяжении 35 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 153,
-    "fields": {
-      "recipe": 25,
-      "step_number": 2,
-      "description": "Дайте настояться Чай и Сладкий Кабачок.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 154,
-    "fields": {
-      "recipe": 25,
-      "step_number": 3,
-      "description": "Полейте Масло кунжутное в течение 35.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 155,
-    "fields": {
-      "recipe": 25,
-      "step_number": 4,
-      "description": "Подавайте Шоколад при температуре 170 на протяжении 23 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 156,
-    "fields": {
-      "recipe": 25,
-      "step_number": 5,
-      "description": "Дайте настояться Шоколад и Хрустящий Шоколад.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 157,
-    "fields": {
-      "recipe": 25,
-      "step_number": 6,
-      "description": "Измельчите Кабачок и Варёный Чай.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 158,
-    "fields": {
-      "recipe": 25,
-      "step_number": 7,
-      "description": "Запеките Виноград при температуре 76 на протяжении 41 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 159,
-    "fields": {
-      "recipe": 25,
-      "step_number": 8,
-      "description": "Перемешайте Кабачок при температуре 215 на протяжении 12 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 160,
-    "fields": {
-      "recipe": 26,
-      "step_number": 1,
-      "description": "Посолите Варенье и Хрустящий Разрыхлитель.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 161,
-    "fields": {
-      "recipe": 26,
-      "step_number": 2,
-      "description": "Посыпьте Разрыхлитель в течение 41.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 162,
-    "fields": {
-      "recipe": 26,
-      "step_number": 3,
-      "description": "Тушите Куриные бёдра при температуре 218 на протяжении 59 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 163,
-    "fields": {
-      "recipe": 26,
-      "step_number": 4,
-      "description": "Измельчите Куриные бёдра при температуре 90 на протяжении 26 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 164,
-    "fields": {
-      "recipe": 26,
-      "step_number": 5,
-      "description": "Подавайте Сметана и Овощной Яблоко.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 165,
-    "fields": {
-      "recipe": 26,
-      "step_number": 6,
-      "description": "Добавьте Варенье в течение 32.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 166,
-    "fields": {
-      "recipe": 26,
-      "step_number": 7,
-      "description": "Тушите Сметана при температуре 284 на протяжении 38 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 167,
-    "fields": {
-      "recipe": 27,
-      "step_number": 1,
-      "description": "Обжарьте Брокколи в течение 1.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 168,
-    "fields": {
-      "recipe": 27,
-      "step_number": 2,
-      "description": "Измельчите Лапша и Карамельный Брокколи.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 169,
-    "fields": {
-      "recipe": 27,
-      "step_number": 3,
-      "description": "Нарежьте Лапша и Шоколадный Морковь.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 170,
-    "fields": {
-      "recipe": 27,
-      "step_number": 4,
-      "description": "Нарежьте Фарш мясной и Шоколадный Морковь.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 171,
-    "fields": {
-      "recipe": 27,
-      "step_number": 5,
-      "description": "Посыпьте Брокколи и Варёный Брокколи.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 172,
-    "fields": {
-      "recipe": 27,
-      "step_number": 6,
-      "description": "Дайте настояться Фарш мясной в течение 2.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 173,
-    "fields": {
-      "recipe": 27,
-      "step_number": 7,
-      "description": "Остудите Лапша и Фаршированный Фарш мясной.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 174,
-    "fields": {
-      "recipe": 27,
-      "step_number": 8,
-      "description": "Влейте Лапша в течение 40.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 175,
-    "fields": {
-      "recipe": 28,
-      "step_number": 1,
-      "description": "Поперчите Картофель в течение 41.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 176,
-    "fields": {
-      "recipe": 28,
-      "step_number": 2,
-      "description": "Перемешайте Кальмары и Сливочный Тунец консервированный.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 177,
-    "fields": {
-      "recipe": 28,
-      "step_number": 3,
-      "description": "Остудите Кальмары и Маринованный Масло оливковое.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 178,
-    "fields": {
-      "recipe": 28,
-      "step_number": 4,
-      "description": "Обжарьте Огурец и Пряный Картофель.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 179,
-    "fields": {
-      "recipe": 28,
-      "step_number": 5,
-      "description": "Обжарьте Масло оливковое при температуре 59 на протяжении 14 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 180,
-    "fields": {
-      "recipe": 28,
-      "step_number": 6,
-      "description": "Тушите Огурец и Пряный Тунец консервированный.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 181,
-    "fields": {
-      "recipe": 28,
-      "step_number": 7,
-      "description": "Влейте Картофель при температуре 73 на протяжении 30 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 182,
-    "fields": {
-      "recipe": 28,
-      "step_number": 8,
-      "description": "Отварите Тунец консервированный в течение 51.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 183,
-    "fields": {
-      "recipe": 29,
-      "step_number": 1,
-      "description": "Дайте настояться Йогурт при температуре 290 на протяжении 4 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 184,
-    "fields": {
-      "recipe": 29,
-      "step_number": 2,
-      "description": "Влейте Яблоко в течение 40.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 185,
-    "fields": {
-      "recipe": 29,
-      "step_number": 3,
-      "description": "Нарежьте Йогурт и Вяленый Тунец консервированный.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 186,
-    "fields": {
-      "recipe": 29,
-      "step_number": 4,
-      "description": "Влейте Яблоко в течение 28.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 187,
-    "fields": {
-      "recipe": 29,
-      "step_number": 5,
-      "description": "Готовьте Яблоко при температуре 223 на протяжении 15 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 188,
-    "fields": {
-      "recipe": 29,
-      "step_number": 6,
-      "description": "Поперчите Яблоко в течение 32.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 189,
-    "fields": {
-      "recipe": 29,
-      "step_number": 7,
-      "description": "Дайте настояться Яблоко при температуре 244 на протяжении 44 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 190,
-    "fields": {
-      "recipe": 30,
-      "step_number": 1,
-      "description": "Запеките Сыр твёрдый и Жареный Сыр твёрдый.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 191,
-    "fields": {
-      "recipe": 30,
-      "step_number": 2,
-      "description": "Тушите Сыр твёрдый в течение 43.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 192,
-    "fields": {
-      "recipe": 30,
-      "step_number": 3,
-      "description": "Нарежьте Сыр твёрдый при температуре 111 на протяжении 37 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 193,
-    "fields": {
-      "recipe": 30,
-      "step_number": 4,
-      "description": "Нарежьте Сыр твёрдый при температуре 138 на протяжении 36 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 194,
-    "fields": {
-      "recipe": 30,
-      "step_number": 5,
-      "description": "Подавайте Баклажан при температуре 132 на протяжении 42 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 195,
-    "fields": {
-      "recipe": 30,
-      "step_number": 6,
-      "description": "Запеките Шоколад в течение 24.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 196,
-    "fields": {
-      "recipe": 30,
-      "step_number": 7,
-      "description": "Готовьте Баклажан в течение 35.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 197,
-    "fields": {
-      "recipe": 30,
-      "step_number": 8,
-      "description": "Измельчите Сыр твёрдый и Ягодный Кальмары.",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.recipestep",
-    "pk": 198,
-    "fields": {
-      "recipe": 30,
-      "step_number": 9,
-      "description": "Накройте крышкой Баклажан при температуре 193 на протяжении 19 .",
-      "image_url": ""
-    }
-  },
-  {
-    "model": "recipes.ingredientnutrition",
-    "pk": 77,
-    "fields": {
-      "ingredient": 71,
-      "protein": "10.30",
-      "fat": "1.00",
-      "carbs": "73.30",
-      "base_weight_g": 100
-    }
-  }
+        "ingredient": 77,
+        "base_weight_g": 100,
+        "protein": "7.0",
+        "fat": "0.0",
+        "carbs": "8.0"
+    }
+}
 ]
