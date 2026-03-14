@@ -1,5 +1,6 @@
 package com.example.smartmeal.feature.home.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,7 +36,9 @@ import java.util.*
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(),
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onLogoutSuccess: () -> Unit,
+    onRecipeClick: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -90,7 +93,8 @@ fun HomeScreen(
                         title = section.title,
                         meal = section.meal,
                         onReplaceClick = { viewModel.replaceMeal(section.id) },
-                        onFavoriteClick = { viewModel.toggleFavorite(section.meal.id) }
+                        onFavoriteClick = { viewModel.toggleFavorite(section.meal.id) },
+                        onRecipeClick = onRecipeClick
                     )
                 }
             }
@@ -105,7 +109,10 @@ fun HomeScreen(
         }
 
         Button(
-            onClick = onLogout,
+            onClick = {
+                onLogout()
+                onLogoutSuccess()
+            },
             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error
@@ -127,6 +134,7 @@ fun MealSection(
     meal: MealItem,
     onReplaceClick: () -> Unit,
     onFavoriteClick: () -> Unit,
+    onRecipeClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -148,18 +156,21 @@ fun MealSection(
             )
         }
 
-        MealCard(
-            title = meal.title,
-            cookTime = meal.cookTime,
-            imageRes = meal.imageRes,
-            isFavorite = meal.isFavorite,
-            onFavoriteClick = onFavoriteClick
-        )
+        Box(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clickable { onRecipeClick(meal.recipeId) }) {
+            MealCard(
+                title = meal.title,
+                cookTime = meal.cookTime,
+                imageRes = meal.imageRes,
+                isFavorite = meal.isFavorite,
+                onFavoriteClick = onFavoriteClick
+            )
+        }
     }
 }
 
 data class MealItem(
     val id: String,
+    val recipeId: Int,
     val title: String,
     val cookTime: String,
     val imageRes: Int,
@@ -308,6 +319,7 @@ class HomeViewModel : ViewModel() {
                     title = title,
                     meal = MealItem(
                         id = item.id.toString(),
+                        recipeId = item.recipe,
                         title = item.recipe_title,
                         cookTime = "25-30 мин",
                         imageRes = R.drawable.food,
