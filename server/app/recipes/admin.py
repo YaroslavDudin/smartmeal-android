@@ -54,7 +54,7 @@ class IngredientCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'name', 'is_base')
     search_fields = ('name',)
 
 

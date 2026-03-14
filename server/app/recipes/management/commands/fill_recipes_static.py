@@ -217,8 +217,12 @@ class Command(BaseCommand):
     help = 'Заполняет базу данных статичными данными (единицы измерения, категории ингредиентов)'
     
     def handle(self, *args, **options):
+        base_units = {'г', 'мл'}
         for unit_name in unit_data:
-            Unit.objects.get_or_create(name=unit_name)
+            Unit.objects.get_or_create(
+                name=unit_name,
+                defaults={'is_base': unit_name in base_units}
+            )
         self.stdout.write(self.style.SUCCESS('Единицы измерения созданы.'))
 
         categories = {}
@@ -229,24 +233,24 @@ class Command(BaseCommand):
 
         ingredients = {}
         for ing_name, cat_name in ingredient_data:
-            ing, _ = Ingredient.objects.get_or_create(
+            ing, _ = Ingredient.objects.update_or_create(
                 name=ing_name,
-                category=categories.get(cat_name),
+                defaults={'category': categories.get(cat_name)}
             )
             ingredients[ing_name] = ing
         self.stdout.write(self.style.SUCCESS('Ингредиенты созданы.'))
 
 
+        units = {u.name: u for u in Unit.objects.all()}
         for ing_name, conversions in conversion_map.items():
             ingredient = ingredients.get(ing_name)
             if not ingredient:
                 self.stdout.write(self.style.WARNING(f'Ингредиент "{ing_name}" не найден, конверсии пропущены'))
                 continue
-
+            
             for unit_name, grams in conversions:
-                try:
-                    unit = Unit.objects.get(name=unit_name)
-                except Unit.DoesNotExist:
+                unit = units.get(unit_name)
+                if not unit:
                     self.stdout.write(self.style.WARNING(
                         f'Единица "{unit_name}" для ингредиента "{ing_name}" не найдена, пропущено'
                     ))
@@ -255,7 +259,7 @@ class Command(BaseCommand):
                 _, created = UnitConversion.objects.update_or_create(
                     ingredient=ingredient,
                     unit=unit,
-                    grams_per_unit=grams
+                    defaults={'grams_per_unit': grams}
                 )
                 if created:
                     self.stdout.write(f'Создана конверсия: 1 {unit_name} = {grams} г для {ing_name}')
@@ -269,10 +273,12 @@ class Command(BaseCommand):
 
             _, created = IngredientNutrition.objects.update_or_create(
                 ingredient=ingredient,
-                base_weight_g=100,
-                protein=protein,
-                carbs=carbs,
-                fat=fat,
+                defaults={
+                    'base_weight_g': 100,
+                    'protein': protein,
+                    'fat': fat,
+                    'carbs': carbs,
+                }
             )
             if created:
                 self.stdout.write(f'Создана запись о пищевой ценности для {ingredient}: б{protein} ж{fat} у{carbs}')

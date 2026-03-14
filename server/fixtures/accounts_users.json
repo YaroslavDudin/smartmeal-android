@@ -3,8 +3,8 @@
     "model": "accounts.user",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$haJTc7YSLvcEYiTvmOwsJx$QGDIOhEmVJekr3rDbVq51HpOyQUuiXvtJ6K8/HQnixY=",
-        "last_login": null,
+        "password": "pbkdf2_sha256$1200000$HSb6Ieljmx4R3VLnpHPNf9$rDx7gcslGkpScVvTW6tndjBnFh+6j0SK1M0OxMtORMM=",
+        "last_login": "2026-03-13T16:13:26.153Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -13,19 +13,21 @@
         "is_active": true,
         "date_joined": "2026-03-10T17:03:34.552Z",
         "email": "test@admin.com",
-        "portion_size": 1,
+        "portion_size": 2,
         "created_at": "2026-03-10T17:03:34.552Z",
-        "diet_type": null,
+        "diet_type": 1,
         "groups": [],
         "user_permissions": [],
-        "allergies": []
+        "allergies": [
+            3
+        ]
     }
 },
 {
     "model": "accounts.user",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$Grr3SE6543SMBKcpRtaZYP$d1hENPVJwCoXATacnOsQCeCS9zclipAbf+jv3sxR6mA=",
+        "password": "pbkdf2_sha256$1200000$erfYYJJIN4e9B72aA5vAgi$nYB8PR1y7ES5l9C4eO0+iU/tPvlCev+iADCQRfy23BU=",
         "last_login": null,
         "is_superuser": false,
         "username": "Юлий",
@@ -50,7 +52,7 @@
     "model": "accounts.user",
     "pk": 3,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$uoQ2cjMxoM8LFn24f17TSr$7hSHjs5QHJ0ubKJt895A5ip+U5MlSrHljxstL19mF6M=",
+        "password": "pbkdf2_sha256$1200000$j6KPpN1LBZPEGaZ63bGsZi$Jh8qd8e3z9b0L0sn7AzIP2UO6eKf1BwxVy1EwHqLPy4=",
         "last_login": null,
         "is_superuser": false,
         "username": "Андрон",
@@ -76,7 +78,7 @@
     "model": "accounts.user",
     "pk": 4,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$6tjOQADuNCtmiqP5PaCk8R$fHHIQLX8LLAWOxHRGRW341W2fVmyxszaHKYGWxnkzR4=",
+        "password": "pbkdf2_sha256$1200000$WqfQpwtLSdPHtGRrpnQXSr$woqLXOYvPG4KmwtFjXzia3ningTRB+qPH8I76FHTIA4=",
         "last_login": null,
         "is_superuser": false,
         "username": "Любовь",
@@ -105,7 +107,7 @@
     "model": "accounts.user",
     "pk": 5,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$MLzSmEU50b5BhMLjBniLEQ$cu/esUMDunhN/Zvd2HkvJrXluraaM8NYm9m9NLN+S5c=",
+        "password": "pbkdf2_sha256$1200000$n447rXctByVkvLWS5VmpqZ$c8Sb3F28s7hDC64r8CalTMRCP4EswjnZaWrk7LQl0KU=",
         "last_login": null,
         "is_superuser": false,
         "username": "Дарья",
@@ -133,7 +135,7 @@
     "model": "accounts.user",
     "pk": 6,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$IA60N0ftMCgEV1sbDX30jR$4wJtf5QXP0ezSUzDh9PEb6TNIOUMBeMEdA84/5q2JSI=",
+        "password": "pbkdf2_sha256$1200000$8ZXMj5hdoqI82kwq48wZ3r$cRXYdrlBGu4kO77oamxuNOewEYw56bdTzvwayFsjmB8=",
         "last_login": null,
         "is_superuser": false,
         "username": "Амос",
@@ -155,7 +157,7 @@
     "model": "accounts.user",
     "pk": 7,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$V1YoIBAEH6hdbZUmDnpKvz$Oh3z3F92CLV9OS2PxhrmN0NFSTb53TAOkVn5B8ZnqK8=",
+        "password": "pbkdf2_sha256$1200000$V1C18dk6zHlMYsIBP8IPvo$1Bm3/IwiYZm5TWn4tjpsiGdvFKG12o9EYtOe6dPy18w=",
         "last_login": null,
         "is_superuser": false,
         "username": "Оксана",
@@ -180,7 +182,7 @@
     "model": "accounts.user",
     "pk": 8,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$bSk4KX8ITtr94lzHXCq0hL$WjQmasNOvpY7MINKOxAaNjAp6DylOOajZyg5BFFGxCw=",
+        "password": "pbkdf2_sha256$1200000$0TqPMjgXetsEfWfh4BSfKB$ApxCP7AM8yzOOSEl88ouV9+bQvzCQ0hyJqJGrcVVDAA=",
         "last_login": null,
         "is_superuser": false,
         "username": "Полина",
@@ -212,7 +214,7 @@
     "model": "accounts.user",
     "pk": 9,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$KUa9dhDHHnklOtjZtWufiB$E3QxNZ4sTSx+SxHv3IfZ+z5fH2WHzY9WI4gZUsd+QvY=",
+        "password": "pbkdf2_sha256$1200000$G46rqSQ7aFWAW5uz9o0H8L$zunODOeEo40u078vtMQoKEWqjiXx4+ZTtghYVA/pbJU=",
         "last_login": null,
         "is_superuser": false,
         "username": "Викентий",
@@ -236,7 +238,7 @@
     "model": "accounts.user",
     "pk": 10,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$6jFDzvWNAEtZmqQQFMCAEO$rUv2RaFTLZvnRiDTQ6J1oh24DNzTfUpDDJz6Crd4h2o=",
+        "password": "pbkdf2_sha256$1200000$YUNqDKsMfk2AXq7y38q7PT$TBq9oJ3QNqQOIwyOFMCm6d7uFxaVzTQgdvz8udyWtdw=",
         "last_login": null,
         "is_superuser": false,
         "username": "Радислав",
@@ -258,7 +260,7 @@
     "model": "accounts.user",
     "pk": 11,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$qeKbn4tn2XDG9vxaX7VhbY$1Qrjhq8mdrxwVkXqUhQs1cLaRZf6i5Kvuw/x7ELDmfw=",
+        "password": "pbkdf2_sha256$1200000$X7prKng10zoDP070bwko3E$79wmsSwkO9cZLOJDNDi5NLCMqXsignwzd7muMxn9nMI=",
         "last_login": null,
         "is_superuser": false,
         "username": "Евгения",
@@ -285,81 +287,81 @@
     "model": "accounts.userfavorite",
     "pk": 1,
     "fields": {
-        "user": 2,
-        "recipe": 6,
-        "created_at": "2026-03-10T17:03:36.736Z"
+        "user": 11,
+        "recipe": 27,
+        "created_at": "2026-03-13T15:46:56.568Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 2,
     "fields": {
-        "user": 2,
-        "recipe": 1,
-        "created_at": "2026-03-10T17:03:36.736Z"
+        "user": 10,
+        "recipe": 12,
+        "created_at": "2026-03-13T15:46:56.574Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 3,
     "fields": {
-        "user": 3,
-        "recipe": 13,
-        "created_at": "2026-03-10T17:03:37.851Z"
+        "user": 10,
+        "recipe": 3,
+        "created_at": "2026-03-13T15:46:56.578Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 4,
     "fields": {
-        "user": 4,
-        "recipe": 15,
-        "created_at": "2026-03-10T17:03:38.933Z"
+        "user": 10,
+        "recipe": 25,
+        "created_at": "2026-03-13T15:46:56.582Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 5,
     "fields": {
-        "user": 5,
-        "recipe": 28,
-        "created_at": "2026-03-10T17:03:40.026Z"
+        "user": 10,
+        "recipe": 29,
+        "created_at": "2026-03-13T15:46:56.586Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 6,
     "fields": {
-        "user": 5,
-        "recipe": 30,
-        "created_at": "2026-03-10T17:03:40.026Z"
+        "user": 9,
+        "recipe": 15,
+        "created_at": "2026-03-13T15:46:56.590Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 7,
     "fields": {
-        "user": 6,
-        "recipe": 25,
-        "created_at": "2026-03-10T17:03:41.104Z"
+        "user": 9,
+        "recipe": 5,
+        "created_at": "2026-03-13T15:46:56.593Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 8,
     "fields": {
-        "user": 6,
-        "recipe": 24,
-        "created_at": "2026-03-10T17:03:41.104Z"
+        "user": 9,
+        "recipe": 16,
+        "created_at": "2026-03-13T15:46:56.596Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 9,
     "fields": {
-        "user": 7,
-        "recipe": 12,
-        "created_at": "2026-03-10T17:03:42.184Z"
+        "user": 8,
+        "recipe": 7,
+        "created_at": "2026-03-13T15:46:56.600Z"
     }
 },
 {
@@ -367,116 +369,179 @@
     "pk": 10,
     "fields": {
         "user": 7,
-        "recipe": 29,
-        "created_at": "2026-03-10T17:03:42.184Z"
+        "recipe": 20,
+        "created_at": "2026-03-13T15:46:56.604Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 11,
     "fields": {
-        "user": 8,
-        "recipe": 25,
-        "created_at": "2026-03-10T17:03:43.270Z"
+        "user": 7,
+        "recipe": 5,
+        "created_at": "2026-03-13T15:46:56.607Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 12,
     "fields": {
-        "user": 9,
-        "recipe": 22,
-        "created_at": "2026-03-10T17:03:44.356Z"
+        "user": 7,
+        "recipe": 27,
+        "created_at": "2026-03-13T15:46:56.610Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 13,
     "fields": {
-        "user": 9,
+        "user": 6,
         "recipe": 30,
-        "created_at": "2026-03-10T17:03:44.356Z"
+        "created_at": "2026-03-13T15:46:56.613Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 14,
     "fields": {
-        "user": 9,
-        "recipe": 29,
-        "created_at": "2026-03-10T17:03:44.356Z"
+        "user": 6,
+        "recipe": 10,
+        "created_at": "2026-03-13T15:46:56.617Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 15,
     "fields": {
-        "user": 9,
-        "recipe": 26,
-        "created_at": "2026-03-10T17:03:44.356Z"
+        "user": 6,
+        "recipe": 6,
+        "created_at": "2026-03-13T15:46:56.623Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 16,
     "fields": {
-        "user": 9,
-        "recipe": 16,
-        "created_at": "2026-03-10T17:03:44.356Z"
+        "user": 6,
+        "recipe": 3,
+        "created_at": "2026-03-13T15:46:56.626Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 17,
     "fields": {
-        "user": 10,
-        "recipe": 21,
-        "created_at": "2026-03-10T17:03:45.433Z"
+        "user": 5,
+        "recipe": 10,
+        "created_at": "2026-03-13T15:46:56.629Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 18,
     "fields": {
-        "user": 10,
-        "recipe": 19,
-        "created_at": "2026-03-10T17:03:45.433Z"
+        "user": 4,
+        "recipe": 8,
+        "created_at": "2026-03-13T15:46:56.633Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 19,
     "fields": {
-        "user": 10,
+        "user": 4,
         "recipe": 10,
-        "created_at": "2026-03-10T17:03:45.433Z"
+        "created_at": "2026-03-13T15:46:56.636Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 20,
     "fields": {
-        "user": 10,
-        "recipe": 22,
-        "created_at": "2026-03-10T17:03:45.433Z"
+        "user": 4,
+        "recipe": 17,
+        "created_at": "2026-03-13T15:46:56.640Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 21,
     "fields": {
-        "user": 11,
-        "recipe": 6,
-        "created_at": "2026-03-10T17:03:46.514Z"
+        "user": 4,
+        "recipe": 14,
+        "created_at": "2026-03-13T15:46:56.643Z"
     }
 },
 {
     "model": "accounts.userfavorite",
     "pk": 22,
     "fields": {
-        "user": 11,
-        "recipe": 13,
-        "created_at": "2026-03-10T17:03:46.514Z"
+        "user": 4,
+        "recipe": 21,
+        "created_at": "2026-03-13T15:46:56.646Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 23,
+    "fields": {
+        "user": 3,
+        "recipe": 18,
+        "created_at": "2026-03-13T15:46:56.650Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 24,
+    "fields": {
+        "user": 3,
+        "recipe": 23,
+        "created_at": "2026-03-13T15:46:56.654Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 25,
+    "fields": {
+        "user": 2,
+        "recipe": 21,
+        "created_at": "2026-03-13T15:46:56.657Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 26,
+    "fields": {
+        "user": 2,
+        "recipe": 30,
+        "created_at": "2026-03-13T15:46:56.660Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 27,
+    "fields": {
+        "user": 2,
+        "recipe": 3,
+        "created_at": "2026-03-13T15:46:56.664Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 28,
+    "fields": {
+        "user": 2,
+        "recipe": 20,
+        "created_at": "2026-03-13T15:46:56.667Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 29,
+    "fields": {
+        "user": 2,
+        "recipe": 23,
+        "created_at": "2026-03-13T15:46:56.671Z"
     }
 }
 ]

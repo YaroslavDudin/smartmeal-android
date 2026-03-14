@@ -290,6 +290,7 @@ class RecipeStep(models.Model):
     step_number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     description = models.TextField()
     image_url = models.CharField(max_length=255, blank=True, null=True, validators=[URLValidator()])
+    timer = models.IntegerField(blank=True, null=True, help_text="Время таймера в минутах")
 
     class Meta:
         db_table = 'recipe_step'
