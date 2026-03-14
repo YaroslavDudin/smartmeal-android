@@ -121,3 +121,42 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             .filter(menu__user=self.request.user)
             .select_related('recipe', 'menu')
         )
+
+    @action(detail=True, methods=['post'])
+    def replace(self, request, pk=None):
+        """
+        POST /api/menus/items/{id}/replace/
+        
+        Заменяет рецепт в MenuItem на случайный другой, подходящий по диете.
+        """
+        menu_item = self.get_object()
+        user = request.user
+        
+        # Получаем диету пользователя
+        diet_type_id = user.diet_type_id
+        
+        # Базовый запрос для подходящих рецептов
+        qs = Recipe.objects.all()
+        if diet_type_id:
+            qs = qs.filter(diet_types__id=diet_type_id)
+            
+        # Исключаем текущий рецепт
+        qs = qs.exclude(id=menu_item.recipe_id)
+        
+        recipe_ids = list(qs.values_list('id', flat=True))
+        
+        if not recipe_ids:
+            return Response(
+                {'detail': 'Нет других подходящих рецептов для замены.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        # Выбираем случайный рецепт
+        new_recipe_id = random.choice(recipe_ids)
+        
+        menu_item.recipe_id = new_recipe_id
+        menu_item.save()
+        
+        # Возвращаем обновленный объект (MenuItemSerializer подтянет новые данные рецепта)
+        serializer = self.get_serializer(menu_item)
+        return Response(serializer.data)

@@ -1,5 +1,7 @@
 package com.example.smartmeal.feature.home.presentation
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -88,7 +90,7 @@ fun HomeScreen(
                 contentPadding = PaddingValues(bottom = 8.dp),
                 modifier = Modifier.weight(1f)
             ) {
-                items(uiState.mealSections) { section ->
+                items(uiState.mealSections, key = { it.id }) { section ->
                     MealSection(
                         title = section.title,
                         meal = section.meal,
@@ -156,14 +158,28 @@ fun MealSection(
             )
         }
 
-        Box(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clickable { onRecipeClick(meal.recipeId) }) {
-            MealCard(
-                title = meal.title,
-                cookTime = meal.cookTime,
-                imageRes = meal.imageRes,
-                isFavorite = meal.isFavorite,
-                onFavoriteClick = onFavoriteClick
-            )
+        // Анимация замены контента (плавное появление нового блюда на месте старого)
+        AnimatedContent(
+            targetState = meal,
+            transitionSpec = {
+                (fadeIn(animationSpec = tween(400)) + scaleIn(initialScale = 0.95f)) togetherWith
+                (fadeOut(animationSpec = tween(400)) + scaleOut(targetScale = 0.95f))
+            },
+            label = "MealReplacementAnimation"
+        ) { targetMeal ->
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .clickable { onRecipeClick(targetMeal.recipeId) }
+            ) {
+                MealCard(
+                    title = targetMeal.title,
+                    cookTime = targetMeal.cookTime,
+                    imageRes = targetMeal.imageRes,
+                    isFavorite = targetMeal.isFavorite,
+                    onFavoriteClick = onFavoriteClick
+                )
+            }
         }
     }
 }
@@ -357,20 +373,52 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun replaceMeal(id: String) {}
-    // fun replaceMeal(sectionId: String) {
-    //     _uiState.update { currentState ->
-    //         val updatedSections = currentState.mealSections.map { section ->
-    //             if (section.id == sectionId) {
-    //                 section.copy(
-    //                     meal = section.meal.copy(
-    //                         title = getRandomMealForSection(sectionId),
-    //                     )
-    //                 )
-    //             } else section
-    //         }
-    //         currentState.copy(mealSections = updatedSections)
-    //     }
-    // }
+    fun replaceMeal(mealType: String) {
+        val state = _uiState.value
+        val menu = state.currentMenu ?: return
+
+        // Находим MenuItem для текущего выбранного дня и указанного типа приема пищи
+        val selectedDayOfWeekIndex = dayNames.indexOf(state.selectedDay)
+        val startDate = try { apiDateFormatter.parse(menu.start_date) } catch (e: Exception) { null } ?: Date()
+        val startCalendar = Calendar.getInstance().apply { time = startDate }
+        val startDayIndex = when(startCalendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> 0
+            Calendar.TUESDAY -> 1
+            Calendar.WEDNESDAY -> 2
+            Calendar.THURSDAY -> 3
+            Calendar.FRIDAY -> 4
+            Calendar.SATURDAY -> 5
+            Calendar.SUNDAY -> 6
+            else -> 0
+        }
+        var offset = selectedDayOfWeekIndex - startDayIndex
+        if (offset < 0) offset += 7
+
+        val menuItem = menu.items?.find { it.day_offset == offset && it.meal_type == mealType } ?: return
+
+        viewModelScope.launch {
+            // Не ставим глобальный isLoading, чтобы не перекрывать весь экран
+            try {
+                val updatedItem = menuRepository.replaceMenuItem(menuItem.id)
+                if (updatedItem != null) {
+                    // Обновляем MenuItem внутри текущего меню в памяти
+                    val updatedItems = menu.items?.map {
+                        if (it.id == updatedItem.id) updatedItem else it
+                    }
+                    val updatedMenu = menu.copy(items = updatedItems)
+                    
+                    _uiState.update { it.copy(currentMenu = updatedMenu) }
+                    // Пересчитываем секции. Благодаря тому, что в LazyColumn 
+                    // мы добавили key = { it.id } и используем AnimatedContent,
+                    // Compose увидит изменение конкретного объекта MealItem и запустит анимацию.
+                    updateMealSections()
+                } else {
+                    _uiState.update { it.copy(error = "Не удалось заменить блюдо") }
+                }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.localizedMessage) }
+            }
+        }
+    }
 
 }

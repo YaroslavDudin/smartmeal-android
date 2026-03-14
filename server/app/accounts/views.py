@@ -76,9 +76,8 @@ class RegisterView(generics.CreateAPIView):
 class LogoutView(generics.GenericAPIView):
     """
     Выход из системы (инвалидация refresh токена).
-    Клиент должен также удалить access и refresh токены из локального хранилища.
     """
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         try:
@@ -89,15 +88,20 @@ class LogoutView(generics.GenericAPIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
-            token = RefreshToken(refresh_token)
-            token.blacklist()
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except Exception:
+                # Если токен уже недействителен или в черном списке, 
+                # считаем, что выход успешно завершен.
+                pass
 
             return Response(
                 {"detail": "Successfully logged out."},
                 status=status.HTTP_200_OK
             )
-        except Exception:
+        except Exception as e:
             return Response(
-                {"detail": "Invalid or expired token."},
+                {"detail": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )

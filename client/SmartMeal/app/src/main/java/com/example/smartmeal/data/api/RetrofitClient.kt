@@ -71,8 +71,8 @@ object RetrofitClient {
                                 
                                 if (refreshResponse.isSuccessful) {
                                     val newAccess = refreshResponse.body()?.access ?: return null
-                                    val currentRefresh = manager.getRefreshToken() ?: refreshToken
-                                    manager.saveTokens(newAccess, currentRefresh)
+                                    val newRefresh = refreshResponse.body()?.refresh ?: refreshToken
+                                    manager.saveTokens(newAccess, newRefresh)
                                     
                                     response.request.newBuilder()
                                         .header("Authorization", "Bearer $newAccess")
