@@ -22,23 +22,17 @@ class Menu(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='menus')
     period = models.CharField(max_length=20, choices=Period.choices)
     start_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Меню для {self.user} (начало: {self.start_date}, длительность: {self.period})'
-    
+        return f'Menu for User ID {self.user_id} (start: {self.start_date}, period: {self.period})'
+
     class Meta:
         db_table = 'menu'
+        ordering = ['-created_at']
 
 
 class MenuItem(models.Model):
-    MEAL_TYPE_CHOICES = [
-        ('beakfast', 'Breakfast'),
-        ('lunch', 'Lunch'),
-        ('dinner', 'Dinner'),
-        ('snack', 'Snack'),
-        ('drink', 'Drink'),
-    ]
-
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='items')
     recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE, related_name='menu_items')
     day_offset = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(6)])
@@ -49,11 +43,16 @@ class MenuItem(models.Model):
         indexes = [
             models.Index(fields=['menu', 'day_offset'], name='menu_day_idx'),
         ]
-    
+        constraints = [
+            models.UniqueConstraint(
+                fields=['menu', 'day_offset', 'meal_type'],
+                name='unique_menu_day_meal_slot'
+            ),
+        ]
+
     @property
     def actual_date(self):
-        start_date = self.menu.start_date
-        return start_date + timedelta(days=self.day_offset)
+        return self.menu.start_date + timedelta(days=self.day_offset)
 
     def __str__(self):
-        return f'{self.get_meal_type_display()} на {self.actual_date} - {self.recipe.title}'
+        return f'{self.get_meal_type_display()} on Day Offset {self.day_offset} for Menu ID {self.menu_id} - Recipe ID {self.recipe_id}'

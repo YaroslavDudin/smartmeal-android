@@ -50,11 +50,13 @@ class UserFavorite(models.Model):
 
     class Meta:
         db_table = 'user_favorite'
-        unique_together = ('user', 'recipe')
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['user', 'created_at']),
         ]
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'recipe'], name='unique_user_favorite_recipe')
+        ]
 
     def __str__(self):
-        return f'{self.user} - {self.recipe}'
+        return f'User ID: {self.user_id} - Recipe ID: {self.recipe_id}'

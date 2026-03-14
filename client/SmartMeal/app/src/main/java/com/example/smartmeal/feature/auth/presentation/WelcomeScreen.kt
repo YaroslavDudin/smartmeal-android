@@ -20,7 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.R
-import com.example.smartmeal.ui.components.buttons.PrimaryButton
+import com.example.smartmeal.ui.components.buttons.SmartMealButton
+import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
+import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.SmartMealTheme
 
 @Composable
@@ -77,11 +79,11 @@ fun WelcomeScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            PrimaryButton(
+            SmartMealButton(
                 text = "Начать",
                 onClick = onNavigateNext,
-                containerColor = Color(0xFF4CAF50),
-                modifier = Modifier.fillMaxWidth()
+                variant = SmartMealButtonVariant.PRIMARY,
+                color = SmartMealButtonColor.GREEN
             )
 
             Spacer(modifier = Modifier.height(40.dp))

@@ -3,7 +3,6 @@ package com.example.smartmeal.ui.components.cards
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material3.Card
@@ -18,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.smartmeal.R
@@ -36,7 +36,7 @@ fun MealCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(90.dp)
+            .height(100.dp)
             .testTag("meal_card"),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -62,16 +62,22 @@ fun MealCard(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.AccessTime,
-                        contentDescription = "cook_time"
+                        contentDescription = "cook_time",
+                        modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(cookTime)
+                    Text(
+                        text = cookTime,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             }
 
@@ -92,7 +98,7 @@ fun MealCard(
 @Composable
 fun MealCardPreview() {
     MealCard(
-        title = "Овсянка",
+        title = "Завтрак \nОвсянка с ягодами",
         cookTime = "15 мин",
         imageRes = R.drawable.food,
         isFavorite = true,

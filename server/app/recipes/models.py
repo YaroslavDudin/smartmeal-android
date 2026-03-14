@@ -1,14 +1,11 @@
-import logging
-from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, URLValidator
 
-logger = logging.getLogger(__name__)
 
 calories_per_gram = {
-    'protein': Decimal('4.0'),
-    'carbs': Decimal('4.0'),
-    'fat': Decimal('9.0'),
+    'protein': 4.0,
+    'carbs': 4.0,
+    'fat': 9.0,
 }
 
 
@@ -94,67 +91,57 @@ class Recipe(models.Model):
 
     diet_types = models.ManyToManyField('accounts.DietType', related_name='recipes')
 
-    # Денормализованные поля для КБЖУ и веса
-    total_weight_g = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
-    total_proteins = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
-    total_fats = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
-    total_carbs = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
-    total_calories = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
-
     class Meta:
         db_table = 'recipe'
         indexes = [
             models.Index(fields=['title']),
-            models.Index(fields=['total_calories']),
         ]
         ordering = ['title']
 
-    def update_totals(self):
-        '''Пересчет денормализованных данных КБЖУ и веса.'''
-        proteins = Decimal('0.00')
-        fats = Decimal('0.00')
-        carbs = Decimal('0.00')
-        calories = Decimal('0.00')
-        weight = Decimal('0.00')
+    @property
+    def total_weight_g(self):
+        '''Общий вес рецепта в граммах (сумма весов ингредиентов)'''
+        return sum(ri.amount_in_grams for ri in self.recipe_ingredients.all())
 
-        # Используем prefetch_related в сигналах или здесь, чтобы избежать N+1
-        ingredients = self.recipe_ingredients.select_related(
-            'ingredient__ingredient_nutrition', 'unit'
-        ).prefetch_related('ingredient__unit_conversions')
+    @property
+    def total_proteins(self):
+        '''Общее количество белков в рецепте (в граммах)'''
+        return sum(ri.protein for ri in self.recipe_ingredients.all())
 
-        for ri in ingredients:
-            weight += ri.amount_in_grams
-            proteins += ri.protein
-            fats += ri.fat
-            carbs += ri.carbs
-            calories += ri.calories
+    @property
+    def total_fats(self):
+        '''Общее количество жиров в рецепте'''
+        return sum(ri.fat for ri in self.recipe_ingredients.all())
 
-        self.total_weight_g = weight
-        self.total_proteins = proteins
-        self.total_fats = fats
-        self.total_carbs = carbs
-        self.total_calories = calories
-        self.save(update_fields=['total_weight_g', 'total_proteins', 'total_fats', 'total_carbs', 'total_calories'])
+    @property
+    def total_carbs(self):
+        '''Общее количество углеводов в рецепте'''
+        return sum(ri.carbs for ri in self.recipe_ingredients.all())
+
+    @property
+    def total_calories(self):
+        '''Общая калорийность рецепта (ккал)'''
+        return sum(ri.calories for ri in self.recipe_ingredients.all())
 
     @property
     def per_serving_proteins(self):
         '''Белки на одну порцию'''
-        return self.total_proteins / self.servings if self.servings else Decimal('0.00')
+        return self.total_proteins / self.servings if self.servings else 0
 
     @property
     def per_serving_fats(self):
         '''Жиры на одну порцию'''
-        return self.total_fats / self.servings if self.servings else Decimal('0.00')
+        return self.total_fats / self.servings if self.servings else 0
 
     @property
     def per_serving_carbs(self):
         '''Углеводы на одну порцию'''
-        return self.total_carbs / self.servings if self.servings else Decimal('0.00')
+        return self.total_carbs / self.servings if self.servings else 0
 
     @property
     def per_serving_calories(self):
         '''Калории на одну порцию'''
-        return self.total_calories / self.servings if self.servings else Decimal('0.00')
+        return self.total_calories / self.servings if self.servings else 0
 
     def __str__(self):
         return self.title
@@ -172,20 +159,11 @@ class RecipeIngredient(models.Model):
         unique_together = ('recipe', 'ingredient', 'unit')
 
     def _get_grams(self):
-        # Оптимизация N+1: ищем в кэше prefetch_related, если он есть
-        conversions = getattr(self.ingredient, 'unit_conversions', None)
-        if conversions is not None and hasattr(conversions, 'all'):
-            # Если данные были загружены через prefetch_related
-            conversion = next((c for c in conversions.all() if c.unit_id == self.unit_id), None)
-        else:
-            # Fallback на прямой запрос (в админке или если забыли prefetch)
-            conversion = UnitConversion.objects.filter(ingredient=self.ingredient, unit=self.unit).first()
-
-        if conversion:
-            return self.amount * conversion.grams_per_unit
-        
-        logger.warning(f"Missing UnitConversion for ingredient {self.ingredient.id} and unit {self.unit_id}")
-        return Decimal('0.00')
+        try:
+            conversion = UnitConversion.objects.get(ingredient=self.ingredient, unit=self.unit)
+            return float(self.amount) * float(conversion.grams_per_unit)
+        except UnitConversion.DoesNotExist:
+                raise ValueError(f'Нет конверсии для {self.ingredient} в {self.unit}')
 
     @property
     def amount_in_grams(self):
@@ -194,31 +172,27 @@ class RecipeIngredient(models.Model):
     @property
     def nutrition(self):
         try:
-            return self.ingredient.ingredient_nutrition
+            return self.ingredient.nutrition
         except IngredientNutrition.DoesNotExist:
-            logger.warning(f"Missing IngredientNutrition for ingredient {self.ingredient.id}")
-            return None
+            raise ValueError(f'Отсутствует пищевая ценность для ингредиента {self.ingredient}')
 
     @property
     def protein(self):
-        nutrition = self.nutrition
-        if not nutrition or nutrition.base_weight_g == 0:
-            return Decimal('0.00')
-        return (self.amount_in_grams / nutrition.base_weight_g) * nutrition.protein
+        grams = self.amount_in_grams
+        nutrition = self.ingredient.ingredient_nutrition
+        return (grams / nutrition.base_weight_g) * nutrition.protein
 
     @property
     def fat(self):
-        nutrition = self.nutrition
-        if not nutrition or nutrition.base_weight_g == 0:
-            return Decimal('0.00')
-        return (self.amount_in_grams / nutrition.base_weight_g) * nutrition.fat
+        grams = self.amount_in_grams
+        nutrition = self.ingredient.ingredient_nutrition
+        return (grams / nutrition.base_weight_g) * nutrition.fat
 
     @property
     def carbs(self):
-        nutrition = self.nutrition
-        if not nutrition or nutrition.base_weight_g == 0:
-            return Decimal('0.00')
-        return (self.amount_in_grams / nutrition.base_weight_g) * nutrition.carbs
+        grams = self.amount_in_grams
+        nutrition = self.ingredient.ingredient_nutrition
+        return (grams / nutrition.base_weight_g) * nutrition.carbs
 
     @property
     def calories(self):

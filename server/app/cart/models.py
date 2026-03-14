@@ -12,11 +12,13 @@ class CartItem(models.Model):
     
     class Meta:
         db_table = 'cart_item'
-        unique_together = ('user', 'ingredient')
         indexes = [
             models.Index(fields=['user', 'ingredient']),
             models.Index(fields=['is_checked']),
         ]
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'ingredient'], name='unique_user_cart_item')
+        ]
 
     def __str__(self):
-        return f'{self.ingredient.name} ({self.total_amount} {self.unit}) для {self.user}'
+        return f'Ingredient ID {self.ingredient_id} ({self.total_amount} Unit ID {self.unit_id}) for User ID {self.user_id}'

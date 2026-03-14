@@ -1,3 +1,4 @@
+from django.db import IntegrityError, transaction
 from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -14,7 +15,22 @@ class RegisterView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+
+        try:
+            with transaction.atomic():
+                user = serializer.save()
+        except IntegrityError as e:
+            if 'username' in str(e).lower():
+                return Response(
+                    {'username': ['Пользователь с таким именем уже был создан']},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            if 'email' in str(e).lower():
+                return Response(
+                    {'email': ['Пользователь с таким email уже был создан']},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            raise e
 
         return Response({
             'user': {
