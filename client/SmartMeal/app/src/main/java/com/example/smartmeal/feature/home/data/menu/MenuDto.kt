@@ -6,17 +6,19 @@ data class MenuDto(
     val id: Int,
     val period: String,      // "day" — дневное, "week" — недельное
     val start_date: String,  // "2026-03-10"
-    val created_at: String   // "2026-03-10T10:00:00Z"
+    val created_at: String,  // "2026-03-10T10:00:00Z"
+    val items: List<MenuItemDto>? = null
 )
 
 // ─── Элементы меню ──────────────────────────────────────────────────────────
 
 data class MenuItemDto(
     val id: Int,
-    val menu: Int,           // ID меню
+    val menu: Int? = null,   // ID меню
     val day_offset: Int,     // 0 = первый день, 1 = второй и т.д.
     val meal_type: String,   // "breakfast", "lunch", "dinner", "snack", "drink"
     val recipe: Int,         // ID рецепта
+    val recipe_title: String, // Название рецепта (уже есть в API бэкенда)
     val actual_date: String  // "2026-03-10" — реальная дата (start_date + day_offset)
 )
 
