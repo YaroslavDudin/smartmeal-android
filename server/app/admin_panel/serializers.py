@@ -112,14 +112,14 @@ class AdminRecipeIngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
         fields = ['id', 'recipe', 'ingredient', 'ingredient_name', 'amount', 'unit', 'unit_name']
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'recipe']
 
 
 class AdminRecipeStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeStep
         fields = ['id', 'recipe', 'step_number', 'description', 'image_url', 'timer']
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'recipe']
 
 
 class AdminRecipeShortSerializer(serializers.ModelSerializer):

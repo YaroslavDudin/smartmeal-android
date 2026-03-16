@@ -56,6 +56,7 @@ export function RecipeFormPage() {
   const [ingredients, setIngredients] = useState<RecipeIngredient[]>([])
   const [steps, setSteps] = useState<RecipeStep[]>([])
   const [imageUploading, setImageUploading] = useState(false)
+  const [stepImageUploading, setStepImageUploading] = useState(false)
   const [deleteIngredientTarget, setDeleteIngredientTarget] = useState<RecipeIngredient | null>(null)
   const [deleteStepTarget, setDeleteStepTarget] = useState<RecipeStep | null>(null)
 
@@ -68,9 +69,10 @@ export function RecipeFormPage() {
   const [addingIngredient, setAddingIngredient] = useState(false)
 
   // New step form state
-  const [newStep, setNewStep] = useState({ description: '', timer: '' })
+  const [newStep, setNewStep] = useState({ description: '', timer: '', image_url: '' })
   const [addingStep, setAddingStep] = useState(false)
   const [imageSearchOpen, setImageSearchOpen] = useState(false)
+  const [stepImageSearchTarget, setStepImageSearchTarget] = useState<number | 'new' | null>(null)
 
   const { data: recipe, isLoading: recipeLoading } = useQuery({
     queryKey: ['recipe', recipeId],
@@ -214,9 +216,10 @@ export function RecipeFormPage() {
         description: newStep.description,
         timer: newStep.timer ? Number(newStep.timer) : null,
         step_number: steps.length + 1,
+        image_url: newStep.image_url || null,
       })
       setSteps((prev) => [...prev, added as RecipeStep])
-      setNewStep({ description: '', timer: '' })
+      setNewStep({ description: '', timer: '', image_url: '' })
       toast.success('Шаг добавлен')
     } catch {
       toast.error('Не удалось добавить шаг')
@@ -246,6 +249,38 @@ export function RecipeFormPage() {
       )
     } catch {
       toast.error('Не удалось обновить шаг')
+    }
+  }
+
+  const handleUpdateStepImage = async (stepId: number, image_url: string) => {
+    if (!recipeId) return
+    try {
+      await updateRecipeStep(recipeId, stepId, { image_url })
+      setSteps((prev) =>
+        prev.map((s) => (s.id === stepId ? { ...s, image_url } : s))
+      )
+    } catch {
+      toast.error('Не удалось обновить изображение шага')
+    }
+  }
+
+  const handleStepImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, stepId: number | 'new') => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setStepImageUploading(true)
+    try {
+      const result = await uploadImage(file)
+      if (stepId === 'new') {
+        setNewStep((prev) => ({ ...prev, image_url: result.url }))
+      } else {
+        await handleUpdateStepImage(stepId, result.url)
+      }
+      toast.success('Изображение загружено')
+    } catch {
+      toast.error('Не удалось загрузить изображение')
+    } finally {
+      setStepImageUploading(false)
+      e.target.value = ''
     }
   }
 
@@ -518,6 +553,28 @@ export function RecipeFormPage() {
                       Таймер: {step.timer} сек
                     </p>
                   )}
+                  {step.image_url && (
+                    <img src={step.image_url} alt={`Шаг ${idx + 1}`} className="mt-2 h-24 rounded-lg object-cover" />
+                  )}
+                  <div className="flex items-center gap-2 mt-1">
+                    <button
+                      type="button"
+                      className="btn-ghost text-xs flex items-center gap-1 text-[var(--text-muted)]"
+                      onClick={() => setStepImageSearchTarget(step.id)}
+                    >
+                      <Search className="w-3 h-3" />
+                      {step.image_url ? 'Изменить фото' : 'Найти фото'}
+                    </button>
+                    <label className="btn-ghost text-xs flex items-center gap-1 text-[var(--text-muted)] cursor-pointer">
+                      {stepImageUploading ? (
+                        <span className="w-3 h-3 border border-current/30 border-t-current rounded-full animate-spin" />
+                      ) : (
+                        <ImageIcon className="w-3 h-3" />
+                      )}
+                      Загрузить
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => void handleStepImageUpload(e, step.id)} />
+                    </label>
+                  </div>
                 </div>
                 <button
                   className="btn-ghost p-1.5 text-red-500 hover:text-red-600 flex-shrink-0"
@@ -540,7 +597,7 @@ export function RecipeFormPage() {
               value={newStep.description}
               onChange={(e) => setNewStep({ ...newStep, description: e.target.value })}
             />
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 flex-wrap">
               <div className="flex items-center gap-2">
                 <Timer className="w-4 h-4 text-[var(--text-muted)]" />
                 <input
@@ -552,6 +609,23 @@ export function RecipeFormPage() {
                   min={0}
                 />
               </div>
+              <button
+                type="button"
+                className="btn-secondary flex-shrink-0"
+                onClick={() => setStepImageSearchTarget('new')}
+              >
+                <Search className="w-4 h-4" />
+                {newStep.image_url ? 'Фото выбрано' : 'Найти фото'}
+              </button>
+              <label className="btn-secondary cursor-pointer flex-shrink-0">
+                {stepImageUploading ? (
+                  <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
+                ) : (
+                  <ImageIcon className="w-4 h-4" />
+                )}
+                Загрузить
+                <input type="file" accept="image/*" className="hidden" onChange={(e) => void handleStepImageUpload(e, 'new')} />
+              </label>
               <button
                 className="btn-secondary"
                 onClick={handleAddStep}
@@ -565,6 +639,9 @@ export function RecipeFormPage() {
                 Добавить шаг
               </button>
             </div>
+            {newStep.image_url && (
+              <img src={newStep.image_url} alt="Фото шага" className="h-20 rounded-lg object-cover" />
+            )}
           </div>
         )}
       </div>
@@ -589,6 +666,19 @@ export function RecipeFormPage() {
         open={imageSearchOpen}
         onClose={() => setImageSearchOpen(false)}
         onSelect={(url) => setValue('image_url', url)}
+      />
+
+      <ImageSearchModal
+        open={stepImageSearchTarget !== null}
+        onClose={() => setStepImageSearchTarget(null)}
+        onSelect={(url) => {
+          if (stepImageSearchTarget === 'new') {
+            setNewStep((prev) => ({ ...prev, image_url: url }))
+          } else if (typeof stepImageSearchTarget === 'number') {
+            void handleUpdateStepImage(stepImageSearchTarget, url)
+          }
+          setStepImageSearchTarget(null)
+        }}
       />
     </div>
   )
