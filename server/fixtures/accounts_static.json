@@ -96,5 +96,12 @@
     "fields": {
         "name": "Халяль"
     }
+},
+{
+    "model": "accounts.diettype",
+    "pk": 6,
+    "fields": {
+        "name": "Классическое"
+    }
 }
 ]
