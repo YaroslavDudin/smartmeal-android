@@ -1,4 +1,4 @@
-package com.example.smartmeal.ui.components.selectors
+﻿package com.example.smartmeal.ui.components.selectors
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.ui.platform.testTag
 import com.example.smartmeal.ui.components.chips_filters.FilterChip
 
 @Composable
@@ -18,7 +19,7 @@ fun DaySelector(
     selectedDay: String,
     onDaySelected: (String) -> Unit
 ) {
-    val days = listOf("Пн","Вт","Ср","Чт","Пт","Сб","Вс")
+    val days = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
 
     val scrollState = rememberScrollState()
 
@@ -30,12 +31,13 @@ fun DaySelector(
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
 
-        days.forEach { day ->
+        days.forEachIndexed { index, day ->
 
             FilterChip(
                 label = day,
                 isSelected = day == selectedDay,
-                onClick = { onDaySelected(day) }
+                onClick = { onDaySelected(day) },
+                modifier = Modifier.testTag("day_chip_$index")
             )
 
         }

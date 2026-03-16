@@ -1,10 +1,9 @@
-package com.example.smartmeal.feature.setup.presentation
+﻿package com.example.smartmeal.feature.setup.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,10 +14,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.verticalScroll
 import com.example.smartmeal.R
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
@@ -51,6 +53,17 @@ fun SetupIntroScreen(
         }
     }
 
+    SetupIntroContent(
+        state = state,
+        onStartSetup = onStartSetup
+    )
+}
+
+@Composable
+fun SetupIntroContent(
+    state: SetupState,
+    onStartSetup: () -> Unit,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -58,7 +71,10 @@ fun SetupIntroScreen(
         contentAlignment = Alignment.Center
     ) {
         if (state.isCheckingUser) {
-            CircularProgressIndicator(color = PrimaryGreen)
+            CircularProgressIndicator(
+                color = PrimaryGreen,
+                modifier = Modifier.testTag("setup_intro_loading")
+            )
         } else {
             Column(
                 modifier = Modifier
@@ -67,7 +83,6 @@ fun SetupIntroScreen(
                     .padding(horizontal = Padding.SCREEN),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 Spacer(modifier = Modifier.weight(0.5f))
 
                 // App logo / illustration
@@ -79,6 +94,7 @@ fun SetupIntroScreen(
                         .widthIn(max = 300.dp) // Ограничиваем макс ширину для планшетов
                         .fillMaxWidth()
                         .weight(3f)
+                        .testTag("setup_intro_image")
                 )
 
                 Spacer(modifier = Modifier.weight(0.5f))
@@ -90,7 +106,8 @@ fun SetupIntroScreen(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
-                    lineHeight = TextSize.HERO_LINE_HEIGHT
+                    lineHeight = TextSize.HERO_LINE_HEIGHT,
+                    modifier = Modifier.testTag("setup_intro_title")
                 )
 
                 Spacer(modifier = Modifier.height(Padding.MEDIUM))
@@ -101,7 +118,8 @@ fun SetupIntroScreen(
                     fontSize = TextSize.BODY,
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.testTag("setup_intro_subtitle")
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -111,7 +129,8 @@ fun SetupIntroScreen(
                     text = "Начать",
                     onClick = onStartSetup,
                     variant = SmartMealButtonVariant.PRIMARY,
-                    color = SmartMealButtonColor.GREEN
+                    color = SmartMealButtonColor.GREEN,
+                    modifier = Modifier.testTag("setup_intro_start")
                 )
 
                 Spacer(modifier = Modifier.height(Padding.BOTTOM_SPACE))

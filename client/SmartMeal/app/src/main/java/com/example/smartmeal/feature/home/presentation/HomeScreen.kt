@@ -1,4 +1,4 @@
-package com.example.smartmeal.feature.home.presentation
+﻿package com.example.smartmeal.feature.home.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -39,6 +40,27 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    HomeScreenContent(
+        modifier = modifier,
+        uiState = uiState,
+        onDaySelected = { day -> viewModel.selectDay(day) },
+        onGenerateMenu = { viewModel.generateMenu() },
+        onReplaceMeal = { id -> viewModel.replaceMeal(id) },
+        onToggleFavorite = { id -> viewModel.toggleFavorite(id) },
+        onLogout = onLogout
+    )
+}
+
+@Composable
+fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    uiState: HomeUiState,
+    onDaySelected: (String) -> Unit,
+    onGenerateMenu: () -> Unit,
+    onReplaceMeal: (String) -> Unit,
+    onToggleFavorite: (String) -> Unit,
+    onLogout: () -> Unit
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -49,32 +71,53 @@ fun HomeScreen(
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 8.dp),
+                .padding(top = 16.dp, bottom = 8.dp)
+                .testTag("home_title"),
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        DaySelector(
-            selectedDay = uiState.selectedDay,
-            onDaySelected = { day -> viewModel.selectDay(day) }
-        )
+        Box(modifier = Modifier.testTag("home_day_selector")) {
+            DaySelector(
+                selectedDay = uiState.selectedDay,
+                onDaySelected = onDaySelected
+            )
+        }
 
         Text(
             text = uiState.selectedDateDisplay,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .testTag("home_date"),
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
         if (uiState.isLoading) {
-            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(modifier = Modifier.testTag("home_loading"))
             }
         } else if (!uiState.hasMenu) {
-            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.testTag("home_empty_state")
+                ) {
                     Text("У вас еще нет меню на эту неделю")
                     Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { viewModel.generateMenu() }) {
+                    Button(
+                        onClick = onGenerateMenu,
+                        modifier = Modifier.testTag("home_generate_button")
+                    ) {
                         Text("Сгенерировать меню")
                     }
                 }
@@ -83,14 +126,18 @@ fun HomeScreen(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(bottom = 8.dp),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag("home_meal_list")
             ) {
                 items(uiState.mealSections) { section ->
                     MealSection(
+                        sectionId = section.id,
                         title = section.title,
                         meal = section.meal,
-                        onReplaceClick = { viewModel.replaceMeal(section.id) },
-                        onFavoriteClick = { viewModel.toggleFavorite(section.meal.id) }
+                        onReplaceClick = { onReplaceMeal(section.id) },
+                        onFavoriteClick = { onToggleFavorite(section.meal.id) },
+                        modifier = Modifier.testTag("home_section_${section.id}")
                     )
                 }
             }
@@ -106,7 +153,10 @@ fun HomeScreen(
 
         Button(
             onClick = onLogout,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .testTag("home_logout_button"),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error
             )
@@ -123,6 +173,7 @@ fun HomeScreen(
 
 @Composable
 fun MealSection(
+    sectionId: String,
     title: String,
     meal: MealItem,
     onReplaceClick: () -> Unit,
@@ -144,7 +195,9 @@ fun MealSection(
                 onClick = onReplaceClick,
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentColor = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier
+                    .size(36.dp)
+                    .testTag("home_replace_${sectionId}")
             )
         }
 
@@ -153,7 +206,10 @@ fun MealSection(
             cookTime = meal.cookTime,
             imageRes = meal.imageRes,
             isFavorite = meal.isFavorite,
-            onFavoriteClick = onFavoriteClick
+            onFavoriteClick = onFavoriteClick,
+            cardTag = "home_meal_card_${meal.id}",
+            titleTag = "home_meal_title_${meal.id}",
+            favoriteTag = "home_favorite_${meal.id}"
         )
     }
 }
@@ -268,13 +324,12 @@ class HomeViewModel : ViewModel() {
             calendar.time = startDate
 
             // Определяем смещение выбранного дня относительно понедельника
-            val selectedDayOfWeekIndex = dayNames.indexOf(state.selectedDay) // 0 (Пн) - 6 (Вс)
+            val selectedDayOfWeekIndex = dayNames.indexOf(state.selectedDay)
 
             // Определяем смещение начала меню относительно понедельника
             val startCalendar = Calendar.getInstance()
             startCalendar.time = startDate
-            var startDayOfWeek = startCalendar.get(Calendar.DAY_OF_WEEK)
-            // Конвертируем в 0 (Пн) - 6 (Вс)
+            val startDayOfWeek = startCalendar.get(Calendar.DAY_OF_WEEK)
             val startDayIndex = when(startDayOfWeek) {
                 Calendar.MONDAY -> 0
                 Calendar.TUESDAY -> 1
@@ -345,20 +400,22 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun replaceMeal(id: String) {}
-    // fun replaceMeal(sectionId: String) {
-    //     _uiState.update { currentState ->
-    //         val updatedSections = currentState.mealSections.map { section ->
-    //             if (section.id == sectionId) {
-    //                 section.copy(
-    //                     meal = section.meal.copy(
-    //                         title = getRandomMealForSection(sectionId),
-    //                     )
-    //                 )
-    //             } else section
-    //         }
-    //         currentState.copy(mealSections = updatedSections)
-    //     }
-    // }
-
+    fun replaceMeal(id: String) {
+        _uiState.update { currentState ->
+            val updatedSections = currentState.mealSections.map { section ->
+                if (section.id == id) {
+                    val currentTitle = section.meal.title
+                    val nextTitle = if (currentTitle.endsWith(" (замена)")) {
+                        currentTitle
+                    } else {
+                        "$currentTitle (замена)"
+                    }
+                    section.copy(meal = section.meal.copy(title = nextTitle))
+                } else {
+                    section
+                }
+            }
+            currentState.copy(mealSections = updatedSections)
+        }
+    }
 }
