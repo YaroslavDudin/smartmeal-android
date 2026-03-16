@@ -568,7 +568,7 @@ class AdminMenuDetailView(generics.RetrieveDestroyAPIView):
 class ImageSearchView(APIView):
     """
     GET /api/admin/search/images/?q=pasta&max=12
-    Searches images via DuckDuckGo and returns a list of image URLs.
+    Pixabay (если PIXABAY_API_KEY задан) или DuckDuckGo с retry.
     """
     permission_classes = [IsAuthenticated, IsSuperuser]
 
@@ -578,22 +578,78 @@ class ImageSearchView(APIView):
             return Response({'detail': 'q parameter is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         max_results = min(int(request.query_params.get('max', 12)), 24)
+        pixabay_key = getattr(settings, 'PIXABAY_API_KEY', '')
 
+        if pixabay_key:
+            return self._search_pixabay(query, max_results, pixabay_key)
+        return self._search_ddgs(query, max_results)
+
+    def _search_pixabay(self, query, max_results, api_key):
+        import urllib.request
+        import urllib.parse
+        import json as json_lib
+
+        params = urllib.parse.urlencode({
+            'key': api_key,
+            'q': query,
+            'image_type': 'photo',
+            'per_page': max_results,
+            'safesearch': 'true',
+        })
+        url = f'https://pixabay.com/api/?{params}'
         try:
-            from duckduckgo_search import DDGS
-            with DDGS() as ddgs:
-                raw = list(ddgs.images(query, max_results=max_results))
+            with urllib.request.urlopen(url, timeout=10) as resp:
+                data = json_lib.loads(resp.read())
             images = [
                 {
-                    'url': r['image'],
-                    'thumbnail': r.get('thumbnail') or r['image'],
-                    'title': r.get('title', ''),
-                    'width': r.get('width'),
-                    'height': r.get('height'),
+                    'url': hit['largeImageURL'],
+                    'thumbnail': hit['previewURL'],
+                    'title': hit.get('tags', ''),
+                    'width': hit.get('imageWidth'),
+                    'height': hit.get('imageHeight'),
                 }
-                for r in raw
-                if r.get('image')
+                for hit in data.get('hits', [])
             ]
-            return Response({'images': images})
+            return Response({'images': images, 'source': 'pixabay'})
         except Exception as exc:
-            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+            return Response(
+                {'detail': f'Ошибка Pixabay: {exc}'},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+    def _search_ddgs(self, query, max_results):
+        import time
+
+        last_exc = None
+        for attempt in range(3):
+            if attempt > 0:
+                time.sleep(attempt * 2)
+            try:
+                from ddgs import DDGS
+                with DDGS() as ddgs:
+                    raw = list(ddgs.images(query, max_results=max_results))
+                images = [
+                    {
+                        'url': r['image'],
+                        'thumbnail': r.get('thumbnail') or r['image'],
+                        'title': r.get('title', ''),
+                        'width': r.get('width'),
+                        'height': r.get('height'),
+                    }
+                    for r in raw
+                    if r.get('image')
+                ]
+                return Response({'images': images, 'source': 'ddgs'})
+            except Exception as exc:
+                last_exc = exc
+
+        is_ratelimit = 'atelimit' in str(last_exc) or '403' in str(last_exc) or 'No results' in str(last_exc)
+        if is_ratelimit:
+            return Response(
+                {
+                    'detail': 'Поиск временно недоступен (rate limit). Подождите 1-2 минуты и попробуйте снова, или добавьте PIXABAY_API_KEY в .env для надёжного поиска.',
+                    'rate_limited': True,
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+        return Response({'detail': str(last_exc)}, status=status.HTTP_502_BAD_GATEWAY)

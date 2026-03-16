@@ -23,11 +23,33 @@ export interface ImageSearchResult {
   height?: number
 }
 
-export async function searchImages(query: string, max = 12): Promise<ImageSearchResult[]> {
-  const response = await api.get<{ images: ImageSearchResult[] }>('/search/images/', {
-    params: { q: query, max },
-  })
-  return response.data.images
+export interface ImageSearchResponse {
+  images: ImageSearchResult[]
+  source?: 'pixabay' | 'ddgs'
+}
+
+export class ImageSearchRateLimitError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'ImageSearchRateLimitError'
+  }
+}
+
+export async function searchImages(query: string, max = 12): Promise<ImageSearchResponse> {
+  try {
+    const response = await api.get<ImageSearchResponse>('/search/images/', {
+      params: { q: query, max },
+    })
+    return response.data
+  } catch (err: unknown) {
+    const e = err as { response?: { status?: number; data?: { detail?: string; rate_limited?: boolean } } }
+    if (e.response?.status === 503 || e.response?.data?.rate_limited) {
+      throw new ImageSearchRateLimitError(
+        e.response?.data?.detail ?? 'Поиск временно недоступен. Подождите 1-2 минуты.'
+      )
+    }
+    throw err
+  }
 }
 
 export async function uploadImage(file: File): Promise<{ url: string }> {

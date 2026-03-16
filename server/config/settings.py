@@ -187,3 +187,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # нужно для `python manage.py collectstatic` в production
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
+
+# Поиск изображений - бесплатный ключ: https://pixabay.com/api/docs/
+PIXABAY_API_KEY = os.getenv('PIXABAY_API_KEY', '')

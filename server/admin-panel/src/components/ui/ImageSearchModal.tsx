@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
-import { Search, X, Check, Loader2, ImageOff } from 'lucide-react'
-import { searchImages } from '@/api/auth'
+import { Search, X, Check, Loader2, ImageOff, AlertTriangle } from 'lucide-react'
+import { searchImages, ImageSearchRateLimitError } from '@/api/auth'
 import type { ImageSearchResult } from '@/api/auth'
 
 interface ImageSearchModalProps {
@@ -14,6 +14,7 @@ export function ImageSearchModal({ open, onClose, onSelect }: ImageSearchModalPr
   const [images, setImages] = useState<ImageSearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [isRateLimit, setIsRateLimit] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
   const inputRef = useRef<HTMLInputElement>(null)
@@ -25,17 +26,23 @@ export function ImageSearchModal({ open, onClose, onSelect }: ImageSearchModalPr
     if (!q) return
     setLoading(true)
     setError('')
+    setIsRateLimit(false)
     setImages([])
     setSelected(null)
     setFailedImages(new Set())
     try {
-      const results = await searchImages(q, 12)
-      if (results.length === 0) {
+      const result = await searchImages(q, 12)
+      if (result.images.length === 0) {
         setError('Ничего не найдено. Попробуйте другой запрос.')
       }
-      setImages(results)
-    } catch {
-      setError('Ошибка поиска. Попробуйте позже.')
+      setImages(result.images ?? [])
+    } catch (e: unknown) {
+      if (e instanceof ImageSearchRateLimitError) {
+        setIsRateLimit(true)
+        setError((e as ImageSearchRateLimitError).message)
+      } else {
+        setError('Ошибка поиска. Попробуйте позже.')
+      }
     } finally {
       setLoading(false)
     }
@@ -57,6 +64,7 @@ export function ImageSearchModal({ open, onClose, onSelect }: ImageSearchModalPr
     setImages([])
     setSelected(null)
     setError('')
+    setIsRateLimit(false)
     setFailedImages(new Set())
     onClose()
   }
