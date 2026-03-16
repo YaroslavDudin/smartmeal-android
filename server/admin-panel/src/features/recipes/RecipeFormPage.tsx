@@ -33,6 +33,7 @@ import { toast } from '@/components/ui/Toaster'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { ImageSearchModal } from '@/components/ui/ImageSearchModal'
+import { RecipePhonePreview } from '@/components/ui/RecipePreviewModal'
 import { IngredientAutocomplete } from '@/components/ui/IngredientAutocomplete'
 import type { RecipeIngredient, RecipeStep } from '@/types'
 
@@ -295,13 +296,27 @@ export function RecipeFormPage() {
     )
   }
 
+  const previewData = {
+    title: watch('title') || '',
+    image_url: watchedImageUrl,
+    servings: watch('servings') || recipe?.servings || 1,
+    cook_time: watch('cook_time') || recipe?.cook_time || 0,
+    total_calories: recipe?.total_calories ?? 0,
+    total_proteins: recipe?.total_proteins ?? 0,
+    total_fats: recipe?.total_fats ?? 0,
+    total_carbs: recipe?.total_carbs ?? 0,
+    ingredients,
+    steps,
+  }
+
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="flex gap-8 items-start">
+    <div className="flex-1 min-w-0 space-y-6">
       <div className="flex items-center gap-4">
         <button className="btn-ghost p-2" onClick={() => navigate('/recipes')}>
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div>
+        <div className="flex-1">
           <h1 className="text-2xl font-bold text-[var(--text-primary)]">
             {isEdit ? 'Редактировать рецепт' : 'Новый рецепт'}
           </h1>
@@ -680,6 +695,15 @@ export function RecipeFormPage() {
           setStepImageSearchTarget(null)
         }}
       />
+
+    </div>
+
+    {isEdit && (
+      <div className="hidden xl:block sticky top-6 flex-shrink-0">
+        <p className="text-xs text-[var(--text-muted)] text-center mb-2">Предпросмотр</p>
+        <RecipePhonePreview data={previewData} />
+      </div>
+    )}
     </div>
   )
 }
