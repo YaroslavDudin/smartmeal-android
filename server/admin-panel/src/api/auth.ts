@@ -15,6 +15,21 @@ export async function getAdminMe() {
   return response.data
 }
 
+export interface ImageSearchResult {
+  url: string
+  thumbnail: string
+  title: string
+  width?: number
+  height?: number
+}
+
+export async function searchImages(query: string, max = 12): Promise<ImageSearchResult[]> {
+  const response = await api.get<{ images: ImageSearchResult[] }>('/search/images/', {
+    params: { q: query, max },
+  })
+  return response.data.images
+}
+
 export async function uploadImage(file: File): Promise<{ url: string }> {
   const formData = new FormData()
   formData.append('image', file)

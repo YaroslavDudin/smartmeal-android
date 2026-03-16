@@ -559,3 +559,41 @@ class AdminMenuDetailView(generics.RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticated, IsSuperuser]
     serializer_class = AdminMenuSerializer
     queryset = Menu.objects.select_related('user').prefetch_related('items__recipe')
+
+
+# ---------------------------------------------------------------------------
+# Image search
+# ---------------------------------------------------------------------------
+
+class ImageSearchView(APIView):
+    """
+    GET /api/admin/search/images/?q=pasta&max=12
+    Searches images via DuckDuckGo and returns a list of image URLs.
+    """
+    permission_classes = [IsAuthenticated, IsSuperuser]
+
+    def get(self, request):
+        query = request.query_params.get('q', '').strip()
+        if not query:
+            return Response({'detail': 'q parameter is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        max_results = min(int(request.query_params.get('max', 12)), 24)
+
+        try:
+            from duckduckgo_search import DDGS
+            with DDGS() as ddgs:
+                raw = list(ddgs.images(query, max_results=max_results))
+            images = [
+                {
+                    'url': r['image'],
+                    'thumbnail': r.get('thumbnail') or r['image'],
+                    'title': r.get('title', ''),
+                    'width': r.get('width'),
+                    'height': r.get('height'),
+                }
+                for r in raw
+                if r.get('image')
+            ]
+            return Response({'images': images})
+        except Exception as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)

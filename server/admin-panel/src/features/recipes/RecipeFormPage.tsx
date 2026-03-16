@@ -14,6 +14,7 @@ import {
   Clock,
   Users,
   Timer,
+  Search,
 } from 'lucide-react'
 import {
   getRecipe,
@@ -25,12 +26,14 @@ import {
   updateRecipeStep,
   deleteRecipeStep,
 } from '@/api/recipes'
-import { getIngredients, getUnits } from '@/api/ingredients'
+import { getUnits } from '@/api/ingredients'
 import { getDietTypes } from '@/api/users'
 import { uploadImage } from '@/api/auth'
 import { toast } from '@/components/ui/Toaster'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
+import { ImageSearchModal } from '@/components/ui/ImageSearchModal'
+import { IngredientAutocomplete } from '@/components/ui/IngredientAutocomplete'
 import type { RecipeIngredient, RecipeStep } from '@/types'
 
 const recipeSchema = z.object({
@@ -67,16 +70,12 @@ export function RecipeFormPage() {
   // New step form state
   const [newStep, setNewStep] = useState({ description: '', timer: '' })
   const [addingStep, setAddingStep] = useState(false)
+  const [imageSearchOpen, setImageSearchOpen] = useState(false)
 
   const { data: recipe, isLoading: recipeLoading } = useQuery({
     queryKey: ['recipe', recipeId],
     queryFn: () => getRecipe(recipeId!),
     enabled: !!recipeId,
-  })
-
-  const { data: allIngredients } = useQuery({
-    queryKey: ['ingredients-all'],
-    queryFn: () => getIngredients({ page: 1 }),
   })
 
   const { data: units } = useQuery({
@@ -330,12 +329,20 @@ export function RecipeFormPage() {
                 <ImageIcon className="w-3.5 h-3.5 inline mr-1" />
                 Изображение
               </label>
-              <div className="flex gap-3 items-start">
+              <div className="flex gap-2 items-start flex-wrap sm:flex-nowrap">
                 <input
                   {...register('image_url')}
-                  className="input flex-1"
+                  className="input flex-1 min-w-0"
                   placeholder="https://..."
                 />
+                <button
+                  type="button"
+                  className="btn-secondary flex-shrink-0"
+                  onClick={() => setImageSearchOpen(true)}
+                >
+                  <Search className="w-4 h-4" />
+                  Найти в интернете
+                </button>
                 <label className="btn-secondary cursor-pointer flex-shrink-0">
                   {imageUploading ? (
                     <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
@@ -437,16 +444,10 @@ export function RecipeFormPage() {
           <div className="border border-dashed border-[var(--border-color)] rounded-lg p-4 space-y-3">
             <p className="text-sm font-medium text-[var(--text-secondary)]">Добавить ингредиент</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <select
-                className="input"
+              <IngredientAutocomplete
                 value={newIngredient.ingredient}
-                onChange={(e) => setNewIngredient({ ...newIngredient, ingredient: e.target.value })}
-              >
-                <option value="">Выберите ингредиент</option>
-                {allIngredients?.results?.map((ing) => (
-                  <option key={ing.id} value={ing.id}>{ing.name}</option>
-                ))}
-              </select>
+                onChange={(id, _name) => setNewIngredient({ ...newIngredient, ingredient: id })}
+              />
               <input
                 className="input"
                 type="number"
@@ -582,6 +583,12 @@ export function RecipeFormPage() {
         description="Шаг будет удалён из рецепта безвозвратно."
         onConfirm={handleDeleteStep}
         onCancel={() => setDeleteStepTarget(null)}
+      />
+
+      <ImageSearchModal
+        open={imageSearchOpen}
+        onClose={() => setImageSearchOpen(false)}
+        onSelect={(url) => setValue('image_url', url)}
       />
     </div>
   )

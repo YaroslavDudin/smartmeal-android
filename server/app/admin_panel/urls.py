@@ -6,6 +6,8 @@ from .views import (
     AdminMeView,
     # Upload
     ImageUploadView,
+    # Image search
+    ImageSearchView,
     # Stats
     StatsView,
     # Recipes
@@ -45,6 +47,8 @@ urlpatterns = [
 
     # Upload
     path('upload/image/', ImageUploadView.as_view(), name='admin-upload-image'),
+    # Image search
+    path('search/images/', ImageSearchView.as_view(), name='admin-image-search'),
 
     # Stats
     path('stats/', StatsView.as_view(), name='admin-stats'),

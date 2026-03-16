@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -47,6 +47,8 @@ export function IngredientFormPage() {
   const [addingConversion, setAddingConversion] = useState(false)
   const [deleteConversionTarget, setDeleteConversionTarget] = useState<UnitConversion | null>(null)
   const [hasNutrition, setHasNutrition] = useState(false)
+  const [similarWarning, setSimilarWarning] = useState<{ names: string[]; pendingData: IngredientFormData | null }>({ names: [], pendingData: null })
+
 
   const { data: ingredient, isLoading } = useQuery({
     queryKey: ['ingredient', ingredientId],
@@ -89,18 +91,45 @@ export function IngredientFormPage() {
     }
   }, [ingredient, setValue])
 
+  const checkSimilar = useCallback(async (name: string): Promise<string[]> => {
+    if (!name.trim() || name.trim().length < 3) return []
+    try {
+      const res = await api.get<{ results: { id: number; name: string }[] }>('/ingredients/', {
+        params: { search: name.trim(), page_size: 5 },
+      })
+      return res.data.results
+        .filter((i) => i.id !== ingredientId)
+        .map((i) => i.name)
+    } catch {
+      return []
+    }
+  }, [ingredientId])
+
+  const doSave = useCallback(async (data: IngredientFormData) => {
+    const payload = {
+      name: data.name,
+      category: data.category || null,
+      nutrition: hasNutrition ? data.nutrition : null,
+    }
+    if (isEdit && ingredientId) {
+      return updateIngredient(ingredientId, payload as unknown as Parameters<typeof updateIngredient>[1])
+    }
+    return createIngredient(payload as unknown as Parameters<typeof createIngredient>[0])
+  }, [isEdit, ingredientId, hasNutrition])
+
+  const handleFormSubmit = async (data: IngredientFormData) => {
+    if (!isEdit) {
+      const similar = await checkSimilar(data.name)
+      if (similar.length > 0) {
+        setSimilarWarning({ names: similar, pendingData: data })
+        return
+      }
+    }
+    saveMutation.mutate(data)
+  }
+
   const saveMutation = useMutation({
-    mutationFn: async (data: IngredientFormData) => {
-      const payload = {
-        name: data.name,
-        category: data.category || null,
-        nutrition: hasNutrition ? data.nutrition : null,
-      }
-      if (isEdit && ingredientId) {
-        return updateIngredient(ingredientId, payload as unknown as Parameters<typeof updateIngredient>[1])
-      }
-      return createIngredient(payload as unknown as Parameters<typeof createIngredient>[0])
-    },
+    mutationFn: doSave,
     onSuccess: (saved) => {
       toast.success(isEdit ? 'Ингредиент обновлён' : 'Ингредиент создан')
       void queryClient.invalidateQueries({ queryKey: ['ingredients'] })
@@ -177,7 +206,7 @@ export function IngredientFormPage() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit((data) => saveMutation.mutate(data))}>
+      <form onSubmit={handleSubmit((data) => void handleFormSubmit(data))}>
         <div className="card p-6 space-y-5">
           <h2 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
             <Apple className="w-4 h-4 text-green-600" />
@@ -391,6 +420,18 @@ export function IngredientFormPage() {
         description={`Конвертация для единицы "${deleteConversionTarget?.unit_name}" будет удалена.`}
         onConfirm={handleDeleteConversion}
         onCancel={() => setDeleteConversionTarget(null)}
+      />
+
+      <ConfirmDialog
+        open={similarWarning.names.length > 0}
+        variant="warning"
+        title="Похожий ингредиент уже существует"
+        description={`В базе уже есть: ${similarWarning.names.join(', ')}. Вы уверены, что хотите добавить новый?`}
+        onConfirm={() => {
+          if (similarWarning.pendingData) saveMutation.mutate(similarWarning.pendingData)
+          setSimilarWarning({ names: [], pendingData: null })
+        }}
+        onCancel={() => setSimilarWarning({ names: [], pendingData: null })}
       />
     </div>
   )
