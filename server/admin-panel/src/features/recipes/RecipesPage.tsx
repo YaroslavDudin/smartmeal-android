@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { Plus, ChefHat, Clock, Flame, Pencil, Trash2 } from 'lucide-react'
-import { getRecipes, deleteRecipe } from '@/api/recipes'
+import { Plus, ChefHat, Clock, Flame, Pencil, Trash2, Eye } from 'lucide-react'
+import { getRecipes, deleteRecipe, getRecipe } from '@/api/recipes'
 import { getDietTypes } from '@/api/users'
 import { SearchInput } from '@/components/ui/SearchInput'
 import { Pagination } from '@/components/ui/Pagination'
@@ -10,6 +10,7 @@ import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { TableSkeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { toast } from '@/components/ui/Toaster'
+import { RecipePreviewModal } from '@/components/ui/RecipePreviewModal'
 import { truncate } from '@/lib/utils'
 import type { RecipeShort } from '@/types'
 
@@ -22,6 +23,14 @@ export function RecipesPage() {
   const [page, setPage] = useState(1)
   const [dietFilter, setDietFilter] = useState<number | undefined>()
   const [deleteTarget, setDeleteTarget] = useState<RecipeShort | null>(null)
+  const [previewId, setPreviewId] = useState<number | null>(null)
+
+  const { data: previewRecipe, isFetching: previewLoading } = useQuery({
+    queryKey: ['recipe', previewId],
+    queryFn: () => getRecipe(previewId!),
+    enabled: !!previewId,
+    staleTime: 60_000,
+  })
 
   const { data, isLoading } = useQuery({
     queryKey: ['recipes', { search, page, dietFilter }],
@@ -129,21 +138,30 @@ export function RecipesPage() {
                   >
                     <td className="table-cell">
                       <div className="flex items-center gap-3">
-                        {recipe.image_url ? (
-                          <img
-                            src={recipe.image_url}
-                            alt={recipe.title}
-                            className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-lg bg-[var(--bg-tertiary)] flex items-center justify-center flex-shrink-0">
-                            <ChefHat className="w-5 h-5 text-[var(--text-muted)]" />
-                          </div>
-                        )}
+                        <button
+                          className="flex-shrink-0 focus:outline-none"
+                          onClick={() => setPreviewId(recipe.id)}
+                          title="Предпросмотр"
+                        >
+                          {recipe.image_url ? (
+                            <img
+                              src={recipe.image_url}
+                              alt={recipe.title}
+                              className="w-10 h-10 rounded-lg object-cover hover:opacity-80 transition-opacity"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg bg-[var(--bg-tertiary)] flex items-center justify-center hover:opacity-80 transition-opacity">
+                              <ChefHat className="w-5 h-5 text-[var(--text-muted)]" />
+                            </div>
+                          )}
+                        </button>
                         <div>
-                          <p className="font-medium text-[var(--text-primary)]">
+                          <button
+                            className="font-medium text-[var(--text-primary)] hover:text-primary-500 transition-colors text-left"
+                            onClick={() => setPreviewId(recipe.id)}
+                          >
                             {truncate(recipe.title, 40)}
-                          </p>
+                          </button>
                           <p className="text-xs text-[var(--text-muted)]">#{recipe.id}</p>
                         </div>
                       </div>
@@ -173,6 +191,13 @@ export function RecipesPage() {
                     </td>
                     <td className="table-cell text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <button
+                          className="btn-ghost p-2 text-[var(--text-muted)]"
+                          onClick={() => setPreviewId(recipe.id)}
+                          title="Предпросмотр"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
                         <button
                           className="btn-ghost p-2"
                           onClick={() => navigate(`/recipes/${recipe.id}`)}
@@ -213,6 +238,24 @@ export function RecipesPage() {
         onConfirm={() => deleteTarget && deleteMutation.mutate(deleteTarget.id)}
         onCancel={() => setDeleteTarget(null)}
         loading={deleteMutation.isPending}
+      />
+
+      <RecipePreviewModal
+        open={!!previewId}
+        onClose={() => setPreviewId(null)}
+        loading={previewLoading || !previewRecipe}
+        data={previewRecipe ? {
+          title: previewRecipe.title,
+          image_url: previewRecipe.image_url,
+          servings: previewRecipe.servings,
+          cook_time: previewRecipe.cook_time,
+          total_calories: previewRecipe.total_calories,
+          total_proteins: previewRecipe.total_proteins,
+          total_fats: previewRecipe.total_fats,
+          total_carbs: previewRecipe.total_carbs,
+          ingredients: previewRecipe.ingredients,
+          steps: previewRecipe.steps,
+        } : undefined}
       />
     </div>
   )
