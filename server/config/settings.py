@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'app.recipes',
     'app.menus',
     'app.cart',
+    'app.admin_panel',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -81,6 +82,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://10.0.2.2:8000',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
+    'http://localhost:5173',
 ]
 if DEBUG:
     # В DEBUG открываем все origins — удобно при тестировании с физического телефона.

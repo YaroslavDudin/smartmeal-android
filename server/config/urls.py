@@ -9,6 +9,7 @@ urlpatterns = [
     path('api/recipes/', include('app.recipes.urls')),
     path('api/menus/', include('app.menus.urls')),
     path('api/cart/', include('app.cart.urls')),
+    path('api/admin/', include('app.admin_panel.urls')),
 ]
 
 if settings.DEBUG:
