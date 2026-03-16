@@ -153,8 +153,8 @@ class ImageUploadView(APIView):
             for chunk in image_file.chunks():
                 destination.write(chunk)
 
-        relative_url = f'{settings.MEDIA_URL}recipes/{filename}'
-        return Response({'url': relative_url}, status=status.HTTP_201_CREATED)
+        absolute_url = f'{request.scheme}://{request.get_host()}/media/recipes/{filename}'
+        return Response({'url': absolute_url}, status=status.HTTP_201_CREATED)
 
 
 # ---------------------------------------------------------------------------
