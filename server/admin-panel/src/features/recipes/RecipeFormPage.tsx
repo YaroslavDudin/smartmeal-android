@@ -20,7 +20,6 @@ import {
   createRecipe,
   updateRecipe,
   addRecipeIngredient,
-  updateRecipeIngredient,
   deleteRecipeIngredient,
   addRecipeStep,
   updateRecipeStep,

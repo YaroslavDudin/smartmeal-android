@@ -31,10 +31,6 @@
     --sidebar-hover: #0f172a;
   }
 
-  * {
-    @apply border-border;
-  }
-
   body {
     @apply bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans antialiased;
     transition: background-color 0.2s ease, color 0.2s ease;

@@ -97,9 +97,9 @@ export function IngredientFormPage() {
         nutrition: hasNutrition ? data.nutrition : null,
       }
       if (isEdit && ingredientId) {
-        return updateIngredient(ingredientId, payload)
+        return updateIngredient(ingredientId, payload as unknown as Parameters<typeof updateIngredient>[1])
       }
-      return createIngredient(payload)
+      return createIngredient(payload as unknown as Parameters<typeof createIngredient>[0])
     },
     onSuccess: (saved) => {
       toast.success(isEdit ? 'Ингредиент обновлён' : 'Ингредиент создан')
