@@ -1,0 +1,66 @@
+import api from '@/lib/axios'
+import type { Recipe, RecipeShort, PaginatedResponse } from '@/types'
+
+export interface RecipeFilters {
+  search?: string
+  diet_type?: number
+  page?: number
+  page_size?: number
+}
+
+export async function getRecipes(filters: RecipeFilters = {}) {
+  const params = new URLSearchParams()
+  if (filters.search) params.set('search', filters.search)
+  if (filters.diet_type) params.set('diet_type', String(filters.diet_type))
+  if (filters.page) params.set('page', String(filters.page))
+  if (filters.page_size) params.set('page_size', String(filters.page_size ?? 20))
+  const response = await api.get<PaginatedResponse<RecipeShort>>(`/recipes/?${params}`)
+  return response.data
+}
+
+export async function getRecipe(id: number) {
+  const response = await api.get<Recipe>(`/recipes/${id}/`)
+  return response.data
+}
+
+export async function createRecipe(data: Partial<Recipe>) {
+  const response = await api.post<Recipe>('/recipes/', data)
+  return response.data
+}
+
+export async function updateRecipe(id: number, data: Partial<Recipe>) {
+  const response = await api.patch<Recipe>(`/recipes/${id}/`, data)
+  return response.data
+}
+
+export async function deleteRecipe(id: number) {
+  await api.delete(`/recipes/${id}/`)
+}
+
+export async function addRecipeIngredient(recipeId: number, data: object) {
+  const response = await api.post(`/recipes/${recipeId}/ingredients/`, data)
+  return response.data
+}
+
+export async function updateRecipeIngredient(recipeId: number, ingredientId: number, data: object) {
+  const response = await api.patch(`/recipes/${recipeId}/ingredients/${ingredientId}/`, data)
+  return response.data
+}
+
+export async function deleteRecipeIngredient(recipeId: number, ingredientId: number) {
+  await api.delete(`/recipes/${recipeId}/ingredients/${ingredientId}/`)
+}
+
+export async function addRecipeStep(recipeId: number, data: object) {
+  const response = await api.post(`/recipes/${recipeId}/steps/`, data)
+  return response.data
+}
+
+export async function updateRecipeStep(recipeId: number, stepId: number, data: object) {
+  const response = await api.patch(`/recipes/${recipeId}/steps/${stepId}/`, data)
+  return response.data
+}
+
+export async function deleteRecipeStep(recipeId: number, stepId: number) {
+  await api.delete(`/recipes/${recipeId}/steps/${stepId}/`)
+}
