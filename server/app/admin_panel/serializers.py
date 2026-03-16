@@ -34,11 +34,11 @@ class AdminUserSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'email', 'username', 'first_name', 'last_name',
             'is_active', 'is_staff', 'is_superuser',
-            'portion_size', 'created_at',
+            'portion_size', 'created_at', 'date_joined',
             'diet_type', 'diet_type_name',
             'allergies',
         ]
-        read_only_fields = ['id', 'created_at']
+        read_only_fields = ['id', 'created_at', 'date_joined']
 
     def get_diet_type_name(self, obj):
         if obj.diet_type:
@@ -87,12 +87,12 @@ class AdminUnitConversionSerializer(serializers.ModelSerializer):
 
 class AdminIngredientSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source='category.name', read_only=True)
-    ingredient_nutrition = AdminIngredientNutritionSerializer(read_only=True)
+    nutrition = AdminIngredientNutritionSerializer(source='ingredient_nutrition', read_only=True)
     unit_conversions = AdminUnitConversionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'category', 'category_name', 'ingredient_nutrition', 'unit_conversions']
+        fields = ['id', 'name', 'category', 'category_name', 'nutrition', 'unit_conversions']
 
 
 class AdminIngredientWriteSerializer(serializers.ModelSerializer):
@@ -141,8 +141,9 @@ class AdminRecipeShortSerializer(serializers.ModelSerializer):
 
 
 class AdminRecipeSerializer(serializers.ModelSerializer):
-    diet_types = AdminDietTypeSerializer(many=True, read_only=True)
-    recipe_ingredients = AdminRecipeIngredientSerializer(many=True, read_only=True)
+    diet_types = serializers.SerializerMethodField()
+    diet_type_names = serializers.SerializerMethodField()
+    ingredients = AdminRecipeIngredientSerializer(source='recipe_ingredients', many=True, read_only=True)
     steps = AdminRecipeStepSerializer(many=True, read_only=True)
     total_calories = serializers.SerializerMethodField()
     total_proteins = serializers.SerializerMethodField()
@@ -153,9 +154,15 @@ class AdminRecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = [
             'id', 'title', 'image_url', 'cook_time', 'servings',
-            'diet_types', 'recipe_ingredients', 'steps',
+            'diet_types', 'diet_type_names', 'ingredients', 'steps',
             'total_calories', 'total_proteins', 'total_fats', 'total_carbs',
         ]
+
+    def get_diet_types(self, obj):
+        return list(obj.diet_types.values_list('id', flat=True))
+
+    def get_diet_type_names(self, obj):
+        return list(obj.diet_types.values_list('name', flat=True))
 
     def get_total_calories(self, obj):
         try:
