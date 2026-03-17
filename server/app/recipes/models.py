@@ -124,6 +124,7 @@ class Recipe(models.Model):
     servings = models.PositiveSmallIntegerField(default=1)
 
     diet_types = models.ManyToManyField('accounts.DietType', related_name='recipes')
+    meal_types = models.ManyToManyField('menus.MealType', related_name='recipes', blank=True)
 
     objects = RecipeQuerySet.as_manager()
 
