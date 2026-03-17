@@ -1,4 +1,4 @@
-package com.example.smartmeal.feature.setup.presentation
+﻿package com.example.smartmeal.feature.setup.presentation
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
@@ -37,7 +38,6 @@ import com.example.smartmeal.ui.theme.PrimaryGreen
 
 /**
  * Шаг 1 из 3: выбор типа питания и размера порции (количество персон).
- * Кнопка «Дальше» активна только если выбран хотя бы один тип питания.
  */
 @Composable
 fun SetupStep1Screen(
@@ -47,6 +47,25 @@ fun SetupStep1Screen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    SetupStep1Content(
+        state = state,
+        onBack = onBack,
+        onNext = onNext,
+        onDietTypeClick = { viewModel.selectDietType(it) },
+        onIncrement = viewModel::incrementPortion,
+        onDecrement = viewModel::decrementPortion,
+    )
+}
+
+@Composable
+fun SetupStep1Content(
+    state: SetupState,
+    onBack: () -> Unit,
+    onNext: () -> Unit,
+    onDietTypeClick: (Int) -> Unit,
+    onIncrement: () -> Unit,
+    onDecrement: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +82,10 @@ fun SetupStep1Screen(
                 color = PrimaryGreen,
                 fontWeight = FontWeight.Medium,
             )
-            TextButton(onClick = onBack) {
+            TextButton(
+                onClick = onBack,
+                modifier = Modifier.testTag("setup_step1_back")
+            ) {
                 Text(text = "Назад", color = MaterialTheme.colorScheme.onBackground)
             }
         }
@@ -74,6 +96,7 @@ fun SetupStep1Screen(
             text = "Выберите тип питания",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
+            modifier = Modifier.testTag("setup_step1_title")
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -85,14 +108,17 @@ fun SetupStep1Screen(
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("setup_step1_diet_grid"),
             ) {
                 items(state.dietTypes) { dietType ->
                     val isSelected = state.selectedDietTypeId == dietType.id
                     DietTypeChip(
                         label = dietType.name,
                         isSelected = isSelected,
-                        onClick = { viewModel.selectDietType(dietType.id) },
+                        onClick = { onDietTypeClick(dietType.id) },
+                        modifier = Modifier.testTag("setup_step1_diet_${dietType.id}")
                     )
                 }
             }
@@ -110,8 +136,8 @@ fun SetupStep1Screen(
 
         PortionStepper(
             value = state.portionSize,
-            onIncrement = viewModel::incrementPortion,
-            onDecrement = viewModel::decrementPortion,
+            onIncrement = onIncrement,
+            onDecrement = onDecrement,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -119,7 +145,9 @@ fun SetupStep1Screen(
         SmartMealButton(
             text = "Дальше",
             onClick = onNext,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("setup_step1_next"),
             variant = SmartMealButtonVariant.PRIMARY,
             color = SmartMealButtonColor.GREEN,
             enabled = state.selectedDietTypeId != null,
@@ -132,13 +160,14 @@ private fun DietTypeChip(
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val bgColor = if (isSelected) PrimaryGreen else Color.Transparent
     val textColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onBackground
     val borderColor = if (isSelected) PrimaryGreen else Color.LightGray
 
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .border(1.dp, borderColor, RoundedCornerShape(12.dp))
             .clickable(onClick = onClick),
@@ -168,13 +197,14 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
-                .clickable(onClick = onDecrement),
+                .clickable(onClick = onDecrement)
+                .testTag("setup_step1_portion_dec"),
             shape = RoundedCornerShape(8.dp),
             color = LightGreenBg,
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Text(
-                    text = "—",
+                    text = "-",
                     style = MaterialTheme.typography.titleMedium,
                     color = PrimaryGreen,
                     fontWeight = FontWeight.Bold,
@@ -187,6 +217,7 @@ private fun PortionStepper(
         Text(
             text = "$value ${personLabel(value)}",
             style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.testTag("setup_step1_portion_value")
         )
 
         Spacer(modifier = Modifier.width(24.dp))
@@ -194,7 +225,8 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
-                .clickable(onClick = onIncrement),
+                .clickable(onClick = onIncrement)
+                .testTag("setup_step1_portion_inc"),
             shape = RoundedCornerShape(8.dp),
             color = PrimaryGreen,
         ) {

@@ -31,13 +31,19 @@ fun MealCard(
     cookTime: String,
     imageRes: Int,
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    cardTag: String? = null,
+    titleTag: String? = null,
+    favoriteTag: String? = null
 ) {
+    val resolvedCardTag = cardTag ?: "meal_card"
+    val resolvedFavoriteTag = favoriteTag ?: "favorite_button"
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
-            .testTag("meal_card"),
+            .testTag(resolvedCardTag),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
@@ -62,6 +68,7 @@ fun MealCard(
             ) {
                 Text(
                     text = title,
+                    modifier = if (titleTag != null) Modifier.testTag(titleTag) else Modifier,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -89,7 +96,7 @@ fun MealCard(
                 modifier = Modifier
                     .padding(end = 12.dp)
                     .size(40.dp)
-                    .testTag("favorite_button")
+                    .testTag(resolvedFavoriteTag)
             )
         }
     }
