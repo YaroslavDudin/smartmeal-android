@@ -29,7 +29,8 @@ fun MealCard(
     modifier: Modifier = Modifier,
     title: String,
     cookTime: String,
-    imageRes: Int,
+    imageRes: Int = R.drawable.food,
+    imageUrl: String? = null, // Зарезервировано
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
     cardTag: String? = null,
@@ -51,9 +52,11 @@ fun MealCard(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
+            
+            // Стандартный Image. Для загрузки URL нужна библиотека (Coil/Glide).
+            // Пока используем заглушку food, если нет иного механизма.
             Image(
-                painter = painterResource(imageRes),
+                painter = painterResource(id = imageRes),
                 contentDescription = title,
                 modifier = Modifier
                     .width(100.dp)

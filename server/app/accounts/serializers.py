@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.exceptions import AuthenticationFailed, InvalidToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from app.accounts.models import DietType, Allergy
@@ -29,6 +29,21 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             # Перехватываем ошибку родителя и возвращаем единый ключ ошибки,
             # не раскрывая, существует ли такой email в системе.
             raise AuthenticationFailed({'detail': 'no_active_account_found'})
+
+
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    """
+    Кастомный сериализатор для обновления токена.
+    Предотвращает 500 ошибку, если пользователь не найден.
+    """
+    def validate(self, attrs):
+        try:
+            return super().validate(attrs)
+        except User.DoesNotExist:
+            raise AuthenticationFailed({'detail': 'user_not_found'}, code='user_not_found')
+        except Exception as e:
+            # Логируем другие ошибки токена как 401
+            raise InvalidToken({'detail': str(e)})
 
 
 class UserSerializer(serializers.ModelSerializer):

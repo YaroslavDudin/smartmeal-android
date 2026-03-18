@@ -34,7 +34,9 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onLogout = {}
+                    onLogout = {},
+                    onLogoutSuccess = {},
+                    onRecipeClick = {}
                 )
             }
         }
@@ -56,7 +58,9 @@ class HomeScreenTest {
                     onGenerateMenu = { generated = true },
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onLogout = {}
+                    onLogout = {},
+                    onLogoutSuccess = {},
+                    onRecipeClick = {}
                 )
             }
         }
@@ -110,7 +114,9 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onLogout = {}
+                    onLogout = {},
+                    onLogoutSuccess = {},
+                    onRecipeClick = {}
                 )
             }
         }
@@ -164,7 +170,9 @@ class HomeScreenTest {
                         )
                     },
                     onToggleFavorite = {},
-                    onLogout = {}
+                    onLogout = {},
+                    onLogoutSuccess = {},
+                    onRecipeClick = {}
                 )
             }
         }
@@ -207,7 +215,9 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = { id -> favoriteId = id },
-                    onLogout = {}
+                    onLogout = {},
+                    onLogoutSuccess = {},
+                    onRecipeClick = {}
                 )
             }
         }
@@ -235,7 +245,9 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onLogout = {}
+                    onLogout = {},
+                    onLogoutSuccess = {},
+                    onRecipeClick = {}
                 )
             }
         }
@@ -258,7 +270,9 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onLogout = { loggedOut = true }
+                    onLogout = { loggedOut = true },
+                    onLogoutSuccess = {},
+                    onRecipeClick = {}
                 )
             }
         }

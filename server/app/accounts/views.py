@@ -2,10 +2,11 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from app.accounts.models import DietType, Allergy
 from app.accounts.serializers import (
     UserRegistrationSerializer, CustomTokenObtainPairSerializer,
+    CustomTokenRefreshSerializer,
     UserSerializer, DietTypeSerializer, AllergySerializer,
 )
 
@@ -15,6 +16,10 @@ User = get_user_model()
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+
+class CustomTokenRefreshView(TokenRefreshView):
+    serializer_class = CustomTokenRefreshSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
