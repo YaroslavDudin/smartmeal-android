@@ -79,7 +79,10 @@ class MenuViewSet(viewsets.ModelViewSet):
         for mt in meal_types:
             valid_recipes = list(qs.filter(meal_types=mt).values_list('id', flat=True))
             if not valid_recipes:
-                valid_recipes = list(qs.values_list('id', flat=True))
+                return Response(
+                    {'detail': f'Нет рецептов с заданными параметрами для приема пищи "{mt.name}". Попробуйте измените фильтры.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             rng = random.Random(f'{request.user.id}-{start_date}-{period}-{mt.id}')
             rng.shuffle(valid_recipes)
@@ -117,7 +120,8 @@ class MenuViewSet(viewsets.ModelViewSet):
             .prefetch_related('items__recipe')
             .get(id=menu.id)
         )
-        return Response(MenuSerializer(created_menu).data, status=status.HTTP_201_CREATED)
+        serializer = self.get_serializer(created_menu)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class MenuItemViewSet(viewsets.ModelViewSet):
@@ -165,8 +169,8 @@ class MenuItemViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # Выбираем случайный из подходящих
-        new_recipe = random.choice(list(qs))
+        # Выбираем случайный из подходящих без загрузки всех рецептов
+        new_recipe = qs.order_by('?').first()
 
         menu_item.recipe = new_recipe
         menu_item.save()
