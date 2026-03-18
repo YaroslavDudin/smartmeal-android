@@ -9,9 +9,6 @@ from app.menus.models import Menu, MenuItem, Period, MealType
 from app.menus.serializers import MenuSerializer, MenuItemSerializer, GenerateMenuSerializer
 from app.recipes.models import Recipe
 
-# Приёмы пищи, которые генерируются по умолчанию
-_DEFAULT_MEAL_TYPES = [MealType.BREAKFAST, MealType.LUNCH, MealType.DINNER]
-
 
 class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
@@ -51,11 +48,17 @@ class MenuViewSet(viewsets.ModelViewSet):
         period = data['period']
         start_date = data['start_date']
         days = 7 if period == Period.WEEK else 1
-        total_slots = days * len(_DEFAULT_MEAL_TYPES)
 
         # diet_type: из запроса → из профиля → без фильтра
         diet_type_id = data.get('diet_type') or request.user.diet_type_id
         max_cook_time = data.get('max_cook_time')
+
+        meal_types = list(MealType.objects.all().order_by('order'))
+        if not meal_types:
+            return Response(
+                {'detail': 'В базе нет типов приемов пищи. Создайте их (MealType).'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         # Формируем пул рецептов (ORDER BY id — детерминировано)
         qs = Recipe.objects.all().order_by('id')
@@ -64,23 +67,30 @@ class MenuViewSet(viewsets.ModelViewSet):
         if max_cook_time:
             qs = qs.filter(cook_time__lte=max_cook_time)
 
-        recipe_ids = list(qs.values_list('id', flat=True))
 
-        if not recipe_ids:
+        if not qs.exists():
             return Response(
                 {'detail': 'Нет рецептов для заданных параметров. Попробуйте изменить фильтры.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         # Детерминированный shuffle: одни и те же параметры → одно и то же меню
-        rng = random.Random(f"{request.user.id}-{start_date}-{period}")
-        rng.shuffle(recipe_ids)
+        pools = {}
+        for mt in meal_types:
+            valid_recipes = list(qs.filter(meal_types=mt).values_list('id', flat=True))
+            if not valid_recipes:
+                valid_recipes = list(qs.values_list('id', flat=True))
 
-        # Если рецептов меньше чем слотов — циклически повторяем список
-        selected: list[int] = []
-        while len(selected) < total_slots:
-            selected.extend(recipe_ids)
-        selected = selected[:total_slots]
+            rng = random.Random(f'{request.user.id}-{start_date}-{period}-{mt.id}')
+            rng.shuffle(valid_recipes)
+
+        # Набираем нужное количество блюд для этого приема пищи на все дни
+            selected = []
+            while len(selected) < days:
+                selected.extend(valid_recipes)
+
+            pools[mt.id] = selected[:days]
+
 
         # Создаём Menu + все MenuItems одной транзакцией
         with transaction.atomic():
@@ -90,18 +100,17 @@ class MenuViewSet(viewsets.ModelViewSet):
                 start_date=start_date,
             )
             items = []
-            idx = 0
             for day_offset in range(days):
-                for meal_type in _DEFAULT_MEAL_TYPES:
+                for mt in meal_types:
+                    recipe_id = pools[mt.id][day_offset]
                     items.append(MenuItem(
                         menu=menu,
-                        recipe_id=selected[idx],
+                        recipe_id=recipe_id,
                         day_offset=day_offset,
-                        meal_type=meal_type,
+                        meal_type=mt,
                     ))
-                    idx += 1
             MenuItem.objects.bulk_create(items)
-
+                
         # Возвращаем полное меню с items (prefetch чтобы не делать N+1)
         created_menu = (
             Menu.objects
@@ -119,5 +128,48 @@ class MenuItemViewSet(viewsets.ModelViewSet):
         return (
             MenuItem.objects
             .filter(menu__user=self.request.user)
-            .select_related('recipe', 'menu')
+            .select_related('recipe', 'menu', 'meal_type')
         )
+
+    @action(detail=True, methods=['post'], url_path='replace')
+    def replace(self, request, pk=None):
+        """
+        POST /api/menus/items/{id}/replace/
+
+        Заменяет текущий рецепт в пункте меню на другой случайный.
+        Учитывает MealType и DietType пользователя.
+        """
+        menu_item = self.get_object()
+        user = request.user
+
+        # Определяем фильтры для подбора замены
+        # 1. Тот же тип приема пищи (MealType)
+        # 2. Другой рецепт (не текущий)
+        # 3. Соответствие диете пользователя (если установлена)
+        qs = Recipe.objects.filter(meal_types=menu_item.meal_type).exclude(id=menu_item.recipe_id)
+
+        if user.diet_type_id:
+            qs = qs.filter(diet_types__id=user.diet_type_id)
+
+        # Если с диетой ничего не нашли, пробуем без диеты, но того же типа
+        if not qs.exists():
+            qs = Recipe.objects.filter(meal_types=menu_item.meal_type).exclude(id=menu_item.recipe_id)
+
+        # Если всё равно пусто (мало данных), берем любой другой рецепт
+        if not qs.exists():
+            qs = Recipe.objects.exclude(id=menu_item.recipe_id)
+
+        if not qs.exists():
+            return Response(
+                {'detail': 'Не удалось найти подходящий рецепт для замены.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Выбираем случайный из подходящих
+        new_recipe = random.choice(list(qs))
+
+        menu_item.recipe = new_recipe
+        menu_item.save()
+
+        serializer = self.get_serializer(menu_item)
+        return Response(serializer.data, status=status.HTTP_200_OK)

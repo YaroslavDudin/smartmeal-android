@@ -31,6 +31,7 @@ help:
 	@echo make load_data           - загрузить фикстуры локально
 	@echo make save_data           - выгрузить данные локально в фикстуры
 	@echo make run                 - запустить сервер разработки
+	@echo make shell               - запустить консоль django
 	@echo Сетап с Докером:
 	@echo make docker_env          - создать .env файл из .env.example для Docker (проверьте DB_HOST=db)
 	@echo make docker_secret_key   - сгенерировать SECRET_KEY для Docker (нужен только докер)
@@ -84,6 +85,9 @@ save_data:
 	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite)
 	$(call dump_to_file,menus_data,menus)
 	$(call dump_to_file,cart_data,cart)
+
+shell:
+	$(VENV_PYTHON) manage.py shell
 
 
 # Docker:

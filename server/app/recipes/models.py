@@ -90,6 +90,9 @@ class Recipe(models.Model):
     servings = models.PositiveSmallIntegerField(default=1)
 
     diet_types = models.ManyToManyField('accounts.DietType', related_name='recipes')
+    meal_types = models.ManyToManyField('menus.MealType', related_name='recipes', blank=True)
+
+    objects = RecipeQuerySet.as_manager()
 
     class Meta:
         db_table = 'recipe'
@@ -210,6 +213,7 @@ class RecipeStep(models.Model):
     step_number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     description = models.TextField()
     image_url = models.CharField(max_length=255, blank=True, null=True, validators=[URLValidator()])
+    timer = models.IntegerField(blank=True, null=True, help_text="Время таймера в минутах")
 
     class Meta:
         db_table = 'recipe_step'
@@ -217,4 +221,4 @@ class RecipeStep(models.Model):
         unique_together = ('recipe', 'step_number')
 
     def __str__(self):
-        return f'Шаг №{self.step_number} для {self.recipe.title}'
+        return f'Step №{self.step_number} for Recipe ID {self.recipe_id}'

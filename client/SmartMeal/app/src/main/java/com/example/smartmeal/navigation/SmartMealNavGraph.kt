@@ -8,18 +8,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.smartmeal.data.api.RetrofitClient
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.presentation.AuthViewModel
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterForm
 import com.example.smartmeal.feature.auth.presentation.WelcomeScreen
 import com.example.smartmeal.feature.home.presentation.HomeScreen
+import com.example.smartmeal.feature.recipes.data.api.RecipeApi
+import com.example.smartmeal.feature.recipes.presentation.RecipeDetailScreen
+import com.example.smartmeal.feature.recipes.presentation.RecipeDetailViewModel
 import com.example.smartmeal.feature.setup.data.api.SetupApi
 import com.example.smartmeal.feature.setup.presentation.SetupIntroScreen
 import com.example.smartmeal.feature.setup.presentation.SetupStep1Screen
@@ -38,10 +44,13 @@ fun SmartMealNavGraph(navController: NavHostController) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val tokenManager = remember { com.example.smartmeal.data.local.TokenManager(context) }
 
-    RetrofitClient.init(tokenManager)
+    LaunchedEffect(tokenManager) {
+        RetrofitClient.init(tokenManager)
+    }
 
     val authApi = remember { RetrofitClient.createService(AuthApi::class.java) }
     val setupApi = remember { RetrofitClient.createService(SetupApi::class.java) }
+    val recipeApi = remember { RetrofitClient.createService(RecipeApi::class.java) }
 
     val authViewModel: AuthViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -61,7 +70,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
     val startDestination = if (tokenManager.getAccessToken() != null) {
         Screen.SetupIntro.route
     } else {
-        Screen.AuthForm.route
+        Screen.Welcome.route
     }
 
     NavHost(
@@ -137,10 +146,33 @@ fun SmartMealNavGraph(navController: NavHostController) {
                 onLogout = {
                     authViewModel.logout()
                     setupViewModel.reset()
-                    navController.navigate(Screen.AuthForm.route) {
+                },
+                onLogoutSuccess = {
+                    navController.navigate(Screen.Welcome.route) {
                         popUpTo(0) { inclusive = true }
                     }
+                },
+                onRecipeClick = { recipeId ->
+                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId))
                 }
+            )
+        }
+
+        composable(
+            route = Screen.RecipeDetail.route,
+            arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
+            val recipeViewModel: RecipeDetailViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    return RecipeDetailViewModel(recipeApi) as T
+                }
+            })
+            RecipeDetailScreen(
+                recipeId = recipeId,
+                viewModel = recipeViewModel,
+                onBack = { navController.popBackStack() }
             )
         }
     }

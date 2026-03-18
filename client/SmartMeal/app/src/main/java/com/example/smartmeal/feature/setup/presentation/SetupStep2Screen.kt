@@ -1,6 +1,6 @@
-package com.example.smartmeal.feature.setup.presentation
+﻿package com.example.smartmeal.feature.setup.presentation
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,35 +10,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.smartmeal.ui.components.buttons.SmartMealButton
-import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
-import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.components.calendar.SmartMealCalendar
-import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.TextBlack
 
 /**
  * Шаг 2 из 3: выбор типа периода (день / неделя / свой план) и даты через интерактивный календарь.
- *
- * Поведение календаря зависит от выбранного типа:
- * - Дневной план  → выбирается один день (зелёный круг)
- * - Недельный план → выбирается вся неделя (Пн–Вс) одним нажатием
- * - Свой план     → выбирается один день как начало периода
  */
 @Composable
 fun SetupStep2Screen(
@@ -48,70 +42,117 @@ fun SetupStep2Screen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    SetupStep2Content(
+        state = state,
+        onBack = onBack,
+        onNext = onNext,
+        onSelectPeriodType = { viewModel.selectPeriodType(it) },
+        onSelectDay = viewModel::selectDay,
+        onPreviousMonth = { viewModel.navigateCalendarMonth(-1) },
+        onNextMonth = { viewModel.navigateCalendarMonth(1) },
+    )
+}
+
+@Composable
+fun SetupStep2Content(
+    state: SetupState,
+    onBack: () -> Unit,
+    onNext: () -> Unit,
+    onSelectPeriodType: (PeriodType) -> Unit,
+    onSelectDay: (Int) -> Unit,
+    onPreviousMonth: () -> Unit,
+    onNextMonth: () -> Unit,
+) {
+    val configuration = LocalConfiguration.current
+    val isCompactHeight = configuration.screenHeightDp < 640
+    val isCompactWidth = configuration.screenWidthDp < 360
+    val horizontalPadding = if (isCompactHeight || isCompactWidth) 16.dp else 24.dp
+    val verticalPadding = if (isCompactHeight) 16.dp else 28.dp
+    val sectionSpacing = if (isCompactHeight) 12.dp else 24.dp
+    val chipRowSpacing = if (isCompactHeight) 10.dp else 12.dp
+    val calendarPadding = if (isCompactHeight) 12.dp else 16.dp
+    val calendarWidth = when {
+        isCompactWidth -> 0.9f
+        isCompactHeight -> 0.95f
+        else -> 1f
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 32.dp),
+            .padding(horizontal = horizontalPadding, vertical = verticalPadding),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = "Шаг: 2 / 3",
-                style = MaterialTheme.typography.bodyMedium,
-                color = PrimaryGreen,
-                fontWeight = FontWeight.Medium,
+            StepIndicator(current = 2, total = 3)
+            BackButton(
+                onClick = onBack,
+                modifier = Modifier.testTag("setup_step2_back")
             )
-            TextButton(onClick = onBack) {
-                Text(text = "Назад", color = MaterialTheme.colorScheme.onBackground)
-            }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(sectionSpacing))
 
         Text(
             text = "Тип периода",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Medium,
+            color = TextBlack,
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(chipRowSpacing))
 
         // --- Period type selector ---
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(chipRowSpacing),
         ) {
             PeriodType.entries.take(2).forEach { type ->
+                val tag = when (type) {
+                    PeriodType.DAILY -> "setup_step2_period_daily"
+                    PeriodType.WEEKLY -> "setup_step2_period_weekly"
+                    else -> "setup_step2_period_other"
+                }
                 PeriodChip(
                     label = type.label,
                     isSelected = state.periodType == type,
-                    onClick = { viewModel.selectPeriodType(type) },
-                    modifier = Modifier.weight(1f),
+                    onClick = { onSelectPeriodType(type) },
+                    compact = isCompactHeight,
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag(tag),
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(chipRowSpacing))
 
         PeriodChip(
             label = PeriodType.CUSTOM.label,
             isSelected = state.periodType == PeriodType.CUSTOM,
-            onClick = { viewModel.selectPeriodType(PeriodType.CUSTOM) },
-            modifier = Modifier.fillMaxWidth(0.5f).align(Alignment.CenterHorizontally),
+            onClick = { onSelectPeriodType(PeriodType.CUSTOM) },
+            compact = isCompactHeight,
+            modifier = Modifier
+                .width(if (isCompactHeight) 160.dp else 180.dp)
+                .align(Alignment.CenterHorizontally)
+                .testTag("setup_step2_period_custom"),
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(if (isCompactHeight) 16.dp else 20.dp))
 
         // --- Calendar ---
         Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surface,
-            shadowElevation = 2.dp,
+            modifier = Modifier
+                .fillMaxWidth(calendarWidth)
+                .align(Alignment.CenterHorizontally)
+                .testTag("setup_step2_calendar"),
+            shape = RoundedCornerShape(20.dp),
+            color = Color.White,
+            shadowElevation = 8.dp,
+            border = BorderStroke(1.5.dp, PrimaryGreen),
         ) {
             SmartMealCalendar(
                 year = state.calendarYear,
@@ -119,26 +160,74 @@ fun SetupStep2Screen(
                 periodType = state.periodType,
                 selectedDay = state.selectedDay,
                 selectedEndDay = state.selectedEndDay,
-                onDaySelected = viewModel::selectDay,
-                onPreviousMonth = { viewModel.navigateCalendarMonth(-1) },
-                onNextMonth = { viewModel.navigateCalendarMonth(1) },
-                modifier = Modifier.padding(16.dp),
+                onDaySelected = onSelectDay,
+                onPreviousMonth = onPreviousMonth,
+                onNextMonth = onNextMonth,
+                showNavigation = true,
+                showYear = false,
+                showAdjacentMonths = true,
+                compact = isCompactHeight,
+                modifier = Modifier.padding(calendarPadding),
             )
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(if (isCompactHeight) 16.dp else 24.dp))
 
-        SmartMealButton(
+        WidePrimaryButton(
             text = "Дальше",
             onClick = onNext,
-            modifier = Modifier.fillMaxWidth(),
-            variant = SmartMealButtonVariant.PRIMARY,
-            color = SmartMealButtonColor.GREEN,
             enabled = when (state.periodType) {
                 PeriodType.CUSTOM -> state.selectedDay != null && state.selectedEndDay != null
                 else -> state.selectedDay != null
             },
+            modifier = Modifier.testTag("setup_step2_next")
+        )
+    }
+}
+
+@Composable
+private fun StepIndicator(current: Int, total: Int) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = "Шаг:",
+            style = MaterialTheme.typography.bodyMedium,
+            color = PrimaryGreen,
+            fontWeight = FontWeight.Medium,
+        )
+        Text(
+            text = " $current",
+            style = MaterialTheme.typography.bodyMedium,
+            color = PrimaryGreen,
+            fontWeight = FontWeight.SemiBold,
+        )
+        Text(
+            text = " /$total",
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color(0xFFBDBDBD),
+            fontWeight = FontWeight.Medium,
+        )
+    }
+}
+
+@Composable
+private fun BackButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val borderColor = Color(0xFFE6D36E)
+    Surface(
+        modifier = modifier.clickable(onClick = onClick),
+        shape = RoundedCornerShape(12.dp),
+        color = Color.White,
+        shadowElevation = 8.dp,
+        border = BorderStroke(1.5.dp, borderColor),
+    ) {
+        Text(
+            text = "Назад",
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextBlack,
         )
     }
 }
@@ -149,25 +238,63 @@ private fun PeriodChip(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    compact: Boolean = false,
 ) {
-    val bgColor = if (isSelected) PrimaryGreen else Color.Transparent
-    val textColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onBackground
-    val borderColor = if (isSelected) PrimaryGreen else Color.LightGray
+    val bgColor = if (isSelected) PrimaryGreen else Color.White
+    val textColor = if (isSelected) Color.White else TextBlack
+    val borderColor = PrimaryGreen
+    val elevation = if (isSelected) 8.dp else 6.dp
+    val verticalPadding = if (compact) 8.dp else 10.dp
+    val horizontalPadding = if (compact) 12.dp else 16.dp
+    val textStyle = if (compact) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyMedium
 
     Surface(
-        modifier = modifier
-            .border(1.dp, borderColor, RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        modifier = modifier.clickable(onClick = onClick),
+        shape = RoundedCornerShape(14.dp),
         color = bgColor,
+        shadowElevation = elevation,
+        border = BorderStroke(1.dp, borderColor),
     ) {
         Text(
             text = label,
-            modifier = Modifier
-                .padding(vertical = 12.dp, horizontal = 16.dp),
+            modifier = Modifier.padding(vertical = verticalPadding, horizontal = horizontalPadding),
             color = textColor,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+            style = textStyle,
+            fontWeight = FontWeight.Medium,
+        )
+    }
+}
+
+@Composable
+private fun WidePrimaryButton(
+    text: String,
+    onClick: () -> Unit,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        enabled = enabled,
+        shape = RoundedCornerShape(28.dp),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 6.dp,
+            pressedElevation = 2.dp,
+            disabledElevation = 0.dp,
+        ),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = PrimaryGreen,
+            contentColor = Color.White,
+            disabledContainerColor = Color.LightGray.copy(alpha = 0.5f),
+            disabledContentColor = Color.Gray,
+        ),
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
         )
     }
 }

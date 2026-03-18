@@ -19,7 +19,9 @@ data class MenuItemDto(
     val meal_type: String,   // "breakfast", "lunch", "dinner", "snack", "drink"
     val recipe: Int,         // ID рецепта
     val recipe_title: String, // Название рецепта (уже есть в API бэкенда)
-    val actual_date: String  // "2026-03-10" — реальная дата (start_date + day_offset)
+    val actual_date: String,  // "2026-03-10" — реальная дата (start_date + day_offset)
+    val cook_time: Int = 0,
+    val image_url: String? = null,
 )
 
 // ─── Рецепты ────────────────────────────────────────────────────────────────
