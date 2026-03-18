@@ -88,6 +88,17 @@ jobs:
           cd server
           python manage.py migrate
           python manage.py runserver 0.0.0.0:8000 &
+          
+          # Wait for server to be ready
+          echo "Waiting for backend to start..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8000/ > /dev/null; then
+              echo "Backend is up!"
+              break
+            fi
+            echo "Waiting... ($i)"
+            sleep 2
+          done
         env:
           DB_NAME: smartmeal_db
           DB_USER: user
@@ -96,6 +107,7 @@ jobs:
           DB_PORT: 5432
           SECRET_KEY: ci-secret-key
           DEBUG: True
+          ALLOWED_HOSTS: "*"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4

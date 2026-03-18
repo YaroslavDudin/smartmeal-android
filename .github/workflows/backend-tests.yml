@@ -15,21 +15,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_DB: smartmeal_db
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
 
@@ -43,27 +28,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r server/requirements.txt
 
-      - name: Run migrations
-        run: |
-          cd server
-          python manage.py migrate
-        env:
-          DB_NAME: smartmeal_db
-          DB_USER: user
-          DB_PASSWORD: password
-          DB_HOST: localhost
-          DB_PORT: 5432
-          SECRET_KEY: test-key
-          DEBUG: True
-
       - name: Run Pytest
         run: |
           cd server
           pytest
         env:
-          DB_NAME: smartmeal_db
-          DB_USER: user
-          DB_PASSWORD: password
-          DB_HOST: localhost
-          DB_PORT: 5432
-          SECRET_KEY: test-key
+          SECRET_KEY: test-key-for-ci
+          DEBUG: True
+          DJANGO_SETTINGS_MODULE: config.settings
