@@ -13,6 +13,7 @@ on:
       - 'server/**'
       - '.github/workflows/android-tests.yml'
 
+# Отменяем предыдущие незавершенные запуски при новых пушах в ту же ветку
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -42,7 +43,6 @@ jobs:
       - name: Run Unit Tests
         run: ./client/SmartMeal/gradlew -p ./client/SmartMeal :app:testDebugUnitTest
 
-      # Обязательно сохраняем результаты тестов, даже если они упали
       - name: Upload Unit Test Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -112,13 +112,13 @@ jobs:
           cd server
           python manage.py migrate
           
-          # Загружаем фикстуры, чтобы UI-тестам было с чем взаимодействовать
-          # Не используем make load_data, т.к. в CI нет виртуального окружения (venv)
-          python manage.py loaddata fixtures/accounts_static.json || echo "No static accounts"
-          python manage.py loaddata fixtures/recipes_data.json || echo "No recipes"
-          python manage.py loaddata fixtures/accounts_users.json || echo "No users"
-          python manage.py loaddata fixtures/menus_data.json || echo "No menus"
-          python manage.py loaddata fixtures/cart_data.json || echo "No cart"
+          # Загружаем фикстуры в правильном порядке (с учетом foreign keys)
+          python manage.py loaddata fixtures/accounts_static.json
+          python manage.py loaddata fixtures/meal_types_data.json
+          python manage.py loaddata fixtures/accounts_users.json
+          python manage.py loaddata fixtures/recipes_data.json
+          python manage.py loaddata fixtures/menus_data.json
+          python manage.py loaddata fixtures/cart_data.json
 
           python manage.py runserver 0.0.0.0:8000 &
           
@@ -155,7 +155,7 @@ jobs:
       - name: Run Android UI tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30 # Возвращаем стабильный 30 уровень, как было в рабочей версии
+          api-level: 30
           target: google_apis
           arch: x86_64
           profile: ${{ matrix.device.profile }}

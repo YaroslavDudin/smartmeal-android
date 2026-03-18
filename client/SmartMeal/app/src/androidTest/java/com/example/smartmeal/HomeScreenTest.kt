@@ -222,7 +222,7 @@ class HomeScreenTest {
                     onDaySelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
-                    onToggleFavorite = { id -> favoriteId = id.toIntOrNull() },
+                    onToggleFavorite = { id -> favoriteId = id },
                     onLogout = {},
                     onLogoutSuccess = {},
                     onRecipeClick = {}
