@@ -1,3 +1,4 @@
+from decimal import Decimal
 from rest_framework import serializers
 from app.recipes.models import (
     IngredientCategory, Unit, Ingredient, IngredientNutrition,
@@ -37,10 +38,22 @@ class IngredientSerializer(serializers.ModelSerializer):
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
     unit_name = serializers.CharField(source='unit.name', read_only=True)
+    # переопределение количества под указанное количество персон
+    amount = serializers.SerializerMethodField()
 
     class Meta:
         model = RecipeIngredient
         fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'unit', 'unit_name')
+    
+    # перерасчет количества под указанное количество персон
+    # если нету в контексте передается как есть в рецепте
+    def get_amount(self, obj):
+        target_servings = self.context.get('target_servings')
+        recipe_servings = self.context.get('recipe_servings')
+        if not target_servings:
+            return obj.amount
+        scale = Decimal(target_servings) / Decimal(recipe_servings)
+        return round(obj.amount * scale, 2)
 
 
 class RecipeStepSerializer(serializers.ModelSerializer):
@@ -55,15 +68,16 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     # Все КБЖУ-поля — это @property на модели, DRF достаёт их через getattr.
     # Указываем явно, чтобы контролировать точность вывода.
-    total_calories = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
-    total_proteins = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
-    total_fats = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
-    total_carbs = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
-    total_weight_g = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
     per_serving_calories = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
     per_serving_proteins = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
     per_serving_fats = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
     per_serving_carbs = serializers.DecimalField(max_digits=8, decimal_places=1, read_only=True)
+    # кбжу и вес в граммах также пересчитывается с учетом количества персон выбранных у пользователя
+    total_calories = serializers.SerializerMethodField()
+    total_proteins = serializers.SerializerMethodField()
+    total_fats = serializers.SerializerMethodField()
+    total_carbs = serializers.SerializerMethodField()
+    total_weight_g = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -73,3 +87,52 @@ class RecipeSerializer(serializers.ModelSerializer):
             'total_calories', 'total_proteins', 'total_fats', 'total_carbs', 'total_weight_g',
             'per_serving_calories', 'per_serving_proteins', 'per_serving_fats', 'per_serving_carbs',
         )
+        
+    # положить в контекст количество порций в рецепте для расчета в RecipeIngredientSerializer
+    def to_representation(self, instance):
+        self.context['recipe_servings'] = instance.servings
+        return super().to_representation(instance)
+    
+    # отношение количества персон к количеству порций в рецепте
+    def _get_scale(self, obj):
+        cache_key = f'_scale_{obj.pk}'
+        if not hasattr(self, cache_key):
+            target_servings = self.context.get('target_servings')
+            scale = Decimal(target_servings) / Decimal(obj.servings)
+            setattr(self, cache_key, scale)
+        return getattr(self, cache_key)
+
+    def get_total_calories(self, obj):
+        cache_key = f'_calories_{obj.pk}'
+        if not hasattr(self, cache_key):
+            calories = round(obj.total_calories * self._get_scale(obj), 2)
+            setattr(self, cache_key, calories)
+        return getattr(self, cache_key)
+
+    def get_total_proteins(self, obj):
+        cache_key = f'_proteins_{obj.pk}'
+        if not hasattr(self, cache_key):
+            proteins = round(obj.total_proteins * self._get_scale(obj), 2)
+            setattr(self, cache_key, proteins)
+        return getattr(self, cache_key)
+
+    def get_total_fats(self, obj):
+        cache_key = f'_fats_{obj.pk}'
+        if not hasattr(self, cache_key):
+            fats = round(obj.total_fats * self._get_scale(obj), 2)
+            setattr(self, cache_key, fats)
+        return getattr(self, cache_key)
+
+    def get_total_carbs(self, obj):
+        cache_key = f'_carbs_{obj.pk}'
+        if not hasattr(self, cache_key):
+            carbs = round(obj.total_carbs * self._get_scale(obj), 2)
+            setattr(self, cache_key, carbs)
+        return getattr(self, cache_key)
+
+    def get_total_weight_g(self, obj):
+        cache_key = f'_weight_g_{obj.pk}'
+        if not hasattr(self, cache_key):
+            weight_g = round(obj.total_weight_g * self._get_scale(obj), 2)
+            setattr(self, cache_key, weight_g)
+        return getattr(self, cache_key)
