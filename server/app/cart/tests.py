@@ -18,6 +18,7 @@ class CartItemModelTests(TestCase):
         self.category = IngredientCategory.objects.create(name='Овощи')
         self.ingredient = Ingredient.objects.create(
             name='Картофель', 
+            unit=self.unit,
             category=self.category
         )
 
@@ -35,5 +36,5 @@ class CartItemModelTests(TestCase):
         self.assertEqual(cart_item.user.email, 'buyer@test.com')
         self.assertEqual(cart_item.ingredient.name, 'Картофель')
         
-        expected_str = f"{self.ingredient.name} (2.5 {self.unit}) для {self.user}"
+        expected_str = f"Cart: Картофель (2.5) for {self.user}"
         self.assertEqual(str(cart_item), expected_str)

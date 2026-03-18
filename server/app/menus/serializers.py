@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from app.menus.models import Menu, MenuItem, Period, MealType
-from app.menus.models import Menu, MenuItem, Period, MealType
 
 
 class MenuItemSerializer(serializers.ModelSerializer):

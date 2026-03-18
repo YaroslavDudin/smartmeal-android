@@ -1,6 +1,5 @@
-from django.db import IntegrityError, transaction
 from django.contrib.auth import get_user_model
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -90,7 +89,7 @@ class LogoutView(generics.GenericAPIView):
             refresh_token = request.data.get("refresh")
             if not refresh_token:
                 return Response(
-                    {'username': ['Пользователь с таким именем уже был создан']},
+                    {"detail": "Refresh token is required."},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
