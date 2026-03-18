@@ -2,11 +2,15 @@ name: Android Tests
 
 on:
   push:
+    branches: [ "main", "master" ]
     paths:
       - 'client/**'
       - 'server/**'
   pull_request:
     branches: [ "main", "master" ]
+    paths:
+      - 'client/**'
+      - 'server/**'
 
 jobs:
   unit-tests:
