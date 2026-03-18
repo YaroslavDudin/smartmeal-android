@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal
+package com.example.smartmeal
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import com.example.smartmeal.feature.home.presentation.HomeScreenContent
 import com.example.smartmeal.feature.home.presentation.HomeUiState
-import com.example.smartmeal.feature.home.presentation.MealItem
+import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.presentation.MealSection
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import org.junit.Assert.assertEquals
@@ -77,23 +77,27 @@ class HomeScreenTest {
             MealSection(
                 id = "breakfast",
                 title = "Завтрак",
-                meal = MealItem(
-                    id = "1",
-                    title = "Овсянка",
-                    cookTime = "15 мин",
-                    imageRes = com.example.smartmeal.R.drawable.food,
-                    isFavorite = false
+                meal = MenuItemDto(
+                    id = 1,
+                    recipe_title = "Овсянка",
+                    cook_time = 15,
+                    recipe = 101,
+                    day_offset = 0,
+                    meal_type = "breakfast",
+                    actual_date = "2026-03-10"
                 )
             ),
             MealSection(
                 id = "dinner",
                 title = "Ужин",
-                meal = MealItem(
-                    id = "2",
-                    title = "Салат",
-                    cookTime = "10 мин",
-                    imageRes = com.example.smartmeal.R.drawable.food,
-                    isFavorite = false
+                meal = MenuItemDto(
+                    id = 2,
+                    recipe_title = "Салат",
+                    cook_time = 10,
+                    recipe = 102,
+                    day_offset = 0,
+                    meal_type = "dinner",
+                    actual_date = "2026-03-10"
                 )
             )
         )
@@ -132,12 +136,14 @@ class HomeScreenTest {
             MealSection(
                 id = "breakfast",
                 title = "Завтрак",
-                meal = MealItem(
-                    id = "1",
-                    title = "Овсянка",
-                    cookTime = "15 мин",
-                    imageRes = com.example.smartmeal.R.drawable.food,
-                    isFavorite = false
+                meal = MenuItemDto(
+                    id = 1,
+                    recipe_title = "Овсянка",
+                    cook_time = 15,
+                    recipe = 101,
+                    day_offset = 0,
+                    meal_type = "breakfast",
+                    actual_date = "2026-03-10"
                 )
             )
         )
@@ -162,7 +168,7 @@ class HomeScreenTest {
                         state.value = state.value.copy(
                             mealSections = state.value.mealSections.map { section ->
                                 if (section.id == id) {
-                                    section.copy(meal = section.meal.copy(title = "${section.meal.title} (замена)"))
+                                    section.copy(meal = section.meal.copy(recipe_title = "${section.meal.recipe_title} (замена)"))
                                 } else {
                                     section
                                 }
@@ -187,12 +193,14 @@ class HomeScreenTest {
             MealSection(
                 id = "breakfast",
                 title = "Завтрак",
-                meal = MealItem(
-                    id = "1",
-                    title = "Овсянка",
-                    cookTime = "15 мин",
-                    imageRes = com.example.smartmeal.R.drawable.food,
-                    isFavorite = false
+                meal = MenuItemDto(
+                    id = 1,
+                    recipe_title = "Овсянка",
+                    cook_time = 15,
+                    recipe = 101,
+                    day_offset = 0,
+                    meal_type = "breakfast",
+                    actual_date = "2026-03-10"
                 )
             )
         )
@@ -205,7 +213,7 @@ class HomeScreenTest {
             mealSections = sections
         )
 
-        var favoriteId: String? = null
+        var favoriteId: Int? = null
 
         composeTestRule.setContent {
             SmartMealTheme {
@@ -214,7 +222,7 @@ class HomeScreenTest {
                     onDaySelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
-                    onToggleFavorite = { id -> favoriteId = id },
+                    onToggleFavorite = { id -> favoriteId = id.toIntOrNull() },
                     onLogout = {},
                     onLogoutSuccess = {},
                     onRecipeClick = {}
@@ -223,7 +231,7 @@ class HomeScreenTest {
         }
 
         composeTestRule.onNodeWithTag("home_favorite_1").performClick()
-        assertEquals("1", favoriteId)
+        assertEquals(1, favoriteId)
     }
 
     @Test
