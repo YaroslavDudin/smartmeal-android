@@ -4,24 +4,48 @@ on:
   push:
     paths:
       - 'server/**'
-      - '.github/workflows/**'
+      - '.github/workflows/backend-tests.yml'
   pull_request:
     branches: [ "main", "master" ]
     paths:
       - 'server/**'
-      - '.github/workflows/**'
+      - '.github/workflows/backend-tests.yml'
+
+# Отменяем предыдущие незавершенные запуски при новых пушах в ту же ветку
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    name: Run Pytest
     runs-on: ubuntu-latest
 
+    # Поднимаем реальную базу данных для тестов
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: smartmeal_db
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: 'pip' # Кэшируем зависимости для ускорения сборки
 
       - name: Install dependencies
         run: |
@@ -33,6 +57,12 @@ jobs:
           cd server
           pytest
         env:
+          # Прокидываем переменные окружения для подключения к поднятому сервису PostgreSQL
+          DB_NAME: smartmeal_db
+          DB_USER: user
+          DB_PASSWORD: password
+          DB_HOST: localhost
+          DB_PORT: 5432
           SECRET_KEY: test-key-for-ci
           DEBUG: True
           DJANGO_SETTINGS_MODULE: config.settings
