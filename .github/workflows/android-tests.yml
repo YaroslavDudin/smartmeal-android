@@ -13,7 +13,6 @@ on:
       - 'server/**'
       - '.github/workflows/android-tests.yml'
 
-# Отменяем предыдущие незавершенные запуски при новых пушах в ту же ветку
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -112,11 +111,11 @@ jobs:
           cd server
           python manage.py migrate
           
-          # Загружаем фикстуры в правильном порядке (с учетом foreign keys)
+          # ПРАВИЛЬНЫЙ порядок загрузки (сначала статика, типы, рецепты, ПОТОМ юзеры)
           python manage.py loaddata fixtures/accounts_static.json
           python manage.py loaddata fixtures/meal_types_data.json
-          python manage.py loaddata fixtures/accounts_users.json
           python manage.py loaddata fixtures/recipes_data.json
+          python manage.py loaddata fixtures/accounts_users.json
           python manage.py loaddata fixtures/menus_data.json
           python manage.py loaddata fixtures/cart_data.json
 
