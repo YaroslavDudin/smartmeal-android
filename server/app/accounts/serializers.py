@@ -48,6 +48,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     diet_type_name = serializers.CharField(source='diet_type.name', read_only=True)
+    preferred_cook_time_display = serializers.CharField(source='get_preferred_cook_time_display', read_only=True)
     allergies_names = serializers.SlugRelatedField(
         many=True,
         read_only=True,
@@ -57,7 +58,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'portion_size', 'diet_type', 'diet_type_name', 'allergies', 'allergies_names')
+        fields = (
+            'id', 'username', 'email', 'portion_size', 'diet_type', 'diet_type_name', 
+            'preferred_cook_time', 'preferred_cook_time_display', 'allergies', 'allergies_names'
+        )
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

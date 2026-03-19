@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 data class RecipeDetailState(
     val recipe: RecipeDetailDto? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val currentServings: Int = 1
 )
 
 class RecipeDetailViewModel(private val api: RecipeApi) : ViewModel() {
@@ -21,13 +22,25 @@ class RecipeDetailViewModel(private val api: RecipeApi) : ViewModel() {
     private val _state = MutableStateFlow(RecipeDetailState())
     val state: StateFlow<RecipeDetailState> = _state.asStateFlow()
 
-    fun loadRecipe(recipeId: Int) {
+    private var currentRecipeId: Int = -1 // объявление переменной id текущего рецепта
+
+    fun loadRecipe(recipeId: Int, servings: Int? = null) {
+        currentRecipeId = recipeId // сохранение id текущего рецепта
+        val isInitial = _state.value.recipe == null  // первичная загрузка если рецепта ещё нет
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, error = null) }
+            if (isInitial) {
+                _state.update { it.copy(isLoading = true, error = null) }
+            } else {
+                _state.update { it.copy(isLoading = false, error = null) }
+            }
             try {
-                val response = api.getRecipeDetail(recipeId)
+                val response = api.getRecipeDetail(recipeId, servings)
                 if (response.isSuccessful) {
-                    _state.update { it.copy(isLoading = false, recipe = response.body()) }
+                    _state.update { it.copy(
+                        isLoading = false,
+                        recipe = response.body(),
+                        currentServings = servings ?: it.currentServings // текущее количество порций в состоянии
+                    )}
                 } else {
                     _state.update { it.copy(isLoading = false, error = "Ошибка: ${response.code()}") }
                 }
@@ -35,5 +48,9 @@ class RecipeDetailViewModel(private val api: RecipeApi) : ViewModel() {
                 _state.update { it.copy(isLoading = false, error = e.localizedMessage ?: "Неизвестная ошибка") }
             }
         }
+    }
+
+    fun changeServings(servings: Int) { // изменить количество порций
+        loadRecipe(currentRecipeId, servings)
     }
 }

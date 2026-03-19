@@ -28,6 +28,8 @@ class GenerateMenuSerializer(serializers.Serializer):
     start_date = serializers.DateField()
     # Если не передан — берётся из профиля пользователя (diet_type)
     diet_type = serializers.IntegerField(required=False, allow_null=True, min_value=1)
+    # Диапазон времени приготовления ('short', 'medium', 'long', 'any')
+    cook_time_range = serializers.CharField(required=False, allow_null=True)
     # Максимальное время приготовления в минутах (30 = «до 30 минут», null = без ограничения)
     max_cook_time = serializers.IntegerField(required=False, allow_null=True, min_value=1)
     # Зарезервировано на будущее — исключение аллергенов

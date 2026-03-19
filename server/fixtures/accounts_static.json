@@ -10,7 +10,7 @@
     "model": "accounts.allergy",
     "pk": 2,
     "fields": {
-        "name": "Яйца"
+        "name": "Куриное яйцо"
     }
 },
 {

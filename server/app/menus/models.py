@@ -29,6 +29,8 @@ class Menu(models.Model):
 
     class Meta:
         db_table = 'menu'
+        verbose_name = 'Меню'
+        verbose_name_plural = 'Меню'
         ordering = ['-created_at']
 
 
@@ -40,6 +42,8 @@ class MenuItem(models.Model):
 
     class Meta:
         db_table = 'menu_item'
+        verbose_name = 'Позиция меню'
+        verbose_name_plural = 'Позиции меню'
         indexes = [
             models.Index(fields=['menu', 'day_offset'], name='menu_day_idx'),
         ]

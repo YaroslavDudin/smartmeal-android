@@ -17,6 +17,8 @@ class IngredientCategory(models.Model):
 
     class Meta:
         db_table = 'ingredient_category'
+        verbose_name = 'Категория ингредиента'
+        verbose_name_plural = 'Категории ингредиентов'
         ordering = ['name']
 
     def __str__(self):
@@ -31,6 +33,8 @@ class Unit(models.Model):
 
     class Meta:
         db_table = 'unit'
+        verbose_name = 'Единица измерения'
+        verbose_name_plural = 'Единицы измерения'
         ordering = ['name']
 
     def __str__(self):
@@ -45,6 +49,8 @@ class UnitConversion(models.Model):
 
     class Meta:
         db_table = 'unit_conversion'  # исправлена опечатка: было unit_convertion
+        verbose_name = 'Конвертация единицы измерения'
+        verbose_name_plural = 'Конвертации единиц измерения'
         ordering = ['grams_per_unit']
         constraints = [
             models.UniqueConstraint(fields=['ingredient', 'unit'], name='unique_ingredient_unit_conversion')
@@ -58,9 +64,12 @@ class Ingredient(models.Model):
     '''Базовый продукт/ингредиент (например: яблоко, куриная грудка, мука).'''
     name = models.CharField(max_length=255, unique=True)
     category = models.ForeignKey(IngredientCategory, on_delete=models.RESTRICT, related_name='ingredients')
+    allergies = models.ManyToManyField('accounts.Allergy', blank=True, related_name='ingredients')
 
     class Meta:
         db_table = 'ingredient'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
         ordering = ['name']
 
     def __str__(self):
@@ -77,6 +86,8 @@ class IngredientNutrition(models.Model):
 
     class Meta:
         db_table = 'ingredient_nutrition'
+        verbose_name = 'Пищевая ценность ингредиента'
+        verbose_name_plural = 'Пищевые ценности ингредиентов'
 
     @property
     def calories(self):
@@ -112,6 +123,7 @@ class RecipeQuerySet(models.QuerySet):
         return self.prefetch_related(
             'recipe_ingredients__ingredient__ingredient_nutrition',
             'recipe_ingredients__ingredient__unit_conversions',
+            'recipe_ingredients__ingredient__allergies', # аллергии указанные для ингредиентов
             'recipe_ingredients__unit',
         )
 
@@ -130,6 +142,8 @@ class Recipe(models.Model):
 
     class Meta:
         db_table = 'recipe'
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
         indexes = [
             models.Index(fields=['title']),
         ]
@@ -219,6 +233,8 @@ class RecipeIngredient(models.Model):
 
     class Meta:
         db_table = 'recipe_ingredient'
+        verbose_name = 'Ингредиент в рецепте'
+        verbose_name_plural = 'Ингредиенты в рецептах'
         constraints = [
             # Один ингредиент — одна запись на рецепт (независимо от единицы).
             models.UniqueConstraint(fields=['recipe', 'ingredient'], name='unique_recipe_ingredient')
@@ -295,6 +311,8 @@ class RecipeStep(models.Model):
 
     class Meta:
         db_table = 'recipe_step'
+        verbose_name = 'Шаг притовления рецепта'
+        verbose_name_plural = 'Шаги приготовления рецептов'
         ordering = ['step_number']
         constraints = [
             models.UniqueConstraint(fields=['recipe', 'step_number'], name='unique_recipe_step_number')

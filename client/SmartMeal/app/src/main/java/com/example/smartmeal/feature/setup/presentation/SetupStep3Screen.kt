@@ -1,7 +1,10 @@
 ﻿package com.example.smartmeal.feature.setup.presentation
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,29 +19,44 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
-import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.GreenBorder
+import com.example.smartmeal.ui.theme.MainGreen
+import com.example.smartmeal.ui.theme.YellowBorder
+import com.example.smartmeal.utils.ShadowData
+import com.example.smartmeal.utils.dropShadow
+
+private val SETUP_SHADOW = ShadowData(
+    radius = 4.dp,
+    spread = 0.dp,
+    color = Color.Black.copy(alpha = 0.12f),
+    offset = DpOffset(0.dp, 1.5.dp)
+)
 
 private val COOK_TIME_OPTIONS = listOf(
-    Triple("under30", "До 30 мин", false),
-    Triple("30to60", "От 30 до часа", true),
-    Triple("over60", "От часа и более", false),
+    Triple("short", "До 30 мин", false),
+    Triple("medium", "От 30 до часа", true),
+    Triple("long", "От часа и более", false),
 )
 
 /**
@@ -90,14 +108,23 @@ fun SetupStep3Content(
             Text(
                 text = "Шаг: 3 / 3",
                 style = MaterialTheme.typography.bodyMedium,
-                color = PrimaryGreen,
+                color = MainGreen,
                 fontWeight = FontWeight.Medium,
             )
-            TextButton(
+            OutlinedButton(
                 onClick = onBack,
-                modifier = Modifier.testTag("setup_step3_back")
+                border = BorderStroke(1.dp, YellowBorder),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .height(36.dp)
+                    .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.White,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                ),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 0.dp)
             ) {
-                Text(text = "Назад", color = MaterialTheme.colorScheme.onBackground)
+                Text(text = "Назад", fontSize = 14.sp)
             }
         }
 
@@ -105,7 +132,7 @@ fun SetupStep3Content(
 
         Text(
             text = "Чего бы Вы не хотели\nвидеть в своём рационе?",
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.testTag("setup_step3_title")
         )
@@ -149,7 +176,7 @@ fun SetupStep3Content(
 
         Text(
             text = "Насколько сложные блюда\nВы хотите приготовить?",
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
         )
 
@@ -162,8 +189,8 @@ fun SetupStep3Content(
         ) {
             COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
                 val tag = when (key) {
-                    "under30" -> "setup_step3_cook_under30"
-                    "30to60" -> "setup_step3_cook_30to60"
+                    "short" -> "setup_step3_cook_under30"
+                    "medium" -> "setup_step3_cook_30to60"
                     else -> "setup_step3_cook_other"
                 }
                 SelectableChip(
@@ -181,7 +208,7 @@ fun SetupStep3Content(
 
         COOK_TIME_OPTIONS.drop(2).forEach { (key, label, _) ->
             val tag = when (key) {
-                "over60" -> "setup_step3_cook_over60"
+                "long" -> "setup_step3_cook_over60"
                 else -> "setup_step3_cook_other"
             }
             SelectableChip(
@@ -228,14 +255,25 @@ private fun SelectableChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val bgColor = if (isSelected) PrimaryGreen else Color.Transparent
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val bgColor = when {
+        isSelected -> MainGreen
+        else -> Color.White
+    }
     val textColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onBackground
-    val borderColor = if (isSelected) PrimaryGreen else Color.LightGray
+    val borderColor = if (isSelected) MainGreen else GreenBorder
 
     Surface(
         modifier = modifier
+            .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW)
             .border(1.dp, borderColor, RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick),
+            .clickable(
+                interactionSource = interactionSource,
+                indication = androidx.compose.foundation.LocalIndication.current,
+                onClick = onClick
+            ),
         shape = RoundedCornerShape(12.dp),
         color = bgColor,
     ) {

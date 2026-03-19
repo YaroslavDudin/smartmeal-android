@@ -34,7 +34,16 @@ class MenuRepository(private val api: MenuApi) {
         val response = api.replaceMenuItem(menuItemId)
         if (response.isSuccessful) {
             return response.body()
+        } else {
+            // Пытаемся достать "detail" из JSON ошибки: {"detail": "..."}
+            val errorBody = response.errorBody()?.string()
+            val message = try {
+                val json = org.json.JSONObject(errorBody ?: "{}")
+                json.optString("detail", "Ошибка замены")
+            } catch (e: Exception) {
+                "Ошибка сервера: ${response.code()}"
+            }
+            throw Exception(message)
         }
-        return null
     }
 }

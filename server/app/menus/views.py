@@ -10,6 +10,25 @@ from app.menus.serializers import MenuSerializer, MenuItemSerializer, GenerateMe
 from app.recipes.models import Recipe
 
 
+def filter_recipes_by_cook_time(qs, cook_time_range):
+    """
+    Фильтрует QuerySet рецептов по выбранному диапазону времени.
+    Если выбрано 'any' или значение не указано, фильтрация не применяется.
+    """
+    if not cook_time_range or cook_time_range == 'any':
+        return qs
+        
+    if cook_time_range == 'short':
+        return qs.filter(cook_time__lte=30)
+    elif cook_time_range == 'medium':
+        # От 30 до 60 (исключая границы 30 и 60, так как они в short и long)
+        return qs.filter(cook_time__gt=30, cook_time__lt=60)
+    elif cook_time_range == 'long':
+        # 60 минут и более
+        return qs.filter(cook_time__gte=60)
+    return qs
+
+
 class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -26,21 +45,6 @@ class MenuViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'], url_path='generate')
     def generate(self, request):
-        """
-        POST /api/menus/generate/
-
-        Автоматически создаёт меню и заполняет его рецептами.
-
-        Алгоритм:
-        1. Фильтрует рецепты по diet_type (из запроса или профиля пользователя)
-           и max_cook_time (если передан).
-        2. Детерминированный shuffle (seed = user_id + start_date + period).
-        3. Заполняет слоты breakfast/lunch/dinner × days без повторов.
-           Если рецептов меньше чем слотов — допускает повторы.
-        4. Создаёт Menu + MenuItems атомарно.
-
-        Возвращает созданное меню в формате MenuSerializer (включая items).
-        """
         input_serializer = GenerateMenuSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
         data = input_serializer.validated_data
@@ -49,47 +53,68 @@ class MenuViewSet(viewsets.ModelViewSet):
         start_date = data['start_date']
         days = 7 if period == Period.WEEK else 1
 
-        # diet_type: из запроса → из профиля → без фильтра
         diet_type_id = data.get('diet_type') or request.user.diet_type_id
+        allergy_ids = data.get('exclude_allergies') or set(request.user.allergies.values_list('id', flat=True))
+        
+        # cook_time_range: берем строго из запроса или профиля
+        cook_time_range = data.get('cook_time_range') or request.user.preferred_cook_time
         max_cook_time = data.get('max_cook_time')
 
         meal_types = list(MealType.objects.all().order_by('order'))
         if not meal_types:
             return Response(
-                {'detail': 'В базе нет типов приемов пищи. Создайте их (MealType).'},
+                {'detail': 'В базе нет типов приемов пищи.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Формируем пул рецептов (ORDER BY id — детерминировано)
         qs = Recipe.objects.all().order_by('id')
         if diet_type_id:
             qs = qs.filter(diet_types__id=diet_type_id)
+        
+        # Применяем фильтр по времени строго
         if max_cook_time:
             qs = qs.filter(cook_time__lte=max_cook_time)
+        
+        # Если есть cook_time_range, применяем его дополнительно или вместо max_cook_time
+        if cook_time_range and cook_time_range != 'any':
+            qs = filter_recipes_by_cook_time(qs, cook_time_range)
 
+        if allergy_ids:
+            qs = qs.exclude(
+                recipe_ingredients__ingredient__allergies__id__in=allergy_ids
+            ).distinct()
 
-        if not qs.exists():
-            return Response(
-                {'detail': 'Нет рецептов для заданных параметров. Попробуйте изменить фильтры.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        # Детерминированный shuffle: одни и те же параметры → одно и то же меню
+        # Проверка пула для КАЖДОГО приема пищи
         pools = {}
+        used_per_day = {day: set() for day in range(days)}
         for mt in meal_types:
             valid_recipes = list(qs.filter(meal_types=mt).values_list('id', flat=True))
             if not valid_recipes:
-                valid_recipes = list(qs.values_list('id', flat=True))
+                return Response(
+                    {'detail': f'Для приема пищи "{mt.name}" нет рецептов, подходящих под ваши фильтры времени или диеты.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             rng = random.Random(f'{request.user.id}-{start_date}-{period}-{mt.id}')
             rng.shuffle(valid_recipes)
-
-        # Набираем нужное количество блюд для этого приема пищи на все дни
+            
             selected = []
-            while len(selected) < days:
-                selected.extend(valid_recipes)
-
-            pools[mt.id] = selected[:days]
+            inx = 0
+            for day in range(days):
+                start_inx = inx
+                candidate = None
+                while True:
+                    candidate = valid_recipes[inx % len(valid_recipes)]
+                    inx += 1
+                    if candidate not in used_per_day[day]:
+                        break
+                    if inx % len(valid_recipes) == start_inx % len(valid_recipes):
+                        # Если все рецепты перебрали и они все уже есть в этот день — берем первый попавшийся из подходящих под фильтр
+                        candidate = valid_recipes[start_inx % len(valid_recipes)]
+                        break
+                selected.append(candidate)
+                used_per_day[day].add(candidate)
+            pools[mt.id] = selected
 
 
         # Создаём Menu + все MenuItems одной транзакцией
@@ -117,7 +142,8 @@ class MenuViewSet(viewsets.ModelViewSet):
             .prefetch_related('items__recipe')
             .get(id=menu.id)
         )
-        return Response(MenuSerializer(created_menu).data, status=status.HTTP_201_CREATED)
+        serializer = self.get_serializer(created_menu)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class MenuItemViewSet(viewsets.ModelViewSet):
@@ -133,40 +159,47 @@ class MenuItemViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'], url_path='replace')
     def replace(self, request, pk=None):
-        """
-        POST /api/menus/items/{id}/replace/
-
-        Заменяет текущий рецепт в пункте меню на другой случайный.
-        Учитывает MealType и DietType пользователя.
-        """
         menu_item = self.get_object()
         user = request.user
+        allergy_ids = set(user.allergies.values_list('id', flat=True))
+        
+        other_today_recipes_ids = set(
+            MenuItem.objects
+            .filter(menu=menu_item.menu, day_offset=menu_item.day_offset)
+            .exclude(id=menu_item.id)
+            .values_list('recipe_id', flat=True)
+        )
 
-        # Определяем фильтры для подбора замены
-        # 1. Тот же тип приема пищи (MealType)
-        # 2. Другой рецепт (не текущий)
-        # 3. Соответствие диете пользователя (если установлена)
+        # Базовый набор рецептов для этого приема пищи
         qs = Recipe.objects.filter(meal_types=menu_item.meal_type).exclude(id=menu_item.recipe_id)
+        if not qs.exists():
+            return Response({'detail': 'В базе вообще нет других рецептов для этого приема пищи.'}, status=status.HTTP_404_NOT_FOUND)
 
+        # 1. Фильтр по диете
         if user.diet_type_id:
             qs = qs.filter(diet_types__id=user.diet_type_id)
+            if not qs.exists():
+                return Response({'detail': 'Невозможно обновить блюдо, так как нет рецептов, подходящих под ваш тип питания.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Если с диетой ничего не нашли, пробуем без диеты, но того же типа
-        if not qs.exists():
-            qs = Recipe.objects.filter(meal_types=menu_item.meal_type).exclude(id=menu_item.recipe_id)
+        # 2. Фильтр по аллергиям
+        if allergy_ids:
+            qs_before_allergy = qs
+            qs = qs.exclude(recipe_ingredients__ingredient__allergies__id__in=allergy_ids).distinct()
+            if not qs.exists():
+                return Response({'detail': 'Невозможно обновить блюдо, так как нет рецептов, подходящих под ваши ограничения по аллергии.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Если всё равно пусто (мало данных), берем любой другой рецепт
-        if not qs.exists():
-            qs = Recipe.objects.exclude(id=menu_item.recipe_id)
+        # 3. Фильтр по времени готовки
+        if user.preferred_cook_time and user.preferred_cook_time != 'any':
+            qs_before_time = qs
+            qs = filter_recipes_by_cook_time(qs, user.preferred_cook_time)
+            if not qs.exists():
+                return Response({'detail': f'Невозможно обновить блюдо, так как нет рецептов, подходящих под ваше время приготовления ({user.get_preferred_cook_time_display()}).'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Пытаемся выбрать без совпадений с другими рецептами этого дня
+        new_recipe = qs.exclude(id__in=other_today_recipes_ids).order_by('?').first()
 
-        if not qs.exists():
-            return Response(
-                {'detail': 'Не удалось найти подходящий рецепт для замены.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
-
-        # Выбираем случайный из подходящих
-        new_recipe = random.choice(list(qs))
+        if not new_recipe:
+            new_recipe = qs.order_by('?').first()
 
         menu_item.recipe = new_recipe
         menu_item.save()

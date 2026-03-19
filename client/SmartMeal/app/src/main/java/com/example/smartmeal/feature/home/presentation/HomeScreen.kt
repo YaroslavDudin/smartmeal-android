@@ -52,6 +52,7 @@ fun HomeScreen(
         onGenerateMenu = { viewModel.generateMenu() },
         onReplaceMeal = { id -> viewModel.replaceMeal(id) },
         onToggleFavorite = { id -> viewModel.toggleFavorite(id) },
+        onClearError = { viewModel.clearError() },
         onLogout = onLogout,
         onLogoutSuccess = onLogoutSuccess,
         onRecipeClick = onRecipeClick
@@ -66,6 +67,7 @@ fun HomeScreenContent(
     onGenerateMenu: () -> Unit,
     onReplaceMeal: (String) -> Unit,
     onToggleFavorite: (Int) -> Unit,
+    onClearError: () -> Unit,
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
     onRecipeClick: (Int) -> Unit
@@ -73,6 +75,7 @@ fun HomeScreenContent(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .clickable { onClearError() }
             .padding(horizontal = 4.dp)
     ) {
         Text(
@@ -318,7 +321,14 @@ class HomeViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     loadCurrentMenu()
                 } else {
-                    _uiState.update { it.copy(isLoading = false, error = "Ошибка генерации") }
+                    val errorBody = response.errorBody()?.string()
+                    val message = try {
+                        val json = org.json.JSONObject(errorBody ?: "{}")
+                        json.optString("detail", "Ошибка генерации")
+                    } catch (e: Exception) {
+                        "Ошибка сервера: ${response.code()}"
+                    }
+                    _uiState.update { it.copy(isLoading = false, error = message) }
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.localizedMessage) }
@@ -398,6 +408,10 @@ class HomeViewModel : ViewModel() {
 
     fun toggleFavorite(mealId: Int) {
         // Логика избранного пока упрощена
+    }
+
+    fun clearError() {
+        _uiState.update { it.copy(error = null) }
     }
 
     fun replaceMeal(mealType: String) {

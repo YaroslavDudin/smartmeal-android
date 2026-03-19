@@ -1,11 +1,14 @@
-﻿package com.example.smartmeal.feature.auth.presentation
+package com.example.smartmeal.feature.auth.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -17,15 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.R
@@ -37,29 +37,10 @@ import com.example.smartmeal.ui.theme.*
 @Composable
 fun LoginRegisterForm(
     viewModel: AuthViewModel,
-    onAuthSuccess: () -> Unit
-) {
-    val authState by viewModel.authState.collectAsState()
-
-    LoginRegisterFormContent(
-        authState = authState,
-        onAuthSuccess = onAuthSuccess,
-        onLogin = { email, pass -> viewModel.login(email, pass) },
-        onRegister = { user, email, pass, passConfirm ->
-            viewModel.register(user, email, pass, passConfirm)
-        }
-    )
-}
-
-@Composable
-fun LoginRegisterFormContent(
-    authState: AuthState,
     onAuthSuccess: () -> Unit,
-    onLogin: (String, String) -> Unit,
-    onRegister: (String, String, String, String) -> Unit,
-    initialIsLoginMode: Boolean = true,
+    onNavigateToSandbox: () -> Unit = {}
 ) {
-    var isLoginMode by remember { mutableStateOf(initialIsLoginMode) }
+    var isLoginMode by remember { mutableStateOf(true) }
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -68,6 +49,8 @@ fun LoginRegisterFormContent(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isConfirmPasswordVisible by remember { mutableStateOf(false) }
 
+    val authState by viewModel.authState.collectAsState()
+
     // Наблюдатель за успешной авторизацией
     LaunchedEffect(authState) {
         if (authState is AuthState.Success) {
@@ -75,69 +58,50 @@ fun LoginRegisterFormContent(
         }
     }
 
-    val configuration = LocalConfiguration.current
-    val isCompactHeight = configuration.screenHeightDp < 600
-    val isCompactWidth = configuration.screenWidthDp < 360
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(BgLightGray)
     ) {
-        val horizontalPadding = if (isCompactHeight || isCompactWidth) 16.dp else Padding.SCREEN
-        val topSpacing = if (isCompactHeight) 12.dp else 40.dp
-        val imageSize = if (isCompactHeight) 72.dp else IconSize.LOGO
-        val titleSize = if (isCompactHeight) 22.sp else 28.sp
-        val toggleHeight = if (isCompactHeight) 44.dp else 50.dp
-        val sectionSpacing = if (isCompactHeight) 16.dp else 24.dp
-        val fieldSpacing = if (isCompactHeight) 8.dp else 16.dp
-        val fieldHeight = if (isCompactHeight) 48.dp else 60.dp
-        val buttonTopSpacing = if (isCompactHeight) 20.dp else 40.dp
-        val bottomSpacing = if (isCompactHeight) 24.dp else 40.dp
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = horizontalPadding),
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = Padding.SCREEN),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(topSpacing))
+            Spacer(modifier = Modifier.height(40.dp))
 
             // 1. Иллюстрация сверху
             Image(
                 painter = painterResource(id = R.drawable.food),
                 contentDescription = "Food logo",
                 modifier = Modifier
-                    .size(imageSize)
-                    .clip(RoundedCornerShape(16.dp))
-                    .testTag("auth_logo"),
+                    .size(IconSize.LOGO)
+                    .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Fit
             )
 
-            Spacer(modifier = Modifier.height(sectionSpacing))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // 2. Заголовок
             Text(
                 text = if (isLoginMode) "Вход" else "Регистрация",
-                fontSize = titleSize,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Normal,
                 color = Color.Black,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.testTag("auth_title")
+                textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(sectionSpacing))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // 3. Кастомный переключатель (Tabs)
             AuthToggleSwitch(
                 isLoginMode = isLoginMode,
-                onToggle = { isLoginMode = it },
-                loginTag = "auth_toggle_login",
-                registerTag = "auth_toggle_register",
-                height = toggleHeight
+                onToggle = { isLoginMode = it }
             )
 
-            Spacer(modifier = Modifier.height(sectionSpacing))
+            Spacer(modifier = Modifier.height(32.dp))
 
             // 4. Поля ввода
             if (!isLoginMode) {
@@ -145,12 +109,9 @@ fun LoginRegisterFormContent(
                     value = username,
                     onValueChange = { username = it },
                     label = "Имя",
-                    height = fieldHeight,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("auth_username")
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(fieldSpacing))
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             CustomTextField(
@@ -158,13 +119,10 @@ fun LoginRegisterFormContent(
                 onValueChange = { email = it },
                 label = "Электронная почта",
                 keyboardType = KeyboardType.Email,
-                height = fieldHeight,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("auth_email")
+                modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(fieldSpacing))
+            Spacer(modifier = Modifier.height(16.dp))
 
             CustomTextField(
                 value = password,
@@ -174,14 +132,11 @@ fun LoginRegisterFormContent(
                 isPassword = true,
                 isPasswordVisible = isPasswordVisible,
                 onPasswordVisibilityChange = { isPasswordVisible = !isPasswordVisible },
-                height = fieldHeight,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("auth_password")
+                modifier = Modifier.fillMaxWidth()
             )
 
             if (!isLoginMode) {
-                Spacer(modifier = Modifier.height(fieldSpacing))
+                Spacer(modifier = Modifier.height(16.dp))
                 CustomTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
@@ -190,16 +145,13 @@ fun LoginRegisterFormContent(
                     isPassword = true,
                     isPasswordVisible = isConfirmPasswordVisible,
                     onPasswordVisibilityChange = { isConfirmPasswordVisible = !isConfirmPasswordVisible },
-                    height = fieldHeight,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("auth_confirm_password")
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
             // 5. Забыли пароль? (Только для входа)
             if (isLoginMode) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = "Забыли пароль?",
                     color = PrimaryGreen,
@@ -207,49 +159,48 @@ fun LoginRegisterFormContent(
                     modifier = Modifier
                         .align(Alignment.Start)
                         .clickable { /* TODO: Forgot Password */ }
-                        .testTag("auth_forgot")
                 )
             }
 
-            Spacer(modifier = Modifier.height(buttonTopSpacing))
+            Spacer(modifier = Modifier.height(40.dp))
 
             // 6. Ошибки
             if (authState is AuthState.Error) {
                 Text(
-                    text = authState.message,
+                    text = (authState as AuthState.Error).message,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier
-                        .padding(bottom = 16.dp)
-                        .testTag("auth_error"),
+                    modifier = Modifier.padding(bottom = 16.dp),
                     textAlign = TextAlign.Center
                 )
             }
 
             // 7. Кнопка действия
             if (authState is AuthState.Loading) {
-                CircularProgressIndicator(
-                    color = PrimaryGreen,
-                    modifier = Modifier.testTag("auth_loading")
-                )
+                CircularProgressIndicator(color = PrimaryGreen)
             } else {
                 SmartMealButton(
                     text = if (isLoginMode) "Войти" else "Создать аккаунт",
                     onClick = {
                         if (isLoginMode) {
-                            onLogin(email, password)
+                            viewModel.login(email, password)
                         } else {
-                            onRegister(username, email, password, confirmPassword)
+                            viewModel.register(username, email, password, confirmPassword)
                         }
                     },
                     variant = SmartMealButtonVariant.PRIMARY,
                     color = SmartMealButtonColor.GREEN,
-                    modifier = Modifier
-                        .shadow(4.dp, RoundedCornerShape(24.dp))
-                        .testTag("auth_submit")
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            Spacer(modifier = Modifier.height(bottomSpacing))
+            Spacer(modifier = Modifier.height(40.dp))
+
+            TextButton(
+                onClick = onNavigateToSandbox,
+                modifier = Modifier.padding(bottom = 16.dp)
+            ) {
+                Text("Перейти в Sandbox", color = PrimaryGreen)
+            }
         }
     }
 }
@@ -257,15 +208,12 @@ fun LoginRegisterFormContent(
 @Composable
 fun AuthToggleSwitch(
     isLoginMode: Boolean,
-    onToggle: (Boolean) -> Unit,
-    loginTag: String,
-    registerTag: String,
-    height: Dp = 50.dp,
+    onToggle: (Boolean) -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height)
+            .height(50.dp)
             .background(SurfaceGray, RoundedCornerShape(25.dp))
             .padding(4.dp)
     ) {
@@ -277,9 +225,8 @@ fun AuthToggleSwitch(
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(25.dp))
                     .background(if (isLoginMode) Color.White else Color.Transparent)
-                    .shadow(if (isLoginMode) 2.dp else 0.dp, RoundedCornerShape(25.dp))
-                    .clickable { onToggle(true) }
-                    .testTag(loginTag),
+                    .shadow(if (isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .clickable { onToggle(true) },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -295,9 +242,8 @@ fun AuthToggleSwitch(
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(25.dp))
                     .background(if (!isLoginMode) Color.White else Color.Transparent)
-                    .shadow(if (!isLoginMode) 2.dp else 0.dp, RoundedCornerShape(25.dp))
-                    .clickable { onToggle(false) }
-                    .testTag(registerTag),
+                    .shadow(if (!isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .clickable { onToggle(false) },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -320,8 +266,7 @@ fun CustomTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     isPassword: Boolean = false,
     isPasswordVisible: Boolean = false,
-    onPasswordVisibilityChange: () -> Unit = {},
-    height: Dp = 60.dp
+    onPasswordVisibilityChange: () -> Unit = {}
 ) {
     OutlinedTextField(
         value = value,
@@ -335,7 +280,7 @@ fun CustomTextField(
         },
         modifier = modifier
             .fillMaxWidth()
-            .height(height),
+            .height(60.dp),
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = BorderGray,
