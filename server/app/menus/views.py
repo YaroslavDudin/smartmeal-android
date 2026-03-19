@@ -81,6 +81,7 @@ class MenuViewSet(viewsets.ModelViewSet):
 
         # Детерминированный shuffle: одни и те же параметры → одно и то же меню
         pools = {}
+        used_per_day = {day: set() for day in range(days)}
         for mt in meal_types:
             valid_recipes = list(qs.filter(meal_types=mt).values_list('id', flat=True))
             if not valid_recipes:
@@ -94,10 +95,21 @@ class MenuViewSet(viewsets.ModelViewSet):
 
         # Набираем нужное количество блюд для этого приема пищи на все дни
             selected = []
-            while len(selected) < days:
-                selected.extend(valid_recipes)
+            for day in range(days):
+                chosen = None
+                for recipe_id in valid_recipes:
+                    if recipe_id not in used_per_day[day]:
+                        chosen = recipe_id
+                        break
 
-            pools[mt.id] = selected[:days]
+                # Если все рецепты уже использованы в этот день допускаем повтор
+                if chosen is None:
+                    chosen = valid_recipes[day % len(valid_recipes)]
+
+                selected.append(chosen)
+                used_per_day[day].add(chosen)
+
+            pools[mt.id] = selected
 
 
         # Создаём Menu + все MenuItems одной транзакцией
@@ -151,6 +163,13 @@ class MenuItemViewSet(viewsets.ModelViewSet):
         menu_item = self.get_object()
         user = request.user
         allergy_ids = set(user.allergies.values_list('id', flat=True))
+        # Рецепты уже использованные в этот день (кроме текущего)
+        other_today_recipes_ids = set(
+            MenuItem.objects
+            .filter(menu=menu_item.menu, day_offset=menu_item.day_offset)
+            .exclude(id=menu_item.id)
+            .values_list('recipe_id', flat=True)
+        )
 
         # Определяем фильтры для подбора замены
         # 1. Тот же тип приема пищи (MealType)
@@ -188,9 +207,13 @@ class MenuItemViewSet(viewsets.ModelViewSet):
                 {'detail': 'Не удалось найти подходящий рецепт для замены с указанными параметрами.'},
                 status=status.HTTP_404_NOT_FOUND
             )
+        
+        # Пытаемся выбрать без совпадений с другими рецептами этого дня:
+        new_recipe = qs.exclude(id__in=other_today_recipes_ids).order_by('?').first()
 
-        # Выбираем случайный из подходящих без загрузки всех рецептов
-        new_recipe = qs.order_by('?').first()
+        # Выбираем случайный из подходящих игнорируя совпадения с рецептами на другие приемы пищи:
+        if not new_recipe:
+            new_recipe = qs.order_by('?').first()
 
         menu_item.recipe = new_recipe
         menu_item.save()
