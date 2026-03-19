@@ -10,12 +10,12 @@ class Period(models.TextChoices):
     WEEK = 'week', 'Неделя'
 
 
-class MealType(models.TextChoices):
-    BREAKFAST = 'breakfast', 'Завтрак'
-    LUNCH = 'lunch', 'Обед'
-    DINNER = 'dinner', 'Ужин'
-    SNACK = 'snack', 'Перекус'
-    DRINK = 'drink', 'Напиток'
+class MealType(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    order = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
 
 
 class Menu(models.Model):
@@ -29,6 +29,8 @@ class Menu(models.Model):
 
     class Meta:
         db_table = 'menu'
+        verbose_name = 'Меню'
+        verbose_name_plural = 'Меню'
         ordering = ['-created_at']
 
 
@@ -36,10 +38,12 @@ class MenuItem(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='items')
     recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE, related_name='menu_items')
     day_offset = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(6)])
-    meal_type = models.CharField(max_length=50, choices=MealType.choices)
+    meal_type = models.ForeignKey(MealType, on_delete=models.PROTECT)
 
     class Meta:
         db_table = 'menu_item'
+        verbose_name = 'Позиция меню'
+        verbose_name_plural = 'Позиции меню'
         indexes = [
             models.Index(fields=['menu', 'day_offset'], name='menu_day_idx'),
         ]
@@ -55,4 +59,4 @@ class MenuItem(models.Model):
         return self.menu.start_date + timedelta(days=self.day_offset)
 
     def __str__(self):
-        return f'{self.get_meal_type_display()} on Day Offset {self.day_offset} for Menu ID {self.menu_id} - Recipe ID {self.recipe_id}'
+        return f'{self.meal_type.name} on Day Offset {self.day_offset} for Menu ID {self.menu_id} - Recipe ID {self.recipe_id}'

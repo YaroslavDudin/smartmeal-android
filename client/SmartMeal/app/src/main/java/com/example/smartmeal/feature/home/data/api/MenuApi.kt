@@ -40,6 +40,10 @@ interface MenuApi {
     @DELETE("api/menus/items/{id}/")
     suspend fun deleteMenuItem(@Path("id") id: Int): Response<Unit>
 
+    /** Заменить блюдо в меню на другое подходящее */
+    @POST("api/menus/items/{id}/replace/")
+    suspend fun replaceMenuItem(@Path("id") id: Int): Response<MenuItemDto>
+
     // ─── Рецепты ────────────────────────────────────────────────────────────
 
     /**

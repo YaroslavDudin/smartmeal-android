@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,12 +37,12 @@ fun QuantityStepper(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Минус
-        Button(
+        FilledIconButton(
             onClick = onDecrease,
             enabled = quantity > minQuantity,
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(36.dp),
             shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(
+            colors = IconButtonDefaults.filledIconButtonColors(
                 containerColor = PrimaryGreen,
                 contentColor = Color.White,
                 disabledContainerColor = Color.LightGray
@@ -61,12 +61,12 @@ fun QuantityStepper(
         )
 
         // Плюс
-        Button(
+        FilledIconButton(
             onClick = onIncrease,
             enabled = quantity < maxQuantity,
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(36.dp),
             shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(
+            colors = IconButtonDefaults.filledIconButtonColors(
                 containerColor = PrimaryGreen,
                 contentColor = Color.White,
                 disabledContainerColor = Color.LightGray

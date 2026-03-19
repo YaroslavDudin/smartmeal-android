@@ -36,5 +36,6 @@ data class LoginResponse(
 )
 
 data class RefreshResponse(
-    val access: String
+    val access: String,
+    val refresh: String? = null
 )

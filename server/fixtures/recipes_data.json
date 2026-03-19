@@ -3,7 +3,7 @@
     "model": "recipes.ingredientcategory",
     "pk": 1,
     "fields": {
-        "name": "Овощи"
+        "name": "Овощи, зелень и грибы"
     }
 },
 {
@@ -17,21 +17,21 @@
     "model": "recipes.ingredientcategory",
     "pk": 3,
     "fields": {
-        "name": "Молочные продукты"
+        "name": "Молочные продукты и яйца"
     }
 },
 {
     "model": "recipes.ingredientcategory",
     "pk": 4,
     "fields": {
-        "name": "Мясо"
+        "name": "Мясо и мясная продукция"
     }
 },
 {
     "model": "recipes.ingredientcategory",
     "pk": 5,
     "fields": {
-        "name": "Рыба"
+        "name": "Рыба и морепродукты"
     }
 },
 {
@@ -45,7 +45,7 @@
     "model": "recipes.ingredientcategory",
     "pk": 7,
     "fields": {
-        "name": "Специи"
+        "name": "Приправы и специи"
     }
 },
 {
@@ -67,6 +67,69 @@
     "pk": 10,
     "fields": {
         "name": "Сладости"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 14,
+    "fields": {
+        "name": "Ягоды"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 15,
+    "fields": {
+        "name": "Бобовые"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 16,
+    "fields": {
+        "name": "Орехи и семена"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 17,
+    "fields": {
+        "name": "Алкоголь"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 19,
+    "fields": {
+        "name": "Мука и мучные изделия"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 20,
+    "fields": {
+        "name": "Пасты"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 21,
+    "fields": {
+        "name": "Соусы"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 22,
+    "fields": {
+        "name": "Добавки для приготовления блюд"
+    }
+},
+{
+    "model": "recipes.ingredientcategory",
+    "pk": 23,
+    "fields": {
+        "name": "Чай, кофе и какао"
     }
 },
 {
@@ -687,7 +750,7 @@
     "fields": {
         "ingredient": 70,
         "unit": 4,
-        "grams_per_unit": "8.00"
+        "grams_per_unit": "10.00"
     }
 },
 {
@@ -696,7 +759,7 @@
     "fields": {
         "ingredient": 70,
         "unit": 5,
-        "grams_per_unit": "3.00"
+        "grams_per_unit": "4.00"
     }
 },
 {
@@ -718,11 +781,129 @@
     }
 },
 {
+    "model": "recipes.unitconversion",
+    "pk": 65,
+    "fields": {
+        "ingredient": 78,
+        "unit": 7,
+        "grams_per_unit": "175.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 66,
+    "fields": {
+        "ingredient": 79,
+        "unit": 4,
+        "grams_per_unit": "17.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 67,
+    "fields": {
+        "ingredient": 79,
+        "unit": 5,
+        "grams_per_unit": "8.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 68,
+    "fields": {
+        "ingredient": 79,
+        "unit": 7,
+        "grams_per_unit": "260.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 69,
+    "fields": {
+        "ingredient": 65,
+        "unit": 7,
+        "grams_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 70,
+    "fields": {
+        "ingredient": 63,
+        "unit": 7,
+        "grams_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 73,
+    "fields": {
+        "ingredient": 81,
+        "unit": 4,
+        "grams_per_unit": "10.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 74,
+    "fields": {
+        "ingredient": 81,
+        "unit": 5,
+        "grams_per_unit": "5.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 75,
+    "fields": {
+        "ingredient": 82,
+        "unit": 3,
+        "grams_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 76,
+    "fields": {
+        "ingredient": 83,
+        "unit": 7,
+        "grams_per_unit": "170.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 77,
+    "fields": {
+        "ingredient": 84,
+        "unit": 7,
+        "grams_per_unit": "190.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 78,
+    "fields": {
+        "ingredient": 85,
+        "unit": 7,
+        "grams_per_unit": "150.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 79,
+    "fields": {
+        "ingredient": 86,
+        "unit": 3,
+        "grams_per_unit": "35.00"
+    }
+},
+{
     "model": "recipes.ingredient",
     "pk": 1,
     "fields": {
         "name": "Картофель",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -730,7 +911,8 @@
     "pk": 2,
     "fields": {
         "name": "Морковь",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -738,7 +920,8 @@
     "pk": 3,
     "fields": {
         "name": "Лук репчатый",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -746,7 +929,8 @@
     "pk": 4,
     "fields": {
         "name": "Чеснок",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -754,7 +938,8 @@
     "pk": 5,
     "fields": {
         "name": "Помидор",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -762,7 +947,8 @@
     "pk": 6,
     "fields": {
         "name": "Огурец",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -770,7 +956,8 @@
     "pk": 7,
     "fields": {
         "name": "Перец болгарский",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -778,7 +965,8 @@
     "pk": 8,
     "fields": {
         "name": "Капуста белокочанная",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -786,7 +974,8 @@
     "pk": 9,
     "fields": {
         "name": "Брокколи",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -794,7 +983,8 @@
     "pk": 10,
     "fields": {
         "name": "Тыква",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -802,7 +992,8 @@
     "pk": 11,
     "fields": {
         "name": "Кабачок",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -810,7 +1001,8 @@
     "pk": 12,
     "fields": {
         "name": "Баклажан",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -818,7 +1010,8 @@
     "pk": 13,
     "fields": {
         "name": "Свёкла",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -826,7 +1019,8 @@
     "pk": 14,
     "fields": {
         "name": "Зелень (укроп, петрушка)",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -834,7 +1028,8 @@
     "pk": 15,
     "fields": {
         "name": "Яблоко",
-        "category": 2
+        "category": 2,
+        "allergies": []
     }
 },
 {
@@ -842,7 +1037,8 @@
     "pk": 16,
     "fields": {
         "name": "Банан",
-        "category": 2
+        "category": 2,
+        "allergies": []
     }
 },
 {
@@ -850,7 +1046,10 @@
     "pk": 17,
     "fields": {
         "name": "Апельсин",
-        "category": 2
+        "category": 2,
+        "allergies": [
+            9
+        ]
     }
 },
 {
@@ -858,7 +1057,10 @@
     "pk": 18,
     "fields": {
         "name": "Лимон",
-        "category": 2
+        "category": 2,
+        "allergies": [
+            9
+        ]
     }
 },
 {
@@ -866,7 +1068,8 @@
     "pk": 19,
     "fields": {
         "name": "Груша",
-        "category": 2
+        "category": 2,
+        "allergies": []
     }
 },
 {
@@ -874,7 +1077,8 @@
     "pk": 20,
     "fields": {
         "name": "Клубника",
-        "category": 2
+        "category": 14,
+        "allergies": []
     }
 },
 {
@@ -882,7 +1086,8 @@
     "pk": 21,
     "fields": {
         "name": "Виноград",
-        "category": 2
+        "category": 14,
+        "allergies": []
     }
 },
 {
@@ -890,7 +1095,8 @@
     "pk": 22,
     "fields": {
         "name": "Авокадо",
-        "category": 2
+        "category": 2,
+        "allergies": []
     }
 },
 {
@@ -898,7 +1104,8 @@
     "pk": 23,
     "fields": {
         "name": "Курица (филе)",
-        "category": 4
+        "category": 4,
+        "allergies": []
     }
 },
 {
@@ -906,7 +1113,8 @@
     "pk": 24,
     "fields": {
         "name": "Куриные бёдра",
-        "category": 4
+        "category": 4,
+        "allergies": []
     }
 },
 {
@@ -914,7 +1122,8 @@
     "pk": 25,
     "fields": {
         "name": "Говядина",
-        "category": 4
+        "category": 4,
+        "allergies": []
     }
 },
 {
@@ -922,15 +1131,17 @@
     "pk": 26,
     "fields": {
         "name": "Свинина",
-        "category": 4
+        "category": 4,
+        "allergies": []
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 27,
     "fields": {
-        "name": "Фарш мясной",
-        "category": 4
+        "name": "Фарш свиной",
+        "category": 4,
+        "allergies": []
     }
 },
 {
@@ -938,7 +1149,8 @@
     "pk": 28,
     "fields": {
         "name": "Бекон",
-        "category": 4
+        "category": 4,
+        "allergies": []
     }
 },
 {
@@ -946,7 +1158,8 @@
     "pk": 29,
     "fields": {
         "name": "Колбаса варёная",
-        "category": 4
+        "category": 4,
+        "allergies": []
     }
 },
 {
@@ -954,7 +1167,10 @@
     "pk": 30,
     "fields": {
         "name": "Лосось",
-        "category": 5
+        "category": 5,
+        "allergies": [
+            3
+        ]
     }
 },
 {
@@ -962,7 +1178,10 @@
     "pk": 31,
     "fields": {
         "name": "Треска",
-        "category": 5
+        "category": 5,
+        "allergies": [
+            3
+        ]
     }
 },
 {
@@ -970,7 +1189,10 @@
     "pk": 32,
     "fields": {
         "name": "Тунец консервированный",
-        "category": 5
+        "category": 5,
+        "allergies": [
+            3
+        ]
     }
 },
 {
@@ -978,7 +1200,10 @@
     "pk": 33,
     "fields": {
         "name": "Креветки",
-        "category": 5
+        "category": 5,
+        "allergies": [
+            4
+        ]
     }
 },
 {
@@ -986,7 +1211,10 @@
     "pk": 34,
     "fields": {
         "name": "Мидии",
-        "category": 5
+        "category": 5,
+        "allergies": [
+            4
+        ]
     }
 },
 {
@@ -994,31 +1222,43 @@
     "pk": 35,
     "fields": {
         "name": "Кальмары",
-        "category": 5
+        "category": 5,
+        "allergies": [
+            4
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 36,
     "fields": {
-        "name": "Молоко",
-        "category": 3
+        "name": "Молоко 3,2%",
+        "category": 3,
+        "allergies": [
+            1
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 37,
     "fields": {
-        "name": "Сливки",
-        "category": 3
+        "name": "Сливки 20%",
+        "category": 3,
+        "allergies": [
+            1
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 38,
     "fields": {
-        "name": "Йогурт",
-        "category": 3
+        "name": "Йогурт без сахара",
+        "category": 3,
+        "allergies": [
+            1
+        ]
     }
 },
 {
@@ -1026,39 +1266,54 @@
     "pk": 39,
     "fields": {
         "name": "Творог",
-        "category": 3
+        "category": 3,
+        "allergies": [
+            1
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 40,
     "fields": {
-        "name": "Сыр твёрдый",
-        "category": 3
+        "name": "Сыр твёрдый 30%",
+        "category": 3,
+        "allergies": [
+            1
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 41,
     "fields": {
-        "name": "Масло сливочное",
-        "category": 3
+        "name": "Масло сливочное 82,5%",
+        "category": 3,
+        "allergies": [
+            1
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 42,
     "fields": {
-        "name": "Яйцо",
-        "category": 3
+        "name": "Куриное яйцо",
+        "category": 3,
+        "allergies": [
+            2
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 43,
     "fields": {
-        "name": "Сметана",
-        "category": 3
+        "name": "Сметана 20%",
+        "category": 3,
+        "allergies": [
+            1
+        ]
     }
 },
 {
@@ -1066,39 +1321,48 @@
     "pk": 44,
     "fields": {
         "name": "Рис",
-        "category": 6
+        "category": 6,
+        "allergies": []
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 45,
     "fields": {
-        "name": "Гречка",
-        "category": 6
+        "name": "Греча",
+        "category": 6,
+        "allergies": []
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 46,
     "fields": {
-        "name": "Овсянка",
-        "category": 6
+        "name": "Овсяные хлопья",
+        "category": 6,
+        "allergies": []
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 47,
     "fields": {
-        "name": "Макароны",
-        "category": 6
+        "name": "Макароны из твердой пшеницы",
+        "category": 19,
+        "allergies": [
+            8
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 48,
     "fields": {
-        "name": "Лапша",
-        "category": 6
+        "name": "Лапша пшеничная",
+        "category": 19,
+        "allergies": [
+            8
+        ]
     }
 },
 {
@@ -1106,7 +1370,10 @@
     "pk": 49,
     "fields": {
         "name": "Кускус",
-        "category": 6
+        "category": 6,
+        "allergies": [
+            8
+        ]
     }
 },
 {
@@ -1114,7 +1381,8 @@
     "pk": 50,
     "fields": {
         "name": "Булгур",
-        "category": 6
+        "category": 6,
+        "allergies": []
     }
 },
 {
@@ -1122,7 +1390,8 @@
     "pk": 51,
     "fields": {
         "name": "Соль",
-        "category": 7
+        "category": 7,
+        "allergies": []
     }
 },
 {
@@ -1130,7 +1399,8 @@
     "pk": 52,
     "fields": {
         "name": "Перец чёрный",
-        "category": 7
+        "category": 7,
+        "allergies": []
     }
 },
 {
@@ -1138,7 +1408,8 @@
     "pk": 53,
     "fields": {
         "name": "Паприка",
-        "category": 7
+        "category": 7,
+        "allergies": []
     }
 },
 {
@@ -1146,7 +1417,8 @@
     "pk": 54,
     "fields": {
         "name": "Куркума",
-        "category": 7
+        "category": 7,
+        "allergies": []
     }
 },
 {
@@ -1154,7 +1426,8 @@
     "pk": 55,
     "fields": {
         "name": "Корица",
-        "category": 7
+        "category": 7,
+        "allergies": []
     }
 },
 {
@@ -1162,7 +1435,8 @@
     "pk": 56,
     "fields": {
         "name": "Ванилин",
-        "category": 7
+        "category": 7,
+        "allergies": []
     }
 },
 {
@@ -1170,7 +1444,8 @@
     "pk": 57,
     "fields": {
         "name": "Лавровый лист",
-        "category": 7
+        "category": 7,
+        "allergies": []
     }
 },
 {
@@ -1178,7 +1453,8 @@
     "pk": 58,
     "fields": {
         "name": "Масло оливковое",
-        "category": 8
+        "category": 8,
+        "allergies": []
     }
 },
 {
@@ -1186,7 +1462,8 @@
     "pk": 59,
     "fields": {
         "name": "Масло подсолнечное",
-        "category": 8
+        "category": 8,
+        "allergies": []
     }
 },
 {
@@ -1194,7 +1471,8 @@
     "pk": 60,
     "fields": {
         "name": "Масло кунжутное",
-        "category": 8
+        "category": 8,
+        "allergies": []
     }
 },
 {
@@ -1202,7 +1480,8 @@
     "pk": 61,
     "fields": {
         "name": "Масло кокосовое",
-        "category": 8
+        "category": 8,
+        "allergies": []
     }
 },
 {
@@ -1210,31 +1489,35 @@
     "pk": 62,
     "fields": {
         "name": "Вода",
-        "category": 9
+        "category": 9,
+        "allergies": []
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 63,
     "fields": {
-        "name": "Чай",
-        "category": 9
+        "name": "Чай черный без сахара",
+        "category": 9,
+        "allergies": []
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 64,
     "fields": {
-        "name": "Кофе",
-        "category": 9
+        "name": "Кофе растворимый",
+        "category": 23,
+        "allergies": []
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 65,
     "fields": {
-        "name": "Сок",
-        "category": 9
+        "name": "Сок яблочный",
+        "category": 9,
+        "allergies": []
     }
 },
 {
@@ -1242,7 +1525,8 @@
     "pk": 66,
     "fields": {
         "name": "Мёд",
-        "category": 10
+        "category": 10,
+        "allergies": []
     }
 },
 {
@@ -1250,7 +1534,8 @@
     "pk": 67,
     "fields": {
         "name": "Сахар",
-        "category": 10
+        "category": 10,
+        "allergies": []
     }
 },
 {
@@ -1258,7 +1543,8 @@
     "pk": 68,
     "fields": {
         "name": "Шоколад",
-        "category": 10
+        "category": 10,
+        "allergies": []
     }
 },
 {
@@ -1266,7 +1552,8 @@
     "pk": 69,
     "fields": {
         "name": "Варенье",
-        "category": 10
+        "category": 10,
+        "allergies": []
     }
 },
 {
@@ -1274,7 +1561,8 @@
     "pk": 70,
     "fields": {
         "name": "Какао-порошок",
-        "category": 10
+        "category": 23,
+        "allergies": []
     }
 },
 {
@@ -1282,15 +1570,21 @@
     "pk": 71,
     "fields": {
         "name": "Манка",
-        "category": 6
+        "category": 6,
+        "allergies": [
+            8
+        ]
     }
 },
 {
     "model": "recipes.ingredient",
     "pk": 72,
     "fields": {
-        "name": "Мука",
-        "category": 6
+        "name": "Мука пшеничная",
+        "category": 19,
+        "allergies": [
+            8
+        ]
     }
 },
 {
@@ -1298,7 +1592,8 @@
     "pk": 73,
     "fields": {
         "name": "Дрожжи",
-        "category": 6
+        "category": 22,
+        "allergies": []
     }
 },
 {
@@ -1306,7 +1601,8 @@
     "pk": 74,
     "fields": {
         "name": "Разрыхлитель",
-        "category": 6
+        "category": 22,
+        "allergies": []
     }
 },
 {
@@ -1314,7 +1610,10 @@
     "pk": 75,
     "fields": {
         "name": "Панировочные сухари",
-        "category": 6
+        "category": 19,
+        "allergies": [
+            8
+        ]
     }
 },
 {
@@ -1322,7 +1621,8 @@
     "pk": 76,
     "fields": {
         "name": "Томатная паста",
-        "category": 1
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -1330,7 +1630,88 @@
     "pk": 77,
     "fields": {
         "name": "Соевый соус",
-        "category": 7
+        "category": 21,
+        "allergies": [
+            7
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 78,
+    "fields": {
+        "name": "Арахис",
+        "category": 15,
+        "allergies": [
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 79,
+    "fields": {
+        "name": "Арахисовая паста без сахара",
+        "category": 20,
+        "allergies": [
+            5
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 81,
+    "fields": {
+        "name": "Матча зеленая",
+        "category": 23,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 82,
+    "fields": {
+        "name": "Багет пшеничный",
+        "category": 19,
+        "allergies": [
+            8
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 83,
+    "fields": {
+        "name": "Красная чечевица",
+        "category": 15,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 84,
+    "fields": {
+        "name": "Консервированная красная фасоль",
+        "category": 15,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 85,
+    "fields": {
+        "name": "Консервированный горошек",
+        "category": 15,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 86,
+    "fields": {
+        "name": "Шампиньоны",
+        "category": 1,
+        "allergies": []
     }
 },
 {
@@ -2032,9 +2413,9 @@
     "fields": {
         "ingredient": 64,
         "base_weight_g": 100,
-        "protein": "0.2",
-        "fat": "0.0",
-        "carbs": "0.0"
+        "protein": "15.0",
+        "fat": "0.5",
+        "carbs": "43.0"
     }
 },
 {
@@ -2098,9 +2479,9 @@
     "fields": {
         "ingredient": 70,
         "base_weight_g": 100,
-        "protein": "20.0",
+        "protein": "24.3",
         "fat": "15.0",
-        "carbs": "30.0"
+        "carbs": "10.0"
     }
 },
 {
@@ -2170,6 +2551,94 @@
     }
 },
 {
+    "model": "recipes.ingredientnutrition",
+    "pk": 77,
+    "fields": {
+        "ingredient": 78,
+        "base_weight_g": 100,
+        "protein": "26.3",
+        "fat": "45.2",
+        "carbs": "9.9"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 78,
+    "fields": {
+        "ingredient": 79,
+        "base_weight_g": 100,
+        "protein": "26.0",
+        "fat": "49.0",
+        "carbs": "16.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 80,
+    "fields": {
+        "ingredient": 81,
+        "base_weight_g": 100,
+        "protein": "24.9",
+        "fat": "0.0",
+        "carbs": "51.1"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 81,
+    "fields": {
+        "ingredient": 82,
+        "base_weight_g": 100,
+        "protein": "7.5",
+        "fat": "2.9",
+        "carbs": "51.4"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 82,
+    "fields": {
+        "ingredient": 83,
+        "base_weight_g": 100,
+        "protein": "24.6",
+        "fat": "1.1",
+        "carbs": "63.4"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 83,
+    "fields": {
+        "ingredient": 84,
+        "base_weight_g": 100,
+        "protein": "6.0",
+        "fat": "0.5",
+        "carbs": "14.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 84,
+    "fields": {
+        "ingredient": 85,
+        "base_weight_g": 100,
+        "protein": "2.8",
+        "fat": "0.2",
+        "carbs": "6.5"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 85,
+    "fields": {
+        "ingredient": 86,
+        "base_weight_g": 100,
+        "protein": "4.3",
+        "fat": "1.0",
+        "carbs": "0.1"
+    }
+},
+{
     "model": "recipes.recipe",
     "pk": 1,
     "fields": {
@@ -2177,7 +2646,15 @@
         "image_url": "https://images.unsplash.com/photo-1485921325833-c519f76c4927",
         "cook_time": 25,
         "servings": 1,
-        "diet_types": []
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3,
+            1
+        ]
     }
 },
 {
@@ -2188,7 +2665,13 @@
         "image_url": "https://images.unsplash.com/photo-1612874742237-6526221588e3",
         "cook_time": 20,
         "servings": 2,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2199,7 +2682,13 @@
         "image_url": "https://images.unsplash.com/photo-1547592180-85f173990554",
         "cook_time": 120,
         "servings": 6,
-        "diet_types": []
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
     }
 },
 {
@@ -2211,7 +2700,11 @@
         "cook_time": 30,
         "servings": 4,
         "diet_types": [
-            4
+            6,
+            5
+        ],
+        "meal_types": [
+            2
         ]
     }
 },
@@ -2223,7 +2716,14 @@
         "image_url": "https://images.unsplash.com/photo-1594221708779-94832f4320d1?auto=format&fit=crop&w=800",
         "cook_time": 45,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2234,7 +2734,13 @@
         "image_url": "https://images.unsplash.com/photo-1621319766465-356a59b71e16?auto=format&fit=crop&w=800",
         "cook_time": 50,
         "servings": 5,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2246,7 +2752,12 @@
         "cook_time": 35,
         "servings": 2,
         "diet_types": [
-            2
+            2,
+            6
+        ],
+        "meal_types": [
+            2,
+            3
         ]
     }
 },
@@ -2259,6 +2770,11 @@
         "cook_time": 25,
         "servings": 6,
         "diet_types": [
+            2,
+            6
+        ],
+        "meal_types": [
+            1,
             2
         ]
     }
@@ -2272,7 +2788,13 @@
         "cook_time": 20,
         "servings": 2,
         "diet_types": [
-            4
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3,
+            1
         ]
     }
 },
@@ -2285,7 +2807,12 @@
         "cook_time": 15,
         "servings": 1,
         "diet_types": [
-            2
+            1,
+            2,
+            6
+        ],
+        "meal_types": [
+            1
         ]
     }
 },
@@ -2298,7 +2825,11 @@
         "cook_time": 40,
         "servings": 5,
         "diet_types": [
-            4
+            6,
+            5
+        ],
+        "meal_types": [
+            2
         ]
     }
 },
@@ -2310,7 +2841,13 @@
         "image_url": "https://images.unsplash.com/photo-1594221708779-94832f4320d1?auto=format&fit=crop&w=800",
         "cook_time": 35,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2321,7 +2858,15 @@
         "image_url": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800",
         "cook_time": 10,
         "servings": 3,
-        "diet_types": []
+        "diet_types": [
+            1,
+            2,
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2333,7 +2878,13 @@
         "cook_time": 25,
         "servings": 3,
         "diet_types": [
-            2
+            1,
+            2,
+            6
+        ],
+        "meal_types": [
+            2,
+            3
         ]
     }
 },
@@ -2345,7 +2896,13 @@
         "image_url": "https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=800",
         "cook_time": 60,
         "servings": 5,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2356,7 +2913,14 @@
         "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800",
         "cook_time": 15,
         "servings": 2,
-        "diet_types": []
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2368,7 +2932,11 @@
         "cook_time": 50,
         "servings": 4,
         "diet_types": [
-            2
+            2,
+            6
+        ],
+        "meal_types": [
+            1
         ]
     }
 },
@@ -2381,7 +2949,11 @@
         "cook_time": 30,
         "servings": 4,
         "diet_types": [
-            2
+            2,
+            6
+        ],
+        "meal_types": [
+            1
         ]
     }
 },
@@ -2393,7 +2965,13 @@
         "image_url": "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=800",
         "cook_time": 10,
         "servings": 2,
-        "diet_types": []
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
     }
 },
 {
@@ -2405,7 +2983,12 @@
         "cook_time": 15,
         "servings": 2,
         "diet_types": [
-            4
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
         ]
     }
 },
@@ -2417,7 +3000,13 @@
         "image_url": "https://images.unsplash.com/photo-1627308595186-e1f440784a6c?auto=format&fit=crop&w=800",
         "cook_time": 60,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2429,7 +3018,13 @@
         "cook_time": 90,
         "servings": 6,
         "diet_types": [
-            4
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3,
+            1
         ]
     }
 },
@@ -2441,7 +3036,14 @@
         "image_url": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800",
         "cook_time": 25,
         "servings": 2,
-        "diet_types": []
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2452,7 +3054,14 @@
         "image_url": "https://images.unsplash.com/photo-1599084920409-eb4d59a84b01?auto=format&fit=crop&w=800",
         "cook_time": 15,
         "servings": 3,
-        "diet_types": []
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2464,7 +3073,11 @@
         "cook_time": 30,
         "servings": 2,
         "diet_types": [
-            2
+            2,
+            6
+        ],
+        "meal_types": [
+            1
         ]
     }
 },
@@ -2477,6 +3090,11 @@
         "cook_time": 5,
         "servings": 1,
         "diet_types": [
+            2,
+            6
+        ],
+        "meal_types": [
+            1,
             2
         ]
     }
@@ -2489,7 +3107,13 @@
         "image_url": "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800",
         "cook_time": 25,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -2500,7 +3124,12 @@
         "image_url": "https://images.unsplash.com/photo-1510693062115-df703c373241?auto=format&fit=crop&w=800",
         "cook_time": 15,
         "servings": 2,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            1
+        ]
     }
 },
 {
@@ -2511,7 +3140,12 @@
         "image_url": "https://images.unsplash.com/photo-1548943487-a2e4e43b4859?auto=format&fit=crop&w=800",
         "cook_time": 30,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2
+        ]
     }
 },
 {
@@ -2523,7 +3157,11 @@
         "cook_time": 5,
         "servings": 1,
         "diet_types": [
-            2
+            2,
+            6
+        ],
+        "meal_types": [
+            1
         ]
     }
 },
@@ -2535,7 +3173,16 @@
         "image_url": "https://images.unsplash.com/photo-1621263764928-df1444c5e859",
         "cook_time": 10,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            1,
+            2,
+            6
+        ],
+        "meal_types": [
+            1,
+            2,
+            3
+        ]
     }
 },
 {
@@ -2546,7 +3193,14 @@
         "image_url": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed",
         "cook_time": 10,
         "servings": 2,
-        "diet_types": []
+        "diet_types": [
+            2,
+            6
+        ],
+        "meal_types": [
+            1,
+            3
+        ]
     }
 },
 {
@@ -2557,7 +3211,15 @@
         "image_url": "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f",
         "cook_time": 15,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            1,
+            2,
+            6
+        ],
+        "meal_types": [
+            1,
+            2
+        ]
     }
 },
 {
@@ -2568,7 +3230,15 @@
         "image_url": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543",
         "cook_time": 20,
         "servings": 4,
-        "diet_types": []
+        "diet_types": [
+            2,
+            6
+        ],
+        "meal_types": [
+            1,
+            2,
+            3
+        ]
     }
 },
 {
@@ -2579,7 +3249,314 @@
         "image_url": "https://images.unsplash.com/photo-1576867757603-05b134ebc379",
         "cook_time": 10,
         "servings": 6,
-        "diet_types": []
+        "diet_types": [
+            2,
+            6
+        ],
+        "meal_types": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 36,
+    "fields": {
+        "title": "Яичница с беконом и авокадо",
+        "image_url": null,
+        "cook_time": 15,
+        "servings": 2,
+        "diet_types": [
+            3,
+            6
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 37,
+    "fields": {
+        "title": "Куриное филе с брокколи в сливочном соусе",
+        "image_url": null,
+        "cook_time": 30,
+        "servings": 2,
+        "diet_types": [
+            3,
+            6
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 38,
+    "fields": {
+        "title": "Говяжий стейк с овощами-гриль",
+        "image_url": null,
+        "cook_time": 25,
+        "servings": 2,
+        "diet_types": [
+            3,
+            6,
+            4,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 39,
+    "fields": {
+        "title": "Омлет с сыром и грибами",
+        "image_url": null,
+        "cook_time": 15,
+        "servings": 2,
+        "diet_types": [
+            2,
+            3,
+            6
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 40,
+    "fields": {
+        "title": "Лосось запечённый с авокадо-салатом",
+        "image_url": null,
+        "cook_time": 25,
+        "servings": 2,
+        "diet_types": [
+            3,
+            6,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 41,
+    "fields": {
+        "title": "Яйца с овощами и авокадо по-палео",
+        "image_url": null,
+        "cook_time": 20,
+        "servings": 2,
+        "diet_types": [
+            6,
+            4
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 42,
+    "fields": {
+        "title": "Куриные бёдра запечённые с тыквой",
+        "image_url": null,
+        "cook_time": 50,
+        "servings": 4,
+        "diet_types": [
+            6,
+            4,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 43,
+    "fields": {
+        "title": "Говядина тушёная с овощами по-палео",
+        "image_url": null,
+        "cook_time": 90,
+        "servings": 4,
+        "diet_types": [
+            6,
+            4,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 44,
+    "fields": {
+        "title": "Фруктовый салат с арахисом по-палео",
+        "image_url": null,
+        "cook_time": 10,
+        "servings": 2,
+        "diet_types": [
+            6,
+            4
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 45,
+    "fields": {
+        "title": "Треска с овощами на кокосовом масле",
+        "image_url": null,
+        "cook_time": 30,
+        "servings": 2,
+        "diet_types": [
+            6,
+            4,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 46,
+    "fields": {
+        "title": "Говяжий хашлама с яйцом (завтрак)",
+        "image_url": null,
+        "cook_time": 25,
+        "servings": 2,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 47,
+    "fields": {
+        "title": "Куриное филе с овощами на завтрак",
+        "image_url": null,
+        "cook_time": 20,
+        "servings": 2,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 48,
+    "fields": {
+        "title": "Чечевичный суп с овощами",
+        "image_url": null,
+        "cook_time": 40,
+        "servings": 4,
+        "diet_types": [
+            1,
+            2,
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 49,
+    "fields": {
+        "title": "Гречка с грибами и овощами",
+        "image_url": null,
+        "cook_time": 35,
+        "servings": 3,
+        "diet_types": [
+            1,
+            2,
+            6
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 50,
+    "fields": {
+        "title": "Тыквенная каша с мёдом и корицей",
+        "image_url": null,
+        "cook_time": 30,
+        "servings": 2,
+        "diet_types": [
+            1,
+            6
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 51,
+    "fields": {
+        "title": "Сытный фасолевый суп",
+        "image_url": null,
+        "cook_time": 35,
+        "servings": 4,
+        "diet_types": [
+            2,
+            6
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 52,
+    "fields": {
+        "title": "Салат с горошком, сыром и овощами",
+        "image_url": null,
+        "cook_time": 10,
+        "servings": 2,
+        "diet_types": [
+            2,
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
     }
 },
 {
@@ -3844,16 +4821,6 @@
 },
 {
     "model": "recipes.recipeingredient",
-    "pk": 127,
-    "fields": {
-        "recipe": 18,
-        "ingredient": 52,
-        "amount": "1.00",
-        "unit": 9
-    }
-},
-{
-    "model": "recipes.recipeingredient",
     "pk": 128,
     "fields": {
         "recipe": 18,
@@ -4190,26 +5157,6 @@
         "ingredient": 35,
         "amount": "500.00",
         "unit": 1
-    }
-},
-{
-    "model": "recipes.recipeingredient",
-    "pk": 162,
-    "fields": {
-        "recipe": 24,
-        "ingredient": 13,
-        "amount": "1.00",
-        "unit": 3
-    }
-},
-{
-    "model": "recipes.recipeingredient",
-    "pk": 163,
-    "fields": {
-        "recipe": 24,
-        "ingredient": 56,
-        "amount": "3.00",
-        "unit": 4
     }
 },
 {
@@ -4837,6 +5784,1246 @@
     "pk": 226,
     "fields": {
         "recipe": 35,
+        "ingredient": 52,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 227,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 43,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 228,
+    "fields": {
+        "recipe": 33,
+        "ingredient": 82,
+        "amount": "1.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 229,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 42,
+        "amount": "3.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 230,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 28,
+        "amount": "80.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 231,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 22,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 232,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 41,
+        "amount": "15.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 233,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 234,
+    "fields": {
+        "recipe": 36,
+        "ingredient": 52,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 235,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 23,
+        "amount": "400.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 236,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 9,
+        "amount": "300.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 237,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 37,
+        "amount": "150.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 238,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 4,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 239,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 41,
+        "amount": "20.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 240,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 241,
+    "fields": {
+        "recipe": 37,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 242,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 25,
+        "amount": "400.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 243,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 11,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 244,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 7,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 245,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 58,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 246,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 4,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 247,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 248,
+    "fields": {
+        "recipe": 38,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 249,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 42,
+        "amount": "4.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 250,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 40,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 251,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 86,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 252,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 41,
+        "amount": "15.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 253,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 254,
+    "fields": {
+        "recipe": 39,
+        "ingredient": 52,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 255,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 30,
+        "amount": "300.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 256,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 22,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 257,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 6,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 258,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 18,
+        "amount": "0.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 259,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 58,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 260,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 261,
+    "fields": {
+        "recipe": 40,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 262,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 42,
+        "amount": "3.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 263,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 22,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 264,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 5,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 265,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 7,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 266,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 61,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 267,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 268,
+    "fields": {
+        "recipe": 41,
+        "ingredient": 52,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 269,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 24,
+        "amount": "600.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 270,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 10,
+        "amount": "0.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 271,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 4,
+        "amount": "3.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 272,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 58,
+        "amount": "3.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 273,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 53,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 274,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 275,
+    "fields": {
+        "recipe": 42,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 276,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 25,
+        "amount": "500.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 277,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 2,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 278,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 3,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 279,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 11,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 280,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 5,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 281,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 61,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 282,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 57,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 283,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 284,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 285,
+    "fields": {
+        "recipe": 43,
+        "ingredient": 62,
+        "amount": "300.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 286,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 15,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 287,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 16,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 288,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 19,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 289,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 78,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 290,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 66,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 291,
+    "fields": {
+        "recipe": 44,
+        "ingredient": 18,
+        "amount": "0.50",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 292,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 31,
+        "amount": "400.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 293,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 9,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 294,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 295,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 61,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 296,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 18,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 297,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 298,
+    "fields": {
+        "recipe": 45,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 299,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 25,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 300,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 42,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 301,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 5,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 302,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 3,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 303,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 58,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 304,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 305,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 52,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 306,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 23,
+        "amount": "250.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 307,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 7,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 308,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 5,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 309,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 58,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 310,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 311,
+    "fields": {
+        "recipe": 47,
+        "ingredient": 53,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 312,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 83,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 313,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 314,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 3,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 315,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 5,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 316,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 4,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 317,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 58,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 318,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 54,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 319,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 320,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 321,
+    "fields": {
+        "recipe": 48,
+        "ingredient": 62,
+        "amount": "1000.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 322,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 45,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 323,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 86,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 324,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 3,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 325,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 326,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 59,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 327,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 328,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 52,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 329,
+    "fields": {
+        "recipe": 49,
+        "ingredient": 62,
+        "amount": "400.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 330,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 10,
+        "amount": "0.25",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 331,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 66,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 332,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 55,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 333,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 61,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 334,
+    "fields": {
+        "recipe": 50,
+        "ingredient": 62,
+        "amount": "200.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 335,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 84,
+        "amount": "400.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 336,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 2,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 337,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 3,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 338,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 5,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 339,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 4,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 340,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 58,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 341,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 53,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 342,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 343,
+    "fields": {
+        "recipe": 51,
+        "ingredient": 62,
+        "amount": "800.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 344,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 85,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 345,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 40,
+        "amount": "80.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 346,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 6,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 347,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 5,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 348,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 58,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 349,
+    "fields": {
+        "recipe": 52,
+        "ingredient": 51,
+        "amount": "1.00",
+        "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 350,
+    "fields": {
+        "recipe": 52,
         "ingredient": 52,
         "amount": "1.00",
         "unit": 8
@@ -6278,7 +8465,7 @@
     "fields": {
         "recipe": 33,
         "step_number": 3,
-        "description": "Хлеб нарежьте ломтиками и поджарьте на сухой сковороде или в тостере до румяной корочки.",
+        "description": "Багет нарежьте ломтиками и поджарьте на сухой сковороде или в тостере до румяной корочки.",
         "image_url": null,
         "timer": 5
     }
@@ -6289,7 +8476,7 @@
     "fields": {
         "recipe": 33,
         "step_number": 4,
-        "description": "Выложите томатную смесь на горячие ломтики хлеба и сразу подавайте.",
+        "description": "Выложите томатную смесь на горячие ломтики багета и сразу подавайте.",
         "image_url": null,
         "timer": null
     }
@@ -6380,6 +8567,545 @@
         "description": "Уберите дип в холодильник на 15 минут для настаивания. Подавайте с овощами или хлебом.",
         "image_url": null,
         "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 141,
+    "fields": {
+        "recipe": 36,
+        "step_number": 1,
+        "description": "Бекон нарежьте полосками и обжарьте на сухой сковороде до хруста. Отложите на бумажное полотенце.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 142,
+    "fields": {
+        "recipe": 36,
+        "step_number": 2,
+        "description": "На той же сковороде растопите сливочное масло, разбейте яйца и жарьте до желаемой готовности.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 143,
+    "fields": {
+        "recipe": 36,
+        "step_number": 3,
+        "description": "Авокадо разрежьте пополам, удалите косточку, нарежьте ломтиками. Подавайте яичницу с беконом и авокадо.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 144,
+    "fields": {
+        "recipe": 37,
+        "step_number": 1,
+        "description": "Куриное филе нарежьте кусочками, посолите и поперчите.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 145,
+    "fields": {
+        "recipe": 37,
+        "step_number": 2,
+        "description": "Обжарьте курицу на сливочном масле 7-10 минут до золотистого цвета. Добавьте измельчённый чеснок.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 146,
+    "fields": {
+        "recipe": 37,
+        "step_number": 3,
+        "description": "Брокколи разберите на соцветия и добавьте к курице. Влейте сливки, тушите 10 минут до загустения соуса.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 147,
+    "fields": {
+        "recipe": 38,
+        "step_number": 1,
+        "description": "Стейк натрите солью, перцем и оливковым маслом. Оставьте мариноваться 10 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 148,
+    "fields": {
+        "recipe": 38,
+        "step_number": 2,
+        "description": "Кабачок и перец нарежьте крупными кусками, смажьте маслом с чесноком.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 149,
+    "fields": {
+        "recipe": 38,
+        "step_number": 3,
+        "description": "Обжарьте стейк на раскалённой сковороде-гриль 3-4 минуты с каждой стороны. Рядом запеките овощи 5-7 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 150,
+    "fields": {
+        "recipe": 39,
+        "step_number": 1,
+        "description": "Грибы нарежьте ломтиками и обжарьте на сливочном масле 5 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 151,
+    "fields": {
+        "recipe": 39,
+        "step_number": 2,
+        "description": "Яйца взбейте с солью и перцем, вылейте на сковороду к грибам.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 152,
+    "fields": {
+        "recipe": 39,
+        "step_number": 3,
+        "description": "Когда омлет схватится снизу, посыпьте тёртым сыром и накройте крышкой на 2 минуты.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 153,
+    "fields": {
+        "recipe": 40,
+        "step_number": 1,
+        "description": "Лосось посолите, поперчите, сбрызните лимонным соком. Запекайте при 180°С 15-18 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 154,
+    "fields": {
+        "recipe": 40,
+        "step_number": 2,
+        "description": "Авокадо и огурец нарежьте кубиками, заправьте оливковым маслом и соком лимона, посолите.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 155,
+    "fields": {
+        "recipe": 40,
+        "step_number": 3,
+        "description": "Подавайте лосось с авокадо-салатом.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 156,
+    "fields": {
+        "recipe": 41,
+        "step_number": 1,
+        "description": "Перец и помидоры нарежьте кубиками, обжарьте на кокосовом масле 3-4 минуты.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 157,
+    "fields": {
+        "recipe": 41,
+        "step_number": 2,
+        "description": "Сделайте углубления в овощах, разбейте яйца. Накройте крышкой и готовьте 5 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 158,
+    "fields": {
+        "recipe": 41,
+        "step_number": 3,
+        "description": "Подавайте с нарезанным авокадо, посолите и поперчите.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 159,
+    "fields": {
+        "recipe": 42,
+        "step_number": 1,
+        "description": "Куриные бёдра натрите смесью паприки, соли, перца и оливкового масла.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 160,
+    "fields": {
+        "recipe": 42,
+        "step_number": 2,
+        "description": "Тыкву очистите и нарежьте крупными кубиками, смешайте с чесноком и маслом.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 161,
+    "fields": {
+        "recipe": 42,
+        "step_number": 3,
+        "description": "Выложите курицу и тыкву на противень, запекайте при 200°С 35-40 минут до румяной корочки.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 162,
+    "fields": {
+        "recipe": 43,
+        "step_number": 1,
+        "description": "Говядину нарежьте кубиками и обжарьте на кокосовом масле до корочки.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 163,
+    "fields": {
+        "recipe": 43,
+        "step_number": 2,
+        "description": "Добавьте нарезанный лук и морковь, обжарьте ещё 5 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 164,
+    "fields": {
+        "recipe": 43,
+        "step_number": 3,
+        "description": "Добавьте помидоры, кабачок, лавровый лист, воду. Тушите под крышкой 60-70 минут на малом огне.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 165,
+    "fields": {
+        "recipe": 44,
+        "step_number": 1,
+        "description": "Яблоко, банан и грушу нарежьте кубиками, сбрызните лимонным соком.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 166,
+    "fields": {
+        "recipe": 44,
+        "step_number": 2,
+        "description": "Добавьте арахис и мёд, перемешайте. Подавайте сразу.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 167,
+    "fields": {
+        "recipe": 45,
+        "step_number": 1,
+        "description": "Треску посолите, поперчите, сбрызните лимонным соком. Оставьте на 10 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 168,
+    "fields": {
+        "recipe": 45,
+        "step_number": 2,
+        "description": "Овощи нарежьте и обжарьте на кокосовом масле 5 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 169,
+    "fields": {
+        "recipe": 45,
+        "step_number": 3,
+        "description": "Добавьте рыбу к овощам, жарьте 4-5 минут с каждой стороны до готовности.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 170,
+    "fields": {
+        "recipe": 46,
+        "step_number": 1,
+        "description": "Говядину нарежьте мелко, обжарьте с луком на оливковом масле 10 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 171,
+    "fields": {
+        "recipe": 46,
+        "step_number": 2,
+        "description": "Добавьте нарезанные помидоры, тушите 5 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 172,
+    "fields": {
+        "recipe": 46,
+        "step_number": 3,
+        "description": "Разбейте яйца прямо на сковороду, накройте крышкой и готовьте до желаемой готовности.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 173,
+    "fields": {
+        "recipe": 47,
+        "step_number": 1,
+        "description": "Куриное филе нарежьте тонкими полосками, посолите и посыпьте паприкой.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 174,
+    "fields": {
+        "recipe": 47,
+        "step_number": 2,
+        "description": "Обжарьте курицу на оливковом масле 5-7 минут. Добавьте нарезанный перец и помидоры.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 175,
+    "fields": {
+        "recipe": 47,
+        "step_number": 3,
+        "description": "Тушите всё вместе 5 минут. Подавайте горячим.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 176,
+    "fields": {
+        "recipe": 48,
+        "step_number": 1,
+        "description": "Лук и морковь нарежьте, обжарьте на оливковом масле 5 минут. Добавьте чеснок и куркуму.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 177,
+    "fields": {
+        "recipe": 48,
+        "step_number": 2,
+        "description": "Добавьте промытую чечевицу, нарезанные помидоры и воду. Доведите до кипения.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 178,
+    "fields": {
+        "recipe": 48,
+        "step_number": 3,
+        "description": "Варите 25-30 минут до мягкости чечевицы. Посолите, поперчите по вкусу.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 179,
+    "fields": {
+        "recipe": 49,
+        "step_number": 1,
+        "description": "Лук и морковь нарежьте, обжарьте на масле до золотистого цвета. Добавьте грибы, жарьте ещё 7 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 180,
+    "fields": {
+        "recipe": 49,
+        "step_number": 2,
+        "description": "Промойте гречку, добавьте к овощам. Влейте горячую воду, посолите.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 181,
+    "fields": {
+        "recipe": 49,
+        "step_number": 3,
+        "description": "Накройте крышкой и варите на малом огне 20 минут до готовности гречки.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 182,
+    "fields": {
+        "recipe": 50,
+        "step_number": 1,
+        "description": "Тыкву очистите и нарежьте кубиками. Залейте водой и варите 15-20 минут до мягкости.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 183,
+    "fields": {
+        "recipe": 50,
+        "step_number": 2,
+        "description": "Слейте лишнюю воду, разомните тыкву в пюре. Добавьте кокосовое масло, корицу.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 184,
+    "fields": {
+        "recipe": 50,
+        "step_number": 3,
+        "description": "Полейте мёдом перед подачей.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 185,
+    "fields": {
+        "recipe": 51,
+        "step_number": 1,
+        "description": "Лук, морковь и чеснок нарежьте, обжарьте на оливковом масле с паприкой 5 минут.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 186,
+    "fields": {
+        "recipe": 51,
+        "step_number": 2,
+        "description": "Добавьте фасоль, помидоры и воду. Доведите до кипения.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 187,
+    "fields": {
+        "recipe": 51,
+        "step_number": 3,
+        "description": "Варите 20 минут. Часть супа можно пробить блендером для густоты.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 188,
+    "fields": {
+        "recipe": 52,
+        "step_number": 1,
+        "description": "Огурец и помидор нарежьте кубиками. Сыр натрите на крупной тёрке или нарежьте.",
+        "image_url": null,
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 189,
+    "fields": {
+        "recipe": 52,
+        "step_number": 2,
+        "description": "Смешайте все ингредиенты, заправьте оливковым маслом, посолите и поперчите.",
+        "image_url": null,
+        "timer": null
     }
 }
 ]

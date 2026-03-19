@@ -2,8 +2,15 @@ name: Android Tests
 
 on:
   push:
+    branches: [ "main", "master" ]
+    paths:
+      - 'client/**'
+      - 'server/**'
   pull_request:
     branches: [ "main", "master" ]
+    paths:
+      - 'client/**'
+      - 'server/**'
 
 jobs:
   unit-tests:
@@ -28,37 +35,66 @@ jobs:
       - name: Run Unit Tests
         run: ./client/SmartMeal/gradlew -p ./client/SmartMeal :app:testDebugUnitTest
 
-      - name: Upload Unit Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-reports
-          path: client/SmartMeal/app/build/reports/tests/testDebugUnitTest/
-
   instrumented-tests:
-    name: Run UI Tests on ${{ matrix.device.name }}
+    name: UI Test on ${{ matrix.device.name }}
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     
     strategy:
-      fail-fast: false # Все устройства тестируются независимо друг от друга
+      fail-fast: false
       matrix:
         device:
-          # Маленький старый телефон (4.7", 768x1280)
           - name: 'Small-Phone'
             profile: 'Nexus 4' 
-          # Широкий классический телефон (5.96", 1440x2560)
           - name: 'Large-Phone'
             profile: 'Nexus 6'
-          # Современный вытянутый телефон (1080x2340)
           - name: 'Modern-Phone'
             profile: 'pixel_5'
-          # Планшет (10.2", 2560x1800)
           - name: 'Tablet'
             profile: 'pixel_c'
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: smartmeal_db
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up Python for Backend
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Backend Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r server/requirements.txt
+
+      - name: Start Backend Server
+        run: |
+          cd server
+          python manage.py migrate
+          python manage.py runserver 0.0.0.0:8000 &
+        env:
+          DB_NAME: smartmeal_db
+          DB_USER: user
+          DB_PASSWORD: password
+          DB_HOST: localhost
+          DB_PORT: 5432
+          SECRET_KEY: ci-secret-key
+          DEBUG: True
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -75,24 +111,14 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./client/SmartMeal/gradlew
-
-      - name: Run Android tests
+      - name: Run Android UI tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: 29
           target: google_apis
           arch: x86_64
-          profile: ${{ matrix.device.profile }} # Сюда автоматически подставится профиль из матрицы
+          profile: ${{ matrix.device.profile }}
           disable-animations: true
           working-directory: ./client/SmartMeal
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           script: ./gradlew :app:connectedDebugAndroidTest
-
-      - name: Upload Instrumented Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-test-reports-${{ matrix.device.name }}
-          path: client/SmartMeal/app/build/reports/androidTests/connected/

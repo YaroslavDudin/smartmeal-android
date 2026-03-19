@@ -1,4 +1,4 @@
-package com.example.smartmeal.feature.setup.presentation
+﻿package com.example.smartmeal.feature.setup.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -53,14 +54,13 @@ private val SETUP_SHADOW = ShadowData(
 )
 
 private val COOK_TIME_OPTIONS = listOf(
-    Triple("under30", "До 30 мин", false),
-    Triple("30to60", "От 30 до часа", true),
-    Triple("over60", "От часа и более", false),
+    Triple("short", "До 30 мин", false),
+    Triple("medium", "От 30 до часа", true),
+    Triple("long", "От часа и более", false),
 )
 
 /**
  * Шаг 3 из 3: выбор исключений (аллергии) и предпочтений по времени приготовления.
- * Кнопка «Сгенерировать» сохраняет профиль через PATCH /api/accounts/me/.
  */
 @Composable
 fun SetupStep3Screen(
@@ -75,6 +75,25 @@ fun SetupStep3Screen(
         if (state.isComplete) onComplete()
     }
 
+    SetupStep3Content(
+        state = state,
+        onBack = onBack,
+        onSubmit = { viewModel.submitSetup() },
+        onToggleAllergy = { viewModel.toggleAllergy(it) },
+        onSetEatAll = { viewModel.setEatAll(it) },
+        onSelectCookTime = { viewModel.selectCookTime(it) },
+    )
+}
+
+@Composable
+fun SetupStep3Content(
+    state: SetupState,
+    onBack: () -> Unit,
+    onSubmit: () -> Unit,
+    onToggleAllergy: (Int) -> Unit,
+    onSetEatAll: (Boolean) -> Unit,
+    onSelectCookTime: (String) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -115,6 +134,7 @@ fun SetupStep3Screen(
             text = "Чего бы Вы не хотели\nвидеть в своём рационе?",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
+            modifier = Modifier.testTag("setup_step3_title")
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -123,28 +143,30 @@ fun SetupStep3Screen(
         if (state.allergies.isEmpty()) {
             Text(text = "Загрузка...", color = Color.Gray)
         } else {
-            val allergyItems = state.allergies + null  // null = "Ем всё"
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(((state.allergies.size / 2 + 1) * 60).dp),
+                    .height(((state.allergies.size / 2 + 1) * 60).dp)
+                    .testTag("setup_step3_allergy_grid"),
             ) {
                 items(state.allergies) { allergy ->
                     val isSelected = allergy.id in state.selectedAllergyIds
                     SelectableChip(
                         label = allergy.name,
                         isSelected = isSelected,
-                        onClick = { viewModel.toggleAllergy(allergy.id) },
+                        onClick = { onToggleAllergy(allergy.id) },
+                        modifier = Modifier.testTag("setup_step3_allergy_${allergy.id}")
                     )
                 }
                 item {
                     SelectableChip(
                         label = "Ем всё",
                         isSelected = state.eatAll,
-                        onClick = { viewModel.setEatAll(!state.eatAll) },
+                        onClick = { onSetEatAll(!state.eatAll) },
+                        modifier = Modifier.testTag("setup_step3_allergy_all")
                     )
                 }
             }
@@ -166,11 +188,18 @@ fun SetupStep3Screen(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
+                val tag = when (key) {
+                    "short" -> "setup_step3_cook_under30"
+                    "medium" -> "setup_step3_cook_30to60"
+                    else -> "setup_step3_cook_other"
+                }
                 SelectableChip(
                     label = label,
                     isSelected = state.cookTimePreference == key,
-                    onClick = { viewModel.selectCookTime(key) },
-                    modifier = Modifier.weight(1f),
+                    onClick = { onSelectCookTime(key) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag(tag),
                 )
             }
         }
@@ -178,13 +207,18 @@ fun SetupStep3Screen(
         Spacer(modifier = Modifier.height(12.dp))
 
         COOK_TIME_OPTIONS.drop(2).forEach { (key, label, _) ->
+            val tag = when (key) {
+                "long" -> "setup_step3_cook_over60"
+                else -> "setup_step3_cook_other"
+            }
             SelectableChip(
                 label = label,
                 isSelected = state.cookTimePreference == key,
-                onClick = { viewModel.selectCookTime(key) },
+                onClick = { onSelectCookTime(key) },
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
-                    .align(Alignment.CenterHorizontally),
+                    .align(Alignment.CenterHorizontally)
+                    .testTag(tag),
             )
         }
 
@@ -203,8 +237,10 @@ fun SetupStep3Screen(
 
         SmartMealButton(
             text = if (state.isLoading) "Сохраняем..." else "Сгенерировать",
-            onClick = { viewModel.submitSetup() },
-            modifier = Modifier.fillMaxWidth(),
+            onClick = onSubmit,
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("setup_step3_submit"),
             variant = SmartMealButtonVariant.PRIMARY,
             color = SmartMealButtonColor.GREEN,
             enabled = !state.isLoading,

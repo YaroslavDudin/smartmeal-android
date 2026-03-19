@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.exceptions import AuthenticationFailed, InvalidToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from app.accounts.models import DietType, Allergy
@@ -31,8 +31,24 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             raise AuthenticationFailed({'detail': 'no_active_account_found'})
 
 
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
+    """
+    Кастомный сериализатор для обновления токена.
+    Предотвращает 500 ошибку, если пользователь не найден.
+    """
+    def validate(self, attrs):
+        try:
+            return super().validate(attrs)
+        except User.DoesNotExist:
+            raise AuthenticationFailed({'detail': 'user_not_found'}, code='user_not_found')
+        except Exception as e:
+            # Логируем другие ошибки токена как 401
+            raise InvalidToken({'detail': str(e)})
+
+
 class UserSerializer(serializers.ModelSerializer):
     diet_type_name = serializers.CharField(source='diet_type.name', read_only=True)
+    preferred_cook_time_display = serializers.CharField(source='get_preferred_cook_time_display', read_only=True)
     allergies_names = serializers.SlugRelatedField(
         many=True,
         read_only=True,
@@ -42,7 +58,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'portion_size', 'diet_type', 'diet_type_name', 'allergies', 'allergies_names')
+        fields = (
+            'id', 'username', 'email', 'portion_size', 'diet_type', 'diet_type_name', 
+            'preferred_cook_time', 'preferred_cook_time_display', 'allergies', 'allergies_names'
+        )
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
