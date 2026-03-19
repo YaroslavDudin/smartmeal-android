@@ -13,8 +13,6 @@ val GreenBorder = Color(0xFF73E249)  // Цвет обводки зеленых �
 val YellowBorder = Color(0xFFD7D364) // Цвет обводки кнопки "Назад"
 
 val AccentOrange = Color(0xFFFF9800) // Сочный апельсин
-val AccentOrangeDark = Color(0xFFF57C00)
-
 // Нейтральные цвета
 val TextBlack = Color(0xFF1C1B1F)
 val BgLightGray = Color(0xFFFBFBFB) // Для фона экранов

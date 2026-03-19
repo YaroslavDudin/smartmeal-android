@@ -25,19 +25,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.smartmeal.utils.softBottomShadow
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
@@ -46,6 +44,15 @@ import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.MainGreen
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.YellowBorder
+import com.example.smartmeal.utils.ShadowData
+import com.example.smartmeal.utils.dropShadow
+
+private val SETUP_SHADOW = ShadowData(
+    radius = 4.dp,
+    spread = 0.dp,
+    color = Color.Black.copy(alpha = 0.12f),
+    offset = DpOffset(0.dp, 1.5.dp)
+)
 
 /**
  * Шаг 1 из 3: выбор типа питания и размера порции (количество персон).
@@ -81,7 +88,7 @@ fun SetupStep1Screen(
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .height(36.dp)
-                    .softBottomShadow(shape = RoundedCornerShape(12.dp)),
+                    .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.White,
                     contentColor = MaterialTheme.colorScheme.onBackground
@@ -159,7 +166,8 @@ private fun DietTypeChip(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-
+    
+    // Hover-эффект (состояние при нажатии или выделении)
     val bgColor = when {
         isSelected -> MainGreen
         else -> Color.White
@@ -170,7 +178,7 @@ private fun DietTypeChip(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .softBottomShadow(shape = RoundedCornerShape(12.dp))
+            .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW)
             .border(1.dp, borderColor, RoundedCornerShape(12.dp))
             .clickable(
                 interactionSource = interactionSource,
@@ -204,7 +212,7 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
-                .softBottomShadow(shape = RoundedCornerShape(8.dp))
+                .dropShadow(shape = RoundedCornerShape(8.dp), shadow = SETUP_SHADOW)
                 .clickable(onClick = onDecrement),
             shape = RoundedCornerShape(8.dp),
             color = LightGreenBg,
@@ -231,7 +239,7 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
-                .softBottomShadow(shape = RoundedCornerShape(8.dp))
+                .dropShadow(shape = RoundedCornerShape(8.dp), shadow = SETUP_SHADOW)
                 .clickable(onClick = onIncrement),
             shape = RoundedCornerShape(8.dp),
             color = PrimaryGreen,

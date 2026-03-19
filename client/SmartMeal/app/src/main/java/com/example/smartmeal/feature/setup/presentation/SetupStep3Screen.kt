@@ -20,12 +20,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,20 +31,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.smartmeal.utils.softBottomShadow
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.GreenBorder
-import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.MainGreen
-import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.YellowBorder
+import com.example.smartmeal.utils.ShadowData
+import com.example.smartmeal.utils.dropShadow
+
+private val SETUP_SHADOW = ShadowData(
+    radius = 4.dp,
+    spread = 0.dp,
+    color = Color.Black.copy(alpha = 0.12f),
+    offset = DpOffset(0.dp, 1.5.dp)
+)
 
 private val COOK_TIME_OPTIONS = listOf(
     Triple("under30", "До 30 мин", false),
@@ -94,7 +98,7 @@ fun SetupStep3Screen(
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .height(36.dp)
-                    .softBottomShadow(shape = RoundedCornerShape(12.dp)),
+                    .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.White,
                     contentColor = MaterialTheme.colorScheme.onBackground
@@ -178,7 +182,9 @@ fun SetupStep3Screen(
                 label = label,
                 isSelected = state.cookTimePreference == key,
                 onClick = { viewModel.selectCookTime(key) },
-                modifier = Modifier.fillMaxWidth(0.5f).align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .align(Alignment.CenterHorizontally),
             )
         }
 
@@ -225,7 +231,7 @@ private fun SelectableChip(
 
     Surface(
         modifier = modifier
-            .softBottomShadow(shape = RoundedCornerShape(12.dp))
+            .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW)
             .border(1.dp, borderColor, RoundedCornerShape(12.dp))
             .clickable(
                 interactionSource = interactionSource,

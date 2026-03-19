@@ -19,6 +19,7 @@ import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.presentation.AuthViewModel
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterForm
 import com.example.smartmeal.feature.auth.presentation.WelcomeScreen
+import com.example.smartmeal.feature.sandbox.TestScreen
 import com.example.smartmeal.feature.home.presentation.HomeScreen
 import com.example.smartmeal.feature.setup.data.api.SetupApi
 import com.example.smartmeal.feature.setup.presentation.SetupIntroScreen
@@ -77,6 +78,10 @@ fun SmartMealNavGraph(navController: NavHostController) {
             )
         }
 
+        composable(route = Screen.Test.route) {
+            TestScreen(onBack = { navController.popBackStack() })
+        }
+
         composable(route = Screen.AuthForm.route) {
             LoginRegisterForm(
                 viewModel = authViewModel,
@@ -84,6 +89,9 @@ fun SmartMealNavGraph(navController: NavHostController) {
                     navController.navigate(Screen.SetupIntro.route) {
                         popUpTo(Screen.AuthForm.route) { inclusive = true }
                     }
+                },
+                onNavigateToSandbox = {
+                    navController.navigate(Screen.Test.route)
                 }
             )
         }

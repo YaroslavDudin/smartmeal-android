@@ -37,7 +37,8 @@ import com.example.smartmeal.ui.theme.*
 @Composable
 fun LoginRegisterForm(
     viewModel: AuthViewModel,
-    onAuthSuccess: () -> Unit
+    onAuthSuccess: () -> Unit,
+    onNavigateToSandbox: () -> Unit = {}
 ) {
     var isLoginMode by remember { mutableStateOf(true) }
     var email by remember { mutableStateOf("") }
@@ -54,7 +55,6 @@ fun LoginRegisterForm(
     LaunchedEffect(authState) {
         if (authState is AuthState.Success) {
             onAuthSuccess()
-            viewModel.resetAuthState()
         }
     }
 
@@ -194,6 +194,13 @@ fun LoginRegisterForm(
             }
 
             Spacer(modifier = Modifier.height(40.dp))
+
+            TextButton(
+                onClick = onNavigateToSandbox,
+                modifier = Modifier.padding(bottom = 16.dp)
+            ) {
+                Text("Перейти в Sandbox", color = PrimaryGreen)
+            }
         }
     }
 }
