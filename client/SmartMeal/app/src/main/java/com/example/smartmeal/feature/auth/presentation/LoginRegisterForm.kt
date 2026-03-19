@@ -44,7 +44,7 @@ fun LoginRegisterForm(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-    
+
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isConfirmPasswordVisible by remember { mutableStateOf(false) }
 
@@ -54,6 +54,7 @@ fun LoginRegisterForm(
     LaunchedEffect(authState) {
         if (authState is AuthState.Success) {
             onAuthSuccess()
+            viewModel.resetAuthState()
         }
     }
 
@@ -188,7 +189,7 @@ fun LoginRegisterForm(
                     },
                     variant = SmartMealButtonVariant.PRIMARY,
                     color = SmartMealButtonColor.GREEN,
-                    modifier = Modifier.shadow(4.dp, RoundedCornerShape(24.dp))
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -217,7 +218,7 @@ fun AuthToggleSwitch(
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(25.dp))
                     .background(if (isLoginMode) Color.White else Color.Transparent)
-                    .shadow(if (isLoginMode) 2.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .shadow(if (isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
                     .clickable { onToggle(true) },
                 contentAlignment = Alignment.Center
             ) {
@@ -234,7 +235,7 @@ fun AuthToggleSwitch(
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(25.dp))
                     .background(if (!isLoginMode) Color.White else Color.Transparent)
-                    .shadow(if (!isLoginMode) 2.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .shadow(if (!isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
                     .clickable { onToggle(false) },
                 contentAlignment = Alignment.Center
             ) {
@@ -263,12 +264,12 @@ fun CustomTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        placeholder = { 
+        placeholder = {
             Text(
-                text = label, 
+                text = label,
                 color = HintGray,
                 fontSize = 16.sp
-            ) 
+            )
         },
         modifier = modifier
             .fillMaxWidth()

@@ -1,7 +1,10 @@
 package com.example.smartmeal.feature.setup.presentation
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,23 +20,32 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.smartmeal.utils.softBottomShadow
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
+import com.example.smartmeal.ui.theme.GreenBorder
 import com.example.smartmeal.ui.theme.LightGreenBg
+import com.example.smartmeal.ui.theme.MainGreen
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.YellowBorder
 
 /**
  * Шаг 1 из 3: выбор типа питания и размера порции (количество персон).
@@ -60,11 +72,23 @@ fun SetupStep1Screen(
             Text(
                 text = "Шаг: 1 / 3",
                 style = MaterialTheme.typography.bodyMedium,
-                color = PrimaryGreen,
+                color = MainGreen,
                 fontWeight = FontWeight.Medium,
             )
-            TextButton(onClick = onBack) {
-                Text(text = "Назад", color = MaterialTheme.colorScheme.onBackground)
+            OutlinedButton(
+                onClick = onBack,
+                border = BorderStroke(1.dp, YellowBorder),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .height(36.dp)
+                    .softBottomShadow(shape = RoundedCornerShape(12.dp)),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.White,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                ),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 0.dp)
+            ) {
+                Text(text = "Назад", fontSize = 14.sp)
             }
         }
 
@@ -72,7 +96,7 @@ fun SetupStep1Screen(
 
         Text(
             text = "Выберите тип питания",
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
         )
 
@@ -102,7 +126,7 @@ fun SetupStep1Screen(
 
         Text(
             text = "Размер семьи",
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
         )
 
@@ -133,15 +157,26 @@ private fun DietTypeChip(
     isSelected: Boolean,
     onClick: () -> Unit,
 ) {
-    val bgColor = if (isSelected) PrimaryGreen else Color.Transparent
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val bgColor = when {
+        isSelected -> MainGreen
+        else -> Color.White
+    }
     val textColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onBackground
-    val borderColor = if (isSelected) PrimaryGreen else Color.LightGray
+    val borderColor = if (isSelected) MainGreen else GreenBorder
 
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .softBottomShadow(shape = RoundedCornerShape(12.dp))
             .border(1.dp, borderColor, RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick),
+            .clickable(
+                interactionSource = interactionSource,
+                indication = androidx.compose.foundation.LocalIndication.current,
+                onClick = onClick
+            ),
         shape = RoundedCornerShape(12.dp),
         color = bgColor,
     ) {
@@ -150,6 +185,7 @@ private fun DietTypeChip(
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 12.dp),
             color = textColor,
             style = MaterialTheme.typography.bodyMedium,
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
         )
     }
 }
@@ -168,6 +204,7 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
+                .softBottomShadow(shape = RoundedCornerShape(8.dp))
                 .clickable(onClick = onDecrement),
             shape = RoundedCornerShape(8.dp),
             color = LightGreenBg,
@@ -194,6 +231,7 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
+                .softBottomShadow(shape = RoundedCornerShape(8.dp))
                 .clickable(onClick = onIncrement),
             shape = RoundedCornerShape(8.dp),
             color = PrimaryGreen,

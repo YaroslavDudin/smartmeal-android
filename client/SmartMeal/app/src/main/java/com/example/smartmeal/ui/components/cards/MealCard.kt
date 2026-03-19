@@ -39,7 +39,7 @@ fun MealCard(
             .height(100.dp)
             .testTag("meal_card"),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
