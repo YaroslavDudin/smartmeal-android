@@ -95,19 +95,21 @@ class MenuViewSet(viewsets.ModelViewSet):
 
         # Набираем нужное количество блюд для этого приема пищи на все дни
             selected = []
+            inx = 0
             for day in range(days):
-                chosen = None
-                for recipe_id in valid_recipes:
-                    if recipe_id not in used_per_day[day]:
-                        chosen = recipe_id
+                # Ищем подходящий рецепт, начиная с текущей позиции
+                start_inx = inx
+                while True:
+                    candidate = valid_recipes[inx % len(valid_recipes)]
+                    inx += 1
+                    if candidate not in used_per_day[day]:
                         break
-
-                # Если все рецепты уже использованы в этот день допускаем повтор
-                if chosen is None:
-                    chosen = valid_recipes[day % len(valid_recipes)]
-
-                selected.append(chosen)
-                used_per_day[day].add(chosen)
+                    if inx % len(valid_recipes) == start_inx % len(valid_recipes):
+                        # Обошли все рецепты, берем повтор
+                        candidate = valid_recipes[start_inx % len(valid_recipes)]
+                        break
+                selected.append(candidate)
+                used_per_day[day].add(candidate)
 
             pools[mt.id] = selected
 
