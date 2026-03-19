@@ -1,1122 +1,2222 @@
 [
-    {
-        "model": "menus.menu",
-        "pk": 1,
-        "fields": {
-            "user": 4,
-            "period": "day",
-            "start_date": "2026-03-18",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 1,
-        "fields": {
-            "menu": 1,
-            "recipe": 35,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 2,
-        "fields": {
-            "menu": 1,
-            "recipe": 33,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 3,
-        "fields": {
-            "menu": 1,
-            "recipe": 23,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 2,
-        "fields": {
-            "user": 3,
-            "period": "week",
-            "start_date": "2026-03-19",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 4,
-        "fields": {
-            "menu": 2,
-            "recipe": 26,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 5,
-        "fields": {
-            "menu": 2,
-            "recipe": 2,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 6,
-        "fields": {
-            "menu": 2,
-            "recipe": 31,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 7,
-        "fields": {
-            "menu": 2,
-            "recipe": 32,
-            "day_offset": 1,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 8,
-        "fields": {
-            "menu": 2,
-            "recipe": 14,
-            "day_offset": 1,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 9,
-        "fields": {
-            "menu": 2,
-            "recipe": 12,
-            "day_offset": 1,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 10,
-        "fields": {
-            "menu": 2,
-            "recipe": 32,
-            "day_offset": 2,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 11,
-        "fields": {
-            "menu": 2,
-            "recipe": 4,
-            "day_offset": 2,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 12,
-        "fields": {
-            "menu": 2,
-            "recipe": 24,
-            "day_offset": 2,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 13,
-        "fields": {
-            "menu": 2,
-            "recipe": 33,
-            "day_offset": 3,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 14,
-        "fields": {
-            "menu": 2,
-            "recipe": 15,
-            "day_offset": 3,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 15,
-        "fields": {
-            "menu": 2,
-            "recipe": 22,
-            "day_offset": 3,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 16,
-        "fields": {
-            "menu": 2,
-            "recipe": 10,
-            "day_offset": 4,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 17,
-        "fields": {
-            "menu": 2,
-            "recipe": 6,
-            "day_offset": 4,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 18,
-        "fields": {
-            "menu": 2,
-            "recipe": 7,
-            "day_offset": 4,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 19,
-        "fields": {
-            "menu": 2,
-            "recipe": 10,
-            "day_offset": 5,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 20,
-        "fields": {
-            "menu": 2,
-            "recipe": 34,
-            "day_offset": 5,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 21,
-        "fields": {
-            "menu": 2,
-            "recipe": 21,
-            "day_offset": 5,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 22,
-        "fields": {
-            "menu": 2,
-            "recipe": 35,
-            "day_offset": 6,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 23,
-        "fields": {
-            "menu": 2,
-            "recipe": 12,
-            "day_offset": 6,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 24,
-        "fields": {
-            "menu": 2,
-            "recipe": 20,
-            "day_offset": 6,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 3,
-        "fields": {
-            "user": 3,
-            "period": "day",
-            "start_date": "2026-03-20",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 25,
-        "fields": {
-            "menu": 3,
-            "recipe": 8,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 26,
-        "fields": {
-            "menu": 3,
-            "recipe": 26,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 27,
-        "fields": {
-            "menu": 3,
-            "recipe": 16,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 4,
-        "fields": {
-            "user": 4,
-            "period": "week",
-            "start_date": "2026-03-21",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 28,
-        "fields": {
-            "menu": 4,
-            "recipe": 28,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 29,
-        "fields": {
-            "menu": 4,
-            "recipe": 22,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 30,
-        "fields": {
-            "menu": 4,
-            "recipe": 31,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 31,
-        "fields": {
-            "menu": 4,
-            "recipe": 30,
-            "day_offset": 1,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 32,
-        "fields": {
-            "menu": 4,
-            "recipe": 6,
-            "day_offset": 1,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 33,
-        "fields": {
-            "menu": 4,
-            "recipe": 5,
-            "day_offset": 1,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 34,
-        "fields": {
-            "menu": 4,
-            "recipe": 8,
-            "day_offset": 2,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 35,
-        "fields": {
-            "menu": 4,
-            "recipe": 31,
-            "day_offset": 2,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 36,
-        "fields": {
-            "menu": 4,
-            "recipe": 19,
-            "day_offset": 2,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 37,
-        "fields": {
-            "menu": 4,
-            "recipe": 17,
-            "day_offset": 3,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 38,
-        "fields": {
-            "menu": 4,
-            "recipe": 16,
-            "day_offset": 3,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 39,
-        "fields": {
-            "menu": 4,
-            "recipe": 27,
-            "day_offset": 3,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 40,
-        "fields": {
-            "menu": 4,
-            "recipe": 25,
-            "day_offset": 4,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 41,
-        "fields": {
-            "menu": 4,
-            "recipe": 6,
-            "day_offset": 4,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 42,
-        "fields": {
-            "menu": 4,
-            "recipe": 14,
-            "day_offset": 4,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 43,
-        "fields": {
-            "menu": 4,
-            "recipe": 17,
-            "day_offset": 5,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 44,
-        "fields": {
-            "menu": 4,
-            "recipe": 2,
-            "day_offset": 5,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 45,
-        "fields": {
-            "menu": 4,
-            "recipe": 15,
-            "day_offset": 5,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 46,
-        "fields": {
-            "menu": 4,
-            "recipe": 34,
-            "day_offset": 6,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 47,
-        "fields": {
-            "menu": 4,
-            "recipe": 7,
-            "day_offset": 6,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 48,
-        "fields": {
-            "menu": 4,
-            "recipe": 24,
-            "day_offset": 6,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 5,
-        "fields": {
-            "user": 3,
-            "period": "day",
-            "start_date": "2026-03-22",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 49,
-        "fields": {
-            "menu": 5,
-            "recipe": 18,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 50,
-        "fields": {
-            "menu": 5,
-            "recipe": 15,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 51,
-        "fields": {
-            "menu": 5,
-            "recipe": 21,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 6,
-        "fields": {
-            "user": 2,
-            "period": "day",
-            "start_date": "2026-03-23",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 52,
-        "fields": {
-            "menu": 6,
-            "recipe": 25,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 53,
-        "fields": {
-            "menu": 6,
-            "recipe": 7,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 54,
-        "fields": {
-            "menu": 6,
-            "recipe": 24,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 7,
-        "fields": {
-            "user": 1,
-            "period": "week",
-            "start_date": "2026-03-24",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 55,
-        "fields": {
-            "menu": 7,
-            "recipe": 33,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 56,
-        "fields": {
-            "menu": 7,
-            "recipe": 22,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 57,
-        "fields": {
-            "menu": 7,
-            "recipe": 22,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 58,
-        "fields": {
-            "menu": 7,
-            "recipe": 10,
-            "day_offset": 1,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 59,
-        "fields": {
-            "menu": 7,
-            "recipe": 8,
-            "day_offset": 1,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 60,
-        "fields": {
-            "menu": 7,
-            "recipe": 5,
-            "day_offset": 1,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 61,
-        "fields": {
-            "menu": 7,
-            "recipe": 34,
-            "day_offset": 2,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 62,
-        "fields": {
-            "menu": 7,
-            "recipe": 15,
-            "day_offset": 2,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 63,
-        "fields": {
-            "menu": 7,
-            "recipe": 22,
-            "day_offset": 2,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 64,
-        "fields": {
-            "menu": 7,
-            "recipe": 33,
-            "day_offset": 3,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 65,
-        "fields": {
-            "menu": 7,
-            "recipe": 20,
-            "day_offset": 3,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 66,
-        "fields": {
-            "menu": 7,
-            "recipe": 21,
-            "day_offset": 3,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 67,
-        "fields": {
-            "menu": 7,
-            "recipe": 33,
-            "day_offset": 4,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 68,
-        "fields": {
-            "menu": 7,
-            "recipe": 8,
-            "day_offset": 4,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 69,
-        "fields": {
-            "menu": 7,
-            "recipe": 12,
-            "day_offset": 4,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 70,
-        "fields": {
-            "menu": 7,
-            "recipe": 33,
-            "day_offset": 5,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 71,
-        "fields": {
-            "menu": 7,
-            "recipe": 1,
-            "day_offset": 5,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 72,
-        "fields": {
-            "menu": 7,
-            "recipe": 19,
-            "day_offset": 5,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 73,
-        "fields": {
-            "menu": 7,
-            "recipe": 28,
-            "day_offset": 6,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 74,
-        "fields": {
-            "menu": 7,
-            "recipe": 35,
-            "day_offset": 6,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 75,
-        "fields": {
-            "menu": 7,
-            "recipe": 5,
-            "day_offset": 6,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 8,
-        "fields": {
-            "user": 5,
-            "period": "day",
-            "start_date": "2026-03-25",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 76,
-        "fields": {
-            "menu": 8,
-            "recipe": 32,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 77,
-        "fields": {
-            "menu": 8,
-            "recipe": 22,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 78,
-        "fields": {
-            "menu": 8,
-            "recipe": 12,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 9,
-        "fields": {
-            "user": 1,
-            "period": "day",
-            "start_date": "2026-03-26",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 79,
-        "fields": {
-            "menu": 9,
-            "recipe": 18,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 80,
-        "fields": {
-            "menu": 9,
-            "recipe": 8,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 81,
-        "fields": {
-            "menu": 9,
-            "recipe": 21,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menu",
-        "pk": 10,
-        "fields": {
-            "user": 5,
-            "period": "week",
-            "start_date": "2026-03-27",
-            "created_at": "2026-03-16T12:00:00Z"
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 82,
-        "fields": {
-            "menu": 10,
-            "recipe": 31,
-            "day_offset": 0,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 83,
-        "fields": {
-            "menu": 10,
-            "recipe": 31,
-            "day_offset": 0,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 84,
-        "fields": {
-            "menu": 10,
-            "recipe": 2,
-            "day_offset": 0,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 85,
-        "fields": {
-            "menu": 10,
-            "recipe": 30,
-            "day_offset": 1,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 86,
-        "fields": {
-            "menu": 10,
-            "recipe": 24,
-            "day_offset": 1,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 87,
-        "fields": {
-            "menu": 10,
-            "recipe": 23,
-            "day_offset": 1,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 88,
-        "fields": {
-            "menu": 10,
-            "recipe": 18,
-            "day_offset": 2,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 89,
-        "fields": {
-            "menu": 10,
-            "recipe": 34,
-            "day_offset": 2,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 90,
-        "fields": {
-            "menu": 10,
-            "recipe": 12,
-            "day_offset": 2,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 91,
-        "fields": {
-            "menu": 10,
-            "recipe": 10,
-            "day_offset": 3,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 92,
-        "fields": {
-            "menu": 10,
-            "recipe": 4,
-            "day_offset": 3,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 93,
-        "fields": {
-            "menu": 10,
-            "recipe": 5,
-            "day_offset": 3,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 94,
-        "fields": {
-            "menu": 10,
-            "recipe": 26,
-            "day_offset": 4,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 95,
-        "fields": {
-            "menu": 10,
-            "recipe": 27,
-            "day_offset": 4,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 96,
-        "fields": {
-            "menu": 10,
-            "recipe": 2,
-            "day_offset": 4,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 97,
-        "fields": {
-            "menu": 10,
-            "recipe": 34,
-            "day_offset": 5,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 98,
-        "fields": {
-            "menu": 10,
-            "recipe": 8,
-            "day_offset": 5,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 99,
-        "fields": {
-            "menu": 10,
-            "recipe": 6,
-            "day_offset": 5,
-            "meal_type": 3
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 100,
-        "fields": {
-            "menu": 10,
-            "recipe": 17,
-            "day_offset": 6,
-            "meal_type": 1
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 101,
-        "fields": {
-            "menu": 10,
-            "recipe": 12,
-            "day_offset": 6,
-            "meal_type": 2
-        }
-    },
-    {
-        "model": "menus.menuitem",
-        "pk": 102,
-        "fields": {
-            "menu": 10,
-            "recipe": 24,
-            "day_offset": 6,
-            "meal_type": 3
-        }
+{
+    "model": "menus.menu",
+    "pk": 1,
+    "fields": {
+        "user": 4,
+        "period": "day",
+        "start_date": "2026-03-18",
+        "created_at": "2026-03-16T12:00:00Z"
     }
+},
+{
+    "model": "menus.menu",
+    "pk": 2,
+    "fields": {
+        "user": 3,
+        "period": "week",
+        "start_date": "2026-03-19",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 3,
+    "fields": {
+        "user": 3,
+        "period": "day",
+        "start_date": "2026-03-20",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 4,
+    "fields": {
+        "user": 4,
+        "period": "week",
+        "start_date": "2026-03-21",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 5,
+    "fields": {
+        "user": 3,
+        "period": "day",
+        "start_date": "2026-03-22",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 6,
+    "fields": {
+        "user": 2,
+        "period": "day",
+        "start_date": "2026-03-23",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 7,
+    "fields": {
+        "user": 1,
+        "period": "week",
+        "start_date": "2026-03-24",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 8,
+    "fields": {
+        "user": 5,
+        "period": "day",
+        "start_date": "2026-03-25",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 9,
+    "fields": {
+        "user": 1,
+        "period": "day",
+        "start_date": "2026-03-26",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 10,
+    "fields": {
+        "user": 5,
+        "period": "week",
+        "start_date": "2026-03-27",
+        "created_at": "2026-03-16T12:00:00Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 11,
+    "fields": {
+        "user": 15,
+        "period": "week",
+        "start_date": "2026-03-18",
+        "created_at": "2026-03-18T17:13:03.651Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 12,
+    "fields": {
+        "user": 16,
+        "period": "week",
+        "start_date": "2026-03-18",
+        "created_at": "2026-03-18T17:27:59.889Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 13,
+    "fields": {
+        "user": 17,
+        "period": "week",
+        "start_date": "2026-03-18",
+        "created_at": "2026-03-18T17:33:37.672Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 14,
+    "fields": {
+        "user": 18,
+        "period": "week",
+        "start_date": "2026-03-18",
+        "created_at": "2026-03-18T20:05:22.793Z"
+    }
+},
+{
+    "model": "menus.menu",
+    "pk": 15,
+    "fields": {
+        "user": 19,
+        "period": "week",
+        "start_date": "2026-03-19",
+        "created_at": "2026-03-19T10:21:47.468Z"
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 1,
+    "fields": {
+        "menu": 1,
+        "recipe": 35,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 2,
+    "fields": {
+        "menu": 1,
+        "recipe": 33,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 3,
+    "fields": {
+        "menu": 1,
+        "recipe": 23,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 4,
+    "fields": {
+        "menu": 2,
+        "recipe": 26,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 5,
+    "fields": {
+        "menu": 2,
+        "recipe": 2,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 6,
+    "fields": {
+        "menu": 2,
+        "recipe": 31,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 7,
+    "fields": {
+        "menu": 2,
+        "recipe": 32,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 8,
+    "fields": {
+        "menu": 2,
+        "recipe": 14,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 9,
+    "fields": {
+        "menu": 2,
+        "recipe": 12,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 10,
+    "fields": {
+        "menu": 2,
+        "recipe": 32,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 11,
+    "fields": {
+        "menu": 2,
+        "recipe": 4,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 12,
+    "fields": {
+        "menu": 2,
+        "recipe": 24,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 13,
+    "fields": {
+        "menu": 2,
+        "recipe": 33,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 14,
+    "fields": {
+        "menu": 2,
+        "recipe": 15,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 15,
+    "fields": {
+        "menu": 2,
+        "recipe": 22,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 16,
+    "fields": {
+        "menu": 2,
+        "recipe": 10,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 17,
+    "fields": {
+        "menu": 2,
+        "recipe": 6,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 18,
+    "fields": {
+        "menu": 2,
+        "recipe": 7,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 19,
+    "fields": {
+        "menu": 2,
+        "recipe": 10,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 20,
+    "fields": {
+        "menu": 2,
+        "recipe": 34,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 21,
+    "fields": {
+        "menu": 2,
+        "recipe": 21,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 22,
+    "fields": {
+        "menu": 2,
+        "recipe": 35,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 23,
+    "fields": {
+        "menu": 2,
+        "recipe": 12,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 24,
+    "fields": {
+        "menu": 2,
+        "recipe": 20,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 25,
+    "fields": {
+        "menu": 3,
+        "recipe": 8,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 26,
+    "fields": {
+        "menu": 3,
+        "recipe": 26,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 27,
+    "fields": {
+        "menu": 3,
+        "recipe": 16,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 28,
+    "fields": {
+        "menu": 4,
+        "recipe": 28,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 29,
+    "fields": {
+        "menu": 4,
+        "recipe": 22,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 30,
+    "fields": {
+        "menu": 4,
+        "recipe": 31,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 31,
+    "fields": {
+        "menu": 4,
+        "recipe": 30,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 32,
+    "fields": {
+        "menu": 4,
+        "recipe": 6,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 33,
+    "fields": {
+        "menu": 4,
+        "recipe": 5,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 34,
+    "fields": {
+        "menu": 4,
+        "recipe": 8,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 35,
+    "fields": {
+        "menu": 4,
+        "recipe": 31,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 36,
+    "fields": {
+        "menu": 4,
+        "recipe": 19,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 37,
+    "fields": {
+        "menu": 4,
+        "recipe": 17,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 38,
+    "fields": {
+        "menu": 4,
+        "recipe": 16,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 39,
+    "fields": {
+        "menu": 4,
+        "recipe": 27,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 40,
+    "fields": {
+        "menu": 4,
+        "recipe": 25,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 41,
+    "fields": {
+        "menu": 4,
+        "recipe": 6,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 42,
+    "fields": {
+        "menu": 4,
+        "recipe": 14,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 43,
+    "fields": {
+        "menu": 4,
+        "recipe": 17,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 44,
+    "fields": {
+        "menu": 4,
+        "recipe": 2,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 45,
+    "fields": {
+        "menu": 4,
+        "recipe": 15,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 46,
+    "fields": {
+        "menu": 4,
+        "recipe": 34,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 47,
+    "fields": {
+        "menu": 4,
+        "recipe": 7,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 48,
+    "fields": {
+        "menu": 4,
+        "recipe": 24,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 49,
+    "fields": {
+        "menu": 5,
+        "recipe": 18,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 50,
+    "fields": {
+        "menu": 5,
+        "recipe": 15,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 51,
+    "fields": {
+        "menu": 5,
+        "recipe": 21,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 52,
+    "fields": {
+        "menu": 6,
+        "recipe": 25,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 53,
+    "fields": {
+        "menu": 6,
+        "recipe": 7,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 54,
+    "fields": {
+        "menu": 6,
+        "recipe": 24,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 55,
+    "fields": {
+        "menu": 7,
+        "recipe": 33,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 56,
+    "fields": {
+        "menu": 7,
+        "recipe": 22,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 57,
+    "fields": {
+        "menu": 7,
+        "recipe": 22,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 58,
+    "fields": {
+        "menu": 7,
+        "recipe": 10,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 59,
+    "fields": {
+        "menu": 7,
+        "recipe": 8,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 60,
+    "fields": {
+        "menu": 7,
+        "recipe": 5,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 61,
+    "fields": {
+        "menu": 7,
+        "recipe": 34,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 62,
+    "fields": {
+        "menu": 7,
+        "recipe": 15,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 63,
+    "fields": {
+        "menu": 7,
+        "recipe": 22,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 64,
+    "fields": {
+        "menu": 7,
+        "recipe": 33,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 65,
+    "fields": {
+        "menu": 7,
+        "recipe": 20,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 66,
+    "fields": {
+        "menu": 7,
+        "recipe": 21,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 67,
+    "fields": {
+        "menu": 7,
+        "recipe": 33,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 68,
+    "fields": {
+        "menu": 7,
+        "recipe": 8,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 69,
+    "fields": {
+        "menu": 7,
+        "recipe": 12,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 70,
+    "fields": {
+        "menu": 7,
+        "recipe": 33,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 71,
+    "fields": {
+        "menu": 7,
+        "recipe": 1,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 72,
+    "fields": {
+        "menu": 7,
+        "recipe": 19,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 73,
+    "fields": {
+        "menu": 7,
+        "recipe": 28,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 74,
+    "fields": {
+        "menu": 7,
+        "recipe": 35,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 75,
+    "fields": {
+        "menu": 7,
+        "recipe": 5,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 76,
+    "fields": {
+        "menu": 8,
+        "recipe": 32,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 77,
+    "fields": {
+        "menu": 8,
+        "recipe": 22,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 78,
+    "fields": {
+        "menu": 8,
+        "recipe": 12,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 79,
+    "fields": {
+        "menu": 9,
+        "recipe": 18,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 80,
+    "fields": {
+        "menu": 9,
+        "recipe": 8,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 81,
+    "fields": {
+        "menu": 9,
+        "recipe": 21,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 82,
+    "fields": {
+        "menu": 10,
+        "recipe": 31,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 83,
+    "fields": {
+        "menu": 10,
+        "recipe": 31,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 84,
+    "fields": {
+        "menu": 10,
+        "recipe": 2,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 85,
+    "fields": {
+        "menu": 10,
+        "recipe": 30,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 86,
+    "fields": {
+        "menu": 10,
+        "recipe": 24,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 87,
+    "fields": {
+        "menu": 10,
+        "recipe": 23,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 88,
+    "fields": {
+        "menu": 10,
+        "recipe": 18,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 89,
+    "fields": {
+        "menu": 10,
+        "recipe": 34,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 90,
+    "fields": {
+        "menu": 10,
+        "recipe": 12,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 91,
+    "fields": {
+        "menu": 10,
+        "recipe": 10,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 92,
+    "fields": {
+        "menu": 10,
+        "recipe": 4,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 93,
+    "fields": {
+        "menu": 10,
+        "recipe": 5,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 94,
+    "fields": {
+        "menu": 10,
+        "recipe": 26,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 95,
+    "fields": {
+        "menu": 10,
+        "recipe": 27,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 96,
+    "fields": {
+        "menu": 10,
+        "recipe": 2,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 97,
+    "fields": {
+        "menu": 10,
+        "recipe": 34,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 98,
+    "fields": {
+        "menu": 10,
+        "recipe": 8,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 99,
+    "fields": {
+        "menu": 10,
+        "recipe": 6,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 100,
+    "fields": {
+        "menu": 10,
+        "recipe": 17,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 101,
+    "fields": {
+        "menu": 10,
+        "recipe": 12,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 102,
+    "fields": {
+        "menu": 10,
+        "recipe": 24,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 103,
+    "fields": {
+        "menu": 11,
+        "recipe": 32,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 104,
+    "fields": {
+        "menu": 11,
+        "recipe": 21,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 105,
+    "fields": {
+        "menu": 11,
+        "recipe": 24,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 106,
+    "fields": {
+        "menu": 11,
+        "recipe": 35,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 107,
+    "fields": {
+        "menu": 11,
+        "recipe": 12,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 108,
+    "fields": {
+        "menu": 11,
+        "recipe": 7,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 109,
+    "fields": {
+        "menu": 11,
+        "recipe": 30,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 110,
+    "fields": {
+        "menu": 11,
+        "recipe": 2,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 111,
+    "fields": {
+        "menu": 11,
+        "recipe": 23,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 112,
+    "fields": {
+        "menu": 11,
+        "recipe": 18,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 113,
+    "fields": {
+        "menu": 11,
+        "recipe": 1,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 114,
+    "fields": {
+        "menu": 11,
+        "recipe": 34,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 115,
+    "fields": {
+        "menu": 11,
+        "recipe": 28,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 116,
+    "fields": {
+        "menu": 11,
+        "recipe": 11,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 117,
+    "fields": {
+        "menu": 11,
+        "recipe": 5,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 118,
+    "fields": {
+        "menu": 11,
+        "recipe": 26,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 119,
+    "fields": {
+        "menu": 11,
+        "recipe": 9,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 120,
+    "fields": {
+        "menu": 11,
+        "recipe": 14,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 121,
+    "fields": {
+        "menu": 11,
+        "recipe": 17,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 122,
+    "fields": {
+        "menu": 11,
+        "recipe": 6,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 123,
+    "fields": {
+        "menu": 11,
+        "recipe": 32,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 124,
+    "fields": {
+        "menu": 12,
+        "recipe": 35,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 125,
+    "fields": {
+        "menu": 12,
+        "recipe": 34,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 126,
+    "fields": {
+        "menu": 12,
+        "recipe": 24,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 127,
+    "fields": {
+        "menu": 12,
+        "recipe": 17,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 128,
+    "fields": {
+        "menu": 12,
+        "recipe": 21,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 129,
+    "fields": {
+        "menu": 12,
+        "recipe": 20,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 130,
+    "fields": {
+        "menu": 12,
+        "recipe": 31,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 131,
+    "fields": {
+        "menu": 12,
+        "recipe": 22,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 132,
+    "fields": {
+        "menu": 12,
+        "recipe": 21,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 133,
+    "fields": {
+        "menu": 12,
+        "recipe": 18,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 134,
+    "fields": {
+        "menu": 12,
+        "recipe": 6,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 135,
+    "fields": {
+        "menu": 12,
+        "recipe": 19,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 136,
+    "fields": {
+        "menu": 12,
+        "recipe": 10,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 137,
+    "fields": {
+        "menu": 12,
+        "recipe": 27,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 138,
+    "fields": {
+        "menu": 12,
+        "recipe": 27,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 139,
+    "fields": {
+        "menu": 12,
+        "recipe": 26,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 140,
+    "fields": {
+        "menu": 12,
+        "recipe": 24,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 141,
+    "fields": {
+        "menu": 12,
+        "recipe": 22,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 142,
+    "fields": {
+        "menu": 12,
+        "recipe": 28,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 143,
+    "fields": {
+        "menu": 12,
+        "recipe": 8,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 144,
+    "fields": {
+        "menu": 12,
+        "recipe": 23,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 145,
+    "fields": {
+        "menu": 13,
+        "recipe": 25,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 146,
+    "fields": {
+        "menu": 13,
+        "recipe": 24,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 147,
+    "fields": {
+        "menu": 13,
+        "recipe": 7,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 148,
+    "fields": {
+        "menu": 13,
+        "recipe": 33,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 149,
+    "fields": {
+        "menu": 13,
+        "recipe": 9,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 150,
+    "fields": {
+        "menu": 13,
+        "recipe": 19,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 151,
+    "fields": {
+        "menu": 13,
+        "recipe": 18,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 152,
+    "fields": {
+        "menu": 13,
+        "recipe": 27,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 153,
+    "fields": {
+        "menu": 13,
+        "recipe": 6,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 154,
+    "fields": {
+        "menu": 13,
+        "recipe": 31,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 155,
+    "fields": {
+        "menu": 13,
+        "recipe": 23,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 156,
+    "fields": {
+        "menu": 13,
+        "recipe": 23,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 157,
+    "fields": {
+        "menu": 13,
+        "recipe": 30,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 158,
+    "fields": {
+        "menu": 13,
+        "recipe": 8,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 159,
+    "fields": {
+        "menu": 13,
+        "recipe": 5,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 160,
+    "fields": {
+        "menu": 13,
+        "recipe": 25,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 161,
+    "fields": {
+        "menu": 13,
+        "recipe": 2,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 162,
+    "fields": {
+        "menu": 13,
+        "recipe": 20,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 163,
+    "fields": {
+        "menu": 13,
+        "recipe": 8,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 164,
+    "fields": {
+        "menu": 13,
+        "recipe": 26,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 165,
+    "fields": {
+        "menu": 13,
+        "recipe": 13,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 166,
+    "fields": {
+        "menu": 14,
+        "recipe": 35,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 167,
+    "fields": {
+        "menu": 14,
+        "recipe": 14,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 168,
+    "fields": {
+        "menu": 14,
+        "recipe": 20,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 169,
+    "fields": {
+        "menu": 14,
+        "recipe": 32,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 170,
+    "fields": {
+        "menu": 14,
+        "recipe": 4,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 171,
+    "fields": {
+        "menu": 14,
+        "recipe": 5,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 172,
+    "fields": {
+        "menu": 14,
+        "recipe": 33,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 173,
+    "fields": {
+        "menu": 14,
+        "recipe": 13,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 174,
+    "fields": {
+        "menu": 14,
+        "recipe": 34,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 175,
+    "fields": {
+        "menu": 14,
+        "recipe": 26,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 176,
+    "fields": {
+        "menu": 14,
+        "recipe": 22,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 177,
+    "fields": {
+        "menu": 14,
+        "recipe": 6,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 178,
+    "fields": {
+        "menu": 14,
+        "recipe": 17,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 179,
+    "fields": {
+        "menu": 14,
+        "recipe": 34,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 180,
+    "fields": {
+        "menu": 14,
+        "recipe": 21,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 181,
+    "fields": {
+        "menu": 14,
+        "recipe": 28,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 182,
+    "fields": {
+        "menu": 14,
+        "recipe": 27,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 183,
+    "fields": {
+        "menu": 14,
+        "recipe": 23,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 184,
+    "fields": {
+        "menu": 14,
+        "recipe": 10,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 185,
+    "fields": {
+        "menu": 14,
+        "recipe": 9,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 186,
+    "fields": {
+        "menu": 14,
+        "recipe": 19,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 187,
+    "fields": {
+        "menu": 15,
+        "recipe": 33,
+        "day_offset": 0,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 188,
+    "fields": {
+        "menu": 15,
+        "recipe": 3,
+        "day_offset": 0,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 189,
+    "fields": {
+        "menu": 15,
+        "recipe": 16,
+        "day_offset": 0,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 190,
+    "fields": {
+        "menu": 15,
+        "recipe": 8,
+        "day_offset": 1,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 191,
+    "fields": {
+        "menu": 15,
+        "recipe": 1,
+        "day_offset": 1,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 192,
+    "fields": {
+        "menu": 15,
+        "recipe": 23,
+        "day_offset": 1,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 193,
+    "fields": {
+        "menu": 15,
+        "recipe": 18,
+        "day_offset": 2,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 194,
+    "fields": {
+        "menu": 15,
+        "recipe": 34,
+        "day_offset": 2,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 195,
+    "fields": {
+        "menu": 15,
+        "recipe": 31,
+        "day_offset": 2,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 196,
+    "fields": {
+        "menu": 15,
+        "recipe": 34,
+        "day_offset": 3,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 197,
+    "fields": {
+        "menu": 15,
+        "recipe": 27,
+        "day_offset": 3,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 198,
+    "fields": {
+        "menu": 15,
+        "recipe": 32,
+        "day_offset": 3,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 199,
+    "fields": {
+        "menu": 15,
+        "recipe": 28,
+        "day_offset": 4,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 200,
+    "fields": {
+        "menu": 15,
+        "recipe": 6,
+        "day_offset": 4,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 201,
+    "fields": {
+        "menu": 15,
+        "recipe": 1,
+        "day_offset": 4,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 202,
+    "fields": {
+        "menu": 15,
+        "recipe": 31,
+        "day_offset": 5,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 203,
+    "fields": {
+        "menu": 15,
+        "recipe": 15,
+        "day_offset": 5,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 204,
+    "fields": {
+        "menu": 15,
+        "recipe": 7,
+        "day_offset": 5,
+        "meal_type": 3
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 205,
+    "fields": {
+        "menu": 15,
+        "recipe": 10,
+        "day_offset": 6,
+        "meal_type": 1
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 206,
+    "fields": {
+        "menu": 15,
+        "recipe": 20,
+        "day_offset": 6,
+        "meal_type": 2
+    }
+},
+{
+    "model": "menus.menuitem",
+    "pk": 207,
+    "fields": {
+        "menu": 15,
+        "recipe": 27,
+        "day_offset": 6,
+        "meal_type": 3
+    }
+}
 ]

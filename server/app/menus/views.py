@@ -51,6 +51,7 @@ class MenuViewSet(viewsets.ModelViewSet):
 
         # diet_type: из запроса → из профиля → без фильтра
         diet_type_id = data.get('diet_type') or request.user.diet_type_id
+        allergy_ids = data.get('exclude_allergies') or set(request.user.allergies.values_list('id', flat=True))
         max_cook_time = data.get('max_cook_time')
 
         meal_types = list(MealType.objects.all().order_by('order'))
@@ -66,6 +67,10 @@ class MenuViewSet(viewsets.ModelViewSet):
             qs = qs.filter(diet_types__id=diet_type_id)
         if max_cook_time:
             qs = qs.filter(cook_time__lte=max_cook_time)
+        if allergy_ids:
+            qs = qs.exclude(
+                recipe_ingredients__ingredient__allergies__id__in=allergy_ids
+            ).distinct()
 
 
         if not qs.exists():
@@ -145,27 +150,42 @@ class MenuItemViewSet(viewsets.ModelViewSet):
         """
         menu_item = self.get_object()
         user = request.user
+        allergy_ids = set(user.allergies.values_list('id', flat=True))
 
         # Определяем фильтры для подбора замены
         # 1. Тот же тип приема пищи (MealType)
         # 2. Другой рецепт (не текущий)
-        # 3. Соответствие диете пользователя (если установлена)
-        qs = Recipe.objects.filter(meal_types=menu_item.meal_type).exclude(id=menu_item.recipe_id)
-
-        if user.diet_type_id:
-            qs = qs.filter(diet_types__id=user.diet_type_id)
-
-        # Если с диетой ничего не нашли, пробуем без диеты, но того же типа
-        if not qs.exists():
-            qs = Recipe.objects.filter(meal_types=menu_item.meal_type).exclude(id=menu_item.recipe_id)
-
-        # Если всё равно пусто (мало данных), берем любой другой рецепт
-        if not qs.exists():
-            qs = Recipe.objects.exclude(id=menu_item.recipe_id)
+        # 3. Соответствие диете и аллергиям пользователя (если установлены)
+        
+        # На нужный прием пищи исключая заменяемый рецепт
+        qs = Recipe.objects.filter(meal_types=menu_item.meal_type) \
+            .exclude(id=menu_item.recipe_id)
 
         if not qs.exists():
             return Response(
-                {'detail': 'Не удалось найти подходящий рецепт для замены.'},
+                {'detail': 'Рецепты для замены не найдены'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # С фильтром по типу питания (диете):
+        if user.diet_type_id:
+            qs = qs.filter(diet_types__id=user.diet_type_id)
+
+        if not qs.exists():
+            return Response(
+                {'detail': 'Не удалось найти подходящий рецепт для замены с указанным типом питания.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Исключая аллергены:
+        if allergy_ids:
+            qs = qs.exclude(
+                recipe_ingredients__ingredient__allergies__id__in=allergy_ids
+            ).distinct()
+
+        if not qs.exists():
+            return Response(
+                {'detail': 'Не удалось найти подходящий рецепт для замены с указанными параметрами.'},
                 status=status.HTTP_404_NOT_FOUND
             )
 

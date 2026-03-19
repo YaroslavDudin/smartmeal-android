@@ -37,7 +37,9 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     # добавить количество порций в контекст для перерасчета кбжу и общего веса ингредиентов
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context['target_servings'] = self.request.user.portion_size
+        servings = self.request.query_params.get('servings')
+        if servings and servings.isdigit():
+            context['target_servings'] = int(servings)
         return context
 
     def get_queryset(self):

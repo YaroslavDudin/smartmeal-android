@@ -153,16 +153,21 @@ fun SmartMealNavGraph(navController: NavHostController) {
                     }
                 },
                 onRecipeClick = { recipeId ->
-                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId))
+                    val portionSize = setupViewModel.state.value.portionSize // количество порций указанное в профиле
+                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize)) // передаем в рецепт
                 }
             )
         }
 
         composable(
             route = Screen.RecipeDetail.route,
-            arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
+            arguments = listOf(
+                navArgument("recipeId") { type = NavType.IntType },
+                navArgument("portionSize") { type = NavType.IntType }
+            )
         ) { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
+            val portionSize = backStackEntry.arguments?.getInt("portionSize") ?: 1
             val recipeViewModel: RecipeDetailViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
@@ -171,6 +176,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
             })
             RecipeDetailScreen(
                 recipeId = recipeId,
+                portionSize = portionSize,
                 viewModel = recipeViewModel,
                 onBack = { navController.popBackStack() }
             )

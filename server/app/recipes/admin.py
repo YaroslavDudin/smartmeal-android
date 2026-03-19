@@ -41,7 +41,7 @@ class RecipeAdmin(admin.ModelAdmin):
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
-    list_filter = ('category',)
+    list_filter = ('category', 'allergies')
     search_fields = ('name',)
     inlines = [UnitConversionInline, IngredientNutritionInline]
 

@@ -1,4 +1,5 @@
 package com.example.smartmeal.feature.recipes.presentation
+import com.example.smartmeal.ui.components.buttons.QuantityStepper
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.R
@@ -30,13 +32,14 @@ import com.example.smartmeal.ui.theme.PrimaryGreen
 @Composable
 fun RecipeDetailScreen(
     recipeId: Int,
+    portionSize: Int,
     viewModel: RecipeDetailViewModel,
     onBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(recipeId) {
-        viewModel.loadRecipe(recipeId)
+        viewModel.loadRecipe(recipeId, portionSize)
     }
 
     Scaffold(
@@ -107,18 +110,36 @@ fun RecipeDetailScreen(
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             InfoChip(label = "${recipe.cook_time} мин")
-                            InfoChip(label = "${recipe.total_calories.toInt()} ккал")
+                            InfoChip(label = "${recipe.per_serving_calories.toInt()} ккал/порция")
                         }
 
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                        // Ингредиенты
-                        Text(
-                            text = "Ингредиенты",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black
-                        )
+                        // Ингредиенты с динамическим количеством порций
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Ингредиенты",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "(на ${state.currentServings} порц.)",
+                                fontSize = 18.sp,
+                                color = Color.Gray
+                            )
+                            QuantityStepper(
+                                quantity = state.currentServings,
+                                onIncrease = { viewModel.changeServings(state.currentServings + 1) },
+                                onDecrease = { viewModel.changeServings(state.currentServings - 1) },
+                                minQuantity = 1,
+                                maxQuantity = 20
+                            )
+                        }
 
                         Spacer(modifier = Modifier.height(8.dp))
 

@@ -1,26 +1,26 @@
 [
-  {
+{
     "model": "menus.mealtype",
     "pk": 1,
     "fields": {
-      "name": "breakfast",
-      "order": 10
+        "name": "breakfast",
+        "order": 10
     }
-  },
-  {
+},
+{
     "model": "menus.mealtype",
     "pk": 2,
     "fields": {
-      "name": "lunch",
-      "order": 20
+        "name": "lunch",
+        "order": 20
     }
-  },
-  {
+},
+{
     "model": "menus.mealtype",
     "pk": 3,
     "fields": {
-      "name": "dinner",
-      "order": 30
+        "name": "dinner",
+        "order": 30
     }
-  }
+}
 ]

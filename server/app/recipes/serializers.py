@@ -4,6 +4,7 @@ from app.recipes.models import (
     IngredientCategory, Unit, Ingredient, IngredientNutrition,
     Recipe, RecipeIngredient, RecipeStep,
 )
+from app.accounts.serializers import AllergySerializer
 
 
 class IngredientCategorySerializer(serializers.ModelSerializer):
@@ -38,7 +39,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
     unit_name = serializers.CharField(source='unit.name', read_only=True)
-    # переопределение количества под указанное количество персон
+    # переопределение количества под нужное количество персон
     amount = serializers.SerializerMethodField()
 
     class Meta:
@@ -65,6 +66,7 @@ class RecipeStepSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientSerializer(source='recipe_ingredients', many=True, read_only=True)
     steps = RecipeStepSerializer(many=True, read_only=True)
+    allergies = serializers.SerializerMethodField()
 
     # Все КБЖУ-поля — это @property на модели, DRF достаёт их через getattr.
     # Указываем явно, чтобы контролировать точность вывода.
@@ -83,16 +85,18 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = (
             'id', 'title', 'image_url', 'cook_time', 'servings',
-            'ingredients', 'steps',
+            'ingredients', 'steps', 'allergies',
             'total_calories', 'total_proteins', 'total_fats', 'total_carbs', 'total_weight_g',
             'per_serving_calories', 'per_serving_proteins', 'per_serving_fats', 'per_serving_carbs',
         )
         
-    # положить в контекст количество порций в рецепте для расчета в RecipeIngredientSerializer
+    # указать target servings как указанное в рецепте количество порций, если неопределено
     def to_representation(self, instance):
+        if not self.context.get('target_servings'):
+            self.context['target_servings'] = instance.servings
         self.context['recipe_servings'] = instance.servings
         return super().to_representation(instance)
-    
+
     # отношение количества персон к количеству порций в рецепте
     def _get_scale(self, obj):
         cache_key = f'_scale_{obj.pk}'
@@ -101,6 +105,17 @@ class RecipeSerializer(serializers.ModelSerializer):
             scale = Decimal(target_servings) / Decimal(obj.servings)
             setattr(self, cache_key, scale)
         return getattr(self, cache_key)
+    
+    # собираем уникальные аллергии из всех ингредиентов
+    def get_allergies(self, obj):
+        seen = set()
+        result = []
+        for ri in obj.recipe_ingredients.all():
+            for allergy in ri.ingredient.allergies.all():
+                if allergy.id not in seen:
+                    seen.add(allergy.id)
+                    result.append(AllergySerializer(allergy).data)
+        return result
 
     def get_total_calories(self, obj):
         cache_key = f'_calories_{obj.pk}'

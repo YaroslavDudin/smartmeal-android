@@ -7,6 +7,8 @@ class Allergy(models.Model):
 
     class Meta:
         db_table = 'allergy'
+        verbose_name = 'Аллергия'
+        verbose_name_plural = 'Аллергии'
         ordering = ['name']
 
     def __str__(self):
@@ -18,6 +20,8 @@ class DietType(models.Model):
 
     class Meta:
         db_table = 'diet_type'
+        verbose_name = 'Тип питания'
+        verbose_name_plural = 'Типы питания'
         ordering = ['name']
 
     def __str__(self):
@@ -37,6 +41,8 @@ class User(AbstractUser):
 
     class Meta:
         db_table = 'user'
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
         ordering = ['-created_at']
 
     def __str__(self):
@@ -50,6 +56,8 @@ class UserFavorite(models.Model):
 
     class Meta:
         db_table = 'user_favorite'
+        verbose_name = 'Избранный рецепт пользователя'
+        verbose_name_plural = 'Избранные рецепты пользователей'
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['user', 'created_at']),
