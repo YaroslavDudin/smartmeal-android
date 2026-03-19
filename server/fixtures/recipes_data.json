@@ -126,6 +126,13 @@
     }
 },
 {
+    "model": "recipes.ingredientcategory",
+    "pk": 23,
+    "fields": {
+        "name": "Чай, кофе и какао"
+    }
+},
+{
     "model": "recipes.unit",
     "pk": 1,
     "fields": {
@@ -743,7 +750,7 @@
     "fields": {
         "ingredient": 70,
         "unit": 4,
-        "grams_per_unit": "8.00"
+        "grams_per_unit": "10.00"
     }
 },
 {
@@ -752,7 +759,7 @@
     "fields": {
         "ingredient": 70,
         "unit": 5,
-        "grams_per_unit": "3.00"
+        "grams_per_unit": "4.00"
     }
 },
 {
@@ -807,6 +814,51 @@
         "ingredient": 79,
         "unit": 7,
         "grams_per_unit": "260.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 69,
+    "fields": {
+        "ingredient": 65,
+        "unit": 7,
+        "grams_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 70,
+    "fields": {
+        "ingredient": 63,
+        "unit": 7,
+        "grams_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 73,
+    "fields": {
+        "ingredient": 81,
+        "unit": 4,
+        "grams_per_unit": "10.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 74,
+    "fields": {
+        "ingredient": 81,
+        "unit": 5,
+        "grams_per_unit": "5.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 75,
+    "fields": {
+        "ingredient": 82,
+        "unit": 3,
+        "grams_per_unit": "250.00"
     }
 },
 {
@@ -1049,7 +1101,7 @@
     "model": "recipes.ingredient",
     "pk": 27,
     "fields": {
-        "name": "Фарш мясной",
+        "name": "Фарш свиной",
         "category": 4,
         "allergies": []
     }
@@ -1199,7 +1251,9 @@
     "fields": {
         "name": "Масло сливочное 82,5%",
         "category": 3,
-        "allergies": []
+        "allergies": [
+            1
+        ]
     }
 },
 {
@@ -1405,7 +1459,7 @@
     "model": "recipes.ingredient",
     "pk": 63,
     "fields": {
-        "name": "Чай",
+        "name": "Чай черный без сахара",
         "category": 9,
         "allergies": []
     }
@@ -1414,8 +1468,8 @@
     "model": "recipes.ingredient",
     "pk": 64,
     "fields": {
-        "name": "Кофе",
-        "category": 9,
+        "name": "Кофе растворимый",
+        "category": 23,
         "allergies": []
     }
 },
@@ -1423,7 +1477,7 @@
     "model": "recipes.ingredient",
     "pk": 65,
     "fields": {
-        "name": "Сок",
+        "name": "Сок яблочный",
         "category": 9,
         "allergies": []
     }
@@ -1469,7 +1523,7 @@
     "pk": 70,
     "fields": {
         "name": "Какао-порошок",
-        "category": 10,
+        "category": 23,
         "allergies": []
     }
 },
@@ -1563,6 +1617,26 @@
         "category": 20,
         "allergies": [
             5
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 81,
+    "fields": {
+        "name": "Матча зеленая",
+        "category": 23,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 82,
+    "fields": {
+        "name": "Багет пшеничный",
+        "category": 19,
+        "allergies": [
+            8
         ]
     }
 },
@@ -2265,9 +2339,9 @@
     "fields": {
         "ingredient": 64,
         "base_weight_g": 100,
-        "protein": "0.2",
-        "fat": "0.0",
-        "carbs": "0.0"
+        "protein": "15.0",
+        "fat": "0.5",
+        "carbs": "43.0"
     }
 },
 {
@@ -2331,9 +2405,9 @@
     "fields": {
         "ingredient": 70,
         "base_weight_g": 100,
-        "protein": "20.0",
+        "protein": "24.3",
         "fat": "15.0",
-        "carbs": "30.0"
+        "carbs": "10.0"
     }
 },
 {
@@ -2422,6 +2496,28 @@
         "protein": "26.0",
         "fat": "49.0",
         "carbs": "16.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 80,
+    "fields": {
+        "ingredient": 81,
+        "base_weight_g": 100,
+        "protein": "24.9",
+        "fat": "0.0",
+        "carbs": "51.1"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 81,
+    "fields": {
+        "ingredient": 82,
+        "base_weight_g": 100,
+        "protein": "7.5",
+        "fat": "2.9",
+        "carbs": "51.4"
     }
 },
 {
@@ -4304,16 +4400,6 @@
 },
 {
     "model": "recipes.recipeingredient",
-    "pk": 127,
-    "fields": {
-        "recipe": 18,
-        "ingredient": 52,
-        "amount": "1.00",
-        "unit": 9
-    }
-},
-{
-    "model": "recipes.recipeingredient",
     "pk": 128,
     "fields": {
         "recipe": 18,
@@ -4650,26 +4736,6 @@
         "ingredient": 35,
         "amount": "500.00",
         "unit": 1
-    }
-},
-{
-    "model": "recipes.recipeingredient",
-    "pk": 162,
-    "fields": {
-        "recipe": 24,
-        "ingredient": 13,
-        "amount": "1.00",
-        "unit": 3
-    }
-},
-{
-    "model": "recipes.recipeingredient",
-    "pk": 163,
-    "fields": {
-        "recipe": 24,
-        "ingredient": 56,
-        "amount": "3.00",
-        "unit": 4
     }
 },
 {
@@ -5300,6 +5366,26 @@
         "ingredient": 52,
         "amount": "1.00",
         "unit": 8
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 227,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 43,
+        "amount": "2.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 228,
+    "fields": {
+        "recipe": 33,
+        "ingredient": 82,
+        "amount": "1.50",
+        "unit": 3
     }
 },
 {
@@ -6738,7 +6824,7 @@
     "fields": {
         "recipe": 33,
         "step_number": 3,
-        "description": "Хлеб нарежьте ломтиками и поджарьте на сухой сковороде или в тостере до румяной корочки.",
+        "description": "Багет нарежьте ломтиками и поджарьте на сухой сковороде или в тостере до румяной корочки.",
         "image_url": null,
         "timer": 5
     }
@@ -6749,7 +6835,7 @@
     "fields": {
         "recipe": 33,
         "step_number": 4,
-        "description": "Выложите томатную смесь на горячие ломтики хлеба и сразу подавайте.",
+        "description": "Выложите томатную смесь на горячие ломтики багета и сразу подавайте.",
         "image_url": null,
         "timer": null
     }

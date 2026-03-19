@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$1200000$HSb6Ieljmx4R3VLnpHPNf9$rDx7gcslGkpScVvTW6tndjBnFh+6j0SK1M0OxMtORMM=",
-        "last_login": "2026-03-13T16:13:26.153Z",
+        "last_login": "2026-03-19T11:15:38.197Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -96,10 +96,10 @@
         "allergies": [
             5,
             8,
+            2,
             6,
             4,
-            9,
-            2
+            9
         ]
     }
 },
@@ -173,8 +173,8 @@
         "groups": [],
         "user_permissions": [],
         "allergies": [
-            7,
-            2
+            2,
+            7
         ]
     }
 },
@@ -200,13 +200,13 @@
         "allergies": [
             5,
             8,
+            2,
             1,
             6,
             4,
             3,
             7,
-            9,
-            2
+            9
         ]
     }
 },
@@ -542,6 +542,15 @@
         "user": 2,
         "recipe": 23,
         "created_at": "2026-03-13T15:46:56.671Z"
+    }
+},
+{
+    "model": "accounts.userfavorite",
+    "pk": 31,
+    "fields": {
+        "user": 2,
+        "recipe": 15,
+        "created_at": "2026-03-18T08:18:06.761Z"
     }
 }
 ]
