@@ -17,6 +17,8 @@ data class UserProfileDto(
     val portion_size: Int,
     val diet_type: Int?,
     val diet_type_name: String?,
+    val preferred_cook_time: String?,
+    val preferred_cook_time_display: String?,
     val allergies: List<Int>,
     val allergies_names: List<String>,
 )
@@ -25,4 +27,5 @@ data class UpdateProfileRequest(
     val diet_type: Int?,
     val portion_size: Int,
     val allergies: List<Int>,
+    val preferred_cook_time: String? = null,
 )

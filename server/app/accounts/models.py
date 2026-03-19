@@ -28,6 +28,13 @@ class DietType(models.Model):
         return self.name
 
 
+class CookTimeRange(models.TextChoices):
+    SHORT = 'short', 'До 30 минут'
+    MEDIUM = 'medium', 'От 30 до 60 минут'
+    LONG = 'long', '60 минут и более'
+    ANY = 'any', 'Любое время'
+
+
 class User(AbstractUser):
     email = models.EmailField(unique=True, max_length=255)
     portion_size = models.IntegerField(default=1)
@@ -35,6 +42,12 @@ class User(AbstractUser):
     
     allergies = models.ManyToManyField(Allergy, blank=True, related_name='users')
     diet_type = models.ForeignKey('DietType', null=True, blank=True, on_delete=models.SET_NULL, related_name='users')
+    preferred_cook_time = models.CharField(
+        max_length=10,
+        choices=CookTimeRange.choices,
+        default=CookTimeRange.ANY,
+        verbose_name="Предпочитаемое время готовки"
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

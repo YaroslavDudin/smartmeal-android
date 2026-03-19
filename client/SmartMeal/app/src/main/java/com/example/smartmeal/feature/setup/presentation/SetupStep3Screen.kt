@@ -36,9 +36,9 @@ import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.PrimaryGreen
 
 private val COOK_TIME_OPTIONS = listOf(
-    Triple("under30", "До 30 мин", false),
-    Triple("30to60", "От 30 до часа", true),
-    Triple("over60", "От часа и более", false),
+    Triple("short", "До 30 мин", false),
+    Triple("medium", "От 30 до часа", true),
+    Triple("long", "От часа и более", false),
 )
 
 /**
@@ -162,8 +162,8 @@ fun SetupStep3Content(
         ) {
             COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
                 val tag = when (key) {
-                    "under30" -> "setup_step3_cook_under30"
-                    "30to60" -> "setup_step3_cook_30to60"
+                    "short" -> "setup_step3_cook_under30"
+                    "medium" -> "setup_step3_cook_30to60"
                     else -> "setup_step3_cook_other"
                 }
                 SelectableChip(
@@ -181,7 +181,7 @@ fun SetupStep3Content(
 
         COOK_TIME_OPTIONS.drop(2).forEach { (key, label, _) ->
             val tag = when (key) {
-                "over60" -> "setup_step3_cook_over60"
+                "long" -> "setup_step3_cook_over60"
                 else -> "setup_step3_cook_other"
             }
             SelectableChip(

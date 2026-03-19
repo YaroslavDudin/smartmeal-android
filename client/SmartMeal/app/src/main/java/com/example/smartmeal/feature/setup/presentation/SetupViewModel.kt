@@ -37,7 +37,7 @@ data class SetupState(
     val allergies: List<AllergyDto> = emptyList(),
     val selectedAllergyIds: Set<Int> = emptySet(),
     val eatAll: Boolean = false,
-    val cookTimePreference: String? = null,  // "under30", "30to60", "over60"
+    val cookTimePreference: String? = null,  // "short", "medium", "long"
 
     // --- Common ---
     val isLoading: Boolean = false,
@@ -83,6 +83,7 @@ class SetupViewModel(private val api: SetupApi) : ViewModel() {
                         selectedDietTypeId = user?.diet_type,
                         portionSize = user?.portion_size ?: 1,
                         selectedAllergyIds = user?.allergies?.toSet() ?: emptySet(),
+                        cookTimePreference = user?.preferred_cook_time,
                     )
                 }
             } catch (e: Exception) {
@@ -199,6 +200,7 @@ class SetupViewModel(private val api: SetupApi) : ViewModel() {
                         diet_type = s.selectedDietTypeId,
                         portion_size = s.portionSize,
                         allergies = s.selectedAllergyIds.toList(),
+                        preferred_cook_time = s.cookTimePreference
                     )
                 )
                 if (response.isSuccessful) {
