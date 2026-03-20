@@ -331,16 +331,6 @@
 },
 {
     "model": "menus.menuitem",
-    "pk": 24,
-    "fields": {
-        "menu": 2,
-        "recipe": 20,
-        "day_offset": 6,
-        "meal_type": 3
-    }
-},
-{
-    "model": "menus.menuitem",
     "pk": 25,
     "fields": {
         "menu": 3,
@@ -357,16 +347,6 @@
         "recipe": 26,
         "day_offset": 0,
         "meal_type": 2
-    }
-},
-{
-    "model": "menus.menuitem",
-    "pk": 27,
-    "fields": {
-        "menu": 3,
-        "recipe": 16,
-        "day_offset": 0,
-        "meal_type": 3
     }
 },
 {
@@ -467,16 +447,6 @@
         "recipe": 17,
         "day_offset": 3,
         "meal_type": 1
-    }
-},
-{
-    "model": "menus.menuitem",
-    "pk": 38,
-    "fields": {
-        "menu": 4,
-        "recipe": 16,
-        "day_offset": 3,
-        "meal_type": 2
     }
 },
 {
@@ -741,16 +711,6 @@
 },
 {
     "model": "menus.menuitem",
-    "pk": 65,
-    "fields": {
-        "menu": 7,
-        "recipe": 20,
-        "day_offset": 3,
-        "meal_type": 2
-    }
-},
-{
-    "model": "menus.menuitem",
     "pk": 66,
     "fields": {
         "menu": 7,
@@ -884,7 +844,7 @@
     "pk": 79,
     "fields": {
         "menu": 9,
-        "recipe": 18,
+        "recipe": 26,
         "day_offset": 0,
         "meal_type": 1
     }
@@ -894,7 +854,7 @@
     "pk": 80,
     "fields": {
         "menu": 9,
-        "recipe": 31,
+        "recipe": 13,
         "day_offset": 0,
         "meal_type": 2
     }
@@ -904,7 +864,7 @@
     "pk": 81,
     "fields": {
         "menu": 9,
-        "recipe": 13,
+        "recipe": 7,
         "day_offset": 0,
         "meal_type": 3
     }

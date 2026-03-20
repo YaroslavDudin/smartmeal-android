@@ -128,10 +128,16 @@ class RecipeQuerySet(models.QuerySet):
         )
 
 
+# Построение пути для файла главного фото рецепта
+def _get_recipe_photopath(instance, filename):
+    return f'recipes/{instance.pk}/main/{filename}'
+
+
 class Recipe(models.Model):
     '''Рецепт блюда с заголовком, временем приготовления, количеством порций и связанными диетическими типами.'''
     title = models.CharField(max_length=255)
-    image_url = models.CharField(max_length=255, blank=True, null=True, validators=[URLValidator()])
+    # Локальная загрузка фото
+    image_url = models.ImageField(upload_to=_get_recipe_photopath, null=True, blank=True)
     cook_time = models.PositiveIntegerField(help_text='Время приготовления в минутах')
     servings = models.PositiveSmallIntegerField(default=1)
 
@@ -301,12 +307,18 @@ class RecipeIngredient(models.Model):
         return f'{self.amount} (Unit ID {self.unit_id}) of Ingredient ID {self.ingredient_id} for Recipe ID {self.recipe_id}'
 
 
+# Построение пути для файла фото шага рецепта
+def _get_recipe_step_photopath(instance, filename):
+    return f'recipes/{instance.recipe.pk}/steps/step_{instance.step_number}_{filename}'
+
+
 class RecipeStep(models.Model):
     '''Шаг приготовления рецепта: порядковый номер, описание и опциональное изображение.'''
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
     step_number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     description = models.TextField()
-    image_url = models.CharField(max_length=255, blank=True, null=True, validators=[URLValidator()])
+    # Локальная загрузка фото
+    image_url = models.ImageField(upload_to=_get_recipe_step_photopath, null=True, blank=True)
     timer = models.IntegerField(blank=True, null=True, help_text="Время таймера в минутах")
 
     class Meta:
