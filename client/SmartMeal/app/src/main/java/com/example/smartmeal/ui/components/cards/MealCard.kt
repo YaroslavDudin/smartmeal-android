@@ -15,11 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.smartmeal.R
 import com.example.smartmeal.ui.components.buttons.CircleIconButton
 import com.example.smartmeal.ui.components.buttons.CircleIconType
@@ -29,15 +32,22 @@ fun MealCard(
     modifier: Modifier = Modifier,
     title: String,
     cookTime: String,
-    imageRes: Int,
+    imageRes: Int = R.drawable.food,
+    imageUrl: String? = null, // Зарезервировано
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    cardTag: String? = null,
+    titleTag: String? = null,
+    favoriteTag: String? = null
 ) {
+    val resolvedCardTag = cardTag ?: "meal_card"
+    val resolvedFavoriteTag = favoriteTag ?: "favorite_button"
+
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
-            .testTag("meal_card"),
+            .testTag(resolvedCardTag),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
@@ -45,9 +55,13 @@ fun MealCard(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            Image(
-                painter = painterResource(imageRes),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl ?: imageRes)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = R.drawable.food),
+                error = painterResource(id = R.drawable.food),
                 contentDescription = title,
                 modifier = Modifier
                     .width(100.dp)
@@ -62,6 +76,7 @@ fun MealCard(
             ) {
                 Text(
                     text = title,
+                    modifier = if (titleTag != null) Modifier.testTag(titleTag) else Modifier,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -89,7 +104,7 @@ fun MealCard(
                 modifier = Modifier
                     .padding(end = 12.dp)
                     .size(40.dp)
-                    .testTag("favorite_button")
+                    .testTag(resolvedFavoriteTag)
             )
         }
     }

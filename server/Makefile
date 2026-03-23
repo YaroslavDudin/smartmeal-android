@@ -42,8 +42,9 @@ help:
 	@echo make docker_save_data    - выгрузить текущие данные из Docker в фикстуры (папка fixtures)
 	@echo make docker_del          - удалить докер контейнер (с удалением томов)
 	@echo
-	@echo Генерация данных:
-	@echo make gen_data            - заполнить БД тестовыми данными (локально)
+	@echo Управление данными базы данных:
+	@echo make gen_10_users        - генерирует 10 тестовых пользователей и избранные для них
+	@echo make del_all_users       - удаляет всех пользователей из бд
 	@echo
 	@echo Другие команды:
 	@echo make pwrshell_utf        - переключить кодировку консоли Windows на UTF-8 (if instead of text gibberish)
@@ -71,6 +72,7 @@ migrate:
 
 load_data:
 	$(VENV_PYTHON) manage.py loaddata fixtures/accounts_static.json
+	$(VENV_PYTHON) manage.py loaddata fixtures/meal_types_data.json
 	$(VENV_PYTHON) manage.py loaddata fixtures/recipes_data.json
 	$(VENV_PYTHON) manage.py loaddata fixtures/accounts_users.json
 	$(VENV_PYTHON) manage.py loaddata fixtures/menus_data.json
@@ -81,9 +83,10 @@ run:
 
 save_data:
 	$(call dump_to_file,accounts_static,accounts.Allergy accounts.DietType)
+	$(call dump_to_file,meal_types_data,menus.MealType)
 	$(call dump_to_file,recipes_data,recipes)
 	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite)
-	$(call dump_to_file,menus_data,menus)
+	$(call dump_to_file,menus_data,menus.Menu menus.MenuItem)
 	$(call dump_to_file,cart_data,cart)
 
 shell:
@@ -104,17 +107,19 @@ docker_migrate:
 
 docker_load_data:
 	docker-compose exec web python manage.py loaddata fixtures/accounts_static.json
+	docker-compose exec web python manage.py loaddata fixtures/meal_types_data.json
 	docker-compose exec web python manage.py loaddata fixtures/recipes_data.json
 	docker-compose exec web python manage.py loaddata fixtures/accounts_users.json
 	docker-compose exec web python manage.py loaddata fixtures/menus_data.json
 	docker-compose exec web python manage.py loaddata fixtures/cart_data.json
 
 docker_save_data:
-	$(call docker_dump_to_file,accounts_static,accounts.Allergy accounts.DietType)
-	$(call docker_dump_to_file,accounts_users,accounts.User accounts.UserFavorite)
-	$(call docker_dump_to_file,recipes_data,recipes)
-	$(call docker_dump_to_file,menus_data,menus)
-	$(call docker_dump_to_file,cart_data,cart)
+	$(call dump_to_file,accounts_static,accounts.Allergy accounts.DietType)
+	$(call dump_to_file,meal_types_data,menus.MealType)
+	$(call dump_to_file,recipes_data,recipes)
+	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite)
+	$(call dump_to_file,menus_data,menus.Menu menus.MenuItem)
+	$(call dump_to_file,cart_data,cart)
 	docker-compose exec web rm /tmp/accounts_static.json /tmp/accounts_users.json /tmp/cart_data.json /tmp/menus_data.json /tmp/recipes_data.json
 
 docker_up:
@@ -127,23 +132,12 @@ docker_del:
 	docker-compose down -v
 
 
-# Заполнение тестовыми данными:
-gen_static:
-	$(VENV_PYTHON) manage.py fill_accounts_static
-	$(VENV_PYTHON) manage.py fill_recipes_static
-
+# Тестовые пользователи:
 gen_10_users:
 	$(VENV_PYTHON) manage.py fill_test_users --users 10
 
-gen_30_recipes:
-	$(VENV_PYTHON) manage.py fill_test_recipes --recipes 30
-
-gen_data: gen_static
-	$(MAKE) gen_30_recipes
-	$(MAKE) gen_10_users
-	$(VENV_PYTHON) manage.py fill_test_menus
-	$(VENV_PYTHON) manage.py fill_test_cart
-
+del_all_users:
+	$(VENV_PYTHON) manage.py delete_users_data
 
 # Другие
 pwrshell_utf:

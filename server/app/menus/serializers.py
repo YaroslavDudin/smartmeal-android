@@ -1,14 +1,16 @@
 from rest_framework import serializers
-from app.menus.models import Menu, MenuItem, Period
+from app.menus.models import Menu, MenuItem, Period, MealType
 
 
 class MenuItemSerializer(serializers.ModelSerializer):
-    actual_date = serializers.DateField(read_only=True)
     recipe_title = serializers.CharField(source='recipe.title', read_only=True)
+    cook_time = serializers.IntegerField(source='recipe.cook_time', read_only=True)
+    image_url = serializers.ImageField(source='recipe.image_url', read_only=True)
+    meal_type = serializers.SlugRelatedField(slug_field='name', queryset=MealType.objects.all())
 
     class Meta:
         model = MenuItem
-        fields = ('id', 'recipe', 'recipe_title', 'day_offset', 'meal_type', 'actual_date')
+        fields = ('id', 'recipe', 'recipe_title', 'cook_time', 'image_url', 'day_offset', 'meal_type', 'actual_date')
 
 
 class MenuSerializer(serializers.ModelSerializer):
@@ -26,6 +28,8 @@ class GenerateMenuSerializer(serializers.Serializer):
     start_date = serializers.DateField()
     # Если не передан — берётся из профиля пользователя (diet_type)
     diet_type = serializers.IntegerField(required=False, allow_null=True, min_value=1)
+    # Диапазон времени приготовления ('short', 'medium', 'long', 'any')
+    cook_time_range = serializers.CharField(required=False, allow_null=True)
     # Максимальное время приготовления в минутах (30 = «до 30 минут», null = без ограничения)
     max_cook_time = serializers.IntegerField(required=False, allow_null=True, min_value=1)
     # Зарезервировано на будущее — исключение аллергенов

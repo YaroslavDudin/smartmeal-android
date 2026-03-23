@@ -33,6 +33,14 @@ class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter]
     search_fields = ['title']
+        
+    # добавить количество порций в контекст для перерасчета кбжу и общего веса ингредиентов
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        servings = self.request.query_params.get('servings')
+        if servings and servings.isdigit():
+            context['target_servings'] = int(servings)
+        return context
 
     def get_queryset(self):
         return (

@@ -12,6 +12,8 @@ class CartItem(models.Model):
     
     class Meta:
         db_table = 'cart_item'
+        verbose_name = 'Продукт в корзине'
+        verbose_name_plural = 'Продукты в корзинах'
         indexes = [
             models.Index(fields=['user', 'ingredient']),
             models.Index(fields=['is_checked']),

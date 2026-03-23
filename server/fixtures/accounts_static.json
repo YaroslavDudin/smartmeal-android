@@ -10,7 +10,7 @@
     "model": "accounts.allergy",
     "pk": 2,
     "fields": {
-        "name": "Яйца"
+        "name": "Куриное яйцо"
     }
 },
 {
@@ -95,6 +95,13 @@
     "pk": 5,
     "fields": {
         "name": "Халяль"
+    }
+},
+{
+    "model": "accounts.diettype",
+    "pk": 6,
+    "fields": {
+        "name": "Классическое"
     }
 }
 ]

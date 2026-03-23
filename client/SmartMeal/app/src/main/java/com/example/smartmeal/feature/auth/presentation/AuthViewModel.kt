@@ -164,6 +164,7 @@ class AuthViewModel(
     }
 
     fun logout() {
+        _authState.value = AuthState.Idle
         val refreshToken = tokenManager.getRefreshToken()
         if (refreshToken != null) {
             viewModelScope.launch {
