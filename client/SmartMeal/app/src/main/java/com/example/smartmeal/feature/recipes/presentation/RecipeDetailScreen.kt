@@ -34,7 +34,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.smartmeal.R
 import com.example.smartmeal.ui.theme.PrimaryGreen
-// Удали этот импорт, если студия подчеркнет его красным, и нажми Alt+Enter на слове RecipeIngredientDto ниже, чтобы импортировать заново
 import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto 
 
 // --- Цвета для нового дизайна ---
@@ -60,8 +59,8 @@ fun RecipeDetailScreen(
     }
 
     Scaffold(
-        containerColor = LightCream, // Светлый фон экрана
-        topBar = { CustomRecipeTopBar(onBack = onBack) } // Новая верхняя панель без заливки
+        containerColor = LightCream,
+        topBar = { CustomRecipeTopBar(onBack = onBack) }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -100,16 +99,38 @@ fun RecipeDetailScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Заголовок и вес (вес поставил 500г как заглушку, если в модели его нет)
+                        // Заголовок и вес
                         Row(
-                            verticalAlignment = Alignment.Bottom,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = recipe.title,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = "500 г", 
+                                fontSize = 20.sp,
+                                color = TextGreen
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Чипсы с временем и калориями
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             InfoChip(label = "${recipe.cook_time} мин")
+                            Spacer(modifier = Modifier.width(8.dp))
                             InfoChip(label = "${recipe.per_serving_calories.toInt()} ккал/порция")
                         }
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
 
                         // Ингредиенты с динамическим количеством порций
                         Row(
@@ -123,66 +144,37 @@ fun RecipeDetailScreen(
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black
                             )
-                            Text(
-                                text = "(на ${state.currentServings} порц.)",
-                                fontSize = 18.sp,
-                                color = Color.Gray
-                            )
-                            QuantityStepper(
-                                quantity = state.currentServings,
-                                onIncrease = { viewModel.changeServings(state.currentServings + 1) },
-                                onDecrease = { viewModel.changeServings(state.currentServings - 1) },
-                                minQuantity = 1,
-                                maxQuantity = 20
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        recipe.ingredients.forEach { ingredient ->
-                            IngredientItem(
-                                name = ingredient.ingredient_name,
-                                amount = "${ingredient.amount} ${ingredient.unit_name}"
-                            Text(
-                                text = recipe.title,
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Black
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "500 г", 
-                                fontSize = 20.sp,
-                                color = TextGreen
-                            )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = "на ${state.currentServings} порц.",
+                                    fontSize = 14.sp,
+                                    color = Color.Gray,
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                QuantityStepper(
+                                    quantity = state.currentServings,
+                                    onIncrease = { viewModel.changeServings(state.currentServings + 1) },
+                                    onDecrease = { viewModel.changeServings(state.currentServings - 1) },
+                                    minQuantity = 1,
+                                    maxQuantity = 20
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Карточка КБЖУ (беру данные из твоей модели, судя по автотесту Борща)
-                        NutritionCard(
-                            calories = recipe.total_calories.toInt().toString(),
-                            proteins = recipe.total_proteins?.toString() ?: "0.0", // Если total_proteins нет, покажет 0.0
-                            fats = recipe.total_fats?.toString() ?: "0.0",
-                            carbs = recipe.total_carbs?.toString() ?: "0.0"
-                        )
+                        // Полосатый блок ингредиентов
+                        IngredientsCard(ingredients = recipe.ingredients)
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Заголовок "Продукты"
-                        Text(
-                            text = "Продукты",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = Color.Black,
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center
+                        // Карточка КБЖУ
+                        NutritionCard(
+                            calories = recipe.total_calories.toInt().toString(),
+                            proteins = recipe.total_proteins.toString(),
+                            fats = recipe.total_fats.toString(),
+                            carbs = recipe.total_carbs.toString()
                         )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Полосатый блок ингредиентов (используем найденный RecipeIngredientDto)
-                        IngredientsCard(ingredients = recipe.ingredients)
 
                         Spacer(modifier = Modifier.height(24.dp))
 
@@ -190,7 +182,7 @@ fun RecipeDetailScreen(
                         Text(
                             text = "Пошаговый фото рецепт",
                             fontSize = 24.sp,
-                            fontWeight = FontWeight.Normal,
+                            fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
 
@@ -201,7 +193,7 @@ fun RecipeDetailScreen(
                             StepItem(
                                 number = step.step_number,
                                 description = step.description,
-                                time = "3 мин" // В RecipeStepDto нет времени, оставляем текст-заглушку
+                                time = "3 мин"
                             )
                             Spacer(modifier = Modifier.height(24.dp))
                         }
@@ -230,14 +222,14 @@ fun CustomRecipeTopBar(onBack: () -> Unit) {
             )
         }
         Row {
-            IconButton(onClick = { /* TODO Действие */ }) {
+            IconButton(onClick = { /* TODO */ }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Добавить",
                     modifier = Modifier.size(32.dp)
                 )
             }
-            IconButton(onClick = { /* TODO Избранное */ }) {
+            IconButton(onClick = { /* TODO */ }) {
                 Icon(
                     imageVector = Icons.Default.StarBorder,
                     contentDescription = "В избранное",
@@ -253,7 +245,7 @@ fun NutritionCard(calories: String, proteins: String, fats: String, carbs: Strin
     Surface(
         shape = RoundedCornerShape(16.dp),
         color = NutritionBgColor,
-        shadowElevation = 4.dp,
+        shadowElevation = 2.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -278,7 +270,7 @@ fun NutritionItem(value: String, label: String) {
             text = value,
             fontSize = 20.sp,
             color = TextGreen,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold
         )
         Text(
             text = label,
@@ -292,15 +284,14 @@ fun NutritionItem(value: String, label: String) {
 fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
     Surface(
         shape = RoundedCornerShape(16.dp),
-        color = Color.Transparent,
-        shadowElevation = 4.dp,
+        color = Color.White,
+        shadowElevation = 2.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             ingredients.forEachIndexed { index, ingredient ->
                 val backgroundColor = if (index % 2 == 0) IngredientRowDark else IngredientRowLight
                 
-                // Убираем ".0", если количество целое (например, 1.0 -> 1)
                 val formattedAmount = if (ingredient.amount % 1.0 == 0.0) {
                     ingredient.amount.toInt().toString()
                 } else {
@@ -312,11 +303,18 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
                         .fillMaxWidth()
                         .background(backgroundColor)
                         .padding(vertical = 12.dp, horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.Start
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "${ingredient.ingredient_name} - $formattedAmount ${ingredient.unit_name}",
+                        text = ingredient.ingredient_name,
                         fontSize = 16.sp,
+                        color = Color.Black,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        text = "$formattedAmount ${ingredient.unit_name}",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
                         color = Color.Black
                     )
                 }
@@ -330,7 +328,7 @@ fun StepItem(number: Int, description: String, time: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = TextGreen, fontSize = 18.sp, fontWeight = FontWeight.Normal)) {
+                withStyle(style = SpanStyle(color = TextGreen, fontSize = 18.sp, fontWeight = FontWeight.Bold)) {
                     append("Шаг $number: ")
                 }
                 withStyle(style = SpanStyle(color = Color.Black, fontSize = 18.sp)) {
@@ -339,13 +337,13 @@ fun StepItem(number: Int, description: String, time: String) {
             }
         )
         
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(id = android.R.drawable.ic_menu_recent_history), 
-                contentDescription = "Время",
-                modifier = Modifier.size(14.dp),
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
                 tint = TextGray
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -356,16 +354,45 @@ fun StepItem(number: Int, description: String, time: String) {
             )
         }
         
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         
         Image(
-            painter = painterResource(id = R.drawable.food), // Используем основную картинку
-            contentDescription = "Фото шага $number",
+            painter = painterResource(id = R.drawable.food),
+            contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(180.dp)
+                .height(200.dp)
                 .clip(RoundedCornerShape(16.dp)),
             contentScale = ContentScale.Crop
         )
+    }
+}
+
+@Composable
+fun InfoChip(label: String) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = Color(0xFFF0F0F0),
+        modifier = Modifier.padding(end = 4.dp)
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            fontSize = 14.sp,
+            color = Color.DarkGray
+        )
+    }
+}
+
+@Composable
+fun IngredientItem(name: String, amount: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = name, fontSize = 16.sp, color = Color.Black)
+        Text(text = amount, fontSize = 16.sp, color = Color.Gray)
     }
 }

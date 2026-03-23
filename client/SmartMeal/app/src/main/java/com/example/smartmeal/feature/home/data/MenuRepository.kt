@@ -1,10 +1,30 @@
 package com.example.smartmeal.feature.home.data
 
 import com.example.smartmeal.feature.home.data.api.MenuApi
+import com.example.smartmeal.feature.home.data.api.UpdateCartItemRequest
+import com.example.smartmeal.feature.home.data.menu.CartCategoryDto
+import com.example.smartmeal.feature.home.data.menu.CartItemDto
 import com.example.smartmeal.feature.home.data.menu.MenuDto
 import retrofit2.Response
 
 class MenuRepository(private val api: MenuApi) {
+
+    /** Получает список покупок, сгруппированный по категориям (пока одна общая) */
+    suspend fun getCart(): List<CartCategoryDto> {
+        val response = api.getCart()
+        if (response.isSuccessful) {
+            val items = response.body() ?: emptyList()
+            // Для начала просто кладём всё в одну категорию "Продукты"
+            return listOf(CartCategoryDto(name = "Продукты", items = items))
+        }
+        return emptyList()
+    }
+
+    /** Обновляет статус купленного товара */
+    suspend fun updateCartItem(id: Int, isChecked: Boolean): Boolean {
+        val response = api.updateCartItem(id, UpdateCartItemRequest(is_checked = isChecked))
+        return response.isSuccessful
+    }
 
     /** Получает последнее актуальное меню пользователя */
     suspend fun getLatestMenu(): MenuDto? {

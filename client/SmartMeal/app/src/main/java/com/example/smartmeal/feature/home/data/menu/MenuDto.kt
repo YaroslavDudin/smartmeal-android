@@ -80,3 +80,8 @@ data class CartItemDto(
     val amount: String,          // Decimal-строка: "300.00"
     val is_checked: Boolean      // куплено или нет
 )
+
+data class CartCategoryDto(
+    val name: String,
+    val items: List<CartItemDto>
+)
