@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.home.presentation
+package com.example.smartmeal.feature.home.presentation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -230,11 +230,10 @@ fun MealSection(
                 .padding(bottom = 8.dp)
                 .clickable { onRecipeClick(item.recipe) }
             ) {
-                // Строка 349 (по вашему запросу)
                 MealCard(
                     title = item.recipe_title,
                     cookTime = "${item.cook_time} мин",
-                    imageRes = R.drawable.food,
+                    imageUrl = item.image_url,
                     isFavorite = false,
                     onFavoriteClick = onFavoriteClick
                 )

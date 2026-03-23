@@ -5,7 +5,7 @@ from app.menus.models import Menu, MenuItem, Period, MealType
 class MenuItemSerializer(serializers.ModelSerializer):
     recipe_title = serializers.CharField(source='recipe.title', read_only=True)
     cook_time = serializers.IntegerField(source='recipe.cook_time', read_only=True)
-    image_url = serializers.CharField(source='recipe.image_url', read_only=True)
+    image_url = serializers.ImageField(source='recipe.image_url', read_only=True)
     meal_type = serializers.SlugRelatedField(slug_field='name', queryset=MealType.objects.all())
 
     class Meta:

@@ -19,11 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.smartmeal.R
 import com.example.smartmeal.ui.theme.Padding
 import com.example.smartmeal.ui.theme.PrimaryGreen
@@ -81,9 +84,13 @@ fun RecipeDetailScreen(
                             .verticalScroll(rememberScrollState())
                             .padding(horizontal = Padding.SCREEN)
                     ) {
-                        // Картинка
-                        Image(
-                            painter = painterResource(id = R.drawable.food),
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(recipe.image_url)
+                                .crossfade(true)
+                                .build(),
+                            placeholder = painterResource(R.drawable.food),
+                            error = painterResource(R.drawable.food),
                             contentDescription = recipe.title,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -169,7 +176,6 @@ fun RecipeDetailScreen(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                         }
-                        
                         Spacer(modifier = Modifier.height(32.dp))
                     }
                 }

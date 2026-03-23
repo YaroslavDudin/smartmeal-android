@@ -42,6 +42,7 @@ data class RecipeShortDto(
 data class RecipeDetailDto(
     val id: Int,
     val title: String,
+    val image_url: String? = null,
     val cook_time: Int,
     val servings: Int,
     val total_calories: Double,
@@ -64,7 +65,8 @@ data class RecipeIngredientDto(
 
 data class RecipeStepDto(
     val step_number: Int,
-    val description: String
+    val description: String,
+    val image_url: String? = null
 )
 
 // ─── Корзина покупок ─────────────────────────────────────────────────────────
