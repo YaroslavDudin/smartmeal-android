@@ -34,6 +34,7 @@ import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.QuantityStepper
+import com.example.smartmeal.ui.theme.Padding
 
 // --- Цвета для нового дизайна ---
 val LightCream = Color(0xFFFAFAFA)
@@ -83,16 +84,20 @@ fun RecipeDetailScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
-                            .padding(horizontal = 16.dp)
+                            .padding(horizontal = Padding.SCREEN)
                     ) {
-                        // Главная картинка
-                        Image(
-                            painter = painterResource(id = R.drawable.food),
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(recipe.image_url)
+                                .crossfade(true)
+                                .build(),
+                            placeholder = painterResource(R.drawable.food),
+                            error = painterResource(R.drawable.food),
                             contentDescription = recipe.title,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(260.dp)
-                                .clip(RoundedCornerShape(24.dp)),
+                                .height(200.dp)
+                                .clip(RoundedCornerShape(16.dp)),
                             contentScale = ContentScale.Crop
                         )
 
