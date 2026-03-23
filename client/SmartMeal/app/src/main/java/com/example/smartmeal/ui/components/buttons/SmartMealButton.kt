@@ -12,12 +12,15 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.smartmeal.utils.softBottomShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.theme.AccentOrange
+import com.example.smartmeal.ui.theme.MainGreen
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import com.example.smartmeal.ui.theme.TextBlack
@@ -29,7 +32,7 @@ enum class SmartMealButtonVariant {
 }
 
 enum class SmartMealButtonColor {
-    GREEN,      // Используем PrimaryGreen
+    GREEN,      // Используем MainGreen (47B91C)
     ORANGE      // Используем AccentOrange
 }
 
@@ -44,7 +47,7 @@ fun SmartMealButton(
     fullWidth: Boolean = true
 ) {
     val containerColor = when (color) {
-        SmartMealButtonColor.GREEN -> PrimaryGreen
+        SmartMealButtonColor.GREEN -> MainGreen
         SmartMealButtonColor.ORANGE -> AccentOrange
     }
 
@@ -53,9 +56,14 @@ fun SmartMealButton(
     val disabledContentColor = Color.Gray
 
     val buttonModifier = if (fullWidth) {
-        modifier.fillMaxWidth().height(56.dp)
+        modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .softBottomShadow(shape = RoundedCornerShape(16.dp))
     } else {
-        modifier.height(56.dp)
+        modifier
+            .height(56.dp)
+            .softBottomShadow(shape = RoundedCornerShape(16.dp))
     }
 
     when (variant) {

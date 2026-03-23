@@ -27,7 +27,7 @@ class AuthViewModel(
 
     fun login(email: String, pass: String) {
         if (!validateLogin(email, pass)) return
-        
+
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             try {
@@ -57,7 +57,7 @@ class AuthViewModel(
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             try {
-                val req = RegisterRequest(user, email, pass, passConfirm) 
+                val req = RegisterRequest(user, email, pass, passConfirm)
                 val response = authApi.register(req)
                 if (response.isSuccessful) {
                     val registerResponse = response.body()
@@ -114,7 +114,7 @@ class AuthViewModel(
     private fun parseError(errorJson: String?): String {
         return try {
             val json = JSONObject(errorJson ?: "{}")
-            
+
             fun getMsg(key: String): String {
                 val obj = json.opt(key)
                 return when (obj) {
@@ -181,5 +181,9 @@ class AuthViewModel(
             tokenManager.clearTokens()
             _authState.value = AuthState.Idle
         }
+    }
+
+    fun resetAuthState() {
+        _authState.value = AuthState.Idle
     }
 }
