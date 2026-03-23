@@ -1,26 +1,29 @@
 package com.example.smartmeal.ui.components.buttons
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.FilledIconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import com.example.smartmeal.ui.theme.TextBlack
+import com.example.smartmeal.ui.components.SmartMealText
 
 @Composable
 fun QuantityStepper(
@@ -29,51 +32,77 @@ fun QuantityStepper(
     onDecrease: () -> Unit,
     modifier: Modifier = Modifier,
     minQuantity: Int = 1,
-    maxQuantity: Int = 10
+    maxQuantity: Int = 20
 ) {
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier
+            .clip(RoundedCornerShape(24.dp))
+            .background(LightGreenBg.copy(alpha = 0.5f))
+            .padding(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Минус
-        FilledIconButton(
-            onClick = onDecrease,
+        // Кнопка уменьшения
+        StepperButton(
+            icon = Icons.Default.Remove,
             enabled = quantity > minQuantity,
-            modifier = Modifier.size(36.dp),
-            shape = CircleShape,
-            colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = PrimaryGreen,
-                contentColor = Color.White,
-                disabledContainerColor = Color.LightGray
-            )
-        ) {
-            Text(text = "-", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        }
-
-        // Значение
-        Text(
-            text = quantity.toString(),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = TextBlack
+            onClick = onDecrease
         )
 
-        // Плюс
-        FilledIconButton(
-            onClick = onIncrease,
-            enabled = quantity < maxQuantity,
-            modifier = Modifier.size(36.dp),
-            shape = CircleShape,
-            colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = PrimaryGreen,
-                contentColor = Color.White,
-                disabledContainerColor = Color.LightGray
+        // Значение с анимацией
+        AnimatedContent(
+            targetState = quantity,
+            transitionSpec = {
+                if (targetState > initialState) {
+                    (slideInVertically { height -> height } + fadeIn()).togetherWith(
+                        slideOutVertically { height -> -height } + fadeOut())
+                } else {
+                    (slideInVertically { height -> -height } + fadeIn()).togetherWith(
+                        slideOutVertically { height -> height } + fadeOut())
+                }.using(
+                    SizeTransform(clip = false)
+                )
+            }, label = "QuantityAnimation"
+        ) { targetQuantity ->
+            SmartMealText(
+                text = targetQuantity.toString(),
+                modifier = Modifier.widthIn(min = 20.dp),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = PrimaryGreen,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
-        ) {
-            Text(text = "+", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
+
+        // Кнопка увеличения
+        StepperButton(
+            icon = Icons.Default.Add,
+            enabled = quantity < maxQuantity,
+            onClick = onIncrease
+        )
+    }
+}
+
+@Composable
+private fun StepperButton(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .background(if (enabled) PrimaryGreen else Color.LightGray.copy(alpha = 0.5f))
+            .clickable(enabled = enabled, onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(18.dp),
+            tint = Color.White
+        )
     }
 }
 
@@ -90,8 +119,3 @@ fun QuantityStepperPreview() {
         }
     }
 }
-//QuantityStepper(
-//    quantity = portions,
-//    onIncrease = { portions++ },
-//    onDecrease = { portions-- }
-//)

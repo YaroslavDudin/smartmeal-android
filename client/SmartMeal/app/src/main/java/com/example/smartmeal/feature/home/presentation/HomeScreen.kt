@@ -35,6 +35,8 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+import com.example.smartmeal.ui.components.SmartMealText
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -78,7 +80,7 @@ fun HomeScreenContent(
             .clickable { onClearError() }
             .padding(horizontal = 4.dp)
     ) {
-        Text(
+        SmartMealText(
             text = "Меню",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier
@@ -95,7 +97,7 @@ fun HomeScreenContent(
             )
         }
 
-        Text(
+        SmartMealText(
             text = uiState.selectedDateDisplay,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
@@ -124,13 +126,13 @@ fun HomeScreenContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.testTag("home_empty_state")
                 ) {
-                    Text("У вас еще нет меню на эту неделю")
+                    SmartMealText("У вас еще нет меню на эту неделю")
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = onGenerateMenu,
                         modifier = Modifier.testTag("home_generate_button")
                     ) {
-                        Text("Сгенерировать меню")
+                        SmartMealText("Сгенерировать меню")
                     }
                 }
             }
@@ -156,7 +158,7 @@ fun HomeScreenContent(
         }
 
         if (uiState.error != null) {
-            Text(
+            SmartMealText(
                 text = uiState.error ?: "",
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(8.dp)
@@ -176,7 +178,7 @@ fun HomeScreenContent(
                 containerColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Text(text = "Выйти из аккаунта")
+            SmartMealText(text = "Выйти из аккаунта")
         }
 
         BottomNavigationBar(
@@ -204,7 +206,7 @@ fun MealSection(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(start = 4.dp)
         ) {
-            Text(text = title)
+            SmartMealText(text = title)
             Spacer(modifier = Modifier.width(8.dp))
             CircleIconButton(
                 iconType = CircleIconType.REPLACE,

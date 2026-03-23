@@ -9,7 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.smartmeal.utils.softBottomShadow
@@ -24,6 +23,7 @@ import com.example.smartmeal.ui.theme.MainGreen
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import com.example.smartmeal.ui.theme.TextBlack
+import com.example.smartmeal.ui.components.SmartMealText
 
 enum class SmartMealButtonVariant {
     PRIMARY,    // Залитая, цветной фон
@@ -80,7 +80,7 @@ fun SmartMealButton(
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(
+                SmartMealText(
                     text = text,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -101,7 +101,7 @@ fun SmartMealButton(
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(
+                SmartMealText(
                     text = text,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -120,7 +120,7 @@ fun SmartMealButton(
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(
+                SmartMealText(
                     text = text,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold

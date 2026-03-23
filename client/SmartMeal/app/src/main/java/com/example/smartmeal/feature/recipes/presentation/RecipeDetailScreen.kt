@@ -12,10 +12,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,7 +31,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.smartmeal.R
 import com.example.smartmeal.ui.theme.PrimaryGreen
-import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto 
+import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto
+import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.components.buttons.QuantityStepper
 
 // --- Цвета для нового дизайна ---
 val LightCream = Color(0xFFFAFAFA)
@@ -73,7 +72,7 @@ fun RecipeDetailScreen(
                     color = PrimaryGreen
                 )
             } else if (state.error != null) {
-                Text(
+                SmartMealText(
                     text = state.error ?: "Ошибка",
                     modifier = Modifier.align(Alignment.Center),
                     color = MaterialTheme.colorScheme.error
@@ -104,14 +103,14 @@ fun RecipeDetailScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(
+                            SmartMealText(
                                 text = recipe.title,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
                                 modifier = Modifier.weight(1f)
                             )
-                            Text(
+                            SmartMealText(
                                 text = "500 г", 
                                 fontSize = 20.sp,
                                 color = TextGreen
@@ -138,14 +137,14 @@ fun RecipeDetailScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
+                            SmartMealText(
                                 text = "Ингредиенты",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black
                             )
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
+                                SmartMealText(
                                     text = "на ${state.currentServings} порц.",
                                     fontSize = 14.sp,
                                     color = Color.Gray,
@@ -179,7 +178,7 @@ fun RecipeDetailScreen(
                         Spacer(modifier = Modifier.height(24.dp))
 
                         // Заголовок шагов
-                        Text(
+                        SmartMealText(
                             text = "Пошаговый фото рецепт",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
@@ -266,13 +265,13 @@ fun NutritionCard(calories: String, proteins: String, fats: String, carbs: Strin
 @Composable
 fun NutritionItem(value: String, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
+        SmartMealText(
             text = value,
             fontSize = 20.sp,
             color = TextGreen,
             fontWeight = FontWeight.Bold
         )
-        Text(
+        SmartMealText(
             text = label,
             fontSize = 12.sp,
             color = Color.Black
@@ -305,13 +304,13 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
                         .padding(vertical = 12.dp, horizontal = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
+                    SmartMealText(
                         text = ingredient.ingredient_name,
                         fontSize = 16.sp,
                         color = Color.Black,
                         modifier = Modifier.weight(1f)
                     )
-                    Text(
+                    SmartMealText(
                         text = "$formattedAmount ${ingredient.unit_name}",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
@@ -326,7 +325,7 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 @Composable
 fun StepItem(number: Int, description: String, time: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
+        SmartMealText(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = TextGreen, fontSize = 18.sp, fontWeight = FontWeight.Bold)) {
                     append("Шаг $number: ")
@@ -347,7 +346,7 @@ fun StepItem(number: Int, description: String, time: String) {
                 tint = TextGray
             )
             Spacer(modifier = Modifier.width(4.dp))
-            Text(
+            SmartMealText(
                 text = time,
                 fontSize = 14.sp,
                 color = TextGray
@@ -375,7 +374,7 @@ fun InfoChip(label: String) {
         color = Color(0xFFF0F0F0),
         modifier = Modifier.padding(end = 4.dp)
     ) {
-        Text(
+        SmartMealText(
             text = label,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
             fontSize = 14.sp,
@@ -392,7 +391,7 @@ fun IngredientItem(name: String, amount: String) {
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = name, fontSize = 16.sp, color = Color.Black)
-        Text(text = amount, fontSize = 16.sp, color = Color.Gray)
+        SmartMealText(text = name, fontSize = 16.sp, color = Color.Black)
+        SmartMealText(text = amount, fontSize = 16.sp, color = Color.Gray)
     }
 }

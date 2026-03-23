@@ -16,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,6 +26,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.calendar.SmartMealCalendar
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
@@ -96,7 +96,7 @@ fun SetupStep2Content(
 
         Spacer(modifier = Modifier.height(sectionSpacing))
 
-        Text(
+        SmartMealText(
             text = "Тип периода",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Medium,
@@ -189,19 +189,19 @@ fun SetupStep2Content(
 @Composable
 private fun StepIndicator(current: Int, total: Int) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
+        SmartMealText(
             text = "Шаг:",
             style = MaterialTheme.typography.bodyMedium,
             color = PrimaryGreen,
             fontWeight = FontWeight.Medium,
         )
-        Text(
+        SmartMealText(
             text = " $current",
             style = MaterialTheme.typography.bodyMedium,
             color = PrimaryGreen,
             fontWeight = FontWeight.SemiBold,
         )
-        Text(
+        SmartMealText(
             text = " /$total",
             style = MaterialTheme.typography.bodyMedium,
             color = Color(0xFFBDBDBD),
@@ -223,7 +223,7 @@ private fun BackButton(
         shadowElevation = 8.dp,
         border = BorderStroke(1.5.dp, borderColor),
     ) {
-        Text(
+        SmartMealText(
             text = "Назад",
             modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
             style = MaterialTheme.typography.bodyMedium,
@@ -255,7 +255,7 @@ private fun PeriodChip(
         shadowElevation = elevation,
         border = BorderStroke(1.dp, borderColor),
     ) {
-        Text(
+        SmartMealText(
             text = label,
             modifier = Modifier.padding(vertical = verticalPadding, horizontal = horizontalPadding),
             color = textColor,
@@ -291,7 +291,7 @@ private fun WidePrimaryButton(
             disabledContentColor = Color.Gray,
         ),
     ) {
-        Text(
+        SmartMealText(
             text = text,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,

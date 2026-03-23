@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +22,7 @@ import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.SmartMealTheme
+import com.example.smartmeal.ui.components.SmartMealText
 
 @Composable
 fun WelcomeScreen(
@@ -67,7 +67,7 @@ fun WelcomeScreen(
 
             Spacer(modifier = Modifier.height(subtitleSpacing))
 
-            Text(
+            SmartMealText(
                 text = "SmartMeal",
                 fontSize = titleSize,
                 fontWeight = FontWeight.Bold,
@@ -79,7 +79,7 @@ fun WelcomeScreen(
 
             Spacer(modifier = Modifier.height(subtitleSpacing))
 
-            Text(
+            SmartMealText(
                 text = "Сгенерируйте своё недельное\nменю за пару минут",
                 fontSize = subtitleSize,
                 fontWeight = FontWeight.Normal,

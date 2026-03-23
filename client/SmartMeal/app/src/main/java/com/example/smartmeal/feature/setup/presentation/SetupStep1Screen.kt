@@ -24,7 +24,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
@@ -95,7 +95,7 @@ fun SetupStep1Content(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            SmartMealText(
                 text = "Шаг: 1 / 3",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MainGreen,
@@ -114,13 +114,13 @@ fun SetupStep1Content(
                 ),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 0.dp)
             ) {
-                Text(text = "Назад", fontSize = 14.sp)
+                SmartMealText(text = "Назад", fontSize = 14.sp)
             }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
+        SmartMealText(
             text = "Выберите тип питания",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
@@ -130,7 +130,7 @@ fun SetupStep1Content(
         Spacer(modifier = Modifier.height(16.dp))
 
         if (state.dietTypes.isEmpty()) {
-            Text(text = "Загрузка...", color = Color.Gray)
+            SmartMealText(text = "Загрузка...", color = Color.Gray)
         } else {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -154,7 +154,7 @@ fun SetupStep1Content(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Text(
+        SmartMealText(
             text = "Размер семьи",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
@@ -214,7 +214,7 @@ private fun DietTypeChip(
         shape = RoundedCornerShape(12.dp),
         color = bgColor,
     ) {
-        Text(
+        SmartMealText(
             text = label,
             modifier = Modifier.padding(vertical = 14.dp, horizontal = 12.dp),
             color = textColor,
@@ -244,7 +244,7 @@ private fun PortionStepper(
             color = LightGreenBg,
         ) {
             Box(contentAlignment = Alignment.Center) {
-                Text(
+                SmartMealText(
                     text = "-",
                     style = MaterialTheme.typography.titleMedium,
                     color = PrimaryGreen,
@@ -255,7 +255,7 @@ private fun PortionStepper(
 
         Spacer(modifier = Modifier.width(24.dp))
 
-        Text(
+        SmartMealText(
             text = "$value ${personLabel(value)}",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.testTag("setup_step1_portion_value")
@@ -272,7 +272,7 @@ private fun PortionStepper(
             color = PrimaryGreen,
         ) {
             Box(contentAlignment = Alignment.Center) {
-                Text(
+                SmartMealText(
                     text = "+",
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.White,

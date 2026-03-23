@@ -9,7 +9,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +25,8 @@ import coil.request.ImageRequest
 import com.example.smartmeal.R
 import com.example.smartmeal.ui.components.buttons.CircleIconButton
 import com.example.smartmeal.ui.components.buttons.CircleIconType
+
+import com.example.smartmeal.ui.components.SmartMealText
 
 @Composable
 fun MealCard(
@@ -74,7 +75,7 @@ fun MealCard(
                     .padding(12.dp)
                     .weight(1f)
             ) {
-                Text(
+                SmartMealText(
                     text = title,
                     modifier = if (titleTag != null) Modifier.testTag(titleTag) else Modifier,
                     style = MaterialTheme.typography.titleMedium,
@@ -89,7 +90,7 @@ fun MealCard(
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(
+                    SmartMealText(
                         text = cookTime,
                         style = MaterialTheme.typography.bodyMedium
                     )

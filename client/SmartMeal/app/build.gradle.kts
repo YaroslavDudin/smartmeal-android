@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.compose.ui.google.fonts)
     implementation(libs.coil.compose)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.core.ktx)

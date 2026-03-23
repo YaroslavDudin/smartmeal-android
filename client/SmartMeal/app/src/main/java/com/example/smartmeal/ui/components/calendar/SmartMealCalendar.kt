@@ -19,7 +19,6 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.TextUnit
 import com.example.smartmeal.feature.setup.presentation.PeriodType
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
+import com.example.smartmeal.ui.components.SmartMealText
 import java.util.Calendar
 
 private val MONTH_NAMES = listOf(
@@ -105,7 +105,7 @@ fun SmartMealCalendar(
                         tint = TextBlack,
                     )
                 }
-                Text(
+                SmartMealText(
                     text = if (showYear) "${MONTH_NAMES[month]} $year" else MONTH_NAMES[month],
                     style = headerTextStyle,
                     fontWeight = FontWeight.Medium,
@@ -127,7 +127,7 @@ fun SmartMealCalendar(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
+                SmartMealText(
                     text = if (showYear) "${MONTH_NAMES[month]} $year" else MONTH_NAMES[month],
                     style = headerTextStyle,
                     fontWeight = FontWeight.Medium,
@@ -141,7 +141,7 @@ fun SmartMealCalendar(
         // --- Day-of-week labels ---
         Row(modifier = Modifier.fillMaxWidth()) {
             DAY_LABELS.forEach { label ->
-                Text(
+                SmartMealText(
                     text = label,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
@@ -264,7 +264,7 @@ private fun CalendarDayCell(
                     .background(PrimaryGreen),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
+                SmartMealText(
                     text = day.toString(),
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
@@ -272,7 +272,7 @@ private fun CalendarDayCell(
                 )
             }
         } else {
-            Text(
+            SmartMealText(
                 text = day.toString(),
                 textAlign = TextAlign.Center,
                 fontSize = textSize,

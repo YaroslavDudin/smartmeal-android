@@ -4,31 +4,64 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
+import com.example.smartmeal.R
 
-// Set of Material typography styles to start with
+/**
+ * Senior-level font configuration using Google Fonts.
+ * This avoids bundling large TTF files and ensures the latest font versions.
+ */
+
+val provider = GoogleFont.Provider(
+    providerAuthority = "com.google.android.gms.fonts",
+    providerPackage = "com.google.android.gms",
+    certificates = R.array.com_google_android_gms_fonts_certs
+)
+
+// Montserrat для букв и основного интерфейса
+val MontserratFontName = GoogleFont("Montserrat")
+val MontserratFontFamily = FontFamily(
+    Font(googleFont = MontserratFontName, fontProvider = provider, weight = FontWeight.Normal),
+    Font(googleFont = MontserratFontName, fontProvider = provider, weight = FontWeight.Medium),
+    Font(googleFont = MontserratFontName, fontProvider = provider, weight = FontWeight.SemiBold),
+    Font(googleFont = MontserratFontName, fontProvider = provider, weight = FontWeight.Bold)
+)
+
+// Mallanna для цифр
+val MallannaFontName = GoogleFont("Mallanna")
+val MallannaFontFamily = FontFamily(
+    Font(googleFont = MallannaFontName, fontProvider = provider, weight = FontWeight.Normal)
+)
+
+// Material 3 Typography setup
 val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = MontserratFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = MontserratFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
+    ),
+    titleLarge = TextStyle(
+        fontFamily = MontserratFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp
+    ),
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = MontserratFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
+    labelLarge = TextStyle(
+        fontFamily = MontserratFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 14.sp
     )
-    */
 )

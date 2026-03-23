@@ -33,6 +33,7 @@ import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.*
+import com.example.smartmeal.ui.components.SmartMealText
 
 @Composable
 fun LoginRegisterForm(
@@ -85,7 +86,7 @@ fun LoginRegisterForm(
             Spacer(modifier = Modifier.height(24.dp))
 
             // 2. Заголовок
-            Text(
+            SmartMealText(
                 text = if (isLoginMode) "Вход" else "Регистрация",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Normal,
@@ -152,7 +153,7 @@ fun LoginRegisterForm(
             // 5. Забыли пароль? (Только для входа)
             if (isLoginMode) {
                 Spacer(modifier = Modifier.height(12.dp))
-                Text(
+                SmartMealText(
                     text = "Забыли пароль?",
                     color = PrimaryGreen,
                     fontSize = 16.sp,
@@ -166,7 +167,7 @@ fun LoginRegisterForm(
 
             // 6. Ошибки
             if (authState is AuthState.Error) {
-                Text(
+                SmartMealText(
                     text = (authState as AuthState.Error).message,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(bottom = 16.dp),
@@ -199,7 +200,7 @@ fun LoginRegisterForm(
                 onClick = onNavigateToSandbox,
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
-                Text("Перейти в Sandbox", color = PrimaryGreen)
+                SmartMealText("Перейти в Sandbox", color = PrimaryGreen)
             }
         }
     }
@@ -229,7 +230,7 @@ fun AuthToggleSwitch(
                     .clickable { onToggle(true) },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
+                SmartMealText(
                     text = "Вход",
                     color = if (isLoginMode) Color.Black else HintGray,
                     fontWeight = if (isLoginMode) FontWeight.Medium else FontWeight.Normal
@@ -246,7 +247,7 @@ fun AuthToggleSwitch(
                     .clickable { onToggle(false) },
                 contentAlignment = Alignment.Center
             ) {
-                Text(
+                SmartMealText(
                     text = "Регистрация",
                     color = if (!isLoginMode) Color.Black else HintGray,
                     fontWeight = if (!isLoginMode) FontWeight.Medium else FontWeight.Normal
@@ -272,7 +273,7 @@ fun CustomTextField(
         value = value,
         onValueChange = onValueChange,
         placeholder = {
-            Text(
+            SmartMealText(
                 text = label,
                 color = HintGray,
                 fontSize = 16.sp
