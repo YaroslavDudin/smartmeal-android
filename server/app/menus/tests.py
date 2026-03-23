@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from datetime import date
-from app.menus.models import Menu, MenuItem
+from app.menus.models import Menu, MenuItem, MealType, Period
 from app.recipes.models import Recipe
 
 User = get_user_model()
@@ -19,40 +19,40 @@ class MenusModelTests(TestCase):
         self.recipe = Recipe.objects.create(
             title="Овсянка с ягодами",
             cook_time=15,
-            servings=1,
-            calories=250,
-            protein=10.0,
-            fat=5.5,
-            carbs=40.0
+            servings=1
         )
 
         #  Создаем само меню (оно понадобится для теста MenuItem)
         self.menu = Menu.objects.create(
             user=self.user,
-            period="Неделя 1",
+            period=Period.WEEK,
             start_date=date.today()
         )
 
     def test_create_menu(self):
         # Проверяем, что меню из setUp создалось корректно
-        self.assertEqual(self.menu.period, "Неделя 1")
+        self.assertEqual(self.menu.period, Period.WEEK)
         self.assertEqual(self.menu.user.email, 'diet@test.com')
-        self.assertEqual(str(self.menu), f"Menu for {self.user} (Неделя 1)")
+        expected_str = f'Menu for User ID {self.user.id} (start: {date.today()}, period: {Period.WEEK})'
+        self.assertEqual(str(self.menu), expected_str)
 
     def test_create_menu_item(self):
+        # Создаем тип приема пищи
+        meal_type = MealType.objects.create(name="Завтрак", order=1)
+        
         #  Создаем пункт меню (завтрак), привязывая его к меню и рецепту
         menu_item = MenuItem.objects.create(
             menu=self.menu,
             recipe=self.recipe,
-            day=date.today(),
-            meal_type="Завтрак"
+            day_offset=0,
+            meal_type=meal_type
         )
 
         #  Проверяем, что пункт меню сохранился со всеми связями
-        self.assertEqual(menu_item.meal_type, "Завтрак")
+        self.assertEqual(menu_item.meal_type.name, "Завтрак")
         self.assertEqual(menu_item.recipe.title, "Овсянка с ягодами")
-        self.assertEqual(menu_item.menu.period, "Неделя 1")
+        self.assertEqual(menu_item.menu.period, Period.WEEK)
         
-        expected_str = f"Завтрак on {date.today()} - Овсянка с ягодами"
+        expected_str = f'Завтрак on Day Offset 0 for Menu ID {self.menu.id} - Recipe ID {self.recipe.id}'
         self.assertEqual(str(menu_item), expected_str)
 
