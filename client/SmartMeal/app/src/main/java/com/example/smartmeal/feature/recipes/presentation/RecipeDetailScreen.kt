@@ -89,10 +89,8 @@ fun RecipeDetailScreen(
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(recipe.image_url)
-                                .crossfade(true)
+                                .crossfade(500)
                                 .build(),
-                            placeholder = painterResource(R.drawable.food),
-                            error = painterResource(R.drawable.food),
                             contentDescription = recipe.title,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -197,6 +195,7 @@ fun RecipeDetailScreen(
                             StepItem(
                                 number = step.step_number,
                                 description = step.description,
+                                imageUrl = step.image_url,
                                 time = "3 мин"
                             )
                             Spacer(modifier = Modifier.height(24.dp))
@@ -328,7 +327,7 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 }
 
 @Composable
-fun StepItem(number: Int, description: String, time: String) {
+fun StepItem(number: Int, description: String, imageUrl: String?, time: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
         // Используем SmartMealText для всей строки. 
         // Логика внутри SmartMealText сама найдет цифру номера шага 
@@ -363,8 +362,11 @@ fun StepItem(number: Int, description: String, time: String) {
         
         Spacer(modifier = Modifier.height(12.dp))
         
-        Image(
-            painter = painterResource(id = R.drawable.food),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(500)
+                .build(),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()

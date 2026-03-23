@@ -59,10 +59,8 @@ fun MealCard(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl ?: imageRes)
-                    .crossfade(true)
+                    .crossfade(500)
                     .build(),
-                placeholder = painterResource(id = R.drawable.food),
-                error = painterResource(id = R.drawable.food),
                 contentDescription = title,
                 modifier = Modifier
                     .width(100.dp)
