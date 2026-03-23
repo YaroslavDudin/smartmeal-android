@@ -7,12 +7,12 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
@@ -29,7 +29,7 @@ fun FilterChip(
     AssistChip(
         onClick = onClick,
         label = {
-            Text(
+            SmartMealText(
                 text = label,
                 color = if (isSelected) Color.White else TextBlack
             )
@@ -57,9 +57,3 @@ fun FilterChipPreview() {
         }
     }
 }
-
-//FilterChip(
-//    label = "Веган",
-//    isSelected = selectedFilter == "vegan",
-//    onClick = { /* обновить состояние */ }
-//)

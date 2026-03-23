@@ -325,6 +325,9 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 @Composable
 fun StepItem(number: Int, description: String, time: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
+        // Используем SmartMealText для всей строки. 
+        // Логика внутри SmartMealText сама найдет цифру номера шага 
+        // и применит к ней Mallanna, а к тексту "Шаг" — Montserrat.
         SmartMealText(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = TextGreen, fontSize = 18.sp, fontWeight = FontWeight.Bold)) {

@@ -1,7 +1,5 @@
 package com.example.smartmeal.feature.products.presentation
 
-
-
 import androidx.compose.material3.Scaffold
 import com.example.smartmeal.ui.components.cards.BottomNavigationBar
 
@@ -38,10 +36,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.HorizontalDivider
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.chips_filters.FilterChip
 
 @Composable
@@ -65,7 +63,7 @@ fun ProductListScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
+                SmartMealText(
                     text = "Список продуктов",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
@@ -96,7 +94,7 @@ fun ProductListScreen(
                 onRangeSelected = onDayRangeSelected
             )
 
-            Text(
+            SmartMealText(
                 text = dateRangeText,
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.Black,
@@ -113,14 +111,14 @@ fun ProductListScreen(
                 )
                 Column(modifier = Modifier.padding(vertical = 8.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
+                    SmartMealText(
                         text = categoryName,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = TextBlack,
                         modifier = Modifier.testTag("category-$categoryName")
                     )
-                    Text(
+                    SmartMealText(
                         text = productsInCategory.firstOrNull()?.categoryIcon.orEmpty(),
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         modifier = Modifier.padding(start = 4.dp)
@@ -167,7 +165,7 @@ private fun ProductRowItem(
                     .testTag("unchecked-${product.name}")
             )
         }
-        Text(
+        SmartMealText(
             text = product.icon,
             fontSize = MaterialTheme.typography.bodyLarge.fontSize,
             modifier = Modifier
@@ -175,7 +173,7 @@ private fun ProductRowItem(
                 .testTag("icon-${product.name}")
         )
         val isShopping = categoryName == "Покупки"
-        Text(
+        SmartMealText(
             text = product.name,
             style = MaterialTheme.typography.bodyLarge,
             color = if (product.checked) PrimaryGreen else TextBlack,
@@ -184,7 +182,7 @@ private fun ProductRowItem(
                 .weight(1f)
                 .testTag("product-${product.name}")
         )
-        Text(
+        SmartMealText(
             text = product.amount,
             style = MaterialTheme.typography.bodyLarge,
             color = if (product.checked) PrimaryGreen else TextBlack,

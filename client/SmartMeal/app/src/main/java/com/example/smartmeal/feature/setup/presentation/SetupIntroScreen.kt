@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.setup.presentation
+package com.example.smartmeal.feature.setup.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.verticalScroll
 import com.example.smartmeal.R
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
@@ -100,7 +100,7 @@ fun SetupIntroContent(
                 Spacer(modifier = Modifier.weight(0.5f))
 
                 // Заголовок
-                Text(
+                SmartMealText(
                     text = "SmartMeal",
                     fontSize = TextSize.HERO,
                     fontWeight = FontWeight.Bold,
@@ -113,7 +113,7 @@ fun SetupIntroContent(
                 Spacer(modifier = Modifier.height(Padding.MEDIUM))
 
                 // Описание
-                Text(
+                SmartMealText(
                     text = "Сгенерируйте своё недельное\nменю за пару минут",
                     fontSize = TextSize.BODY,
                     fontWeight = FontWeight.Normal,

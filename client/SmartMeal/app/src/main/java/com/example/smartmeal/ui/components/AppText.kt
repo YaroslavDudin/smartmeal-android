@@ -40,7 +40,8 @@ fun SmartMealText(
     maxLines: Int = Int.MAX_VALUE,
     style: TextStyle = LocalTextStyle.current
 ) {
-    val annotatedString = buildSmartMealString(text, fontWeight)
+    // Для обычной строки применяем магию шрифтов (Mallanna для цифр)
+    val annotatedString = buildSmartMealString(text)
     
     Text(
         text = annotatedString,
@@ -49,7 +50,46 @@ fun SmartMealText(
         fontSize = fontSize,
         fontStyle = fontStyle,
         fontWeight = fontWeight,
-        fontFamily = MontserratFontFamily,
+        fontFamily = MontserratFontFamily, // Основной шрифт для букв
+        letterSpacing = letterSpacing,
+        textDecoration = textDecoration,
+        textAlign = textAlign,
+        lineHeight = lineHeight,
+        overflow = overflow,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        style = style
+    )
+}
+
+@Composable
+fun SmartMealText(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    style: TextStyle = LocalTextStyle.current
+) {
+    // Применяем Mallanna к цифрам даже в сложных строках
+    val finalAnnotatedString = applySmartStylesToAnnotatedString(text)
+
+    Text(
+        text = finalAnnotatedString,
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        fontStyle = fontStyle,
+        fontWeight = fontWeight,
+        fontFamily = MontserratFontFamily, // Основной шрифт для букв
         letterSpacing = letterSpacing,
         textDecoration = textDecoration,
         textAlign = textAlign,
@@ -62,34 +102,54 @@ fun SmartMealText(
 }
 
 /**
- * Функция-помощник для автоматического применения Mallanna к цифрам
+ * Применяет Mallanna к цифрам в обычной строке.
  */
-fun buildSmartMealString(text: String, fontWeight: FontWeight? = null): AnnotatedString {
+fun buildSmartMealString(text: String): AnnotatedString {
     return buildAnnotatedString {
-        var lastIndex = 0
+        append(text)
         val digitRegex = "\\d+".toRegex()
-        
         digitRegex.findAll(text).forEach { matchResult ->
-            if (matchResult.range.first > lastIndex) {
-                append(text.substring(lastIndex, matchResult.range.first))
-            }
-            
-            val start = length
-            append(matchResult.value)
             addStyle(
                 style = SpanStyle(
                     fontFamily = MallannaFontFamily,
-                    fontWeight = fontWeight ?: FontWeight.Normal
+                    fontWeight = FontWeight.Normal
                 ),
-                start = start,
-                end = length
+                start = matchResult.range.first,
+                end = matchResult.range.last + 1
             )
-            
-            lastIndex = matchResult.range.last + 1
         }
+    }
+}
+
+/**
+ * Проходит по AnnotatedString и применяет Mallanna к цифрам,
+ * если для этого участка еще не задан fontFamily.
+ */
+fun applySmartStylesToAnnotatedString(text: AnnotatedString): AnnotatedString {
+    return buildAnnotatedString {
+        append(text)
+        val plainText = text.text
+        val digitRegex = "\\d+".toRegex()
         
-        if (lastIndex < text.length) {
-            append(text.substring(lastIndex))
+        digitRegex.findAll(plainText).forEach { matchResult ->
+            val start = matchResult.range.first
+            val end = matchResult.range.last + 1
+            
+            // Если для цифр еще нет своего шрифта — ставим Mallanna
+            val existingStyles = text.spanStyles.filter { 
+                it.start < end && it.end > start && it.item.fontFamily != null
+            }
+            
+            if (existingStyles.isEmpty()) {
+                addStyle(
+                    style = SpanStyle(
+                        fontFamily = MallannaFontFamily,
+                        fontWeight = FontWeight.Normal
+                    ),
+                    start = start,
+                    end = end
+                )
+            }
         }
     }
 }

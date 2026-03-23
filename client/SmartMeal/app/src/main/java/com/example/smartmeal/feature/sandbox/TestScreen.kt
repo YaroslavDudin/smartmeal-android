@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.utils.softBottomShadow
 import com.example.smartmeal.ui.theme.SmartMealTheme
 
@@ -28,7 +29,7 @@ fun TestScreen(
                 onClick = onBack,
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text("← Назад к регистрации", fontSize = 16.sp)
+                SmartMealText(text = "← Назад к регистрации", fontSize = 16.sp)
             }
         }
     ) { paddingValues ->
@@ -55,7 +56,7 @@ fun SimpleDropShadowUsage() {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        SmartMealText(
             text = "Drop Shadow",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
