@@ -3,12 +3,14 @@ from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from app.accounts.models import DietType, Allergy
+from app.accounts.models import DietType, Allergy, UserFavorite
 from app.accounts.serializers import (
     UserRegistrationSerializer, CustomTokenObtainPairSerializer,
     CustomTokenRefreshSerializer,
     UserSerializer, DietTypeSerializer, AllergySerializer,
+    UserFavoriteSerializer,
 )
+from app.recipes.models import Recipe
 
 
 User = get_user_model()
@@ -110,3 +112,14 @@ class LogoutView(generics.GenericAPIView):
                 {"detail": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class UserFavoriteViewSet(viewsets.ModelViewSet):
+    serializer_class = UserFavoriteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return UserFavorite.objects.filter(user=self.request.user).select_related('recipe')
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
