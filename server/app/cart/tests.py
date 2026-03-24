@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
@@ -58,7 +59,34 @@ class CartItemCreateAPITest(APITestCase):
         )
 
         self.client.force_authenticate(user=self.user)
-        self.url = '/api/cart/'
+        self.base_url = '/api/cart/'
+
+    def test_get_cart_items(self):
+        response_empty = self.client.get(self.base_url)
+        self.assertEqual(response_empty.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response_empty.data), 0)
+        
+        cart_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1.0,
+            unit=self.unit,
+            is_checked=True,
+        )
+        response = self.client.get(self.base_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['id'], cart_item.pk)
+        self.assertEqual(response.data[0]['ingredient_name'], cart_item.ingredient.name)
+        self.assertEqual(Decimal(response.data[0]['total_amount']), cart_item.total_amount)
+        self.assertEqual(response.data[0]['unit_name'], cart_item.unit.name)
+        self.assertEqual(response.data[0]['is_checked'], cart_item.is_checked)
+
+    def test_get_cart_items_unauthenticated(self):
+        self.client.force_authenticate(user=None)
+
+        response = self.client.get(self.base_url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_cart_item_success(self):
         data = {
@@ -68,13 +96,12 @@ class CartItemCreateAPITest(APITestCase):
             'is_checked': False,
         }
 
-        response = self.client.post(self.url, data, format='json')
+        response = self.client.post(self.base_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(CartItem.objects.count(), 1)
 
         cart_item = CartItem.objects.get(pk=response.data['id'])
-        self.assertTrue(isinstance(cart_item, CartItem))
         self.assertEqual(cart_item.user, self.user)
         self.assertEqual(cart_item.ingredient, self.ingredient)
         self.assertEqual(cart_item.total_amount, 1.5)
@@ -88,29 +115,17 @@ class CartItemCreateAPITest(APITestCase):
             'unit': self.unit.id,
         }
         
-        response = self.client.post(self.url, data, format='json')
+        response = self.client.post(self.base_url, data, format='json')
         cart_item = CartItem.objects.get(pk=response.data['id'])
         self.assertTrue(cart_item.is_checked)
 
-    def test_create_cart_item_unauthenticated(self):
-        data = {
-            'ingredient': self.ingredient.id,
-            'total_amount': 1.5,
-            'unit': self.unit.id,
-            'is_checked': False,
-        }
-        self.client.force_authenticate(user=None)
-
-        response = self.client.post(self.url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_create_cart_item_invalid_data(self):
+    def test_create_cart_item_missing_ingredient(self):
         data = {
             'total_amount': 1.0,
             'unit': self.unit.id,
             'is_checked': True,
         }
-        response = self.client.post(self.url, data, format='json')
+        response = self.client.post(self.base_url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('ingredient', response.data)
 
@@ -129,9 +144,53 @@ class CartItemCreateAPITest(APITestCase):
             'is_checked': True,
         }
 
-        response = self.client.post(self.url, data, format='json')
-        self.assertIn(response.status_code, [status.HTTP_200_OK, status.HTTP_201_CREATED])
+        response = self.client.post(self.base_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    def test_patch_cart_item_amount(self):
+        cart_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1.0,
+            unit=self.unit,
+            is_checked=True,
+        )
+
+        cart_item_url = f'{self.base_url}{cart_item.pk}/'
+        response = self.client.patch(cart_item_url, {'total_amount': 6.0}, format='json')
+        cart_item.refresh_from_db()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(cart_item.total_amount, 6.0)
+        
+    def test_patch_cart_item_is_checked(self):
+        cart_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1.0,
+            unit=self.unit,
+            is_checked=False,
+        )
+
+        cart_item_url = f'{self.base_url}{cart_item.pk}/'
+        response = self.client.patch(cart_item_url, {'is_checked': True}, format='json')
+        cart_item.refresh_from_db()
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(cart_item.is_checked)
+        
+    def test_delete_cart_item(self):
+        cart_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1.0,
+            unit=self.unit,
+            is_checked=True,
+        )
         self.assertEqual(CartItem.objects.count(), 1)
         
-        cart_item = CartItem.objects.get(pk=response.data['id'])
-        self.assertEqual(cart_item.total_amount, 3.0)
+        cart_item_url = f'{self.base_url}{cart_item.pk}/'
+        response = self.client.delete(cart_item_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(CartItem.objects.filter(pk=cart_item.pk).exists())
+        
