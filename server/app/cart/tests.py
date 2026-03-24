@@ -131,7 +131,7 @@ class CartItemCreateAPITest(APITestCase):
 
         response = self.client.post(self.url, data, format='json')
         self.assertIn(response.status_code, [status.HTTP_200_OK, status.HTTP_201_CREATED])
-        self.assertEqual(object.objects.count(), 1)
+        self.assertEqual(CartItem.objects.count(), 1)
         
         cart_item = CartItem.objects.get(pk=response.data['id'])
         self.assertEqual(cart_item.total_amount, 3.0)
