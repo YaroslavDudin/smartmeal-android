@@ -1,9 +1,17 @@
-package com.example.smartmeal.feature.recipes.presentation
-import com.example.smartmeal.ui.components.buttons.QuantityStepper
+﻿package com.example.smartmeal.feature.recipes.presentation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -11,8 +19,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,20 +40,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.smartmeal.R
-import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.QuantityStepper
 import com.example.smartmeal.ui.theme.Padding
+import com.example.smartmeal.ui.theme.PrimaryGreen
 
-// --- Цвета для нового дизайна ---
+// Цвета для дизайна
 val LightCream = Color(0xFFFAFAFA)
 val NutritionBgColor = Color(0xFFFBE9A6)
 val IngredientRowDark = Color(0xFFE8D385)
@@ -114,7 +129,7 @@ fun RecipeDetailScreen(
                                 modifier = Modifier.weight(1f)
                             )
                             SmartMealText(
-                                text = "500 г", 
+                                text = "500 г",
                                 fontSize = 20.sp,
                                 color = TextGreen
                             )
@@ -294,7 +309,7 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
         Column(modifier = Modifier.fillMaxWidth()) {
             ingredients.forEachIndexed { index, ingredient ->
                 val backgroundColor = if (index % 2 == 0) IngredientRowDark else IngredientRowLight
-                
+
                 val formattedAmount = if (ingredient.amount % 1.0 == 0.0) {
                     ingredient.amount.toInt().toString()
                 } else {
@@ -329,9 +344,6 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 @Composable
 fun StepItem(number: Int, description: String, imageUrl: String?, time: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        // Используем SmartMealText для всей строки. 
-        // Логика внутри SmartMealText сама найдет цифру номера шага 
-        // и применит к ней Mallanna, а к тексту "Шаг" — Montserrat.
         SmartMealText(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(color = TextGreen, fontSize = 18.sp, fontWeight = FontWeight.Bold)) {
@@ -342,12 +354,12 @@ fun StepItem(number: Int, description: String, imageUrl: String?, time: String) 
                 }
             }
         )
-        
+
         Spacer(modifier = Modifier.height(8.dp))
-        
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                painter = painterResource(id = android.R.drawable.ic_menu_recent_history), 
+                painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),
                 tint = TextGray
@@ -359,9 +371,9 @@ fun StepItem(number: Int, description: String, imageUrl: String?, time: String) 
                 color = TextGray
             )
         }
-        
+
         Spacer(modifier = Modifier.height(12.dp))
-        
+
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)

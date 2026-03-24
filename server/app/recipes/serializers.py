@@ -39,12 +39,11 @@ class IngredientSerializer(serializers.ModelSerializer):
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
     unit_name = serializers.CharField(source='unit.name', read_only=True)
-    # переопределение количества под нужное количество персон
-    amount = serializers.SerializerMethodField()
+    category_name = serializers.CharField(source='ingredient.category.name', read_only=True) 
 
     class Meta:
         model = RecipeIngredient
-        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'unit', 'unit_name')
+        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'unit', 'unit_name', 'category_name')
     
     # перерасчет количества под указанное количество персон
     # если нету в контексте передается как есть в рецепте

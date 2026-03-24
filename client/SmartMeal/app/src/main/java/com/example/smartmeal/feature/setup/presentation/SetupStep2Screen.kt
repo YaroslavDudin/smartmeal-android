@@ -30,6 +30,7 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.calendar.SmartMealCalendar
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
+import java.util.Calendar
 
 /**
  * Шаг 2 из 3: выбор типа периода (день / неделя / свой план) и даты через интерактивный календарь.
@@ -168,6 +169,19 @@ fun SetupStep2Content(
                 showAdjacentMonths = true,
                 compact = isCompactHeight,
                 modifier = Modifier.padding(calendarPadding),
+                isDateSelectable = { year, month, day ->
+                    val today = Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, 0)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+                    val candidate = Calendar.getInstance().apply {
+                        set(year, month, day, 0, 0, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+                    !candidate.before(today)
+                },
             )
         }
 

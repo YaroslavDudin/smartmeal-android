@@ -226,7 +226,7 @@ fun SetupStep3Content(
         if (state.error != null) {
             Spacer(modifier = Modifier.height(12.dp))
             SmartMealText(
-                text = state.error!!,
+                text = state.error.orEmpty(),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
             )

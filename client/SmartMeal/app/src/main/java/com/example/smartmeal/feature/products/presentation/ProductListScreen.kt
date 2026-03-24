@@ -1,139 +1,198 @@
 package com.example.smartmeal.feature.products.presentation
 
-import androidx.compose.material3.Scaffold
-import com.example.smartmeal.ui.components.cards.BottomNavigationBar
-
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
-
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.dp
-import com.example.smartmeal.ui.theme.PrimaryGreen
-import com.example.smartmeal.ui.theme.LightGreenBg
-import com.example.smartmeal.ui.theme.TextBlack
-
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.HorizontalDivider
-
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import com.example.smartmeal.ui.components.SmartMealText
-import com.example.smartmeal.ui.components.chips_filters.FilterChip
+import androidx.compose.ui.unit.dp
+import com.example.smartmeal.ui.components.selectors.DaySelector
+import com.example.smartmeal.ui.theme.LightGreenBg
+import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.TextBlack
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun ProductListScreen(
     products: List<ProductUiModel>,
-    selectedStartDayIndex: Int?,
-    selectedEndDayIndex: Int?,
-    onDayRangeSelected: (Int?, Int?) -> Unit,
+    selectedDate: Date?,
+    onDaySelected: (String) -> Unit,
     onProductChecked: (String, Boolean) -> Unit,
-    dateRangeText: String
+    onCheckAll: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        modifier = Modifier.background(Color.White),
-        topBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Spacer(modifier = Modifier.width(16.dp))
-                SmartMealText(
-                    text = "Список продуктов",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = TextBlack
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-            }
-        },
-        bottomBar = {
-            Box(modifier = Modifier.background(Color.White)) {
-                BottomNavigationBar(selectedItem = 1)
-            }
-        }
-    ) { innerPadding ->
-        Column(
+    val dateFormatter = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
+    val displayFormatter = remember { SimpleDateFormat("EEEE - d MMMM yyyy 'г.'", Locale("ru")) }
+
+    val selectedDateDisplay = selectedDate?.let { displayFormatter.format(it) } ?: ""
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 16.dp)
+    ) {
+        // Заголовок
+        Text(
+            text = "Список продуктов",
+            style = MaterialTheme.typography.titleLarge,
+            color = TextBlack,
             modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(horizontal = 16.dp)
-                .padding(
-                    top = innerPadding.calculateTopPadding() + 8.dp,
-                    bottom = innerPadding.calculateBottomPadding()
-                )
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 8.dp)
+                .testTag("title")
+        )
+
+        // DaySelector
+        DaySelector(
+            selectedDay = selectedDate?.let { getDayOfWeek(it) } ?: "Пн",
+            onDaySelected = onDaySelected
+        )
+
+        // Текст выбранной даты
+        Text(
+            text = selectedDateDisplay,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Black,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 8.dp)
+                .testTag("selectedDateText")
+        )
+
+        // Кнопка "Выбрать всё"
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .testTag("checkAllRow"),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
         ) {
-            DayRangeSelector(
-                selectedStartIndex = selectedStartDayIndex,
-                selectedEndIndex = selectedEndDayIndex,
-                onRangeSelected = onDayRangeSelected
+            Text(
+                text = "Выбрать всё",
+                style = MaterialTheme.typography.bodyMedium,
+                color = TextBlack,
+                modifier = Modifier.padding(end = 8.dp)
             )
-
-            SmartMealText(
-                text = dateRangeText,
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+            Checkbox(
+                checked = products.all { it.checked },
+                onCheckedChange = { onCheckAll() },
+                modifier = Modifier.testTag("checkAllButton")
             )
+        }
 
-            val categories = products.groupBy { it.categoryName }
-            categories.entries.forEachIndexed { idx, entry ->
+        // Фильтруем продукты по выбранной дате
+        val filteredProducts = if (selectedDate != null) {
+            val dateStr = dateFormatter.format(selectedDate)
+            products.filter { it.actualDates.contains(dateStr) }
+        } else {
+            products
+        }
+
+        val categoryOrder = listOf(
+            "Овощи и фрукты",
+            "Мясо и рыба",
+            "Молочные продукты",
+            "Бакалея и молочные продукты",
+            "Специи",
+            "Масла",
+            "Напитки",
+            "Зерновые",
+            "Сладости",
+            "Разное",
+            "Покупки"
+        )
+
+        val categories = filteredProducts.groupBy { product ->
+            if (product.checked) "Покупки" else product.categoryName
+        }
+
+        val sortedCategories = categories.entries
+            .filter { it.key != "Покупки" }
+            .sortedBy { (categoryName, _) ->
+                categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
+            }
+            .let { if (categories.containsKey("Покупки")) it + (categories.entries.find { it.key == "Покупки" }!!) else it }
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 80.dp)
+        ) {
+            sortedCategories.forEachIndexed { idx, entry ->
                 val (categoryName, productsInCategory) = entry
-                if (idx > 0) HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    thickness = 2.dp,
-                    color = LightGreenBg
-                )
-                Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                    SmartMealText(
-                        text = categoryName,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = TextBlack,
-                        modifier = Modifier.testTag("category-$categoryName")
-                    )
-                    SmartMealText(
-                        text = productsInCategory.firstOrNull()?.categoryIcon.orEmpty(),
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
-                }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    productsInCategory.forEach { product ->
-                        ProductRowItem(product, categoryName, onProductChecked)
+                item {
+                    if (idx > 0) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 10.dp),
+                            thickness = 2.dp,
+                            color = LightGreenBg
+                        )
                     }
+                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = categoryName,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = TextBlack,
+                                modifier = Modifier.testTag("category-$categoryName")
+                            )
+                            Text(
+                                text = "",
+                                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                    }
+                }
+                items(
+                    items = if (categoryName == "Покупки") {
+                        productsInCategory.sortedBy { it.name }
+                    } else {
+                        productsInCategory
+                    },
+                    key = { it.id }
+                ) { product ->
+                    ProductRowItem(
+                        product = product,
+                        categoryName = categoryName,
+                        onProductChecked = onProductChecked
+                    )
                 }
             }
         }
     }
 }
 
+
+
+private fun getDayOfWeek(date: Date): String {
+    val calendar = Calendar.getInstance().apply { time = date }
+    return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+        Calendar.MONDAY -> "Пн"
+        Calendar.TUESDAY -> "Вт"
+        Calendar.WEDNESDAY -> "Ср"
+        Calendar.THURSDAY -> "Чт"
+        Calendar.FRIDAY -> "Пт"
+        Calendar.SATURDAY -> "Сб"
+        Calendar.SUNDAY -> "Вс"
+        else -> "Пн"
+    }
+}
 @Composable
 private fun ProductRowItem(
     product: ProductUiModel,
@@ -143,178 +202,56 @@ private fun ProductRowItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .testTag("product-${product.name}"),
+
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (product.checked) {
-            Icon(
-                imageVector = Icons.Filled.CheckCircle,
-                contentDescription = "Checked",
-                tint = PrimaryGreen,
-                modifier = Modifier
-                    .size(22.dp)
-                    .testTag("checked-${product.name}")
-            )
-        } else {
-            Icon(
-                imageVector = Icons.Outlined.RadioButtonUnchecked,
-                contentDescription = "Unchecked",
-                tint = Color.Gray,
-                modifier = Modifier
-                    .size(22.dp)
-                    .testTag("unchecked-${product.name}")
-            )
-        }
-        SmartMealText(
-            text = product.icon,
-            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+        Icon(
+            imageVector = if (product.checked) Icons.Filled.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
+            contentDescription = null,
+            tint = if (product.checked) PrimaryGreen else Color.Gray,
             modifier = Modifier
-                .padding(horizontal = 6.dp)
-                .testTag("icon-${product.name}")
+                .size(22.dp)
+                .clickable {
+                    onProductChecked(product.id, !product.checked)
+
+                }
+                .testTag("checkbox-${product.id}")
         )
-        val isShopping = categoryName == "Покупки"
-        SmartMealText(
+
+        Text(
+            text = product.icon,
+            modifier = Modifier.padding(horizontal = 6.dp)
+        )
+
+        Text(
             text = product.name,
             style = MaterialTheme.typography.bodyLarge,
             color = if (product.checked) PrimaryGreen else TextBlack,
-            textDecoration = if (product.checked && !isShopping) TextDecoration.LineThrough else null,
-            modifier = Modifier
-                .weight(1f)
-                .testTag("product-${product.name}")
+            modifier = Modifier.weight(1f)
         )
-        SmartMealText(
+
+        Text(
             text = product.amount,
             style = MaterialTheme.typography.bodyLarge,
             color = if (product.checked) PrimaryGreen else TextBlack,
-            textDecoration = if (product.checked && !isShopping) TextDecoration.LineThrough else null,
             modifier = Modifier.padding(start = 8.dp)
         )
     }
 }
 
-@Composable
-fun DayRangeSelector(
-    selectedStartIndex: Int?,
-    selectedEndIndex: Int?,
-    onRangeSelected: (Int?, Int?) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val days = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
-    val scrollState = rememberScrollState()
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .horizontalScroll(scrollState)
-            .padding(horizontal = 10.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        days.forEachIndexed { index, day ->
-            val isSelected = index == selectedStartIndex || index == selectedEndIndex
-            FilterChip(
-                label = day,
-                isSelected = isSelected,
-                onClick = {
-                    when {
-                        selectedStartIndex == null -> onRangeSelected(index, null)
-                        selectedEndIndex == null -> {
-                            if (index < selectedStartIndex) {
-                                onRangeSelected(index, selectedStartIndex)
-                            } else {
-                                onRangeSelected(selectedStartIndex, index)
-                            }
-                        }
-                        else -> onRangeSelected(index, null)
-                    }
-                },
-                modifier = Modifier.testTag("day_chip_$index")
-            )
-        }
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun ProductListScreenPreview() {
-    val products = listOf(
-        ProductUiModel(
-            name = "Микс салатов",
-            amount = "200 г",
-            category = "vegetable",
-            icon = "🥗",
-            categoryName = "Овощи и фрукты",
-            categoryIcon = "🥬",
-            checked = false
-        ),
-        ProductUiModel(
-            name = "Яблоко",
-            amount = "150 г",
-            category = "vegetable",
-            icon = "🍏",
-            categoryName = "Овощи и фрукты",
-            categoryIcon = "🥬",
-            checked = false
-        ),
-        ProductUiModel(
-            name = "Банан",
-            amount = "120 г",
-            category = "vegetable",
-            icon = "🍌",
-            categoryName = "Овощи и фрукты",
-            categoryIcon = "🥬",
-            checked = false
-        ),
-        ProductUiModel(
-            name = "Апельсин",
-            amount = "130 г",
-            category = "vegetable",
-            icon = "🍊",
-            categoryName = "Овощи и фрукты",
-            categoryIcon = "🥬",
-            checked = false
-        ),
-        ProductUiModel(
-            name = "Киви",
-            amount = "90 г",
-            category = "vegetable",
-            icon = "🥝",
-            categoryName = "Овощи и фрукты",
-            categoryIcon = "🥬",
-            checked = false
-        ),
-        ProductUiModel(
-            name = "Куриное филе",
-            amount = "300 г",
-            category = "meat",
-            icon = "🍗",
-            categoryName = "Мясо и рыба",
-            categoryIcon = "🐟",
-            checked = false
-        ),
-        ProductUiModel(
-            name = "Гречка",
-            amount = "50 г",
-            category = "shopping",
-            icon = "🛒",
-            categoryName = "Покупки",
-            categoryIcon = "🛒",
-            checked = true
-        )
-    )
-    ProductListScreen(
-        products = products,
-        selectedStartDayIndex = 0,
-        selectedEndDayIndex = 1,
-        onDayRangeSelected = { _, _ -> },
-        onProductChecked = { _, _ -> },
-        dateRangeText = "Пн-Вт: 2-3 марта 2026 г."
-    )
-}
+
 data class ProductUiModel(
+    val id: String,
     val name: String,
     val amount: String,
     val category: String,
     val icon: String,
     val categoryName: String,
     val categoryIcon: String,
-    val checked: Boolean = false
+    val checked: Boolean = false,
+    val dayOffsets: Set<Int> = emptySet(),
+    val actualDates: Set<String> = emptySet() // новое
 )

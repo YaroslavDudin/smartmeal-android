@@ -60,6 +60,7 @@ fun SmartMealCalendar(
     showYear: Boolean = true,
     showAdjacentMonths: Boolean = false,
     compact: Boolean = false,
+    isDateSelectable: (year: Int, month: Int, day: Int) -> Boolean = { _, _, _ -> true },
 ) {
     val cal = Calendar.getInstance()
     cal.set(year, month, 1)
@@ -174,8 +175,12 @@ fun SmartMealCalendar(
                     if (!isCurrentMonth && !showAdjacentMonths) {
                         Box(modifier = Modifier.weight(1f).aspectRatio(1f))
                     } else {
+                        val rangeStart = selectedDay
+                        val rangeEnd = selectedEndDay
                         val isCustomRangeActive = periodType == PeriodType.CUSTOM &&
-                            selectedDay != null && selectedEndDay != null
+                            rangeStart != null && rangeEnd != null
+
+                        val isSelectable = isCurrentMonth && isDateSelectable(year, month, dayNumber)
 
                         CalendarDayCell(
                             day = displayDay,
@@ -188,13 +193,15 @@ fun SmartMealCalendar(
                             isWeekStart = isCurrentMonth && periodType == PeriodType.WEEKLY && dayNumber == weekStart,
                             isWeekEnd = isCurrentMonth && periodType == PeriodType.WEEKLY && dayNumber == weekEnd,
                             isInRange = isCurrentMonth && isCustomRangeActive &&
-                                dayNumber in (selectedDay!! + 1) until selectedEndDay!!,
+                                rangeStart != null && rangeEnd != null &&
+                                dayNumber in (rangeStart + 1) until rangeEnd,
                             isRangeStart = isCurrentMonth && isCustomRangeActive && dayNumber == selectedDay,
                             isRangeEnd = isCurrentMonth && isCustomRangeActive && dayNumber == selectedEndDay,
                             modifier = Modifier.weight(1f),
-                            onClick = { if (isCurrentMonth) onDaySelected(dayNumber) },
+                            onClick = { if (isSelectable) onDaySelected(dayNumber) },
                             circleSize = circleSize,
                             textSize = cellTextSize,
+                            isSelectable = isSelectable,
                         )
                     }
                 }
@@ -219,6 +226,7 @@ private fun CalendarDayCell(
     onClick: () -> Unit,
     circleSize: Dp = 36.dp,
     textSize: TextUnit = 14.sp,
+    isSelectable: Boolean = true,
 ) {
     val isWeeklySelected = periodType == PeriodType.WEEKLY && (isInWeek || isWeekStart || isWeekEnd)
     val isCustomRangeSelected = periodType == PeriodType.CUSTOM && (isInRange || isRangeStart || isRangeEnd)
@@ -242,6 +250,7 @@ private fun CalendarDayCell(
 
     val textColor = when {
         !isCurrentMonth -> Color.LightGray
+        !isSelectable -> Color.LightGray
         isWeeklySelected -> Color.White
         isCustomRangeSelected -> Color.White
         else -> PrimaryGreen
@@ -251,7 +260,7 @@ private fun CalendarDayCell(
         modifier = modifier
             .aspectRatio(1f)
             .background(bgColor, rowShape)
-            .then(if (isCurrentMonth) Modifier.clickable(onClick = onClick) else Modifier),
+            .then(if (isSelectable) Modifier.clickable(onClick = onClick) else Modifier),
         contentAlignment = Alignment.Center,
     ) {
         val showCircle = periodType != PeriodType.WEEKLY && isSelected

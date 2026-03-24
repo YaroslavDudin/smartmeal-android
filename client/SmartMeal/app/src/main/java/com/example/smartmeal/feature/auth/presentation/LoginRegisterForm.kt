@@ -1,10 +1,18 @@
-package com.example.smartmeal.feature.auth.presentation
+﻿package com.example.smartmeal.feature.auth.presentation
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,14 +20,28 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,11 +51,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.R
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
-import com.example.smartmeal.ui.theme.*
-import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.theme.BgLightGray
+import com.example.smartmeal.ui.theme.BorderGray
+import com.example.smartmeal.ui.theme.HintGray
+import com.example.smartmeal.ui.theme.IconSize
+import com.example.smartmeal.ui.theme.Padding
+import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SurfaceGray
 
 @Composable
 fun LoginRegisterForm(
@@ -41,7 +69,27 @@ fun LoginRegisterForm(
     onAuthSuccess: () -> Unit,
     onNavigateToSandbox: () -> Unit = {}
 ) {
-    var isLoginMode by remember { mutableStateOf(true) }
+    val authState by viewModel.authState.collectAsState()
+
+    LoginRegisterFormContent(
+        authState = authState,
+        onAuthSuccess = onAuthSuccess,
+        onLogin = { email, pass -> viewModel.login(email, pass) },
+        onRegister = { user, email, pass, confirm -> viewModel.register(user, email, pass, confirm) },
+        onNavigateToSandbox = onNavigateToSandbox
+    )
+}
+
+@Composable
+fun LoginRegisterFormContent(
+    authState: AuthState,
+    onAuthSuccess: () -> Unit,
+    onLogin: (String, String) -> Unit,
+    onRegister: (String, String, String, String) -> Unit,
+    onNavigateToSandbox: () -> Unit = {},
+    initialIsLoginMode: Boolean = true,
+) {
+    var isLoginMode by remember { mutableStateOf(initialIsLoginMode) }
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -49,8 +97,6 @@ fun LoginRegisterForm(
 
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isConfirmPasswordVisible by remember { mutableStateOf(false) }
-
-    val authState by viewModel.authState.collectAsState()
 
     // Наблюдатель за успешной авторизацией
     LaunchedEffect(authState) {
@@ -110,7 +156,9 @@ fun LoginRegisterForm(
                     value = username,
                     onValueChange = { username = it },
                     label = "Имя",
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("auth_username")
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -120,7 +168,9 @@ fun LoginRegisterForm(
                 onValueChange = { email = it },
                 label = "Электронная почта",
                 keyboardType = KeyboardType.Email,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("auth_email")
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -133,7 +183,9 @@ fun LoginRegisterForm(
                 isPassword = true,
                 isPasswordVisible = isPasswordVisible,
                 onPasswordVisibilityChange = { isPasswordVisible = !isPasswordVisible },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("auth_password")
             )
 
             if (!isLoginMode) {
@@ -146,11 +198,13 @@ fun LoginRegisterForm(
                     isPassword = true,
                     isPasswordVisible = isConfirmPasswordVisible,
                     onPasswordVisibilityChange = { isConfirmPasswordVisible = !isConfirmPasswordVisible },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("auth_confirm_password")
                 )
             }
 
-            // 5. Забыли пароль? (Только для входа)
+            // 5. Забыли пароль? (только для входа)
             if (isLoginMode) {
                 Spacer(modifier = Modifier.height(12.dp))
                 SmartMealText(
@@ -159,6 +213,7 @@ fun LoginRegisterForm(
                     fontSize = 16.sp,
                     modifier = Modifier
                         .align(Alignment.Start)
+                        .testTag("auth_forgot")
                         .clickable { /* TODO: Forgot Password */ }
                 )
             }
@@ -168,7 +223,7 @@ fun LoginRegisterForm(
             // 6. Ошибки
             if (authState is AuthState.Error) {
                 SmartMealText(
-                    text = (authState as AuthState.Error).message,
+                    text = authState.message,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(bottom = 16.dp),
                     textAlign = TextAlign.Center
@@ -183,14 +238,16 @@ fun LoginRegisterForm(
                     text = if (isLoginMode) "Войти" else "Создать аккаунт",
                     onClick = {
                         if (isLoginMode) {
-                            viewModel.login(email, password)
+                            onLogin(email, password)
                         } else {
-                            viewModel.register(username, email, password, confirmPassword)
+                            onRegister(username, email, password, confirmPassword)
                         }
                     },
                     variant = SmartMealButtonVariant.PRIMARY,
                     color = SmartMealButtonColor.GREEN,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("auth_submit")
                 )
             }
 
@@ -227,6 +284,7 @@ fun AuthToggleSwitch(
                     .clip(RoundedCornerShape(25.dp))
                     .background(if (isLoginMode) Color.White else Color.Transparent)
                     .shadow(if (isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .testTag("auth_toggle_login")
                     .clickable { onToggle(true) },
                 contentAlignment = Alignment.Center
             ) {
@@ -244,6 +302,7 @@ fun AuthToggleSwitch(
                     .clip(RoundedCornerShape(25.dp))
                     .background(if (!isLoginMode) Color.White else Color.Transparent)
                     .shadow(if (!isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .testTag("auth_toggle_register")
                     .clickable { onToggle(false) },
                 contentAlignment = Alignment.Center
             ) {

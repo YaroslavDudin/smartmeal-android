@@ -2,6 +2,7 @@
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.setup.data.api.SetupApi
 import com.example.smartmeal.feature.setup.data.models.AllergyDto
 import com.example.smartmeal.feature.setup.data.models.DietTypeDto
@@ -30,8 +31,8 @@ data class SetupState(
     val periodType: PeriodType = PeriodType.WEEKLY,
     val calendarYear: Int = Calendar.getInstance().get(Calendar.YEAR),
     val calendarMonth: Int = Calendar.getInstance().get(Calendar.MONTH),
-    val selectedDay: Int? = null,      // РґР»СЏ CUSTOM вЂ” РЅР°С‡Р°Р»Рѕ РґРёР°РїР°Р·РѕРЅР°
-    val selectedEndDay: Int? = null,   // РґР»СЏ CUSTOM вЂ” РєРѕРЅРµС† РґРёР°РїР°Р·РѕРЅР°
+    val selectedDay: Int? = null,      // для CUSTOM — начало диапазона
+    val selectedEndDay: Int? = null,   // для CUSTOM — конец диапазона
 
     // --- Step 3 ---
     val allergies: List<AllergyDto> = emptyList(),
@@ -41,20 +42,23 @@ data class SetupState(
 
     // --- Common ---
     val isLoading: Boolean = false,
-    val isCheckingUser: Boolean = true,  // true РїСЂРё РїРµСЂРІРѕРј Р·Р°РїСЂРѕСЃРµ /me/
+    val isCheckingUser: Boolean = true,  // true при первом запросе /me/
     val isUserAlreadyConfigured: Boolean = false,
     val error: String? = null,
     val isComplete: Boolean = false,
 )
 
-class SetupViewModel(private val api: SetupApi) : ViewModel() {
+class SetupViewModel(
+    private val api: SetupApi,
+    private val preferences: SetupPreferences? = null
+) : ViewModel() {
 
     private val _state = MutableStateFlow(SetupState())
     val state: StateFlow<SetupState> = _state.asStateFlow()
 
-    // Р’С‹Р·С‹РІР°РµС‚СЃСЏ СЏРІРЅРѕ РёР· SetupIntroScreen вЂ” С‚РѕР»СЊРєРѕ РїРѕСЃР»Рµ С‚РѕРіРѕ РєР°Рє РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Р·Р°Р»РѕРіРёРЅРёР»СЃСЏ
+    // Вызывается явно из SetupIntroScreen — только после того как пользователь залогинился
     fun loadInitialData() {
-        // РќРµ РїРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј РµСЃР»Рё РґР°РЅРЅС‹Рµ СѓР¶Рµ СѓСЃРїРµС€РЅРѕ Р·Р°РіСЂСѓР¶РµРЅС‹ (РЅР°РїСЂРёРјРµСЂ, РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РІРµСЂРЅСѓР»СЃСЏ РЅР°Р·Р°Рґ)
+        // Не перезагружаем если данные уже успешно загружены (например, пользователь вернулся назад)
         val s = _state.value
         if (!s.isCheckingUser && s.dietTypes.isNotEmpty()) return
 
@@ -70,6 +74,11 @@ class SetupViewModel(private val api: SetupApi) : ViewModel() {
                 val allergiesResponse = allergiesDeferred.await()
 
                 val user = userResponse.body()
+                if (user != null) {
+                    preferences?.setActiveUserKey(user.id.toString())
+                } else {
+                    preferences?.clearActiveUserKey()
+                }
                 val dietTypes = if (dietTypesResponse.isSuccessful) dietTypesResponse.body() ?: emptyList() else emptyList()
                 val allergies = if (allergiesResponse.isSuccessful) allergiesResponse.body() ?: emptyList() else emptyList()
 
@@ -110,33 +119,38 @@ class SetupViewModel(private val api: SetupApi) : ViewModel() {
 
     fun selectPeriodType(type: PeriodType) {
         _state.update { it.copy(periodType = type, selectedDay = null, selectedEndDay = null) }
+        persistPlanType(type)
+        if (type != PeriodType.CUSTOM) {
+            preferences?.clearCustomPlanRange()
+        }
     }
 
     fun selectDay(day: Int) {
         val s = _state.value
         if (s.periodType == PeriodType.CUSTOM) {
             when {
-                // РќРµС‚ РЅР°С‡Р°Р»Р° в†’ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅР°С‡Р°Р»Рѕ
+                // Нет начала → устанавливаем начало
                 s.selectedDay == null -> {
                     _state.update { it.copy(selectedDay = day, selectedEndDay = null) }
                 }
-                // РќР°С‡Р°Р»Рѕ РµСЃС‚СЊ, РєРѕРЅС†Р° РЅРµС‚ в†’ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РєРѕРЅРµС†
+                // Начало есть, конца нет → устанавливаем конец
                 s.selectedEndDay == null -> {
                     if (day > s.selectedDay) {
                         _state.update { it.copy(selectedEndDay = day) }
                     } else if (day < s.selectedDay) {
-                        // РўР°Рї СЂР°РЅСЊС€Рµ РЅР°С‡Р°Р»Р° вЂ” РјРµРЅСЏРµРј РјРµСЃС‚Р°РјРё
+                        // Тап раньше начала — меняем местами
                         _state.update { it.copy(selectedDay = day, selectedEndDay = s.selectedDay) }
                     } else {
-                        // РўР°Рї РЅР° С‚РѕС‚ Р¶Рµ РґРµРЅСЊ вЂ” СЃР±СЂР°СЃС‹РІР°РµРј
+                        // Тап на тот же день — сбрасываем
                         _state.update { it.copy(selectedDay = null, selectedEndDay = null) }
                     }
                 }
-                // РћР±Р° Р·Р°РґР°РЅС‹ в†’ РЅР°С‡РёРЅР°РµРј РІС‹Р±РѕСЂ Р·Р°РЅРѕРІРѕ
+                // Оба заданы → начинаем выбор заново
                 else -> {
                     _state.update { it.copy(selectedDay = day, selectedEndDay = null) }
                 }
             }
+            persistCustomPlanRange()
         } else {
             _state.update { it.copy(selectedDay = day) }
         }
@@ -154,6 +168,7 @@ class SetupViewModel(private val api: SetupApi) : ViewModel() {
                 selectedEndDay = null,
             )
         }
+        preferences?.clearCustomPlanRange()
     }
 
     // --- Step 3 ---
@@ -218,11 +233,41 @@ class SetupViewModel(private val api: SetupApi) : ViewModel() {
         _state.update { it.copy(error = null) }
     }
 
-    // РЎР±СЂРѕСЃ СЃС‚РµР№С‚Р° РїСЂРё РІС‹С…РѕРґРµ РёР· Р°РєРєР°СѓРЅС‚Р°.
-    // РќСѓР¶РµРЅ РїРѕС‚РѕРјСѓ С‡С‚Рѕ ViewModel Р¶РёРІС‘С‚ РЅР° СѓСЂРѕРІРЅРµ NavGraph Рё РїРµСЂРµР¶РёРІР°РµС‚ СЃРјРµРЅСѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
+    // Сброс стейта при выходе из аккаунта.
+    // Нужен потому что ViewModel живет на уровне NavGraph и переживает смену пользователя.
     fun reset() {
         _state.value = SetupState()
+        preferences?.clearActiveUserKey()
+    }
+
+    private fun persistPlanType(type: PeriodType) {
+        val value = when (type) {
+            PeriodType.DAILY -> SetupPreferences.PLAN_TYPE_DAILY
+            PeriodType.WEEKLY -> SetupPreferences.PLAN_TYPE_WEEKLY
+            PeriodType.CUSTOM -> SetupPreferences.PLAN_TYPE_CUSTOM
+        }
+        preferences?.setPlanType(value)
+    }
+
+    private fun persistCustomPlanRange() {
+        val s = _state.value
+        if (s.periodType != PeriodType.CUSTOM) return
+        val start = s.selectedDay
+        val end = s.selectedEndDay
+        if (start == null || end == null) {
+            preferences?.clearCustomPlanRange()
+            return
+        }
+        val startDay = minOf(start, end)
+        val endDay = maxOf(start, end)
+        val startCal = Calendar.getInstance().apply {
+            set(s.calendarYear, s.calendarMonth, startDay, 0, 0, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val endCal = Calendar.getInstance().apply {
+            set(s.calendarYear, s.calendarMonth, endDay, 0, 0, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        preferences?.setCustomPlanRange(startCal.timeInMillis, endCal.timeInMillis)
     }
 }
-
-

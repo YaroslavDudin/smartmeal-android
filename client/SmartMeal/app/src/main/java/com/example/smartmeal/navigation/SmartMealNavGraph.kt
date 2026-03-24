@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.smartmeal.data.api.RetrofitClient
+import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.presentation.AuthViewModel
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterForm
@@ -52,6 +53,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
     val authApi = remember { RetrofitClient.createService(AuthApi::class.java) }
     val setupApi = remember { RetrofitClient.createService(SetupApi::class.java) }
     val recipeApi = remember { RetrofitClient.createService(RecipeApi::class.java) }
+    val setupPreferences = remember { SetupPreferences(context) }
 
     val authViewModel: AuthViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
@@ -63,7 +65,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
     val setupViewModel: SetupViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-            return SetupViewModel(setupApi) as T
+            return SetupViewModel(setupApi, setupPreferences) as T
         }
     })
 

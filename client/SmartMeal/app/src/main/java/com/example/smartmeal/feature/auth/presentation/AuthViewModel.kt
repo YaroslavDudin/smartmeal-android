@@ -1,11 +1,12 @@
-package com.example.smartmeal.feature.auth.presentation
+﻿package com.example.smartmeal.feature.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartmeal.data.local.TokenManager
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.data.models.LoginRequest
+import com.example.smartmeal.feature.auth.data.models.RefreshRequest
 import com.example.smartmeal.feature.auth.data.models.RegisterRequest
-import com.example.smartmeal.data.local.TokenManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -128,8 +129,12 @@ class AuthViewModel(
                 val t = text.lowercase()
                 return when {
                     t.contains("email_not_found") -> "Аккаунт с таким email не зарегистрирован"
-                    t.contains("wrong_password") -> "Пароль не верный"
-                    t.contains("already exists") -> if (fieldName == "email") "Этот email уже зарегистрирован" else "Это имя уже занято"
+                    t.contains("wrong_password") -> "Пароль неверный"
+                    t.contains("already exists") -> if (fieldName == "email") {
+                        "Этот email уже зарегистрирован"
+                    } else {
+                        "Это имя уже занято"
+                    }
                     t.contains("required") || t.contains("blank") -> "Это поле обязательно для заполнения"
                     t.contains("valid email") -> "Введите корректный адрес электронной почты"
                     t.contains("too short") || t.contains("at least") -> "Слишком короткий текст (минимум 8 символов)"
@@ -169,7 +174,7 @@ class AuthViewModel(
         if (refreshToken != null) {
             viewModelScope.launch {
                 try {
-                    authApi.logout(com.example.smartmeal.feature.auth.data.models.RefreshRequest(refreshToken))
+                    authApi.logout(RefreshRequest(refreshToken))
                 } catch (e: Exception) {
                     // Игнорируем ошибки при выходе (например, отсутствие сети)
                 } finally {
