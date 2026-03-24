@@ -16,7 +16,8 @@ import com.example.smartmeal.ui.components.chips_filters.FilterChip
 
 @Composable
 fun DaySelector(
-    selectedDay: String,
+    selectedDay: String? = null,
+    selectedRange: IntRange? = null,
     onDaySelected: (String) -> Unit
 ) {
     val days = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
@@ -32,10 +33,11 @@ fun DaySelector(
     ) {
 
         days.forEachIndexed { index, day ->
+            val isSelected = selectedRange?.contains(index) ?: (day == selectedDay)
 
             FilterChip(
                 label = day,
-                isSelected = day == selectedDay,
+                isSelected = isSelected,
                 onClick = { onDaySelected(day) },
                 modifier = Modifier.testTag("day_chip_$index")
             )

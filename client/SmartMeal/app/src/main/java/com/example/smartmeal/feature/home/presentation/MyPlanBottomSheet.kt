@@ -92,14 +92,29 @@ fun MyPlanButton(
 @Composable
 fun MyPlanCalendarDialog(
     plan: CustomPlan,
+    selectedDate: Date?,
     onDateClick: (Date) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val startCal = Calendar.getInstance().apply { time = plan.startDate }
     val endCal = Calendar.getInstance().apply { time = plan.endDate }
+    val normalizedSelectedDateMillis = selectedDate?.let(::normalizeDateMillis)
+    val initialCalendar = Calendar.getInstance().apply {
+        time = when {
+            normalizedSelectedDateMillis != null &&
+                normalizedSelectedDateMillis in normalizeDateMillis(plan.startDate)..normalizeDateMillis(plan.endDate) -> {
+                Date(normalizedSelectedDateMillis)
+            }
+            else -> plan.startDate
+        }
+    }
 
-    var displayYear by remember { mutableIntStateOf(startCal.get(Calendar.YEAR)) }
-    var displayMonth by remember { mutableIntStateOf(startCal.get(Calendar.MONTH)) }
+    var displayYear by remember(plan.startDate, plan.endDate, normalizedSelectedDateMillis) {
+        mutableIntStateOf(initialCalendar.get(Calendar.YEAR))
+    }
+    var displayMonth by remember(plan.startDate, plan.endDate, normalizedSelectedDateMillis) {
+        mutableIntStateOf(initialCalendar.get(Calendar.MONTH))
+    }
 
     val planDates: Set<Triple<Int, Int, Int>> = remember(plan) {
         buildSet {
@@ -244,6 +259,7 @@ fun MyPlanCalendarDialog(
                         year = displayYear,
                         month = displayMonth,
                         planDates = planDates,
+                        selectedDateMillis = normalizedSelectedDateMillis,
                         onDateClick = { day ->
                             val clickedCal = Calendar.getInstance()
                             clickedCal.set(displayYear, displayMonth, day, 0, 0, 0)
@@ -286,6 +302,7 @@ private fun PlanCalendarGrid(
     year: Int,
     month: Int,
     planDates: Set<Triple<Int, Int, Int>>,
+    selectedDateMillis: Long?,
     onDateClick: (Int) -> Unit,
 ) {
     val cal = Calendar.getInstance().apply { set(year, month, 1) }
@@ -305,6 +322,8 @@ private fun PlanCalendarGrid(
                     val isCurrentMonth = dayNumber in 1..daysInMonth
                     val isInPlan = isCurrentMonth &&
                         planDates.contains(Triple(dayNumber, month, year))
+                    val isSelected = isCurrentMonth &&
+                        selectedDateMillis == createHomeDateMillis(year, month, dayNumber)
 
                     Box(
                         modifier = Modifier
@@ -315,7 +334,7 @@ private fun PlanCalendarGrid(
                                 if (isInPlan) {
                                     Modifier
                                         .clip(CircleShape)
-                                        .background(PrimaryGreen)
+                                        .background(if (isSelected) PrimaryGreen else PrimaryGreen.copy(alpha = 0.16f))
                                         .clickable { onDateClick(dayNumber) }
                                 } else if (isCurrentMonth) {
                                     Modifier
@@ -331,9 +350,10 @@ private fun PlanCalendarGrid(
                             Text(
                                 text = dayNumber.toString(),
                                 fontSize = 13.sp,
-                                fontWeight = if (isInPlan) FontWeight.SemiBold else FontWeight.Normal,
+                                fontWeight = if (isSelected) FontWeight.Bold else if (isInPlan) FontWeight.SemiBold else FontWeight.Normal,
                                 color = when {
-                                    isInPlan -> Color.White
+                                    isSelected -> Color.White
+                                    isInPlan -> PrimaryGreen
                                     else -> TextBlack.copy(alpha = 0.35f)
                                 },
                                 textAlign = TextAlign.Center,
@@ -349,6 +369,7 @@ private fun PlanCalendarGrid(
 @Composable
 fun MyPlanSection(
     customPlan: CustomPlan?,
+    selectedDate: Date?,
     onDateSelectedFromPlan: (Date) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -363,6 +384,7 @@ fun MyPlanSection(
     if (showDialog && customPlan != null) {
         MyPlanCalendarDialog(
             plan = customPlan,
+            selectedDate = selectedDate,
             onDateClick = { date ->
                 onDateSelectedFromPlan(date)
                 showDialog = false
@@ -370,4 +392,21 @@ fun MyPlanSection(
             onDismiss = { showDialog = false },
         )
     }
+}
+
+private fun normalizeDateMillis(date: Date): Long {
+    return Calendar.getInstance().apply {
+        time = date
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }.timeInMillis
+}
+
+private fun createHomeDateMillis(year: Int, month: Int, day: Int): Long {
+    return Calendar.getInstance().apply {
+        set(year, month, day, 0, 0, 0)
+        set(Calendar.MILLISECOND, 0)
+    }.timeInMillis
 }

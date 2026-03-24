@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.home.data.menu
+package com.example.smartmeal.feature.home.data.menu
 
 data class MenuDto(
     val id: Int,
@@ -52,6 +52,7 @@ data class RecipeDetailDto(
 data class RecipeIngredientDto(
     val ingredient_name: String,
     val amount: Double,
+    val amount_in_grams: Double? = null,
     val unit_name: String,
     val category_name: String? = null
 )

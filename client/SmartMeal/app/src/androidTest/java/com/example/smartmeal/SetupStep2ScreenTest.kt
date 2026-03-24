@@ -14,6 +14,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import java.util.Calendar
 
 class SetupStep2ScreenTest {
     @get:Rule
@@ -21,11 +22,16 @@ class SetupStep2ScreenTest {
 
     @Test
     fun setupStep2_showsControls_andHandlesClicks() {
+        val selectedDateMillis = Calendar.getInstance().apply {
+            set(2026, 8, 1, 0, 0, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
         val state = SetupState(
             periodType = PeriodType.WEEKLY,
             calendarYear = 2026,
             calendarMonth = 8,
-            selectedDay = 1
+            selectedStartDateMillis = selectedDateMillis
         )
 
         var backClicked = false
@@ -38,7 +44,7 @@ class SetupStep2ScreenTest {
                     onBack = { backClicked = true },
                     onNext = {},
                     onSelectPeriodType = { selectedType = it },
-                    onSelectDay = {},
+                    onSelectDay = { _, _, _ -> },
                     onPreviousMonth = {},
                     onNextMonth = {}
                 )

@@ -1,3 +1,4 @@
+import logging
 from decimal import Decimal
 from rest_framework import serializers
 from app.recipes.models import (
@@ -5,6 +6,9 @@ from app.recipes.models import (
     Recipe, RecipeIngredient, RecipeStep,
 )
 from app.accounts.serializers import AllergySerializer
+
+
+logger = logging.getLogger(__name__)
 
 
 class IngredientCategorySerializer(serializers.ModelSerializer):
@@ -39,21 +43,42 @@ class IngredientSerializer(serializers.ModelSerializer):
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
     unit_name = serializers.CharField(source='unit.name', read_only=True)
-    category_name = serializers.CharField(source='ingredient.category.name', read_only=True) 
+    category_name = serializers.CharField(source='ingredient.category.name', read_only=True)
+    amount = serializers.SerializerMethodField()
+    amount_in_grams = serializers.SerializerMethodField()
 
     class Meta:
         model = RecipeIngredient
-        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'unit', 'unit_name', 'category_name')
+        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'amount_in_grams', 'unit', 'unit_name', 'category_name')
     
     # перерасчет количества под указанное количество персон
     # если нету в контексте передается как есть в рецепте
     def get_amount(self, obj):
         target_servings = self.context.get('target_servings')
         recipe_servings = self.context.get('recipe_servings')
-        if not target_servings:
+        if not target_servings or not recipe_servings:
             return obj.amount
         scale = Decimal(target_servings) / Decimal(recipe_servings)
-        return round(obj.amount * scale, 2)
+        scaled_amount = round(obj.amount * scale, 2)
+        logger.debug(
+            "Scaling recipe ingredient amount recipe_ingredient_id=%s ingredient_id=%s target_servings=%s recipe_servings=%s original_amount=%s scaled_amount=%s",
+            obj.id,
+            obj.ingredient_id,
+            target_servings,
+            recipe_servings,
+            obj.amount,
+            scaled_amount,
+        )
+        return scaled_amount
+
+    def get_amount_in_grams(self, obj):
+        target_servings = self.context.get('target_servings')
+        recipe_servings = self.context.get('recipe_servings')
+        base_amount_in_grams = obj.amount_in_grams
+        if not target_servings or not recipe_servings:
+            return round(base_amount_in_grams, 2)
+        scale = Decimal(target_servings) / Decimal(recipe_servings)
+        return round(base_amount_in_grams * scale, 2)
 
 
 class RecipeStepSerializer(serializers.ModelSerializer):

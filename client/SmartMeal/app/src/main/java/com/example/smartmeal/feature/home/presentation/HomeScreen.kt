@@ -111,20 +111,26 @@ fun HomeScreen(
         }
     }
 
-    val isLoadingProducts = productListViewModel.isLoading
-
     var selectedNavItem by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(uiState.allMenuItems) {
-        uiState.allMenuItems.takeIf { it.isNotEmpty() }?.let {
-            productListViewModel.generateProductsFromMenuItems(it)
+        if (uiState.allMenuItems.isNotEmpty()) {
+            productListViewModel.generateProductsFromMenuItems(uiState.allMenuItems)
+        } else {
+            productListViewModel.clearProducts()
         }
     }
 
     LaunchedEffect(Unit) {
+        viewModel.uiState.value.allMenuItems.takeIf { it.isNotEmpty() }?.let { menuItems ->
+            productListViewModel.generateProductsFromMenuItems(menuItems)
+        }
         viewModel.onCartUpdated = {
-            viewModel.uiState.value.allMenuItems.takeIf { it.isNotEmpty() }?.let { menuItems ->
+            val menuItems = viewModel.uiState.value.allMenuItems
+            if (menuItems.isNotEmpty()) {
                 productListViewModel.generateProductsFromMenuItems(menuItems)
+            } else {
+                productListViewModel.clearProducts()
             }
         }
     }
@@ -156,7 +162,8 @@ fun HomeScreen(
                         val range = setupPreferences.getCustomPlanRange()?.let { (start, end) ->
                             Date(start) to Date(end)
                         }
-                        viewModel.generateMenu(storedPlanType, range)
+                        val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
+                        viewModel.generateMenu(storedPlanType, range, selectedPlanDate)
                     },
                     onReplaceMeal = { viewModel.replaceMeal(it) },
                     onToggleFavorite = { viewModel.toggleFavorite(it) },
@@ -167,22 +174,22 @@ fun HomeScreen(
 
                 // ---------------- ПРОДУКТЫ ----------------
                 1 -> {
-                    if (isLoadingProducts) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    } else {
-                        ProductListScreen(
-                            products = productListViewModel.products,
-                            selectedDate = uiState.selectedDate,
-                            onDaySelected = { day -> viewModel.selectDay(day, customPlan) },
-                            onProductChecked = { productId, checked -> productListViewModel.onProductChecked(productId, checked) },
-                            onCheckAll = { productListViewModel.toggleCheckAllProducts() }
-                        )
-                    }
+                    ProductListScreen(
+                        products = productListViewModel.products,
+                        selectedDate = uiState.selectedDate,
+                        selectedStartDayIndex = productListViewModel.selectedStartDayIndex,
+                        selectedEndDayIndex = productListViewModel.selectedEndDayIndex,
+                        dateRangeText = productListViewModel.dateRangeText,
+                        onDaySelected = { day -> productListViewModel.selectDayRange(day) },
+                        onProductChecked = { productIds, checked ->
+                            productListViewModel.onProductChecked(productIds, checked)
+                        },
+                        onCheckAll = { productIds, checked ->
+                            productListViewModel.toggleCheckAllProducts(productIds, checked)
+                        },
+                        isLoading = productListViewModel.isLoading,
+                        errorMessage = productListViewModel.errorMessage
+                    )
                 }
 
                 // ---------------- СТАТИСТИКА ----------------
@@ -243,6 +250,7 @@ fun HomeContent(
         if (customPlan != null) {
             MyPlanSection(
                 customPlan = customPlan,
+                selectedDate = uiState.selectedDate,
                 onDateSelectedFromPlan = onDateSelectedFromPlan,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -485,7 +493,8 @@ class HomeViewModel : ViewModel() {
 
     fun generateMenu(
         planType: String?,
-        customRange: Pair<Date, Date>?
+        customRange: Pair<Date, Date>?,
+        selectedPlanDate: Date?
     ) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
@@ -510,18 +519,24 @@ class HomeViewModel : ViewModel() {
                         }
                     }
                     SetupPreferences.PLAN_TYPE_DAILY -> {
-                        val todayStr = apiDateFormatter.format(Date())
+                        val startDateStr = resolveGenerationStartDateString(
+                            formatter = apiDateFormatter,
+                            selectedPlanDate = selectedPlanDate
+                        )
                         val response = generatorApi.autoGenerate(
-                            AutoGenerateRequest(period = "day", start_date = todayStr)
+                            AutoGenerateRequest(period = "day", start_date = startDateStr)
                         )
                         if (!response.isSuccessful) {
                             _uiState.update { it.copy(error = "Ошибка генерации") }
                         }
                     }
                     else -> {
-                        val todayStr = apiDateFormatter.format(Date())
+                        val startDateStr = resolveGenerationStartDateString(
+                            formatter = apiDateFormatter,
+                            selectedPlanDate = selectedPlanDate
+                        )
                         val response = generatorApi.autoGenerate(
-                            AutoGenerateRequest(period = "week", start_date = todayStr)
+                            AutoGenerateRequest(period = "week", start_date = startDateStr)
                         )
                         if (!response.isSuccessful) {
                             _uiState.update { it.copy(error = "Ошибка генерации") }
@@ -549,42 +564,37 @@ class HomeViewModel : ViewModel() {
 
     fun selectDay(day: String, customPlan: CustomPlan?) {
         val state = _uiState.value
-        val selectedDate = if (state.selectedDateFromPlan && state.selectedDate != null) {
-            val calendar = Calendar.getInstance().apply { time = state.selectedDate }
-            val baseIndex = when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                Calendar.MONDAY -> 0
-                Calendar.TUESDAY -> 1
-                Calendar.WEDNESDAY -> 2
-                Calendar.THURSDAY -> 3
-                Calendar.FRIDAY -> 4
-                Calendar.SATURDAY -> 5
-                Calendar.SUNDAY -> 6
-                else -> 0
-            }
-            val targetIndex = dayNames.indexOf(day).coerceAtLeast(0)
-            val diff = targetIndex - baseIndex
-            calendar.add(Calendar.DAY_OF_YEAR, diff)
-            val candidate = normalizeDate(calendar.time)
-            if (customPlan != null) {
+        val selectedDate = if (customPlan != null) {
+            val candidate = customPlan.startDate.let { baseDate ->
+                dateForSelectedDay(baseDate, day)
+            }?.let(::normalizeDate)
+
+            if (candidate != null) {
                 val start = normalizeDate(customPlan.startDate)
                 val end = normalizeDate(customPlan.endDate)
                 if (candidate.before(start) || candidate.after(end)) {
                     return
                 }
             }
+
             candidate
         } else {
             val menu = state.currentMenu
             menu?.let { dateForSelectedDay(it, day) }
         }
+
         _uiState.update {
             it.copy(
                 selectedDay = day,
                 selectedDate = selectedDate,
-                selectedDateFromPlan = it.selectedDateFromPlan && selectedDate != null
+                selectedDateFromPlan = customPlan != null && selectedDate != null
             )
         }
         updateMealSections()
+    }
+
+    private fun dateForSelectedDay(baseDate: Date, selectedDay: String): Date? {
+        return resolveDateForSelectedDay(baseDate, selectedDay, dayNames)
     }
 
     private fun updateMealSections() {
@@ -689,24 +699,7 @@ class HomeViewModel : ViewModel() {
 
     private fun dateForSelectedDay(menu: MenuDto, selectedDay: String): Date? {
         val startDate = apiDateFormatter.parse(menu.start_date) ?: return null
-        val startCalendar = Calendar.getInstance().apply { time = startDate }
-        val startDayIndex = when(startCalendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> 0
-            Calendar.TUESDAY -> 1
-            Calendar.WEDNESDAY -> 2
-            Calendar.THURSDAY -> 3
-            Calendar.FRIDAY -> 4
-            Calendar.SATURDAY -> 5
-            Calendar.SUNDAY -> 6
-            else -> 0
-        }
-        val selectedDayOfWeekIndex = dayNames.indexOf(selectedDay)
-        if (selectedDayOfWeekIndex < 0) return null
-        var offset = selectedDayOfWeekIndex - startDayIndex
-        if (offset < 0) offset += 7
-        val calendar = Calendar.getInstance().apply { time = startDate }
-        calendar.add(Calendar.DAY_OF_YEAR, offset)
-        return calendar.time
+        return dateForSelectedDay(startDate, selectedDay)
     }
 
     fun replaceMeal(mealType: String) {
@@ -735,7 +728,10 @@ class HomeViewModel : ViewModel() {
             try {
                 val updatedItem = menuRepository.replaceMenuItem(menuItem.id)
                 if (updatedItem != null) {
-                    refreshMenu() // перезагрузит currentMenu и allMenuItems
+                    _uiState.update { currentState ->
+                        mergeUpdatedMenuItemIntoState(currentState, updatedItem)
+                    }
+                    updateMealSections()
                     onCartUpdated?.invoke()
                 }
             } catch (e: Exception) {
@@ -746,6 +742,62 @@ class HomeViewModel : ViewModel() {
 
     }
 
+}
+
+internal fun mergeUpdatedMenuItemIntoState(
+    state: HomeUiState,
+    updatedItem: MenuItemDto
+): HomeUiState {
+    val updatedCurrentMenu = state.currentMenu?.copy(
+        items = state.currentMenu.items?.map { existingItem ->
+            if (existingItem.id == updatedItem.id) updatedItem else existingItem
+        }
+    )
+
+    val updatedAllMenuItems = if (state.allMenuItems.any { it.id == updatedItem.id }) {
+        state.allMenuItems.map { existingItem ->
+            if (existingItem.id == updatedItem.id) updatedItem else existingItem
+        }
+    } else {
+        state.allMenuItems
+    }
+
+    return state.copy(
+        currentMenu = updatedCurrentMenu,
+        allMenuItems = updatedAllMenuItems
+    )
+}
+
+internal fun resolveDateForSelectedDay(
+    baseDate: Date,
+    selectedDay: String,
+    dayNames: List<String> = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
+): Date? {
+    val baseCalendar = Calendar.getInstance().apply { time = baseDate }
+    val baseDayIndex = when (baseCalendar.get(Calendar.DAY_OF_WEEK)) {
+        Calendar.MONDAY -> 0
+        Calendar.TUESDAY -> 1
+        Calendar.WEDNESDAY -> 2
+        Calendar.THURSDAY -> 3
+        Calendar.FRIDAY -> 4
+        Calendar.SATURDAY -> 5
+        Calendar.SUNDAY -> 6
+        else -> 0
+    }
+    val targetIndex = dayNames.indexOf(selectedDay)
+    if (targetIndex < 0) return null
+    var diff = targetIndex - baseDayIndex
+    if (diff < 0) diff += 7
+    baseCalendar.add(Calendar.DAY_OF_YEAR, diff)
+    return baseCalendar.time
+}
+
+internal fun resolveGenerationStartDateString(
+    formatter: SimpleDateFormat,
+    selectedPlanDate: Date?,
+    fallbackDate: Date = Date()
+): String {
+    return formatter.format(selectedPlanDate ?: fallbackDate)
 }
 
 private class ProductListViewModelFactory(

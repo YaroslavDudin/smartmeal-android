@@ -31,8 +31,8 @@ data class SetupState(
     val periodType: PeriodType = PeriodType.WEEKLY,
     val calendarYear: Int = Calendar.getInstance().get(Calendar.YEAR),
     val calendarMonth: Int = Calendar.getInstance().get(Calendar.MONTH),
-    val selectedDay: Int? = null,      // для CUSTOM — начало диапазона
-    val selectedEndDay: Int? = null,   // для CUSTOM — конец диапазона
+    val selectedStartDateMillis: Long? = null,
+    val selectedEndDateMillis: Long? = null,
 
     // --- Step 3 ---
     val allergies: List<AllergyDto> = emptyList(),
@@ -118,41 +118,71 @@ class SetupViewModel(
     // --- Step 2 ---
 
     fun selectPeriodType(type: PeriodType) {
-        _state.update { it.copy(periodType = type, selectedDay = null, selectedEndDay = null) }
+        _state.update {
+            it.copy(
+                periodType = type,
+                selectedStartDateMillis = null,
+                selectedEndDateMillis = null
+            )
+        }
         persistPlanType(type)
         if (type != PeriodType.CUSTOM) {
             preferences?.clearCustomPlanRange()
+        } else {
+            preferences?.clearSelectedPlanDate()
         }
     }
 
-    fun selectDay(day: Int) {
+    fun selectDay(year: Int, month: Int, day: Int) {
         val s = _state.value
+        val selectedDateMillis = createDateMillis(year, month, day)
         if (s.periodType == PeriodType.CUSTOM) {
             when {
-                // Нет начала → устанавливаем начало
-                s.selectedDay == null -> {
-                    _state.update { it.copy(selectedDay = day, selectedEndDay = null) }
-                }
-                // Начало есть, конца нет → устанавливаем конец
-                s.selectedEndDay == null -> {
-                    if (day > s.selectedDay) {
-                        _state.update { it.copy(selectedEndDay = day) }
-                    } else if (day < s.selectedDay) {
-                        // Тап раньше начала — меняем местами
-                        _state.update { it.copy(selectedDay = day, selectedEndDay = s.selectedDay) }
-                    } else {
-                        // Тап на тот же день — сбрасываем
-                        _state.update { it.copy(selectedDay = null, selectedEndDay = null) }
+                s.selectedStartDateMillis == null -> {
+                    _state.update {
+                        it.copy(
+                            selectedStartDateMillis = selectedDateMillis,
+                            selectedEndDateMillis = null
+                        )
                     }
                 }
-                // Оба заданы → начинаем выбор заново
+                s.selectedEndDateMillis == null -> {
+                    if (selectedDateMillis > s.selectedStartDateMillis) {
+                        _state.update { it.copy(selectedEndDateMillis = selectedDateMillis) }
+                    } else if (selectedDateMillis < s.selectedStartDateMillis) {
+                        _state.update {
+                            it.copy(
+                                selectedStartDateMillis = selectedDateMillis,
+                                selectedEndDateMillis = s.selectedStartDateMillis
+                            )
+                        }
+                    } else {
+                        _state.update {
+                            it.copy(
+                                selectedStartDateMillis = null,
+                                selectedEndDateMillis = null
+                            )
+                        }
+                    }
+                }
                 else -> {
-                    _state.update { it.copy(selectedDay = day, selectedEndDay = null) }
+                    _state.update {
+                        it.copy(
+                            selectedStartDateMillis = selectedDateMillis,
+                            selectedEndDateMillis = null
+                        )
+                    }
                 }
             }
             persistCustomPlanRange()
         } else {
-            _state.update { it.copy(selectedDay = day) }
+            _state.update {
+                it.copy(
+                    selectedStartDateMillis = selectedDateMillis,
+                    selectedEndDateMillis = null
+                )
+            }
+            preferences?.setSelectedPlanDate(selectedDateMillis)
         }
     }
 
@@ -164,11 +194,8 @@ class SetupViewModel(
             it.copy(
                 calendarYear = cal.get(Calendar.YEAR),
                 calendarMonth = cal.get(Calendar.MONTH),
-                selectedDay = null,
-                selectedEndDay = null,
             )
         }
-        preferences?.clearCustomPlanRange()
     }
 
     // --- Step 3 ---
@@ -252,22 +279,19 @@ class SetupViewModel(
     private fun persistCustomPlanRange() {
         val s = _state.value
         if (s.periodType != PeriodType.CUSTOM) return
-        val start = s.selectedDay
-        val end = s.selectedEndDay
+        val start = s.selectedStartDateMillis
+        val end = s.selectedEndDateMillis
         if (start == null || end == null) {
             preferences?.clearCustomPlanRange()
             return
         }
-        val startDay = minOf(start, end)
-        val endDay = maxOf(start, end)
-        val startCal = Calendar.getInstance().apply {
-            set(s.calendarYear, s.calendarMonth, startDay, 0, 0, 0)
+        preferences?.setCustomPlanRange(minOf(start, end), maxOf(start, end))
+    }
+
+    private fun createDateMillis(year: Int, month: Int, day: Int): Long {
+        return Calendar.getInstance().apply {
+            set(year, month, day, 0, 0, 0)
             set(Calendar.MILLISECOND, 0)
-        }
-        val endCal = Calendar.getInstance().apply {
-            set(s.calendarYear, s.calendarMonth, endDay, 0, 0, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-        preferences?.setCustomPlanRange(startCal.timeInMillis, endCal.timeInMillis)
+        }.timeInMillis
     }
 }

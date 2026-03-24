@@ -54,9 +54,9 @@ private val SETUP_SHADOW = ShadowData(
 )
 
 private val COOK_TIME_OPTIONS = listOf(
-    Triple("short", "До 30 мин", false),
-    Triple("medium", "От 30 до часа", true),
-    Triple("long", "От часа и более", false),
+    Triple("under30", "До 30 мин", false),
+    Triple("30to60", "От 30 до часа", true),
+    Triple("over60", "От часа и более", false),
 )
 
 /**
@@ -81,7 +81,7 @@ fun SetupStep3Screen(
         onSubmit = { viewModel.submitSetup() },
         onToggleAllergy = { viewModel.toggleAllergy(it) },
         onSetEatAll = { viewModel.setEatAll(it) },
-        onSelectCookTime = { viewModel.selectCookTime(it) },
+        onSelectCookTime = { viewModel.selectCookTime(mapUiCookTimeToApi(it)) },
     )
 }
 
@@ -117,6 +117,7 @@ fun SetupStep3Content(
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .height(36.dp)
+                    .testTag("setup_step3_back")
                     .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.White,
@@ -189,13 +190,13 @@ fun SetupStep3Content(
         ) {
             COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
                 val tag = when (key) {
-                    "short" -> "setup_step3_cook_under30"
-                    "medium" -> "setup_step3_cook_30to60"
+                    "under30" -> "setup_step3_cook_under30"
+                    "30to60" -> "setup_step3_cook_30to60"
                     else -> "setup_step3_cook_other"
                 }
                 SelectableChip(
                     label = label,
-                    isSelected = state.cookTimePreference == key,
+                    isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
                     onClick = { onSelectCookTime(key) },
                     modifier = Modifier
                         .weight(1f)
@@ -208,12 +209,12 @@ fun SetupStep3Content(
 
         COOK_TIME_OPTIONS.drop(2).forEach { (key, label, _) ->
             val tag = when (key) {
-                "long" -> "setup_step3_cook_over60"
+                "over60" -> "setup_step3_cook_over60"
                 else -> "setup_step3_cook_other"
             }
             SelectableChip(
                 label = label,
-                isSelected = state.cookTimePreference == key,
+                isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
                 onClick = { onSelectCookTime(key) },
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
@@ -246,6 +247,20 @@ fun SetupStep3Content(
             enabled = !state.isLoading,
         )
     }
+}
+
+private fun mapUiCookTimeToApi(value: String): String = when (value) {
+    "under30" -> "short"
+    "30to60" -> "medium"
+    "over60" -> "long"
+    else -> value
+}
+
+private fun mapApiCookTimeToUi(value: String?): String? = when (value) {
+    "short" -> "under30"
+    "medium" -> "30to60"
+    "long" -> "over60"
+    else -> value
 }
 
 @Composable

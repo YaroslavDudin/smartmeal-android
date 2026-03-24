@@ -50,9 +50,9 @@ fun SmartMealCalendar(
     year: Int,
     month: Int,
     periodType: PeriodType,
-    selectedDay: Int?,
-    selectedEndDay: Int? = null,
-    onDaySelected: (day: Int) -> Unit,
+    selectedStartDateMillis: Long?,
+    selectedEndDateMillis: Long? = null,
+    onDaySelected: (year: Int, month: Int, day: Int) -> Unit,
     onPreviousMonth: () -> Unit,
     onNextMonth: () -> Unit,
     modifier: Modifier = Modifier,
@@ -72,13 +72,22 @@ fun SmartMealCalendar(
     prevCal.add(Calendar.MONTH, -1)
     val prevMonthDays = prevCal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
+    val nextCal = Calendar.getInstance()
+    nextCal.set(year, month, 1)
+    nextCal.add(Calendar.MONTH, 1)
+
     // firstDayOfWeek: Calendar.DAY_OF_WEEK is 1=Sun..7=Sat, we want Mon=0..Sun=6
     val rawFirstDay = cal.get(Calendar.DAY_OF_WEEK)
     val firstDayOffset = if (rawFirstDay == Calendar.SUNDAY) 6 else rawFirstDay - 2  // Mon=0
 
     // Для WEEKLY: выбранный день — это начало, конец — через 6 дней (всего 7 дней)
-    val weekStart = selectedDay
-    val weekEnd = selectedDay?.let { (it + 6).coerceAtMost(daysInMonth) }
+    val weekStartMillis = selectedStartDateMillis
+    val weekEndMillis = selectedStartDateMillis?.let { start ->
+        Calendar.getInstance().apply {
+            timeInMillis = start
+            add(Calendar.DAY_OF_YEAR, 6)
+        }.timeInMillis
+    }
 
     val headerTextStyle = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge
     val dayLabelStyle = if (compact) MaterialTheme.typography.labelSmall else MaterialTheme.typography.bodySmall
@@ -166,39 +175,56 @@ fun SmartMealCalendar(
                     val dayNumber = cellIndex - firstDayOffset + 1
 
                     val isCurrentMonth = dayNumber in 1..daysInMonth
-                    val displayDay = when {
-                        isCurrentMonth -> dayNumber
-                        dayNumber < 1 -> prevMonthDays + dayNumber
-                        else -> dayNumber - daysInMonth
+                    val cellYear: Int
+                    val cellMonth: Int
+                    val displayDay: Int
+
+                    when {
+                        isCurrentMonth -> {
+                            cellYear = year
+                            cellMonth = month
+                            displayDay = dayNumber
+                        }
+                        dayNumber < 1 -> {
+                            cellYear = prevCal.get(Calendar.YEAR)
+                            cellMonth = prevCal.get(Calendar.MONTH)
+                            displayDay = prevMonthDays + dayNumber
+                        }
+                        else -> {
+                            cellYear = nextCal.get(Calendar.YEAR)
+                            cellMonth = nextCal.get(Calendar.MONTH)
+                            displayDay = dayNumber - daysInMonth
+                        }
                     }
 
                     if (!isCurrentMonth && !showAdjacentMonths) {
                         Box(modifier = Modifier.weight(1f).aspectRatio(1f))
                     } else {
-                        val rangeStart = selectedDay
-                        val rangeEnd = selectedEndDay
+                        val cellDateMillis = createDateMillis(cellYear, cellMonth, displayDay)
+                        val rangeStart = selectedStartDateMillis
+                        val rangeEnd = selectedEndDateMillis
                         val isCustomRangeActive = periodType == PeriodType.CUSTOM &&
                             rangeStart != null && rangeEnd != null
 
-                        val isSelectable = isCurrentMonth && isDateSelectable(year, month, dayNumber)
+                        val isSelectable = isCurrentMonth && isDateSelectable(cellYear, cellMonth, displayDay)
 
                         CalendarDayCell(
                             day = displayDay,
                             periodType = periodType,
                             isCurrentMonth = isCurrentMonth,
-                            isSelected = isCurrentMonth && (selectedDay == dayNumber || selectedEndDay == dayNumber),
-                            isInWeek = isCurrentMonth && periodType == PeriodType.WEEKLY &&
-                                weekStart != null && weekEnd != null &&
-                                dayNumber > weekStart && dayNumber < weekEnd,
-                            isWeekStart = isCurrentMonth && periodType == PeriodType.WEEKLY && dayNumber == weekStart,
-                            isWeekEnd = isCurrentMonth && periodType == PeriodType.WEEKLY && dayNumber == weekEnd,
-                            isInRange = isCurrentMonth && isCustomRangeActive &&
+                            isSelected = cellDateMillis == selectedStartDateMillis || cellDateMillis == selectedEndDateMillis,
+                            isInWeek = periodType == PeriodType.WEEKLY &&
+                                weekStartMillis != null && weekEndMillis != null &&
+                                cellDateMillis > weekStartMillis && cellDateMillis < weekEndMillis,
+                            isWeekStart = periodType == PeriodType.WEEKLY && cellDateMillis == weekStartMillis,
+                            isWeekEnd = periodType == PeriodType.WEEKLY && cellDateMillis == weekEndMillis,
+                            isInRange = isCustomRangeActive &&
                                 rangeStart != null && rangeEnd != null &&
-                                dayNumber in (rangeStart + 1) until rangeEnd,
-                            isRangeStart = isCurrentMonth && isCustomRangeActive && dayNumber == selectedDay,
-                            isRangeEnd = isCurrentMonth && isCustomRangeActive && dayNumber == selectedEndDay,
+                                cellDateMillis > rangeStart && cellDateMillis < rangeEnd,
+                            isRangeStart = isCustomRangeActive && cellDateMillis == selectedStartDateMillis,
+                            isRangeEnd = isCustomRangeActive && cellDateMillis == selectedEndDateMillis,
                             modifier = Modifier.weight(1f),
-                            onClick = { if (isSelectable) onDaySelected(dayNumber) },
+                            onClick = { if (isSelectable) onDaySelected(cellYear, cellMonth, displayDay) },
                             circleSize = circleSize,
                             textSize = cellTextSize,
                             isSelectable = isSelectable,
@@ -290,4 +316,11 @@ private fun CalendarDayCell(
             )
         }
     }
+}
+
+private fun createDateMillis(year: Int, month: Int, day: Int): Long {
+    return Calendar.getInstance().apply {
+        set(year, month, day, 0, 0, 0)
+        set(Calendar.MILLISECOND, 0)
+    }.timeInMillis
 }

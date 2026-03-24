@@ -23,11 +23,13 @@ class SetupPreferences(context: Context) {
         val scopedPlanKey = scopedKeyFor(KEY_PLAN_TYPE, normalized)
         val scopedStartKey = scopedKeyFor(KEY_CUSTOM_START, normalized)
         val scopedEndKey = scopedKeyFor(KEY_CUSTOM_END, normalized)
+        val scopedSelectedDateKey = scopedKeyFor(KEY_SELECTED_PLAN_DATE, normalized)
         val previous = getPreviousUserKey()
         val shouldMigrateLegacy = (previous.isNullOrBlank() || previous == normalized) &&
             !prefs.contains(scopedPlanKey) &&
             !prefs.contains(scopedStartKey) &&
-            !prefs.contains(scopedEndKey)
+            !prefs.contains(scopedEndKey) &&
+            !prefs.contains(scopedSelectedDateKey)
 
         if (shouldMigrateLegacy) {
             val legacyPlan = prefs.getString(KEY_PLAN_TYPE, null)
@@ -71,6 +73,19 @@ class SetupPreferences(context: Context) {
             .apply()
     }
 
+    fun setSelectedPlanDate(dateMillis: Long) {
+        prefs.edit().putLong(scopedKey(KEY_SELECTED_PLAN_DATE), dateMillis).apply()
+    }
+
+    fun getSelectedPlanDate(): Long? {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return null
+        val key = scopedKey(KEY_SELECTED_PLAN_DATE)
+        if (!prefs.contains(key)) return null
+        val value = prefs.getLong(key, 0L)
+        return value.takeIf { it != 0L }
+    }
+
     fun getCustomPlanRange(): Pair<Long, Long>? {
         val active = getActiveUserKey()
         if (active.isNullOrBlank()) return null
@@ -87,11 +102,16 @@ class SetupPreferences(context: Context) {
         prefs.edit().remove(scopedKey(KEY_CUSTOM_START)).remove(scopedKey(KEY_CUSTOM_END)).apply()
     }
 
+    fun clearSelectedPlanDate() {
+        prefs.edit().remove(scopedKey(KEY_SELECTED_PLAN_DATE)).apply()
+    }
+
     fun clearPlanSelection() {
         prefs.edit()
             .remove(scopedKey(KEY_PLAN_TYPE))
             .remove(scopedKey(KEY_CUSTOM_START))
             .remove(scopedKey(KEY_CUSTOM_END))
+            .remove(scopedKey(KEY_SELECTED_PLAN_DATE))
             .apply()
     }
 
@@ -124,5 +144,6 @@ class SetupPreferences(context: Context) {
         private const val KEY_PLAN_TYPE = "plan_type"
         private const val KEY_CUSTOM_START = "custom_plan_start"
         private const val KEY_CUSTOM_END = "custom_plan_end"
+        private const val KEY_SELECTED_PLAN_DATE = "selected_plan_date"
     }
 }

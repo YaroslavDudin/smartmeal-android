@@ -1,8 +1,9 @@
 package com.example.smartmeal
 
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -30,171 +31,211 @@ class ProductListScreenTest {
                 ProductListScreen(
                     products = emptyList(),
                     selectedDate = null,
+                    selectedStartDayIndex = null,
+                    selectedEndDayIndex = null,
+                    dateRangeText = "Выберите диапазон дней",
                     onDaySelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = {}
+                    onCheckAll = { _, _ -> }
                 )
             }
         }
-        composeTestRule.onNodeWithText("Список продуктов").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("title").assertIsDisplayed()
     }
 
     @Test
     fun productListScreen_showsSelectedDate() {
         val date = dateFormatter.parse("2026-03-10") ?: Date()
+
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
                     products = emptyList(),
                     selectedDate = date,
+                    selectedStartDayIndex = null,
+                    selectedEndDayIndex = null,
+                    dateRangeText = "Пн-Вт",
                     onDaySelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = {}
+                    onCheckAll = { _, _ -> }
                 )
             }
         }
-        // Проверяем, что текст содержит "10 марта" (часть даты)
-        composeTestRule.onNode(hasText("10 марта", substring = true)).assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("selectedDateText").assertIsDisplayed()
     }
 
     @Test
-    fun productListScreen_displaysProductsForSelectedDate() {
+    fun productListScreen_displaysProductsForSelectedRange() {
         val date = dateFormatter.parse("2026-03-10") ?: Date()
-        val products = listOf(
-            ProductUiModel(
-                id = "1",
-                name = "Продукт 1",
-                amount = "100 г",
-                category = "cat",
-                icon = "",
-                categoryName = "Категория",
-                categoryIcon = "",
-                checked = false,
-                actualDates = setOf("2026-03-10")
-            ),
-            ProductUiModel(
-                id = "2",
-                name = "Продукт 2",
-                amount = "200 г",
-                category = "cat",
-                icon = "",
-                categoryName = "Категория",
-                categoryIcon = "",
-                checked = false,
-                actualDates = setOf("2026-03-11")
-            )
-        )
+        val visibleName = "Visible product"
+        val hiddenName = "Hidden product"
+
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
-                    products = products,
+                    products = listOf(
+                        ProductUiModel(
+                            id = "1",
+                            name = visibleName,
+                            amount = "100 g",
+                            category = "cat",
+                            icon = "",
+                            categoryName = "Category",
+                            categoryIcon = "",
+                            checked = false,
+                            dayOffsets = setOf(1),
+                            actualDates = setOf("2026-03-10")
+                        ),
+                        ProductUiModel(
+                            id = "2",
+                            name = hiddenName,
+                            amount = "200 g",
+                            category = "cat",
+                            icon = "",
+                            categoryName = "Category",
+                            categoryIcon = "",
+                            checked = false,
+                            dayOffsets = setOf(2),
+                            actualDates = setOf("2026-03-11")
+                        )
+                    ),
                     selectedDate = date,
+                    selectedStartDayIndex = 1,
+                    selectedEndDayIndex = 1,
+                    dateRangeText = "Вт",
                     onDaySelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = {}
+                    onCheckAll = { _, _ -> }
                 )
             }
         }
-        composeTestRule.onNodeWithText("Продукт 1").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Продукт 2").assertDoesNotExist()
+
+        composeTestRule.onNodeWithText(visibleName).assertIsDisplayed()
+        composeTestRule.onAllNodesWithText(hiddenName).assertCountEquals(0)
     }
 
     @Test
     fun productListScreen_dayClick_callsOnDaySelected() {
         var selectedDay: String? = null
+
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
                     products = emptyList(),
                     selectedDate = null,
+                    selectedStartDayIndex = null,
+                    selectedEndDayIndex = null,
+                    dateRangeText = "Выберите диапазон дней",
                     onDaySelected = { day -> selectedDay = day },
                     onProductChecked = { _, _ -> },
-                    onCheckAll = {}
+                    onCheckAll = { _, _ -> }
                 )
             }
         }
-        composeTestRule.onNodeWithText("Вт").performClick()
+
+        composeTestRule.onNodeWithTag("day_chip_1").performClick()
         composeTestRule.waitForIdle()
+
         assertEquals("Вт", selectedDay)
     }
 
     @Test
-    fun productListScreen_checkAllButton_togglesAll() {
-        var allChecked = false
-        val products = listOf(
-            ProductUiModel(
-                id = "1",
-                name = "Продукт 1",
-                amount = "100 г",
-                category = "cat",
-                icon = "",
-                categoryName = "Категория",
-                categoryIcon = "",
-                checked = false
-            ),
-            ProductUiModel(
-                id = "2",
-                name = "Продукт 2",
-                amount = "200 г",
-                category = "cat",
-                icon = "",
-                categoryName = "Категория",
-                categoryIcon = "",
-                checked = false
-            )
-        )
+    fun productListScreen_checkAllButton_togglesAllVisibleProducts() {
+        var checkedIds = emptyList<String>()
+        var checkedValue = false
+
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
-                    products = products,
+                    products = listOf(
+                        ProductUiModel(
+                            id = "1",
+                            name = "Product 1",
+                            amount = "100 g",
+                            category = "cat",
+                            icon = "",
+                            categoryName = "Category",
+                            categoryIcon = "",
+                            checked = false,
+                            sourceIds = setOf("1")
+                        ),
+                        ProductUiModel(
+                            id = "2",
+                            name = "Product 2",
+                            amount = "200 g",
+                            category = "cat",
+                            icon = "",
+                            categoryName = "Category",
+                            categoryIcon = "",
+                            checked = false,
+                            sourceIds = setOf("2")
+                        )
+                    ),
                     selectedDate = null,
+                    selectedStartDayIndex = null,
+                    selectedEndDayIndex = null,
+                    dateRangeText = "Выберите диапазон дней",
                     onDaySelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { allChecked = true }
+                    onCheckAll = { ids, checked ->
+                        checkedIds = ids.toList()
+                        checkedValue = checked
+                    }
                 )
             }
         }
+
         composeTestRule.onNodeWithTag("checkAllButton").performClick()
         composeTestRule.waitForIdle()
-        assertEquals(true, allChecked)
+
+        assertEquals(listOf("1", "2"), checkedIds.sorted())
+        assertEquals(true, checkedValue)
     }
 
     @Test
     fun productListScreen_categoriesGroupedCorrectly() {
-        val products = listOf(
-            ProductUiModel(
-                id = "1",
-                name = "Микс салатов",
-                amount = "200 г",
-                category = "vegetable",
-                icon = "🥗",
-                categoryName = "Овощи и фрукты",
-                categoryIcon = "🥬",
-                checked = false
-            ),
-            ProductUiModel(
-                id = "2",
-                name = "Гречка",
-                amount = "50 г",
-                category = "shopping",
-                icon = "🛒",
-                categoryName = "Покупки",
-                categoryIcon = "🛒",
-                checked = true
-            )
-        )
+        val regularCategory = "Vegetables"
+        val checkedCategory = "Покупки"
+
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
-                    products = products,
+                    products = listOf(
+                        ProductUiModel(
+                            id = "1",
+                            name = "Salad mix",
+                            amount = "200 g",
+                            category = "vegetable",
+                            icon = "",
+                            categoryName = regularCategory,
+                            categoryIcon = "",
+                            checked = false
+                        ),
+                        ProductUiModel(
+                            id = "2",
+                            name = "Buckwheat",
+                            amount = "50 g",
+                            category = "shopping",
+                            icon = "",
+                            categoryName = "Groceries",
+                            categoryIcon = "",
+                            checked = true
+                        )
+                    ),
                     selectedDate = null,
+                    selectedStartDayIndex = null,
+                    selectedEndDayIndex = null,
+                    dateRangeText = "Выберите диапазон дней",
                     onDaySelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = {}
+                    onCheckAll = { _, _ -> }
                 )
             }
         }
-        composeTestRule.onNodeWithTag("category-Овощи и фрукты").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("category-Покупки").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("category-$regularCategory").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("category-$checkedCategory").assertIsDisplayed()
     }
 }

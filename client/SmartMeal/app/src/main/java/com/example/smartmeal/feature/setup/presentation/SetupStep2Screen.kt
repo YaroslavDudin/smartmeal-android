@@ -60,7 +60,7 @@ fun SetupStep2Content(
     onBack: () -> Unit,
     onNext: () -> Unit,
     onSelectPeriodType: (PeriodType) -> Unit,
-    onSelectDay: (Int) -> Unit,
+    onSelectDay: (Int, Int, Int) -> Unit,
     onPreviousMonth: () -> Unit,
     onNextMonth: () -> Unit,
 ) {
@@ -159,8 +159,8 @@ fun SetupStep2Content(
                 year = state.calendarYear,
                 month = state.calendarMonth,
                 periodType = state.periodType,
-                selectedDay = state.selectedDay,
-                selectedEndDay = state.selectedEndDay,
+                selectedStartDateMillis = state.selectedStartDateMillis,
+                selectedEndDateMillis = state.selectedEndDateMillis,
                 onDaySelected = onSelectDay,
                 onPreviousMonth = onPreviousMonth,
                 onNextMonth = onNextMonth,
@@ -192,8 +192,8 @@ fun SetupStep2Content(
             text = "Дальше",
             onClick = onNext,
             enabled = when (state.periodType) {
-                PeriodType.CUSTOM -> state.selectedDay != null && state.selectedEndDay != null
-                else -> state.selectedDay != null
+                PeriodType.CUSTOM -> state.selectedStartDateMillis != null && state.selectedEndDateMillis != null
+                else -> state.selectedStartDateMillis != null
             },
             modifier = Modifier.testTag("setup_step2_next")
         )

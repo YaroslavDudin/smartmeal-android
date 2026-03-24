@@ -107,6 +107,7 @@ fun SetupStep1Content(
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .height(36.dp)
+                    .testTag("setup_step1_back")
                     .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.White,
@@ -238,6 +239,7 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
+                .testTag("setup_step1_portion_dec")
                 .dropShadow(shape = RoundedCornerShape(8.dp), shadow = SETUP_SHADOW)
                 .clickable(onClick = onDecrement),
             shape = RoundedCornerShape(8.dp),
@@ -266,6 +268,7 @@ private fun PortionStepper(
         Surface(
             modifier = Modifier
                 .size(40.dp)
+                .testTag("setup_step1_portion_inc")
                 .dropShadow(shape = RoundedCornerShape(8.dp), shadow = SETUP_SHADOW)
                 .clickable(onClick = onIncrement),
             shape = RoundedCornerShape(8.dp),
