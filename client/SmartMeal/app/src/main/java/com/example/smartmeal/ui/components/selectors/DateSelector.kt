@@ -81,6 +81,7 @@ private fun DateChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val chipShape = RoundedCornerShape(18.dp)
     val backgroundColor = when {
         isRangeInterior -> LightGreenBg.copy(alpha = 0.9f)
         isSelected -> PrimaryGreen
@@ -94,7 +95,7 @@ private fun DateChip(
 
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(18.dp))
+            .clip(chipShape)
             .background(backgroundColor)
             .clickable(onClick = onClick)
             .padding(horizontal = 14.dp, vertical = 10.dp),
@@ -132,6 +133,11 @@ internal fun buildDateSelectorItems(dates: List<Date>): List<DateSelectorItem> {
 
 internal fun buildDateSelectorId(date: Date): String {
     return SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date)
+}
+
+internal fun formatSelectedDateLabel(date: Date): String {
+    val formatter = SimpleDateFormat("EEEE - d MMMM yyyy", Locale("ru"))
+    return formatter.format(date).replaceFirstChar { it.titlecase(Locale("ru")) }
 }
 
 private fun buildSelectionRange(

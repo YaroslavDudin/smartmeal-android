@@ -50,6 +50,7 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
+import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
@@ -103,6 +104,7 @@ fun ProductListScreen(
     }
     val allVisibleChecked = filteredProducts.isNotEmpty() && filteredProducts.all { it.checked }
     val listState = rememberLazyListState()
+    val hasSingleAvailableDate = availableDates.size == 1
     val contentState = when {
         isLoading -> ProductContentState.Loading
         !errorMessage.isNullOrBlank() -> ProductContentState.Error
@@ -126,7 +128,7 @@ fun ProductListScreen(
                 .testTag("title")
         )
 
-        if (monthYearLabel.isNotBlank()) {
+        if (monthYearLabel.isNotBlank() && !hasSingleAvailableDate) {
             SmartMealText(
                 text = monthYearLabel,
                 style = MaterialTheme.typography.titleMedium,
@@ -138,12 +140,30 @@ fun ProductListScreen(
             )
         }
 
-        DateSelector(
-            items = dateSelectorItems,
-            selectedStartId = selectedStartDateKey,
-            selectedEndId = selectedEndDateKey,
-            onItemClick = onDateSelected
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("products_date_selector")
+        ) {
+            if (hasSingleAvailableDate) {
+                SmartMealText(
+                    text = formatSelectedDateLabel(availableDates.first()),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = TextBlack,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(top = 8.dp, bottom = 14.dp)
+                        .testTag("products_selected_date_summary")
+                )
+            } else {
+                DateSelector(
+                    items = dateSelectorItems,
+                    selectedStartId = selectedStartDateKey,
+                    selectedEndId = selectedEndDateKey,
+                    onItemClick = onDateSelected
+                )
+            }
+        }
 
         Row(
             modifier = Modifier

@@ -61,6 +61,7 @@ import com.example.smartmeal.ui.components.cards.MealCard
 import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
+import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -229,6 +230,7 @@ fun HomeContent(
     }
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
     val selectedDateId = uiState.selectedDate?.let(::buildDateSelectorId)
+    val hasSingleAvailableDate = availableDates.size == 1
 
     Column(
         modifier = Modifier
@@ -249,7 +251,7 @@ fun HomeContent(
             formatMonthYearForSelector(uiState.selectedDate ?: it)
         }.orEmpty()
 
-        if (monthYearLabel.isNotBlank()) {
+        if (monthYearLabel.isNotBlank() && !hasSingleAvailableDate) {
             SmartMealText(
                 text = monthYearLabel,
                 style = MaterialTheme.typography.titleMedium,
@@ -263,13 +265,26 @@ fun HomeContent(
         }
 
         Box(modifier = Modifier.testTag("home_day_selector")) {
-            DateSelector(
-                items = dateSelectorItems,
-                selectedStartId = selectedDateId,
-                onItemClick = { dateId ->
-                    availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
-                }
-            )
+            if (hasSingleAvailableDate) {
+                SmartMealText(
+                    text = formatSelectedDateLabel(availableDates.first()),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 14.dp)
+                        .testTag("home_selected_date_summary"),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            } else {
+                DateSelector(
+                    items = dateSelectorItems,
+                    selectedStartId = selectedDateId,
+                    onItemClick = { dateId ->
+                        availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
+                    }
+                )
+            }
         }
 
         if (customPlan != null) {

@@ -3,6 +3,7 @@ package com.example.smartmeal
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -66,6 +67,42 @@ class ProductListScreenTest {
 
         composeTestRule.onNodeWithTag("products_month_year").assertIsDisplayed()
 
+    }
+
+    @Test
+    fun productListScreen_singleAvailableDate_showsFullDateSummary() {
+        val selectedDate = dateFormatter.parse("2026-03-27") ?: Date()
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                ProductListScreen(
+                    products = listOf(
+                        ProductUiModel(
+                            id = "1",
+                            name = "Product 1",
+                            amount = "100 g",
+                            category = "cat",
+                            icon = "",
+                            categoryName = "Category",
+                            categoryIcon = "",
+                            actualDates = setOf("2026-03-27")
+                        )
+                    ),
+                    selectedDate = selectedDate,
+                    selectedStartDateKey = "2026-03-27",
+                    selectedEndDateKey = null,
+                    dateRangeText = "Пятница, 27 марта 2026",
+                    onDateSelected = {},
+                    onProductChecked = { _, _ -> },
+                    onCheckAll = { _, _ -> }
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("products_selected_date_summary").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Пятница - 27 марта 2026").assertIsDisplayed()
+        composeTestRule.onAllNodesWithTag("products_month_year").assertCountEquals(0)
+        composeTestRule.onAllNodesWithTag("date_chip_0").assertCountEquals(0)
     }
 
     @Test

@@ -1,8 +1,10 @@
 ﻿package com.example.smartmeal
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -227,6 +229,34 @@ class HomeScreenTest {
 
         composeTestRule.onNodeWithTag("home_month_year").assertIsDisplayed()
         composeTestRule.onNodeWithText("Март 2026").assertIsDisplayed()
+    }
+
+    @Test
+    fun home_singleAvailableDate_showsFullDateSummary() {
+        val state = HomeUiState(
+            currentMenu = menuWithDates("2026-03-27"),
+            selectedDate = dateFormatter.parse("2026-03-27")
+        )
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                HomeContent(
+                    uiState = state,
+                    onDateSelected = {},
+                    onGenerateMenu = {},
+                    onReplaceMeal = {},
+                    onToggleFavorite = {},
+                    onRecipeClick = {},
+                    onDateSelectedFromPlan = {},
+                    customPlan = null
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("home_selected_date_summary").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Пятница - 27 марта 2026").assertIsDisplayed()
+        composeTestRule.onAllNodesWithTag("home_month_year").assertCountEquals(0)
+        composeTestRule.onAllNodesWithTag("date_chip_0").assertCountEquals(0)
     }
 
     private fun fakeMeal(
