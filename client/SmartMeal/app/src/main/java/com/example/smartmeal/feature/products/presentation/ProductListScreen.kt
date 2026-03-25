@@ -47,7 +47,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.smartmeal.ui.components.SmartMealText
-import com.example.smartmeal.ui.components.selectors.DaySelector
+import com.example.smartmeal.ui.components.selectors.DateSelector
+import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
+import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
@@ -60,24 +62,41 @@ import java.util.Locale
 fun ProductListScreen(
     products: List<ProductUiModel>,
     selectedDate: Date?,
-    selectedStartDayIndex: Int?,
-    selectedEndDayIndex: Int?,
+    selectedStartDateKey: String?,
+    selectedEndDateKey: String?,
     dateRangeText: String,
-    onDaySelected: (String) -> Unit,
+    onDateSelected: (String) -> Unit,
     onProductChecked: (Collection<String>, Boolean) -> Unit,
     onCheckAll: (Collection<String>, Boolean) -> Unit,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     errorMessage: String? = null
 ) {
-    val filteredProducts = remember(products, selectedStartDayIndex, selectedEndDayIndex) {
-        filterProductsByDayRange(products, selectedStartDayIndex, selectedEndDayIndex)
+    val availableDates = remember(products) {
+        products
+            .flatMap { it.actualDates }
+            .distinct()
+            .sorted()
+            .mapNotNull(::parseApiDate)
+    }
+    val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
+    val filteredProducts = remember(products, selectedStartDateKey, selectedEndDateKey) {
+        filterProductsByDateRange(products, selectedStartDateKey, selectedEndDateKey)
     }
     val aggregatedProducts = remember(filteredProducts) {
         aggregateProductsForDisplay(filteredProducts)
     }
-    val selectedDateDisplay = remember(filteredProducts, selectedDate) {
-        buildSelectedDateDisplay(filteredProducts, selectedDate)
+    val monthYearLabel = remember(selectedDate, availableDates, selectedStartDateKey, selectedEndDateKey) {
+        val startDate = selectedStartDateKey?.let(::parseApiDate)
+        val endDate = selectedEndDateKey?.let(::parseApiDate)
+        when {
+            startDate != null && endDate != null -> formatMonthYearRangeForSelector(startDate, endDate)
+            startDate != null -> formatMonthYearForSelector(startDate)
+            else -> {
+                val anchorDate = selectedDate ?: availableDates.firstOrNull()
+                anchorDate?.let(::formatMonthYearForSelector).orEmpty()
+            }
+        }
     }
     val allVisibleProductIds = remember(filteredProducts) {
         filteredProducts.flatMap { it.sourceIds }.distinct()
@@ -107,25 +126,29 @@ fun ProductListScreen(
                 .testTag("title")
         )
 
-        DaySelector(
-            selectedRange = selectedDayRange(selectedStartDayIndex, selectedEndDayIndex),
-            onDaySelected = onDaySelected
-        )
+        if (monthYearLabel.isNotBlank()) {
+            SmartMealText(
+                text = monthYearLabel,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 4.dp)
+                    .testTag("products_month_year")
+            )
+        }
 
-        SmartMealText(
-            text = if (selectedDateDisplay.isNotBlank()) selectedDateDisplay else dateRangeText,
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.Black,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp)
-                .testTag("selectedDateText")
+        DateSelector(
+            items = dateSelectorItems,
+            selectedStartId = selectedStartDateKey,
+            selectedEndId = selectedEndDateKey,
+            onItemClick = onDateSelected
         )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(bottom = 8.dp)
                 .testTag("checkAllRow"),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
@@ -216,6 +239,8 @@ private fun ProductCategoryList(
         "Молочные продукты и яйца",
         "Молочные продукты",
         "Бобовые",
+        "Консервированные продукты",
+        "Пасты",
         "Бакалея и молочные продукты",
         "Мука и мучные изделия",
         "Приправы и специи",
@@ -231,18 +256,20 @@ private fun ProductCategoryList(
         "Покупки"
     )
 
-    val categories = aggregatedProducts.groupBy { product ->
-        if (product.checked) "Покупки" else product.categoryName
-    }
-
-    val sortedCategories = categories.entries
-        .filter { it.key != "Покупки" }
+    val regularCategories = aggregatedProducts
+        .filterNot { it.checked }
+        .groupBy { it.categoryName }
+        .toList()
         .sortedBy { (categoryName, _) ->
             categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
         }
-        .let { ordered ->
-            val shopping = categories.entries.find { it.key == "Покупки" }
-            if (shopping != null) ordered + shopping else ordered
+
+    val purchasedCategories = aggregatedProducts
+        .filter { it.checked }
+        .groupBy { it.categoryName }
+        .toList()
+        .sortedBy { (categoryName, _) ->
+            categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
         }
 
     LazyColumn(
@@ -250,35 +277,17 @@ private fun ProductCategoryList(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 80.dp)
     ) {
-        sortedCategories.forEachIndexed { index, entry ->
+        regularCategories.forEachIndexed { index, entry ->
             val (categoryName, productsInCategory) = entry
-            val categoryIcon = if (categoryName == "Покупки") {
-                "🛒"
-            } else {
-                productsInCategory.firstOrNull()?.categoryIcon.orEmpty()
-            }
             item {
-                Column(
+                ProductCategoryHeader(
+                    title = categoryName,
+                    icon = productsInCategory.firstOrNull()?.categoryIcon.orEmpty(),
                     modifier = Modifier
                         .padding(top = if (index == 0) 6.dp else 14.dp, bottom = 6.dp)
-                        .animateContentSize(animationSpec = tween(durationMillis = 220))
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        SmartMealText(
-                            text = categoryName,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = TextBlack,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.testTag("category-$categoryName")
-                        )
-                        SmartMealText(
-                            text = categoryIcon,
-                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                            modifier = Modifier.padding(start = 6.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(2.dp))
-                }
+                        .animateContentSize(animationSpec = tween(durationMillis = 220)),
+                    testTag = "category-$categoryName"
+                )
             }
             items(
                 items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) },
@@ -290,6 +299,71 @@ private fun ProductCategoryList(
                 )
             }
         }
+
+        if (purchasedCategories.isNotEmpty()) {
+            item {
+                ProductCategoryHeader(
+                    title = "Покупки",
+                    icon = "🛒",
+                    modifier = Modifier
+                        .padding(top = if (regularCategories.isEmpty()) 6.dp else 18.dp, bottom = 6.dp)
+                        .animateContentSize(animationSpec = tween(durationMillis = 220)),
+                    testTag = "category-Покупки"
+                )
+            }
+
+            purchasedCategories.forEach { (categoryName, productsInCategory) ->
+                item {
+                    ProductCategoryHeader(
+                        title = categoryName,
+                        icon = productsInCategory.firstOrNull()?.categoryIcon.orEmpty(),
+                        modifier = Modifier
+                            .padding(top = 4.dp, bottom = 4.dp, start = 8.dp)
+                            .animateContentSize(animationSpec = tween(durationMillis = 220)),
+                        testTag = "purchased-category-$categoryName",
+                        textStyle = MaterialTheme.typography.titleSmall
+                    )
+                }
+                items(
+                    items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) },
+                    key = { it.id }
+                ) { product ->
+                    ProductRowItem(
+                        product = product,
+                        onProductChecked = onProductChecked
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProductCategoryHeader(
+    title: String,
+    icon: String,
+    modifier: Modifier = Modifier,
+    testTag: String,
+    textStyle: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.titleMedium
+) {
+    Column(modifier = modifier) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            SmartMealText(
+                text = title,
+                style = textStyle,
+                color = TextBlack,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.testTag(testTag)
+            )
+            if (icon.isNotBlank()) {
+                SmartMealText(
+                    text = icon,
+                    fontSize = textStyle.fontSize,
+                    modifier = Modifier.padding(start = 6.dp)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(2.dp))
     }
 }
 
@@ -300,71 +374,42 @@ private sealed interface ProductContentState {
     data object List : ProductContentState
 }
 
-internal fun selectedDayRange(startIndex: Int?, endIndex: Int?): IntRange? {
-    val start = startIndex ?: return null
-    val end = endIndex ?: start
-    return start..end
-}
-
-internal fun filterProductsByDayRange(
+internal fun filterProductsByDateRange(
     products: List<ProductUiModel>,
-    startIndex: Int?,
-    endIndex: Int?
+    startDateKey: String?,
+    endDateKey: String?
 ): List<ProductUiModel> {
-    val range = selectedDayRange(startIndex, endIndex) ?: return products
-    val hasDayBoundProducts = products.any { it.dayOffsets.isNotEmpty() }
-    if (!hasDayBoundProducts) return products
+    val startKey = startDateKey ?: return products
+    val endKey = endDateKey ?: startKey
+    val lowerBound = minOf(startKey, endKey)
+    val upperBound = maxOf(startKey, endKey)
+    val hasDateBoundProducts = products.any { it.actualDates.isNotEmpty() }
+    if (!hasDateBoundProducts) return products
 
     return products.filter { product ->
-        product.dayOffsets.any { it in range }
+        product.actualDates.any { it in lowerBound..upperBound }
     }
 }
 
 internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<ProductUiModel> {
     return products
         .groupBy { product ->
-            val displayCategory = if (product.checked) "Покупки" else product.categoryName
-            Triple(product.name.trim().lowercase(Locale("ru")), displayCategory, product.checked)
+            Triple(product.name.trim().lowercase(Locale("ru")), product.categoryName, product.checked)
         }
         .values
         .map { groupedProducts ->
             val first = groupedProducts.first()
-            val displayCategory = if (first.checked) "Покупки" else first.categoryName
             first.copy(
-                id = buildDisplayProductId(first.name, displayCategory, first.checked),
+                id = buildDisplayProductId(first.name, first.categoryName, first.checked),
                 amount = formatWeightDisplay(groupedProducts.sumOf { parseWeightToGrams(it.amount) }),
-                categoryName = displayCategory,
-                category = displayCategory,
+                categoryName = first.categoryName,
+                category = first.categoryName,
                 checked = first.checked,
                 dayOffsets = groupedProducts.flatMap { it.dayOffsets }.toSet(),
                 actualDates = groupedProducts.flatMap { it.actualDates }.toSet(),
                 sourceIds = groupedProducts.flatMap { it.sourceIds }.toSet()
             )
         }
-}
-
-internal fun buildSelectedDateDisplay(products: List<ProductUiModel>, fallbackDate: Date?): String {
-    val inputFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-    val fullFormatter = SimpleDateFormat("EEEE - d MMMM yyyy 'г.'", Locale("ru"))
-    val shortFormatter = SimpleDateFormat("d MMMM yyyy 'г.'", Locale("ru"))
-
-    val dates = products
-        .flatMap { it.actualDates }
-        .distinct()
-        .sorted()
-        .mapNotNull { inputFormatter.parse(it) }
-
-    if (dates.isEmpty()) {
-        return fallbackDate?.let(fullFormatter::format).orEmpty()
-    }
-
-    val first = dates.first()
-    val last = dates.last()
-    return if (first == last) {
-        fullFormatter.format(first)
-    } else {
-        "${shortFormatter.format(first)} - ${shortFormatter.format(last)}"
-    }
 }
 
 internal fun buildDisplayProductId(name: String, categoryName: String, checked: Boolean): String {
@@ -498,3 +543,23 @@ data class ProductUiModel(
     val actualDates: Set<String> = emptySet(),
     val sourceIds: Set<String> = setOf(id)
 )
+
+private fun formatMonthYearForSelector(date: Date): String {
+    val text = SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date)
+    return text.replaceFirstChar { it.titlecase(Locale("ru")) }
+}
+
+internal fun formatMonthYearRangeForSelector(startDate: Date, endDate: Date): String {
+    val startMonth = SimpleDateFormat("LLLL", Locale("ru")).format(startDate)
+        .replaceFirstChar { it.titlecase(Locale("ru")) }
+    val endMonth = SimpleDateFormat("LLLL", Locale("ru")).format(endDate)
+        .replaceFirstChar { it.titlecase(Locale("ru")) }
+    val startYear = SimpleDateFormat("yyyy", Locale.US).format(startDate)
+    val endYear = SimpleDateFormat("yyyy", Locale.US).format(endDate)
+
+    return when {
+        startMonth == endMonth && startYear == endYear -> "$startMonth $startYear"
+        startYear == endYear -> "$startMonth - $endMonth $startYear"
+        else -> "$startMonth $startYear - $endMonth $endYear"
+    }
+}

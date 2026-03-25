@@ -77,7 +77,6 @@ fun SetupStep2Content(
         isCompactHeight -> 0.95f
         else -> 1f
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()

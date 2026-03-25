@@ -2,25 +2,29 @@
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.example.smartmeal.feature.home.data.menu.MenuDto
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.presentation.HomeContent
 import com.example.smartmeal.feature.home.presentation.HomeUiState
 import com.example.smartmeal.feature.home.presentation.MealSection
 import com.example.smartmeal.ui.theme.SmartMealTheme
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class HomeScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     @Test
     fun home_loading_showsProgress() {
@@ -30,7 +34,7 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
-                    onDaySelected = {},
+                    onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
@@ -54,7 +58,7 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
-                    onDaySelected = {},
+                    onDateSelected = {},
                     onGenerateMenu = { clicked = true },
                     onReplaceMeal = {},
                     onToggleFavorite = {},
@@ -91,14 +95,15 @@ class HomeScreenTest {
 
         val state = HomeUiState(
             hasMenu = true,
-            mealSections = sections
+            mealSections = sections,
+            currentMenu = menuWithDates("2026-03-10", "2026-03-11")
         )
 
         composeTestRule.setContent {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
-                    onDaySelected = {},
+                    onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
@@ -120,6 +125,7 @@ class HomeScreenTest {
         val state = mutableStateOf(
             HomeUiState(
                 hasMenu = true,
+                currentMenu = menuWithDates("2026-03-10"),
                 mealSections = listOf(
                     MealSection(
                         id = "breakfast",
@@ -134,7 +140,7 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state.value,
-                    onDaySelected = {},
+                    onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = { id ->
                         state.value = state.value.copy(
@@ -173,14 +179,15 @@ class HomeScreenTest {
         var selected: String? = null
 
         val state = HomeUiState(
-            selectedDay = "Пн"
+            selectedDay = "Пн",
+            currentMenu = menuWithDates("2026-03-10", "2026-03-11")
         )
 
         composeTestRule.setContent {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
-                    onDaySelected = { selected = it },
+                    onDateSelected = { selected = dateFormatter.format(it) },
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
@@ -192,10 +199,34 @@ class HomeScreenTest {
         }
 
         composeTestRule.onNodeWithTag("home_day_selector").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("date_chip_1").performClick()
 
-        composeTestRule.onAllNodes(hasClickAction())[1].performClick()
+        assertEquals("2026-03-11", selected)
+    }
 
-        assertNotNull(selected)
+    @Test
+    fun home_showsMonthYearAboveDateSelector() {
+        val state = HomeUiState(
+            currentMenu = menuWithDates("2026-03-10", "2026-03-11")
+        )
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                HomeContent(
+                    uiState = state,
+                    onDateSelected = {},
+                    onGenerateMenu = {},
+                    onReplaceMeal = {},
+                    onToggleFavorite = {},
+                    onRecipeClick = {},
+                    onDateSelectedFromPlan = {},
+                    customPlan = null
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("home_month_year").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Март 2026").assertIsDisplayed()
     }
 
     private fun fakeMeal(
@@ -210,4 +241,24 @@ class HomeScreenTest {
         day_offset = 0,
         actual_date = "2026-03-10"
     )
+
+    private fun menuWithDates(vararg dates: String): MenuDto {
+        return MenuDto(
+            id = 1,
+            period = "week",
+            start_date = dates.firstOrNull() ?: "2026-03-10",
+            created_at = "2026-03-10T00:00:00Z",
+            items = dates.mapIndexed { index, date ->
+                MenuItemDto(
+                    id = index + 1,
+                    recipe = index + 1,
+                    recipe_title = "Meal $index",
+                    cook_time = 15,
+                    meal_type = if (index % 2 == 0) "breakfast" else "dinner",
+                    day_offset = index,
+                    actual_date = date
+                )
+            }
+        )
+    }
 }

@@ -255,12 +255,19 @@ private fun CalendarDayCell(
     isSelectable: Boolean = true,
 ) {
     val isWeeklySelected = periodType == PeriodType.WEEKLY && (isInWeek || isWeekStart || isWeekEnd)
-    val isCustomRangeSelected = periodType == PeriodType.CUSTOM && (isInRange || isRangeStart || isRangeEnd)
     val isInAnySelection = isInWeek || isInRange || isWeekStart || isWeekEnd || isRangeStart || isRangeEnd
+    val isCustomEndpoint = periodType == PeriodType.CUSTOM && (isRangeStart || isRangeEnd)
+    val isCustomInterior = periodType == PeriodType.CUSTOM && isInRange
+    val isWeeklyEndpoint = periodType == PeriodType.WEEKLY && (isWeekStart || isWeekEnd)
+    val isWeeklyInterior = periodType == PeriodType.WEEKLY && isInWeek
+    val isStandaloneSelected = isSelected && !isWeeklySelected && !isCustomEndpoint && !isCustomInterior
 
     val bgColor = when {
-        isWeeklySelected -> PrimaryGreen
-        isCustomRangeSelected -> PrimaryGreen
+        isWeeklyInterior -> PrimaryGreen.copy(alpha = 0.18f)
+        isWeeklyEndpoint -> PrimaryGreen.copy(alpha = 0.24f)
+        isCustomInterior -> PrimaryGreen.copy(alpha = 0.18f)
+        isCustomEndpoint -> PrimaryGreen.copy(alpha = 0.24f)
+        isStandaloneSelected -> PrimaryGreen.copy(alpha = 0.22f)
         isInAnySelection -> PrimaryGreen.copy(alpha = 0.15f)
         else -> Color.Transparent
     }
@@ -277,8 +284,11 @@ private fun CalendarDayCell(
     val textColor = when {
         !isCurrentMonth -> Color.LightGray
         !isSelectable -> Color.LightGray
-        isWeeklySelected -> Color.White
-        isCustomRangeSelected -> Color.White
+        isWeeklyEndpoint -> Color.White
+        isWeeklyInterior -> PrimaryGreen
+        isCustomEndpoint -> Color.White
+        isCustomInterior -> PrimaryGreen
+        isStandaloneSelected -> Color.White
         else -> PrimaryGreen
     }
 
@@ -289,7 +299,7 @@ private fun CalendarDayCell(
             .then(if (isSelectable) Modifier.clickable(onClick = onClick) else Modifier),
         contentAlignment = Alignment.Center,
     ) {
-        val showCircle = periodType != PeriodType.WEEKLY && isSelected
+        val showCircle = isCustomEndpoint || isWeeklyEndpoint || isStandaloneSelected
 
         if (showCircle) {
             Box(
@@ -312,7 +322,7 @@ private fun CalendarDayCell(
                 textAlign = TextAlign.Center,
                 fontSize = textSize,
                 color = textColor,
-                fontWeight = if (isWeeklySelected) FontWeight.SemiBold else FontWeight.Normal,
+                fontWeight = if (isWeeklyInterior || isCustomInterior) FontWeight.SemiBold else FontWeight.Normal,
             )
         }
     }

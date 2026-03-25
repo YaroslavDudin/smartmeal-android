@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import com.example.smartmeal.feature.auth.presentation.AuthState
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterFormContent
@@ -109,11 +110,11 @@ class LoginRegisterFormTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("auth_username").performTextInput("Ivan")
-        composeTestRule.onNodeWithTag("auth_email").performTextInput("ivan@example.com")
-        composeTestRule.onNodeWithTag("auth_password").performTextInput("password123")
-        composeTestRule.onNodeWithTag("auth_confirm_password").performTextInput("password123")
-        composeTestRule.onNodeWithTag("auth_submit").performClick()
+        composeTestRule.onNodeWithTag("auth_username").performScrollTo().performTextInput("Ivan")
+        composeTestRule.onNodeWithTag("auth_email").performScrollTo().performTextInput("ivan@example.com")
+        composeTestRule.onNodeWithTag("auth_password").performScrollTo().performTextInput("password123")
+        composeTestRule.onNodeWithTag("auth_confirm_password").performScrollTo().performTextInput("password123")
+        composeTestRule.onNodeWithTag("auth_submit").performScrollTo().performClick()
 
         assertEquals("Ivan", userValue)
         assertEquals("ivan@example.com", emailValue)

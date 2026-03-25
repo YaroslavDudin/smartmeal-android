@@ -22,10 +22,13 @@ class ProductListViewModel(
     var products by mutableStateOf<List<ProductUiModel>>(emptyList())
         private set
 
-    var selectedStartDayIndex by mutableStateOf<Int?>(null)
+    var selectedStartDateKey by mutableStateOf<String?>(null)
         private set
 
-    var selectedEndDayIndex by mutableStateOf<Int?>(null)
+    var selectedEndDateKey by mutableStateOf<String?>(null)
+        private set
+
+    var availableDateKeys by mutableStateOf<List<String>>(emptyList())
         private set
 
     var dateRangeText by mutableStateOf("Выберите диапазон дней")
@@ -38,7 +41,6 @@ class ProductListViewModel(
         private set
 
     private val checkedMap: SnapshotStateMap<String, Boolean> = mutableStateMapOf()
-    private val dayNames = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
 
     private val categoryNormalizeMap = mapOf(
         "Овощи" to "Овощи и фрукты",
@@ -48,6 +50,10 @@ class ProductListViewModel(
         "Молочные продукты" to "Молочные продукты",
         "Бакалея" to "Бакалея и молочные продукты",
         "Специи" to "Специи",
+        "Консервы" to "Консервированные продукты",
+        "Консервированные продукты" to "Консервированные продукты",
+        "Паста" to "Пасты",
+        "Пасты" to "Пасты",
         "Масла" to "Масла",
         "Напитки" to "Напитки",
         "Зерновые" to "Зерновые",
@@ -69,6 +75,8 @@ class ProductListViewModel(
         "Фрукты и ягоды" to "🍓",
         "Мясо и мясная продукция" to "🍖",
         "Бобовые" to "🫘",
+        "Консервированные продукты" to "🥫",
+        "Пасты" to "🍝",
         "Овощи, зелень и грибы" to "🥬",
         "Приправы и специи" to "🌿",
         "Соусы" to "🫙",
@@ -79,50 +87,35 @@ class ProductListViewModel(
         "Добавки для приготовления блюд" to "🍽️"
     )
 
-    private fun weekdayIndexFromDate(dateString: String): Int {
-        val date = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateString) ?: Date()
-        val calendar = Calendar.getInstance().apply { time = date }
-        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> 0
-            Calendar.TUESDAY -> 1
-            Calendar.WEDNESDAY -> 2
-            Calendar.THURSDAY -> 3
-            Calendar.FRIDAY -> 4
-            Calendar.SATURDAY -> 5
-            Calendar.SUNDAY -> 6
-            else -> 0
-        }
-    }
-
     fun clearProducts() {
         products = emptyList()
-        selectedStartDayIndex = null
-        selectedEndDayIndex = null
+        selectedStartDateKey = null
+        selectedEndDateKey = null
+        availableDateKeys = emptyList()
         dateRangeText = "Выберите диапазон дней"
         errorMessage = null
     }
 
-    fun selectDayRange(dayLabel: String) {
-        val dayIndex = dayNames.indexOf(dayLabel)
-        if (dayIndex == -1) return
+    fun selectDateRange(dateKey: String) {
+        if (dateKey !in availableDateKeys) return
 
         when {
-            selectedStartDayIndex == null -> {
-                selectedStartDayIndex = dayIndex
-                selectedEndDayIndex = null
+            selectedStartDateKey == null -> {
+                selectedStartDateKey = dateKey
+                selectedEndDateKey = null
             }
-            selectedEndDayIndex == null -> {
-                val currentStart = selectedStartDayIndex ?: dayIndex
-                if (dayIndex < currentStart) {
-                    selectedStartDayIndex = dayIndex
-                    selectedEndDayIndex = currentStart
+            selectedEndDateKey == null -> {
+                val currentStart = selectedStartDateKey ?: dateKey
+                if (dateKey < currentStart) {
+                    selectedStartDateKey = dateKey
+                    selectedEndDateKey = currentStart
                 } else {
-                    selectedEndDayIndex = dayIndex
+                    selectedEndDateKey = dateKey
                 }
             }
             else -> {
-                selectedStartDayIndex = dayIndex
-                selectedEndDayIndex = null
+                selectedStartDateKey = dateKey
+                selectedEndDateKey = null
             }
         }
 
@@ -163,9 +156,14 @@ class ProductListViewModel(
             errorMessage = null
             try {
                 val rawProducts = mutableListOf<ProductUiModel>()
+                val orderedDateKeys = menuItems
+                    .map { it.actual_date }
+                    .distinct()
+                    .sorted()
+                val dateIndexMap = orderedDateKeys.withIndex().associate { it.value to it.index }
 
                 for (menuItem in menuItems) {
-                    val weekdayIndex = weekdayIndexFromDate(menuItem.actual_date)
+                    val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
                     val response = menuApi.getRecipe(menuItem.recipe)
                     if (!response.isSuccessful) continue
 
@@ -199,7 +197,7 @@ class ProductListViewModel(
                             categoryName = normalizedCategory,
                             categoryIcon = icon,
                             checked = checkedMap[occurrenceId] ?: false,
-                            dayOffsets = setOf(weekdayIndex),
+                            dayOffsets = setOf(dateIndex),
                             actualDates = setOf(menuItem.actual_date),
                             sourceIds = setOf(occurrenceId)
                         )
@@ -211,7 +209,7 @@ class ProductListViewModel(
                         .thenBy { it.name.lowercase(Locale("ru")) }
                 )
 
-                initializeRangeFromProducts(products)
+                initializeRangeFromProducts(products, orderedDateKeys)
             } catch (e: Exception) {
                 e.printStackTrace()
                 errorMessage = e.localizedMessage ?: "Не удалось загрузить продукты"
@@ -221,36 +219,42 @@ class ProductListViewModel(
         }
     }
 
-    private fun initializeRangeFromProducts(products: List<ProductUiModel>) {
-        val availableDayIndices = products
-            .flatMap { it.dayOffsets }
-            .distinct()
-            .sorted()
+    private fun initializeRangeFromProducts(products: List<ProductUiModel>, orderedDateKeys: List<String>) {
+        availableDateKeys = orderedDateKeys
 
-        if (availableDayIndices.isEmpty()) {
-            selectedStartDayIndex = null
-            selectedEndDayIndex = null
+        if (orderedDateKeys.isEmpty()) {
+            selectedStartDateKey = null
+            selectedEndDateKey = null
             dateRangeText = "Выберите диапазон дней"
             return
         }
 
-        selectedStartDayIndex = availableDayIndices.first()
-        selectedEndDayIndex = availableDayIndices.last()
+        val currentStart = selectedStartDateKey?.takeIf { it in orderedDateKeys }
+        val currentEnd = selectedEndDateKey?.takeIf { it in orderedDateKeys }
+
+        selectedStartDateKey = currentStart ?: orderedDateKeys.first()
+        selectedEndDateKey = currentEnd ?: orderedDateKeys.last()
         updateDateRangeText()
     }
 
     private fun updateDateRangeText() {
-        val startIndex = selectedStartDayIndex
-        if (startIndex == null) {
+        val startKey = selectedStartDateKey
+        if (startKey == null) {
             dateRangeText = "Выберите диапазон дней"
             return
         }
 
-        val endIndex = selectedEndDayIndex ?: startIndex
-        dateRangeText = if (startIndex == endIndex) {
-            dayNames[startIndex]
+        val endKey = selectedEndDateKey ?: startKey
+        val formatter = SimpleDateFormat("d MMM", Locale("ru"))
+        val startDate = parseApiDate(startKey)
+        val endDate = parseApiDate(endKey)
+
+        dateRangeText = if (startDate == null || endDate == null) {
+            "Выберите диапазон дней"
+        } else if (startKey == endKey) {
+            formatter.format(startDate)
         } else {
-            "${dayNames[startIndex]}-${dayNames[endIndex]}"
+            "${formatter.format(startDate)} - ${formatter.format(endDate)}"
         }
     }
 
@@ -271,6 +275,14 @@ class ProductListViewModel(
         return categoryOrder.indexOf(categoryName).let { index ->
             if (index == -1) Int.MAX_VALUE else index
         }
+    }
+}
+
+internal fun parseApiDate(value: String): Date? {
+    return try {
+        SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(value)
+    } catch (_: Exception) {
+        null
     }
 }
 

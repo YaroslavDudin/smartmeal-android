@@ -8,7 +8,7 @@ class ProductRangeAggregationTest {
 
     @Test
     fun aggregateProductsForDisplay_sumsSameIngredientWithinSelectedRange() {
-        val filteredProducts = filterProductsByDayRange(
+        val filteredProducts = filterProductsByDateRange(
             products = listOf(
                 product(
                     id = "monday",
@@ -32,8 +32,8 @@ class ProductRangeAggregationTest {
                     actualDate = "2026-03-25"
                 )
             ),
-            startIndex = 0,
-            endIndex = 1
+            startDateKey = "2026-03-23",
+            endDateKey = "2026-03-24"
         )
 
         val aggregatedProducts = aggregateProductsForDisplay(filteredProducts)
@@ -69,7 +69,7 @@ class ProductRangeAggregationTest {
         val purchases = aggregatedProducts.first { it.checked }
         val regular = aggregatedProducts.first { !it.checked }
 
-        assertEquals("Покупки", purchases.categoryName)
+        assertEquals("Мясо и рыба", purchases.categoryName)
         assertEquals("500 г", purchases.amount)
         assertEquals("Мясо и рыба", regular.categoryName)
         assertEquals("400 г", regular.amount)

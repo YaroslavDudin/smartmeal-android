@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -57,7 +58,9 @@ import com.example.smartmeal.ui.components.buttons.CircleIconButton
 import com.example.smartmeal.ui.components.buttons.CircleIconType
 import com.example.smartmeal.ui.components.cards.BottomNavigationBar
 import com.example.smartmeal.ui.components.cards.MealCard
-import com.example.smartmeal.ui.components.selectors.DaySelector
+import com.example.smartmeal.ui.components.selectors.DateSelector
+import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
+import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -156,7 +159,7 @@ fun HomeScreen(
                 // ---------------- ГЛАВНАЯ ----------------
                 0 -> HomeContent(
                     uiState = uiState,
-                    onDaySelected = { viewModel.selectDay(it, customPlan) },
+                    onDateSelected = { viewModel.selectDate(it, customPlan) },
                     onGenerateMenu = {
                         val storedPlanType = setupPreferences.getPlanType()
                         val range = setupPreferences.getCustomPlanRange()?.let { (start, end) ->
@@ -177,10 +180,10 @@ fun HomeScreen(
                     ProductListScreen(
                         products = productListViewModel.products,
                         selectedDate = uiState.selectedDate,
-                        selectedStartDayIndex = productListViewModel.selectedStartDayIndex,
-                        selectedEndDayIndex = productListViewModel.selectedEndDayIndex,
+                        selectedStartDateKey = productListViewModel.selectedStartDateKey,
+                        selectedEndDateKey = productListViewModel.selectedEndDateKey,
                         dateRangeText = productListViewModel.dateRangeText,
-                        onDaySelected = { day -> productListViewModel.selectDayRange(day) },
+                        onDateSelected = { dateKey -> productListViewModel.selectDateRange(dateKey) },
                         onProductChecked = { productIds, checked ->
                             productListViewModel.onProductChecked(productIds, checked)
                         },
@@ -208,7 +211,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     uiState: HomeUiState,
-    onDaySelected: (String) -> Unit,
+    onDateSelected: (Date) -> Unit,
     onGenerateMenu: () -> Unit,
     onReplaceMeal: (String) -> Unit,
     onToggleFavorite: (Int) -> Unit,
@@ -216,6 +219,17 @@ fun HomeContent(
     onDateSelectedFromPlan: (Date) -> Unit,
     customPlan: CustomPlan?
 ) {
+    val availableDates = remember(uiState.currentMenu?.items, uiState.allMenuItems, customPlan) {
+        val sourceItems = if (customPlan != null) {
+            uiState.allMenuItems
+        } else {
+            uiState.currentMenu?.items ?: emptyList()
+        }
+        buildAvailableDates(sourceItems, customPlan)
+    }
+    val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
+    val selectedDateId = uiState.selectedDate?.let(::buildDateSelectorId)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -231,21 +245,32 @@ fun HomeContent(
             color = MaterialTheme.colorScheme.onBackground
         )
 
-        Box(modifier = Modifier.testTag("home_day_selector")) {
-            DaySelector(
-                selectedDay = uiState.selectedDay,
-                onDaySelected = onDaySelected
+        val monthYearLabel = availableDates.firstOrNull()?.let {
+            formatMonthYearForSelector(uiState.selectedDate ?: it)
+        }.orEmpty()
+
+        if (monthYearLabel.isNotBlank()) {
+            SmartMealText(
+                text = monthYearLabel,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
+                    .testTag("home_month_year"),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
             )
         }
 
-        SmartMealText(
-            text = uiState.selectedDateDisplay,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-                .testTag("home_date"),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Box(modifier = Modifier.testTag("home_day_selector")) {
+            DateSelector(
+                items = dateSelectorItems,
+                selectedStartId = selectedDateId,
+                onItemClick = { dateId ->
+                    availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
+                }
+            )
+        }
 
         if (customPlan != null) {
             MyPlanSection(
@@ -416,7 +441,6 @@ data class HomeUiState(
     val selectedDay: String = "",
     val selectedDate: Date? = null,
     val selectedDateFromPlan: Boolean = false,
-    val selectedDateDisplay: String = "",
     val mealSections: List<MealSection> = emptyList(),
     val currentMenu: MenuDto? = null,
     val allMenuItems: List<MenuItemDto> = emptyList(),
@@ -431,23 +455,9 @@ class HomeViewModel : ViewModel() {
     private val menuApi: MenuApi = RetrofitClient.createService(MenuApi::class.java)
     var onCartUpdated: (() -> Unit)? = null
     private val dayNames = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
-    private val displayDateFormatter = SimpleDateFormat("EEEE - d MMMM yyyy 'г.'", Locale("ru"))
     private val apiDateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
     init {
-        val calendar = Calendar.getInstance()
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val dayIndex = when(dayOfWeek) {
-            Calendar.MONDAY -> 0
-            Calendar.TUESDAY -> 1
-            Calendar.WEDNESDAY -> 2
-            Calendar.THURSDAY -> 3
-            Calendar.FRIDAY -> 4
-            Calendar.SATURDAY -> 5
-            Calendar.SUNDAY -> 6
-            else -> 0
-        }
-        _uiState.update { it.copy(selectedDay = dayNames[dayIndex]) }
         loadCurrentMenu()
     }
 
@@ -472,12 +482,21 @@ class HomeViewModel : ViewModel() {
                     cal.time
                 }
                 _uiState.update {
+                    val currentSelectedDate = it.selectedDate?.let(::normalizeDate)
+                    val availableDates = buildAvailableDates(menu.items ?: emptyList(), null)
+                    val defaultDate = availableDates.firstOrNull()
+                    val resolvedSelectedDate = currentSelectedDate?.takeIf { selected ->
+                        availableDates.any { it.time == selected.time }
+                    } ?: defaultDate
                     it.copy(
                         isLoading = false,
                         hasMenu = true,
                         currentMenu = menu,
                         customPlan = CustomPlan(startDate, endDate),
-                        allMenuItems = allItems
+                        allMenuItems = allItems,
+                        selectedDate = resolvedSelectedDate,
+                        selectedDay = resolvedSelectedDate?.let(::resolveDayNameForDate).orEmpty(),
+                        selectedDateFromPlan = false
                     )
                 }
                 updateMealSections()
@@ -562,47 +581,12 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun selectDay(day: String, customPlan: CustomPlan?) {
-        val state = _uiState.value
-        val selectedDate = if (customPlan != null) {
-            val candidate = customPlan.startDate.let { baseDate ->
-                dateForSelectedDay(baseDate, day)
-            }?.let(::normalizeDate)
-
-            if (candidate != null) {
-                val start = normalizeDate(customPlan.startDate)
-                val end = normalizeDate(customPlan.endDate)
-                if (candidate.before(start) || candidate.after(end)) {
-                    return
-                }
-            }
-
-            candidate
-        } else {
-            val menu = state.currentMenu
-            menu?.let { dateForSelectedDay(it, day) }
-        }
-
-        _uiState.update {
-            it.copy(
-                selectedDay = day,
-                selectedDate = selectedDate,
-                selectedDateFromPlan = customPlan != null && selectedDate != null
-            )
-        }
-        updateMealSections()
-    }
-
-    private fun dateForSelectedDay(baseDate: Date, selectedDay: String): Date? {
-        return resolveDateForSelectedDay(baseDate, selectedDay, dayNames)
-    }
-
     private fun updateMealSections() {
         val state = _uiState.value
         val menu = state.currentMenu ?: return
 
         try {
-            val resolvedDate = state.selectedDate ?: dateForSelectedDay(menu, state.selectedDay)
+            val resolvedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), null).firstOrNull()
 
             val itemsForDay = if (resolvedDate != null) {
                 val selectedDateStr = apiDateFormatter.format(resolvedDate)
@@ -614,8 +598,6 @@ class HomeViewModel : ViewModel() {
             } else {
                 emptyList()
             }
-
-            val displayDate = resolvedDate?.let { displayDateFormatter.format(it) } ?: ""
 
             val mealSections = itemsForDay.map { item ->
                 val title = when(item.meal_type) {
@@ -640,8 +622,8 @@ class HomeViewModel : ViewModel() {
 
             _uiState.update { it.copy(
                 mealSections = mealSections,
-                selectedDateDisplay = displayDate,
-                selectedDate = resolvedDate
+                selectedDate = resolvedDate,
+                selectedDay = resolvedDate?.let(::resolveDayNameForDate).orEmpty()
             ) }
         } catch (e: Exception) {
             _uiState.update { it.copy(error = "Ошибка обработки даты: ${e.localizedMessage}") }
@@ -677,7 +659,7 @@ class HomeViewModel : ViewModel() {
         }
 
         val dayName = dayNames[dayIndex]
-        _uiState.update { it.copy(selectedDay = dayName, selectedDate = normalized, selectedDateFromPlan = true) }
+        _uiState.update { it.copy(selectedDay = dayName, selectedDate = normalized, selectedDateFromPlan = customPlan != null) }
         updateMealSections()
     }
 
@@ -697,32 +679,16 @@ class HomeViewModel : ViewModel() {
         return cal.time
     }
 
-    private fun dateForSelectedDay(menu: MenuDto, selectedDay: String): Date? {
-        val startDate = apiDateFormatter.parse(menu.start_date) ?: return null
-        return dateForSelectedDay(startDate, selectedDay)
-    }
-
     fun replaceMeal(mealType: String) {
         val state = _uiState.value
         val menu = state.currentMenu ?: return
-
-        val selectedDayOfWeekIndex = dayNames.indexOf(state.selectedDay)
-        val startDate = try { apiDateFormatter.parse(menu.start_date) } catch (e: Exception) { null } ?: Date()
-        val startCalendar = Calendar.getInstance().apply { time = startDate }
-        val startDayIndex = when(startCalendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.MONDAY -> 0
-            Calendar.TUESDAY -> 1
-            Calendar.WEDNESDAY -> 2
-            Calendar.THURSDAY -> 3
-            Calendar.FRIDAY -> 4
-            Calendar.SATURDAY -> 5
-            Calendar.SUNDAY -> 6
-            else -> 0
-        }
-        var offset = selectedDayOfWeekIndex - startDayIndex
-        if (offset < 0) offset += 7
-
-        val menuItem = menu.items?.find { it.day_offset == offset && it.meal_type == mealType } ?: return
+        val selectedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), null).firstOrNull() ?: return
+        val selectedDateStr = apiDateFormatter.format(selectedDate)
+        val menuItem = if (state.selectedDateFromPlan) {
+            state.allMenuItems.find { it.actual_date == selectedDateStr && it.meal_type == mealType }
+        } else {
+            menu.items?.find { it.actual_date == selectedDateStr && it.meal_type == mealType }
+        } ?: return
 
         viewModelScope.launch {
             try {
@@ -742,6 +708,56 @@ class HomeViewModel : ViewModel() {
 
     }
 
+}
+
+internal fun buildAvailableDates(
+    menuItems: List<MenuItemDto>,
+    customPlan: CustomPlan?
+): List<Date> {
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    val startMillis = customPlan?.startDate?.let(::normalizeDateStatic)?.time
+    val endMillis = customPlan?.endDate?.let(::normalizeDateStatic)?.time
+
+    return menuItems
+        .mapNotNull { item -> formatter.parse(item.actual_date) }
+        .map(::normalizeDateStatic)
+        .distinct()
+        .sorted()
+        .filter { date ->
+            val time = date.time
+            (startMillis == null || time >= startMillis) &&
+                (endMillis == null || time <= endMillis)
+        }
+}
+
+private fun resolveDayNameForDate(date: Date): String {
+    val calendar = Calendar.getInstance().apply { time = date }
+    return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+        Calendar.MONDAY -> "Пн"
+        Calendar.TUESDAY -> "Вт"
+        Calendar.WEDNESDAY -> "Ср"
+        Calendar.THURSDAY -> "Чт"
+        Calendar.FRIDAY -> "Пт"
+        Calendar.SATURDAY -> "Сб"
+        Calendar.SUNDAY -> "Вс"
+        else -> ""
+    }
+}
+
+private fun normalizeDateStatic(date: Date): Date {
+    val cal = Calendar.getInstance().apply {
+        time = date
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    return cal.time
+}
+
+private fun formatMonthYearForSelector(date: Date): String {
+    val text = SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date)
+    return text.replaceFirstChar { it.titlecase(Locale("ru")) }
 }
 
 internal fun mergeUpdatedMenuItemIntoState(
