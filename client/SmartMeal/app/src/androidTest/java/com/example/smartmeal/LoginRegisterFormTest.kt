@@ -53,9 +53,18 @@ class LoginRegisterFormTest {
             }
         }
 
+        // Переключаемся на вкладку регистрации
         composeTestRule.onNodeWithTag("auth_toggle_register").performClick()
-        composeTestRule.onNodeWithTag("auth_username").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("auth_confirm_password").assertIsDisplayed()
+        
+        // Добавляем performScrollTo() перед проверкой видимости
+        composeTestRule.onNodeWithTag("auth_username")
+            .performScrollTo()
+            .assertIsDisplayed()
+            
+        composeTestRule.onNodeWithTag("auth_confirm_password")
+            .performScrollTo()
+            .assertIsDisplayed()
+            
         composeTestRule.onAllNodesWithTag("auth_forgot").assertCountEquals(0)
     }
 
