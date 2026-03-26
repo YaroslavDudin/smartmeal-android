@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
@@ -63,6 +66,7 @@ import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
+import com.example.smartmeal.ui.theme.PrimaryGreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -143,30 +147,66 @@ fun HomeScreen(
         ) {
             when (selectedNavItem) {
                 // ---------------- ГЛАВНАЯ ----------------
-                0 -> HomeContent(
-                    uiState = uiState,
-                    onDateSelected = { viewModel.selectDate(it, customPlan) },
-                    onGenerateMenu = {
-                        val storedPlanType = setupPreferences.getPlanType()
-                        val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
-                        
-                        var customDays: Int? = null
-                        if (storedPlanType == SetupPreferences.PLAN_TYPE_CUSTOM) {
-                            val range = setupPreferences.getCustomPlanRange()
-                            if (range != null) {
-                                val diff = range.second - range.first
-                                customDays = (diff / (1000 * 60 * 60 * 24)).toInt() + 1
+                0 -> Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            onClick = { viewModel.dismissError() },
+                            indication = null,
+                            interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+                        )
+                ) {
+                    HomeContent(
+                        uiState = uiState,
+                        onDateSelected = { viewModel.selectDate(it, customPlan) },
+                        onGenerateMenu = {
+                            val storedPlanType = setupPreferences.getPlanType()
+                            val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
+                            
+                            var customDays: Int? = null
+                            if (storedPlanType == SetupPreferences.PLAN_TYPE_CUSTOM) {
+                                val range = setupPreferences.getCustomPlanRange()
+                                if (range != null) {
+                                    val diff = range.second - range.first
+                                    customDays = (diff / (1000 * 60 * 60 * 24)).toInt() + 1
+                                }
+                            }
+                            
+                            viewModel.generateMenu(storedPlanType, selectedPlanDate, customDays)
+                        },
+                        onReplaceMeal = { viewModel.replaceMeal(it) },
+                        onToggleFavorite = { viewModel.toggleFavorite(it) },
+                        onRecipeClick = onRecipeClick,
+                        onDateSelectedFromPlan = { viewModel.selectDate(it, customPlan) },
+                        customPlan = customPlan
+                    )
+
+                    // КРАСИВЫЙ LOADING OVERLAY
+                    if (uiState.isLoading && uiState.hasMenu) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Black.copy(alpha = 0.12f))
+                                .clickable(enabled = false) {}, // Блокируем клики под лоадером
+                            contentAlignment = Alignment.Center
+                        ) {
+                            androidx.compose.material3.Surface(
+                                shape = RoundedCornerShape(16.dp),
+                                color = Color.White,
+                                shadowElevation = 8.dp
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .padding(24.dp)
+                                        .size(48.dp)
+                                        .testTag("home_loading"),
+                                    color = PrimaryGreen,
+                                    strokeWidth = 4.dp
+                                )
                             }
                         }
-                        
-                        viewModel.generateMenu(storedPlanType, selectedPlanDate, customDays)
-                    },
-                    onReplaceMeal = { viewModel.replaceMeal(it) },
-                    onToggleFavorite = { viewModel.toggleFavorite(it) },
-                    onRecipeClick = onRecipeClick,
-                    onDateSelectedFromPlan = { viewModel.selectDate(it, customPlan) },
-                    customPlan = customPlan
-                )
+                    }
+                }
 
                 // ---------------- ПРОДУКТЫ ----------------
                 1 -> {
@@ -245,7 +285,7 @@ fun HomeContent(
             formatMonthYearForSelector(uiState.selectedDate ?: it)
         }.orEmpty()
 
-        if (monthYearLabel.isNotBlank() && !hasSingleAvailableDate) {
+        if (monthYearLabel.isNotBlank()) {
             SmartMealText(
                 text = monthYearLabel,
                 style = MaterialTheme.typography.titleMedium,
@@ -693,6 +733,10 @@ class HomeViewModel : ViewModel() {
                 _uiState.update { it.copy(error = e.localizedMessage) }
             }
         }
+    }
+
+    fun dismissError() {
+        _uiState.update { it.copy(error = null) }
     }
 }
 
