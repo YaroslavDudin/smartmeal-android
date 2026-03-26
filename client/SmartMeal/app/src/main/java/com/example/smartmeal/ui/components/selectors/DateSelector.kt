@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +49,16 @@ fun DateSelector(
 
     val selectedRange = remember(items, selectedStartId, selectedEndId) {
         buildSelectionRange(items, selectedStartId, selectedEndId)
+    }
+
+    
+    LaunchedEffect(selectedStartId, items) {
+        if (selectedStartId != null && items.isNotEmpty()) {
+            val index = items.indexOfFirst { it.id == selectedStartId }
+            if (index != -1) {
+                listState.animateScrollToItem(maxOf(0, index - 2))
+            }
+        }
     }
 
     LazyRow(
