@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -125,7 +126,8 @@ fun LoginRegisterFormContent(
                 contentDescription = "Food logo",
                 modifier = Modifier
                     .size(IconSize.LOGO)
-                    .clip(RoundedCornerShape(16.dp)),
+                    .clip(RoundedCornerShape(16.dp))
+                    .testTag("food_logo"),
                 contentScale = ContentScale.Fit
             )
 
@@ -215,6 +217,7 @@ fun LoginRegisterFormContent(
                         .align(Alignment.Start)
                         .testTag("auth_forgot")
                         .clickable { /* TODO: Forgot Password */ }
+                        .testTag("auth_forgot")
                 )
             }
 
@@ -225,14 +228,19 @@ fun LoginRegisterFormContent(
                 SmartMealText(
                     text = authState.message,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(bottom = 16.dp),
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .testTag("auth_error"),
                     textAlign = TextAlign.Center
                 )
             }
 
             // 7. Кнопка действия
             if (authState is AuthState.Loading) {
-                CircularProgressIndicator(color = PrimaryGreen)
+                CircularProgressIndicator(
+                    color = PrimaryGreen,
+                    modifier = Modifier.testTag("auth_loading")
+                )
             } else {
                 SmartMealButton(
                     text = if (isLoginMode) "Войти" else "Создать аккаунт",
@@ -253,12 +261,14 @@ fun LoginRegisterFormContent(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            TextButton(
-                onClick = onNavigateToSandbox,
-                modifier = Modifier.padding(bottom = 16.dp)
-            ) {
-                SmartMealText("Перейти в Sandbox", color = PrimaryGreen)
-            }
+            // TextButton(
+            //     onClick = onNavigateToSandbox,
+            //     modifier = Modifier
+            //         .padding(bottom = 16.dp)
+            //         .testTag("auth_sandbox_button")
+            // ) {
+            //     SmartMealText("Перейти в Sandbox", color = PrimaryGreen)
+            // }
         }
     }
 }

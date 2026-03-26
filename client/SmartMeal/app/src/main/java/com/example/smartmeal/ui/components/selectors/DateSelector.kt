@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.PrimaryGreenDark
 import com.example.smartmeal.ui.theme.TextBlack
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -54,7 +55,7 @@ fun DateSelector(
         state = listState,
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
     ) {
         itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
             val isStart = item.id == selectedStartId
@@ -82,13 +83,14 @@ private fun DateChip(
     modifier: Modifier = Modifier,
 ) {
     val chipShape = RoundedCornerShape(18.dp)
+    val rangeInteriorColor = PrimaryGreen.copy(alpha = 0.35f)
     val backgroundColor = when {
-        isRangeInterior -> LightGreenBg.copy(alpha = 0.9f)
+        isRangeInterior -> rangeInteriorColor
         isSelected -> PrimaryGreen
-        else -> LightGreenBg
+        else -> Color.Transparent
     }
     val contentColor = when {
-        isRangeInterior -> PrimaryGreen
+        isRangeInterior -> PrimaryGreenDark
         isSelected -> Color.White
         else -> TextBlack
     }

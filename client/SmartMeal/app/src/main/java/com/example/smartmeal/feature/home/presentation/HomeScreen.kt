@@ -99,22 +99,6 @@ fun HomeScreen(
         null
     }
 
-    LaunchedEffect(customPlan?.startDate?.time, customPlan?.endDate?.time, uiState.selectedDateFromPlan) {
-        if (customPlan == null) {
-            viewModel.clearPlanSelection()
-            return@LaunchedEffect
-        }
-
-        val selected = uiState.selectedDate
-        val outOfRange = selected == null ||
-            selected.before(customPlan.startDate) ||
-            selected.after(customPlan.endDate)
-
-        if (!uiState.selectedDateFromPlan || outOfRange) {
-            viewModel.selectDate(customPlan.startDate, customPlan)
-        }
-    }
-
     var selectedNavItem by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(uiState.allMenuItems) {
@@ -468,7 +452,6 @@ class HomeViewModel : ViewModel() {
     private val menuRepository = MenuRepository(RetrofitClient.createService(MenuApi::class.java))
     private val generatorApi = RetrofitClient.createService(GeneratorApi::class.java)
     private val menuApi: MenuApi = RetrofitClient.createService(MenuApi::class.java)
-    var onCartUpdated: (() -> Unit)? = null
     private val dayNames = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
     private val apiDateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
@@ -579,16 +562,7 @@ class HomeViewModel : ViewModel() {
                 }
 
                 val menu = refreshMenu()
-                if (menu != null && !menu.items.isNullOrEmpty()) {
-                    for (item in menu.items) {
-                        val recipeResponse = menuApi.getRecipe(item.recipe)
-                        if (!recipeResponse.isSuccessful) {
-                            println("Ошибка загрузки рецепта ${item.recipe}: ${recipeResponse.code()}")
-                        }
-                    }
-                    onCartUpdated?.invoke()
-                }
-            } catch (e: Exception) {
+                if (menu != null && !menu.items.isNullOrEmpty()) {} catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.localizedMessage) }
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
@@ -713,7 +687,6 @@ class HomeViewModel : ViewModel() {
                         mergeUpdatedMenuItemIntoState(currentState, updatedItem)
                     }
                     updateMealSections()
-                    onCartUpdated?.invoke()
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage) }

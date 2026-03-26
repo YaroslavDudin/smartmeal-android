@@ -150,8 +150,11 @@ class ProductListViewModel(
         }
     }
 
+    private val recipeCache = mutableMapOf<Int, com.example.smartmeal.feature.home.data.menu.RecipeDetailDto>()
+
     fun generateProductsFromMenuItems(menuItems: List<MenuItemDto>) {
         viewModelScope.launch {
+             if (isLoading) return@launch
             isLoading = true
             errorMessage = null
             try {
@@ -161,13 +164,21 @@ class ProductListViewModel(
                     .distinct()
                     .sorted()
                 val dateIndexMap = orderedDateKeys.withIndex().associate { it.value to it.index }
+                val uniqueRecipeIds = menuItems.map { it.recipe }.distinct()
+                for (recipeId in uniqueRecipeIds) {
+                    if (!recipeCache.containsKey(recipeId)) {
+                        val response = menuApi.getRecipe(recipeId)
+                        if (response.isSuccessful) {
+                            response.body()?.let { recipeCache[recipeId] = it }
+                        }
+                    }
+                }
 
                 for (menuItem in menuItems) {
                     val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
-                    val response = menuApi.getRecipe(menuItem.recipe)
-                    if (!response.isSuccessful) continue
+                    val recipe = recipeCache[menuItem.recipe] ?: continue
 
-                    response.body()?.ingredients?.forEachIndexed { ingredientIndex, ingredient ->
+                    recipe.ingredients?.forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {
                             return@forEachIndexed
                         }
