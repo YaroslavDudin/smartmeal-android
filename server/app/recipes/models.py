@@ -71,6 +71,7 @@ class Ingredient(models.Model):
     '''Базовый продукт/ингредиент (например: яблоко, куриная грудка, мука).'''
     name = models.CharField(max_length=255, unique=True)
     category = models.ForeignKey(IngredientCategory, on_delete=models.RESTRICT, related_name='ingredients')
+    add_to_cart = models.BooleanField(default=True) # Должен ли ингредиент добавляться в корзину
     allergies = models.ManyToManyField('accounts.Allergy', blank=True, related_name='ingredients')
 
     class Meta:

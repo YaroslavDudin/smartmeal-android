@@ -2847,8 +2847,8 @@
     "pk": 280,
     "fields": {
         "ingredient": 62,
-        "unit": 1,
-        "base_unit": 6,
+        "unit": 6,
+        "base_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -3058,6 +3058,7 @@
     "fields": {
         "name": "Картофель",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3067,6 +3068,7 @@
     "fields": {
         "name": "Морковь",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3076,6 +3078,7 @@
     "fields": {
         "name": "Лук репчатый",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3085,6 +3088,7 @@
     "fields": {
         "name": "Чеснок",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3094,6 +3098,7 @@
     "fields": {
         "name": "Помидор",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3103,6 +3108,7 @@
     "fields": {
         "name": "Огурец",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3112,6 +3118,7 @@
     "fields": {
         "name": "Перец болгарский",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3121,6 +3128,7 @@
     "fields": {
         "name": "Капуста белокочанная",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3130,6 +3138,7 @@
     "fields": {
         "name": "Брокколи",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3139,6 +3148,7 @@
     "fields": {
         "name": "Тыква",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3148,6 +3158,7 @@
     "fields": {
         "name": "Кабачок",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3157,6 +3168,7 @@
     "fields": {
         "name": "Баклажан",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3166,6 +3178,7 @@
     "fields": {
         "name": "Свёкла",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3175,6 +3188,7 @@
     "fields": {
         "name": "Укроп свежий",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3184,6 +3198,7 @@
     "fields": {
         "name": "Яблоко",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3193,6 +3208,7 @@
     "fields": {
         "name": "Банан",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3202,6 +3218,7 @@
     "fields": {
         "name": "Апельсин",
         "category": 2,
+        "add_to_cart": true,
         "allergies": [
             9
         ]
@@ -3213,6 +3230,7 @@
     "fields": {
         "name": "Лимон",
         "category": 2,
+        "add_to_cart": true,
         "allergies": [
             9
         ]
@@ -3224,6 +3242,7 @@
     "fields": {
         "name": "Груша",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3233,6 +3252,7 @@
     "fields": {
         "name": "Клубника",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3242,6 +3262,7 @@
     "fields": {
         "name": "Виноград",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3251,6 +3272,7 @@
     "fields": {
         "name": "Авокадо",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3260,6 +3282,7 @@
     "fields": {
         "name": "Куриное филе",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3269,6 +3292,7 @@
     "fields": {
         "name": "Куриные бёдра",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3278,6 +3302,7 @@
     "fields": {
         "name": "Говядина",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3287,6 +3312,7 @@
     "fields": {
         "name": "Свинина",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3296,6 +3322,7 @@
     "fields": {
         "name": "Фарш свиной",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3305,6 +3332,7 @@
     "fields": {
         "name": "Бекон",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3314,6 +3342,7 @@
     "fields": {
         "name": "Колбаса варёная",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3323,6 +3352,7 @@
     "fields": {
         "name": "Лосось филе",
         "category": 5,
+        "add_to_cart": true,
         "allergies": [
             3
         ]
@@ -3334,6 +3364,7 @@
     "fields": {
         "name": "Треска филе",
         "category": 5,
+        "add_to_cart": true,
         "allergies": [
             3
         ]
@@ -3345,6 +3376,7 @@
     "fields": {
         "name": "Тунец консервированный",
         "category": 5,
+        "add_to_cart": true,
         "allergies": [
             3
         ]
@@ -3356,6 +3388,7 @@
     "fields": {
         "name": "Креветки неочищенные",
         "category": 5,
+        "add_to_cart": true,
         "allergies": [
             4
         ]
@@ -3367,6 +3400,7 @@
     "fields": {
         "name": "Мидии неочищенные",
         "category": 5,
+        "add_to_cart": true,
         "allergies": [
             4
         ]
@@ -3378,6 +3412,7 @@
     "fields": {
         "name": "Кальмар тушки очищенные",
         "category": 5,
+        "add_to_cart": true,
         "allergies": [
             4
         ]
@@ -3389,6 +3424,7 @@
     "fields": {
         "name": "Молоко 3,2%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3400,6 +3436,7 @@
     "fields": {
         "name": "Сливки 20%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3411,6 +3448,7 @@
     "fields": {
         "name": "Йогурт без сахара",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3422,6 +3460,7 @@
     "fields": {
         "name": "Творог 9%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3433,6 +3472,7 @@
     "fields": {
         "name": "Сыр твёрдый 30%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3444,6 +3484,7 @@
     "fields": {
         "name": "Масло сливочное 82,5%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3455,6 +3496,7 @@
     "fields": {
         "name": "Куриное яйцо",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             2
         ]
@@ -3466,6 +3508,7 @@
     "fields": {
         "name": "Сметана 20%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3477,6 +3520,7 @@
     "fields": {
         "name": "Рис",
         "category": 6,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3486,6 +3530,7 @@
     "fields": {
         "name": "Греча",
         "category": 6,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3495,6 +3540,7 @@
     "fields": {
         "name": "Овсяные хлопья",
         "category": 6,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3504,6 +3550,7 @@
     "fields": {
         "name": "Макароны из твердой пшеницы",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -3515,6 +3562,7 @@
     "fields": {
         "name": "Лапша пшеничная",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -3526,6 +3574,7 @@
     "fields": {
         "name": "Кускус",
         "category": 6,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -3537,6 +3586,7 @@
     "fields": {
         "name": "Булгур",
         "category": 6,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3546,6 +3596,7 @@
     "fields": {
         "name": "Соль",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3555,6 +3606,7 @@
     "fields": {
         "name": "Перец черный",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3564,6 +3616,7 @@
     "fields": {
         "name": "Красный перец (Паприка)",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3573,6 +3626,7 @@
     "fields": {
         "name": "Куркума",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3582,6 +3636,7 @@
     "fields": {
         "name": "Корица",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3591,6 +3646,7 @@
     "fields": {
         "name": "Ванилин",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3600,6 +3656,7 @@
     "fields": {
         "name": "Лавровый лист",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3609,6 +3666,7 @@
     "fields": {
         "name": "Масло оливковое",
         "category": 8,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3618,6 +3676,7 @@
     "fields": {
         "name": "Масло подсолнечное",
         "category": 8,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3627,6 +3686,7 @@
     "fields": {
         "name": "Масло кунжутное",
         "category": 8,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3636,6 +3696,7 @@
     "fields": {
         "name": "Масло кокосовое",
         "category": 8,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3645,6 +3706,7 @@
     "fields": {
         "name": "Вода",
         "category": 9,
+        "add_to_cart": false,
         "allergies": []
     }
 },
@@ -3654,6 +3716,7 @@
     "fields": {
         "name": "Чай черный без сахара",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3663,6 +3726,7 @@
     "fields": {
         "name": "Кофе растворимый",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3672,6 +3736,7 @@
     "fields": {
         "name": "Сок яблочный",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3681,6 +3746,7 @@
     "fields": {
         "name": "Мед цветочный",
         "category": 10,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3690,6 +3756,7 @@
     "fields": {
         "name": "Сахар белый",
         "category": 10,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3699,6 +3766,7 @@
     "fields": {
         "name": "Шоколад молочный",
         "category": 10,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3710,6 +3778,7 @@
     "fields": {
         "name": "Варенье клубничное",
         "category": 10,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3719,6 +3788,7 @@
     "fields": {
         "name": "Какао-порошок",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3728,6 +3798,7 @@
     "fields": {
         "name": "Манка",
         "category": 6,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -3739,6 +3810,7 @@
     "fields": {
         "name": "Мука пшеничная",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -3750,6 +3822,7 @@
     "fields": {
         "name": "Дрожжи сухие",
         "category": 22,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3759,6 +3832,7 @@
     "fields": {
         "name": "Разрыхлитель",
         "category": 22,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3768,6 +3842,7 @@
     "fields": {
         "name": "Панировочные сухари",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -3779,6 +3854,7 @@
     "fields": {
         "name": "Томатная паста",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3788,6 +3864,7 @@
     "fields": {
         "name": "Соевый соус",
         "category": 21,
+        "add_to_cart": true,
         "allergies": [
             7
         ]
@@ -3799,6 +3876,7 @@
     "fields": {
         "name": "Арахис",
         "category": 15,
+        "add_to_cart": true,
         "allergies": [
             5
         ]
@@ -3810,6 +3888,7 @@
     "fields": {
         "name": "Арахисовая паста без сахара",
         "category": 20,
+        "add_to_cart": true,
         "allergies": [
             5
         ]
@@ -3821,6 +3900,7 @@
     "fields": {
         "name": "Матча зеленая",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3830,6 +3910,7 @@
     "fields": {
         "name": "Багет пшеничный",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -3841,6 +3922,7 @@
     "fields": {
         "name": "Красная чечевица",
         "category": 15,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3850,6 +3932,7 @@
     "fields": {
         "name": "Консервированная красная фасоль",
         "category": 24,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3859,6 +3942,7 @@
     "fields": {
         "name": "Консервированный горошек",
         "category": 24,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3868,6 +3952,7 @@
     "fields": {
         "name": "Шампиньоны",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3877,6 +3962,7 @@
     "fields": {
         "name": "Сода пищевая",
         "category": 22,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3886,6 +3972,7 @@
     "fields": {
         "name": "Желатин пищевой в порошке",
         "category": 22,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3895,6 +3982,7 @@
     "fields": {
         "name": "Тофу",
         "category": 15,
+        "add_to_cart": true,
         "allergies": [
             7
         ]
@@ -3906,6 +3994,7 @@
     "fields": {
         "name": "Бобы эдамаме",
         "category": 15,
+        "add_to_cart": true,
         "allergies": [
             7
         ]
@@ -3917,6 +4006,7 @@
     "fields": {
         "name": "Сливки 10%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3928,6 +4018,7 @@
     "fields": {
         "name": "Сливки 33%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3939,6 +4030,7 @@
     "fields": {
         "name": "Перепелиное яйцо",
         "category": 3,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3948,6 +4040,7 @@
     "fields": {
         "name": "Сметана 15%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3959,6 +4052,7 @@
     "fields": {
         "name": "Кефир 3,2%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3970,6 +4064,7 @@
     "fields": {
         "name": "Масло ГХИ",
         "category": 3,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -3979,6 +4074,7 @@
     "fields": {
         "name": "Творог 5%",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -3990,6 +4086,7 @@
     "fields": {
         "name": "Творог обезжиренный",
         "category": 3,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -4001,6 +4098,7 @@
     "fields": {
         "name": "Мука овсяная",
         "category": 19,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4010,6 +4108,7 @@
     "fields": {
         "name": "Мука ржаная",
         "category": 19,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4019,6 +4118,7 @@
     "fields": {
         "name": "Батон",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -4030,6 +4130,7 @@
     "fields": {
         "name": "Хлеб ржаной",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -4041,6 +4142,7 @@
     "fields": {
         "name": "Куриные крылышки",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4050,6 +4152,7 @@
     "fields": {
         "name": "Индейка филе",
         "category": 4,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4059,6 +4162,7 @@
     "fields": {
         "name": "Чай черный в пакетиках",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4068,6 +4172,7 @@
     "fields": {
         "name": "Чай черный листовой",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4077,6 +4182,7 @@
     "fields": {
         "name": "Чай зеленый листовой",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4086,6 +4192,7 @@
     "fields": {
         "name": "Кофе в зернах",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4095,6 +4202,7 @@
     "fields": {
         "name": "Кофе молотый",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4104,6 +4212,7 @@
     "fields": {
         "name": "Кэроб необжаренный",
         "category": 23,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4113,6 +4222,7 @@
     "fields": {
         "name": "Молоко овсяное 3,2%",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4122,6 +4232,7 @@
     "fields": {
         "name": "Молоко соевое",
         "category": 9,
+        "add_to_cart": true,
         "allergies": [
             7
         ]
@@ -4133,6 +4244,7 @@
     "fields": {
         "name": "Молоко кокосовое 17-19%",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4142,6 +4254,7 @@
     "fields": {
         "name": "Молоко миндальное",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4151,6 +4264,7 @@
     "fields": {
         "name": "Сок томатный",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4160,6 +4274,7 @@
     "fields": {
         "name": "Сок фруктовый",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4169,6 +4284,7 @@
     "fields": {
         "name": "Чай зеленый без сахара",
         "category": 9,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4178,6 +4294,7 @@
     "fields": {
         "name": "Петрушка свежая",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4187,6 +4304,7 @@
     "fields": {
         "name": "Сельдерей",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4196,6 +4314,7 @@
     "fields": {
         "name": "Капуста цветная",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4205,6 +4324,7 @@
     "fields": {
         "name": "Капуста пекинская",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4214,6 +4334,7 @@
     "fields": {
         "name": "Фундук очищенный",
         "category": 16,
+        "add_to_cart": true,
         "allergies": [
             6
         ]
@@ -4225,6 +4346,7 @@
     "fields": {
         "name": "Кешью",
         "category": 16,
+        "add_to_cart": true,
         "allergies": [
             6
         ]
@@ -4236,6 +4358,7 @@
     "fields": {
         "name": "Миндаль",
         "category": 16,
+        "add_to_cart": true,
         "allergies": [
             6
         ]
@@ -4247,6 +4370,7 @@
     "fields": {
         "name": "Фисташки неочищенные",
         "category": 16,
+        "add_to_cart": true,
         "allergies": [
             6
         ]
@@ -4258,6 +4382,7 @@
     "fields": {
         "name": "Пекан",
         "category": 16,
+        "add_to_cart": true,
         "allergies": [
             6
         ]
@@ -4269,6 +4394,7 @@
     "fields": {
         "name": "Бразильский орех",
         "category": 16,
+        "add_to_cart": true,
         "allergies": [
             6
         ]
@@ -4280,6 +4406,7 @@
     "fields": {
         "name": "Грецкий орех очищенный",
         "category": 16,
+        "add_to_cart": true,
         "allergies": [
             6
         ]
@@ -4291,6 +4418,7 @@
     "fields": {
         "name": "Кунжут белый",
         "category": 16,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4300,6 +4428,7 @@
     "fields": {
         "name": "Семена подсолнечника очищенные",
         "category": 16,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4309,6 +4438,7 @@
     "fields": {
         "name": "Семена тыквы очищенные",
         "category": 16,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4318,6 +4448,7 @@
     "fields": {
         "name": "Семена льна",
         "category": 16,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4327,6 +4458,7 @@
     "fields": {
         "name": "Семена чиа",
         "category": 16,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4336,6 +4468,7 @@
     "fields": {
         "name": "Кунжутная паста (Тахини)",
         "category": 20,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4345,6 +4478,7 @@
     "fields": {
         "name": "Майонез классический",
         "category": 21,
+        "add_to_cart": true,
         "allergies": [
             2
         ]
@@ -4356,6 +4490,7 @@
     "fields": {
         "name": "Терияки",
         "category": 21,
+        "add_to_cart": true,
         "allergies": [
             7
         ]
@@ -4367,6 +4502,7 @@
     "fields": {
         "name": "Уксус столовый 9%",
         "category": 22,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4376,6 +4512,7 @@
     "fields": {
         "name": "Уксус яблочный 6%",
         "category": 22,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4385,6 +4522,7 @@
     "fields": {
         "name": "Сушеный чеснок",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4394,6 +4532,7 @@
     "fields": {
         "name": "Сушеный лук",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4403,6 +4542,7 @@
     "fields": {
         "name": "Сушеный имбирь",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4412,6 +4552,7 @@
     "fields": {
         "name": "Сахар коричневый",
         "category": 10,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4421,6 +4562,7 @@
     "fields": {
         "name": "Шоколад темный",
         "category": 10,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4430,6 +4572,7 @@
     "fields": {
         "name": "Шоколад горький",
         "category": 10,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4439,6 +4582,7 @@
     "fields": {
         "name": "Шоколад белый",
         "category": 10,
+        "add_to_cart": true,
         "allergies": [
             1
         ]
@@ -4450,6 +4594,7 @@
     "fields": {
         "name": "Джем клубничный",
         "category": 10,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4459,6 +4604,7 @@
     "fields": {
         "name": "Кетчуп",
         "category": 21,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4468,6 +4614,7 @@
     "fields": {
         "name": "Горчица русская",
         "category": 21,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4477,6 +4624,7 @@
     "fields": {
         "name": "Горчица дижонская",
         "category": 21,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4486,6 +4634,7 @@
     "fields": {
         "name": "Горчица зернистая",
         "category": 21,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4495,6 +4644,7 @@
     "fields": {
         "name": "Мандарин",
         "category": 2,
+        "add_to_cart": true,
         "allergies": [
             9
         ]
@@ -4506,6 +4656,7 @@
     "fields": {
         "name": "Гранат неочищенный",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4515,6 +4666,7 @@
     "fields": {
         "name": "Лайм",
         "category": 2,
+        "add_to_cart": true,
         "allergies": [
             9
         ]
@@ -4526,6 +4678,7 @@
     "fields": {
         "name": "Киви",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4535,6 +4688,7 @@
     "fields": {
         "name": "Хурма",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4544,6 +4698,7 @@
     "fields": {
         "name": "Голубика",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4553,6 +4708,7 @@
     "fields": {
         "name": "Черная смородина",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4562,6 +4718,7 @@
     "fields": {
         "name": "Красная смородина",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4571,6 +4728,7 @@
     "fields": {
         "name": "Клюква",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4580,6 +4738,7 @@
     "fields": {
         "name": "Брусника",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4589,6 +4748,7 @@
     "fields": {
         "name": "Малина красная",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4598,6 +4758,7 @@
     "fields": {
         "name": "Ежевика",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4607,6 +4768,7 @@
     "fields": {
         "name": "Крыжовник",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4616,6 +4778,7 @@
     "fields": {
         "name": "Арбуз",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4625,6 +4788,7 @@
     "fields": {
         "name": "Персик",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4634,6 +4798,7 @@
     "fields": {
         "name": "Абрикос",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4643,6 +4808,7 @@
     "fields": {
         "name": "Нектарин",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4652,6 +4818,7 @@
     "fields": {
         "name": "Ананас целый",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4661,6 +4828,7 @@
     "fields": {
         "name": "Вишня с косточкой",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4670,6 +4838,7 @@
     "fields": {
         "name": "Черешня",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4679,6 +4848,7 @@
     "fields": {
         "name": "Слива",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4688,6 +4858,7 @@
     "fields": {
         "name": "Грейпфрут",
         "category": 2,
+        "add_to_cart": true,
         "allergies": [
             9
         ]
@@ -4699,6 +4870,7 @@
     "fields": {
         "name": "Манго целый",
         "category": 2,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4708,6 +4880,7 @@
     "fields": {
         "name": "Лаваш тонкий бездрожжевой",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -4719,6 +4892,7 @@
     "fields": {
         "name": "Базилик свежий",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4728,6 +4902,7 @@
     "fields": {
         "name": "Пшено",
         "category": 6,
+        "add_to_cart": true,
         "allergies": [
             8
         ]
@@ -4739,6 +4914,7 @@
     "fields": {
         "name": "Маринованные огурцы",
         "category": 24,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4748,6 +4924,7 @@
     "fields": {
         "name": "Консервированный нут",
         "category": 24,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4757,6 +4934,7 @@
     "fields": {
         "name": "Карри",
         "category": 7,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4766,6 +4944,7 @@
     "fields": {
         "name": "Руккола",
         "category": 1,
+        "add_to_cart": true,
         "allergies": []
     }
 },
@@ -4775,6 +4954,7 @@
     "fields": {
         "name": "Миндальная мука",
         "category": 19,
+        "add_to_cart": true,
         "allergies": [
             6
         ]

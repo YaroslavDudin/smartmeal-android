@@ -23,7 +23,8 @@ class CartItemModelTests(TestCase):
         self.category = IngredientCategory.objects.create(name='Овощи')
         self.ingredient = Ingredient.objects.create(
             name='Картофель', 
-            category=self.category
+            category=self.category,
+            add_to_cart=True,
         )
 
     def test_create_cart_item(self):
@@ -59,6 +60,7 @@ class CartItemAPITest(APITestCase):
         self.ingredient = Ingredient.objects.create(
             name='Картофель', 
             category=self.category,
+            add_to_cart=True,
         )
         IngredientNutrition.objects.create(
             ingredient=self.ingredient,
@@ -192,6 +194,25 @@ class CartItemAPITest(APITestCase):
         response = self.client.post(self.base_url, data, format='json')
         cart_item = CartItem.objects.get(pk=response.data['id'])
         self.assertFalse(cart_item.is_checked)
+    
+    def test_create_cart_item_with_ingredient_add_to_cart_false(self):
+        ingredient = Ingredient.objects.create(
+            name='Грустная свекла', 
+            category=self.category,
+            add_to_cart=False,
+        )
+        data = {
+            'ingredient': ingredient.id,
+            'total_amount': 1.5,
+            'unit': self.unit.id,
+            'is_checked': False,
+        }
+
+        response = self.client.post(self.base_url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('add_to_cart', response.data)
+        self.assertEqual(CartItem.objects.count(), 0)
 
     def test_create_cart_item_missing_ingredient(self):
         data = {
@@ -412,6 +433,7 @@ class CartItemAPITest(APITestCase):
         new_ingredient = Ingredient.objects.create(
             name='Мука',
             category=self.category,
+            add_to_cart=True,
         )
         cup_unit = Unit.objects.create(name='стакан')
         new_recipe = Recipe.objects.create(title='Блины', cook_time=20, servings=4)
@@ -448,3 +470,47 @@ class CartItemAPITest(APITestCase):
         cart_item.refresh_from_db()
         self.assertEqual(cart_item.total_amount, 1000)
         self.assertEqual(cart_item.unit, self.base_unit_g)
+    
+    def test_cart_recalculate_exclude_ingredient_with_add_to_cart_false(self):
+        not_cart_ingredient = Ingredient.objects.create(
+            name='Грустная свекла', 
+            category=self.category,
+            add_to_cart=False,
+        )
+        recipe = Recipe.objects.create(title='Борщ', cook_time=30, servings=2)
+        RecipeIngredient.objects.create(
+            recipe=recipe,
+            ingredient=not_cart_ingredient,
+            amount=2,
+            unit=self.unit
+        )
+        RecipeIngredient.objects.create(
+            recipe=recipe,
+            ingredient=self.ingredient,
+            amount=2,
+            unit=self.unit
+        )
+        menu = Menu.objects.create(
+            user=self.user,
+            period=Period.DAY,
+            start_date=date.today(),
+        )
+        MenuItem.objects.create(
+            menu=menu,
+            recipe=recipe,
+            day_offset=0,
+            meal_type=self.lunch_type,
+        )
+
+        recalculate_url = f'{self.base_url}recalculate/'
+        response = self.client.post(recalculate_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(CartItem.objects.count(), 1)
+
+        response_cart = self.client.get(self.base_url)
+        self.assertIn('Овощи', response_cart.data)
+        vegetables = response_cart.data['Овощи']
+        vegetables_names = [v['ingredient_name'] for v in vegetables]
+        self.assertEqual(len(vegetables_names), 1)
+        self.assertIn(self.ingredient.name, vegetables_names)
+        self.assertNotIn(not_cart_ingredient.name, vegetables_names)
