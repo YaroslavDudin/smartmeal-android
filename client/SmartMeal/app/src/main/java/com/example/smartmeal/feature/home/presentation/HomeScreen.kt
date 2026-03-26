@@ -793,7 +793,7 @@ private fun normalizeDateStatic(date: Date): Date {
 }
 
 private fun formatMonthYearForSelector(date: Date): String {
-    val text = SimpleDateFormat("LLLL", Locale("ru")).format(date)
+    val text = SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date)
     return text.replaceFirstChar { it.titlecase(Locale("ru")) }
 }
 
