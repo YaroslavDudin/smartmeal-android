@@ -285,7 +285,7 @@ fun HomeContent(
             formatMonthYearForSelector(uiState.selectedDate ?: it)
         }.orEmpty()
 
-        if (monthYearLabel.isNotBlank()) {
+        if (monthYearLabel.isNotBlank() && !hasSingleAvailableDate) {
             SmartMealText(
                 text = monthYearLabel,
                 style = MaterialTheme.typography.titleMedium,
