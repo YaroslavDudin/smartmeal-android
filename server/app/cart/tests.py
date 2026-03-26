@@ -1,11 +1,12 @@
 from decimal import Decimal
+from datetime import date, timedelta
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 from rest_framework import status
 from app.cart.models import CartItem
-from app.recipes.models import Ingredient, Unit, IngredientCategory, Recipe, RecipeIngredient
-from app.menus.models import Menu, MenuItem, MealType
+from app.recipes.models import Ingredient, IngredientNutrition, Unit, UnitConversion, IngredientCategory, Recipe, RecipeIngredient
+from app.menus.models import Menu, MenuItem, MealType, Period
 
 User = get_user_model()
 
@@ -29,7 +30,7 @@ class CartItemModelTests(TestCase):
         cart_item = CartItem.objects.create(
             user=self.user,
             ingredient=self.ingredient,
-            total_amount=2.50,
+            total_amount=Decimal(2.5),
             unit=self.unit,
             is_checked=False
         )
@@ -43,7 +44,7 @@ class CartItemModelTests(TestCase):
         self.assertEqual(str(cart_item), expected_str)
 
 
-class CartItemCreateAPITest(APITestCase):
+class CartItemAPITest(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -53,11 +54,34 @@ class CartItemCreateAPITest(APITestCase):
         )
         
         self.unit = Unit.objects.create(name='кг')
+        self.base_unit_g = Unit.objects.create(name='г', is_base=True)
         self.category = IngredientCategory.objects.create(name='Овощи')
         self.ingredient = Ingredient.objects.create(
             name='Картофель', 
             category=self.category,
         )
+        IngredientNutrition.objects.create(
+            ingredient=self.ingredient,
+            base_unit=self.base_unit_g,
+            base_weight=100,
+            protein=2,
+            fat=0.1,
+            carbs=16,
+        )
+        self.unit_convertion = UnitConversion.objects.create(
+            ingredient=self.ingredient,
+            unit=self.unit,
+            base_unit=self.base_unit_g,
+            amount_per_unit=1000,
+        )
+        self.recipe = Recipe.objects.create(title='Суп', cook_time=30, servings=2)
+        RecipeIngredient.objects.create(
+            recipe=self.recipe,
+            ingredient=self.ingredient,
+            amount = 2,
+            unit=self.unit
+        )
+        self.lunch_type = MealType.objects.create(name='lunch', order=1)
 
         self.client.force_authenticate(user=self.user)
         self.base_url = '/api/cart/'
@@ -70,9 +94,9 @@ class CartItemCreateAPITest(APITestCase):
         cart_item = CartItem.objects.create(
             user=self.user,
             ingredient=self.ingredient,
-            total_amount=1.0,
+            total_amount=1,
             unit=self.unit,
-            is_checked=True,
+            is_checked=False,
         )
         response = self.client.get(self.base_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -87,15 +111,50 @@ class CartItemCreateAPITest(APITestCase):
 
     def test_get_cart_items_filter_checked(self):
         ingredient2 = Ingredient.objects.create(name='Морковь', category=self.category)
-        CartItem.objects.create(user=self.user, ingredient=self.ingredient, total_amount=1.0, unit=self.unit, is_checked=True)
-        unchecked_item = CartItem.objects.create(user=self.user, ingredient=ingredient2, total_amount=2.0, unit=self.unit, is_checked=False)
+        CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1,
+            unit=self.unit,
+            is_checked=True
+        )
+        unchecked_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=ingredient2,
+            total_amount=2,
+            unit=self.unit,
+            is_checked=False
+        )
 
-        response = self.client.get(f'{self.base_url}?show_checked=false')
+        response = self.client.get(self.base_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Овощи', response.data)
         self.assertEqual(len(response.data['Овощи']), 1)
         self.assertEqual(response.data['Овощи'][0]['id'], unchecked_item.pk)
+    
+    def test_get_cart_items_not_filter_checked_if_query_param(self):
+        ingredient2 = Ingredient.objects.create(name='Морковь', category=self.category)
+        CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1,
+            unit=self.unit,
+            is_checked=False
+        )
+        CartItem.objects.create(
+            user=self.user,
+            ingredient=ingredient2,
+            total_amount=2,
+            unit=self.unit,
+            is_checked=True
+        )
+
+        response = self.client.get(f'{self.base_url}?show_checked=true')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Овощи', response.data)
+        self.assertEqual(len(response.data['Овощи']), 2)
 
     def test_get_cart_items_unauthenticated(self):
         self.client.force_authenticate(user=None)
@@ -148,7 +207,7 @@ class CartItemCreateAPITest(APITestCase):
         CartItem.objects.create(
             user=self.user,
             ingredient=self.ingredient,
-            total_amount=1.0,
+            total_amount=1,
             unit=self.unit,
             is_checked=True,
         )
@@ -166,7 +225,7 @@ class CartItemCreateAPITest(APITestCase):
         cart_item = CartItem.objects.create(
             user=self.user,
             ingredient=self.ingredient,
-            total_amount=1.0,
+            total_amount=1,
             unit=self.unit,
             is_checked=True,
         )
@@ -182,7 +241,7 @@ class CartItemCreateAPITest(APITestCase):
         cart_item = CartItem.objects.create(
             user=self.user,
             ingredient=self.ingredient,
-            total_amount=1.0,
+            total_amount=1,
             unit=self.unit,
             is_checked=False,
         )
@@ -198,7 +257,7 @@ class CartItemCreateAPITest(APITestCase):
         cart_item = CartItem.objects.create(
             user=self.user,
             ingredient=self.ingredient,
-            total_amount=1.0,
+            total_amount=1,
             unit=self.unit,
             is_checked=True,
         )
@@ -209,39 +268,183 @@ class CartItemCreateAPITest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(CartItem.objects.filter(pk=cart_item.pk).exists())
 
-    def test_cart_recalculate_creates_grouped_list(self):
-        recipe = Recipe.objects.create(title='Суп', cook_time=30, servings=2)
-
-        RecipeIngredient.objects.create(
-            recipe=recipe,
-            ingredient=self.ingredient,
-            amount = 2.0,
-            unit=self.unit
-        )
+    def test_cart_recalculate_for_week_plan(self):
         menu = Menu.objects.create(
             user=self.user, 
-            period='week', 
-            start_date='2026-03-25'
+            period=Period.WEEK, 
+            start_date=date.today(),
         )
-        lunch_type, created = MealType.objects.get_or_create(name='lunch', defaults={'order': 1})
-
         MenuItem.objects.create(
             menu=menu, 
-            recipe=recipe, 
+            recipe=self.recipe, 
             day_offset=0, 
-            meal_type=lunch_type
+            meal_type=self.lunch_type
         )
         CartItem.objects.all().delete()
 
         recalculate_url = f'{self.base_url}recalculate/'
         response = self.client.post(recalculate_url)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(CartItem.objects.count(), 1)
         cart_item = CartItem.objects.first()
         self.assertEqual(cart_item.ingredient, self.ingredient)
-        self.assertEqual(cart_item.total_amount, 2.0)
-        self.assertIn('Овощи', response.data)
-        self.assertEqual(len(response.data['Овощи']), 1)
-        self.assertEqual(response.data['Овощи'][0]['ingredient_name'], 'Картофель')
+        self.assertEqual(cart_item.total_amount, 2000.0)
         
+        response_cart = self.client.get(self.base_url)
+        self.assertIn('Овощи', response_cart.data)
+        self.assertEqual(len(response_cart.data['Овощи']), 1)
+        self.assertEqual(response_cart.data['Овощи'][0]['ingredient_name'], 'Картофель')
+
+    def test_cart_recalculate_for_day_plan(self):
+        menu = Menu.objects.create(
+            user=self.user,
+            period=Period.DAY,
+            start_date=date.today(),
+        )
+        MenuItem.objects.create(
+            menu=menu,
+            recipe=self.recipe,
+            day_offset=0,
+            meal_type=self.lunch_type
+        )
+
+        recalculate_url = f'{self.base_url}recalculate/'
+        response = self.client.post(recalculate_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(CartItem.objects.count(), 1)
+        cart_item = CartItem.objects.first()
+        self.assertEqual(cart_item.ingredient, self.ingredient)
+        self.assertEqual(cart_item.total_amount, 2000.0) # 2.0 кг = 2000 г
+
+    def test_cart_recalculate_for_week_plan_early_start_date(self):
+        timedelta_days = 3
+        start_date = date.today() - timedelta(days=timedelta_days)
+        menu = Menu.objects.create(
+            user=self.user,
+            period=Period.WEEK,
+            start_date=start_date,
+        )
+        for day_offset in range(7):
+            MenuItem.objects.create(
+                menu=menu,
+                recipe=self.recipe,
+                day_offset=day_offset,
+                meal_type=self.lunch_type
+            )
+
+        recalculate_url = f'{self.base_url}recalculate/'
+        response = self.client.post(recalculate_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        # Каждый рецепт содержит 2 кг картошки, и этот рецепт добавлен на каждый день
+        # Должно добавиться картошки на сегодняшний и оставшиеся дни
+        expected_total = 2000 * (7 - timedelta_days)  # 8000 г
+        self.assertEqual(CartItem.objects.count(), 1)
+        cart_item = CartItem.objects.first()
+        self.assertEqual(cart_item.ingredient, self.ingredient)
+        self.assertEqual(cart_item.total_amount, expected_total)
+
+    def test_cart_recalculate_updates_existing_unchecked_item(self):
+        cart_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1000,
+            unit=self.base_unit_g,
+            is_checked=False,
+        )
+
+        menu = Menu.objects.create(
+            user=self.user,
+            period=Period.DAY,
+            start_date=date.today(),
+        )
+        MenuItem.objects.create(
+            menu=menu,
+            recipe=self.recipe,
+            day_offset=0,
+            meal_type=self.lunch_type,
+        )
+
+        recalculate_url = f'{self.base_url}recalculate/'
+        response = self.client.post(recalculate_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        cart_item.refresh_from_db()
+        self.assertEqual(cart_item.total_amount, 3000) # было 1000 г, прибавилось 2 кг
+        self.assertEqual(cart_item.unit, self.base_unit_g)
+        self.assertFalse(cart_item.is_checked)
+        self.assertEqual(CartItem.objects.count(), 1)
+        
+    def test_cart_recalculate_replaces_existing_checked_item(self):
+        cart_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=self.ingredient,
+            total_amount=1000,
+            unit=self.base_unit_g,
+            is_checked=True,
+        )
+
+        menu = Menu.objects.create(
+            user=self.user,
+            period=Period.DAY,
+            start_date=date.today(),
+        )
+        MenuItem.objects.create(
+            menu=menu,
+            recipe=self.recipe,
+            day_offset=0,
+            meal_type=self.lunch_type,
+        )
+
+        recalculate_url = f'{self.base_url}recalculate/'
+        response = self.client.post(recalculate_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        cart_item.refresh_from_db()
+        self.assertEqual(cart_item.total_amount, 2000) # было 1000 г, заменилось на 2 кг в г
+        self.assertEqual(CartItem.objects.count(), 1)
+
+    def test_cart_recalculate_no_unit_convertion(self):
+        new_ingredient = Ingredient.objects.create(
+            name='Мука',
+            category=self.category,
+        )
+        cup_unit = Unit.objects.create(name='стакан')
+        new_recipe = Recipe.objects.create(title='Блины', cook_time=20, servings=4)
+        RecipeIngredient.objects.create(
+            recipe=new_recipe,
+            ingredient=new_ingredient,
+            amount=2,
+            unit=cup_unit,
+        )
+        cart_item = CartItem.objects.create(
+            user=self.user,
+            ingredient=new_ingredient,
+            total_amount=1000,
+            unit=self.base_unit_g,
+            is_checked=False,
+        )
+        # Создаём меню с этим рецептом
+        menu = Menu.objects.create(
+            user=self.user,
+            period=Period.DAY,
+            start_date=date.today(),
+        )
+        MenuItem.objects.create(
+            menu=menu,
+            recipe=new_recipe,
+            day_offset=0,
+            meal_type=self.lunch_type
+        )
+
+        recalculate_url = f'{self.base_url}recalculate/'
+        response = self.client.post(recalculate_url)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        cart_item.refresh_from_db()
+        self.assertEqual(cart_item.total_amount, 1000)
+        self.assertEqual(cart_item.unit, self.base_unit_g)
