@@ -116,7 +116,7 @@ fun ProductListScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 4.dp)
     ) {
         SmartMealText(
             text = "Список продуктов",
@@ -124,6 +124,7 @@ fun ProductListScreen(
             color = TextBlack,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
+                .padding(horizontal = 12.dp)
                 .padding(vertical = 8.dp)
                 .testTag("title")
         )
@@ -168,6 +169,7 @@ fun ProductListScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 12.dp)
                 .padding(bottom = 8.dp)
                 .testTag("checkAllRow"),
             verticalAlignment = Alignment.CenterVertically,

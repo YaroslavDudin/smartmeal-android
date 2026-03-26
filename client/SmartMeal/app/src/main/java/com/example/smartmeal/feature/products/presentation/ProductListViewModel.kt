@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
@@ -160,14 +162,25 @@ class ProductListViewModel(
                     .map { it.actual_date }
                     .distinct()
                     .sorted()
+                
                 val dateIndexMap = orderedDateKeys.withIndex().associate { it.value to it.index }
 
-                for (menuItem in menuItems) {
-                    val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
-                    val response = menuApi.getRecipe(menuItem.recipe)
-                    if (!response.isSuccessful) continue
+                // Оптимизация: параллельная загрузка всех рецептов
+                val deferredRecipes = menuItems.map { menuItem ->
+                    async {
+                        val response = menuApi.getRecipe(menuItem.recipe)
+                        if (response.isSuccessful) menuItem to response.body() else null
+                    }
+                }
 
-                    response.body()?.ingredients?.forEachIndexed { ingredientIndex, ingredient ->
+                val recipeResults = deferredRecipes.awaitAll().mapNotNull { pair ->
+                    val recipe = pair?.second
+                    if (pair != null && recipe != null) pair.first to recipe else null
+                }
+
+                for ((menuItem, recipe) in recipeResults) {
+                    val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
+                    recipe.ingredients.forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {
                             return@forEachIndexed
                         }

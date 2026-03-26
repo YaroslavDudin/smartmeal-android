@@ -57,6 +57,7 @@ data class AddToCartRequest(
 data class AutoGenerateRequest(
     val period: String,                          // "day" или "week"
     val start_date: String,                      // "YYYY-MM-DD"
+    val days: Int? = null,                       // количество дней для генерации (1-31)
     val diet_type: Int? = null,                  // null → берётся из профиля пользователя
     val cook_time_range: String? = null,         // "short" | "medium" | "long" | "any"
     val max_cook_time: Int? = null,              // null = без ограничения; 30 = «до 30 минут»

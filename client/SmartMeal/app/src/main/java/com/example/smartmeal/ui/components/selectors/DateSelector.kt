@@ -94,7 +94,7 @@ private fun DateChip(
 ) {
     val chipShape = RoundedCornerShape(18.dp)
     val backgroundColor = when {
-        isRangeInterior -> LightGreenBg.copy(alpha = 0.9f)
+        isRangeInterior -> PrimaryGreen.copy(alpha = 0.2f)
         isSelected -> PrimaryGreen
         else -> LightGreenBg
     }

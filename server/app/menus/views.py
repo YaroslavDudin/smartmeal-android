@@ -51,7 +51,11 @@ class MenuViewSet(viewsets.ModelViewSet):
 
         period = data['period']
         start_date = data['start_date']
-        days = 7 if period == Period.WEEK else 1
+        
+        if 'days' in data:
+            days = data['days']
+        else:
+            days = 7 if period == 'week' else 1
 
         diet_type_id = data.get('diet_type') or request.user.diet_type_id
         allergy_ids = data.get('exclude_allergies') or set(request.user.allergies.values_list('id', flat=True))

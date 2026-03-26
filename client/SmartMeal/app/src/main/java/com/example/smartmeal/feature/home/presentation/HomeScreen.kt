@@ -149,7 +149,17 @@ fun HomeScreen(
                     onGenerateMenu = {
                         val storedPlanType = setupPreferences.getPlanType()
                         val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
-                        viewModel.generateMenu(storedPlanType, selectedPlanDate)
+                        
+                        var customDays: Int? = null
+                        if (storedPlanType == SetupPreferences.PLAN_TYPE_CUSTOM) {
+                            val range = setupPreferences.getCustomPlanRange()
+                            if (range != null) {
+                                val diff = range.second - range.first
+                                customDays = (diff / (1000 * 60 * 60 * 24)).toInt() + 1
+                            }
+                        }
+                        
+                        viewModel.generateMenu(storedPlanType, selectedPlanDate, customDays)
                     },
                     onReplaceMeal = { viewModel.replaceMeal(it) },
                     onToggleFavorite = { viewModel.toggleFavorite(it) },
@@ -516,20 +526,29 @@ class HomeViewModel : ViewModel() {
 
     fun generateMenu(
         planType: String?,
-        selectedPlanDate: Date?
+        selectedPlanDate: Date?,
+        customDays: Int? = null
     ) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val type = planType ?: SetupPreferences.PLAN_TYPE_WEEKLY
-                val periodStr = if (type == SetupPreferences.PLAN_TYPE_DAILY) "day" else "week"
+                val periodStr = when {
+                    customDays != null -> "custom"
+                    type == SetupPreferences.PLAN_TYPE_DAILY -> "day"
+                    else -> "week"
+                }
                 val startDateStr = resolveGenerationStartDateString(
                     formatter = apiDateFormatter,
                     selectedPlanDate = selectedPlanDate
                 )
                 
                 val response = generatorApi.autoGenerate(
-                    AutoGenerateRequest(period = periodStr, start_date = startDateStr)
+                    AutoGenerateRequest(
+                        period = periodStr,
+                        start_date = startDateStr,
+                        days = customDays
+                    )
                 )
 
                 if (response.isSuccessful) {

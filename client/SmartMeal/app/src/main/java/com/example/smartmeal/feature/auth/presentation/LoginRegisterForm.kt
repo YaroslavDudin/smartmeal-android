@@ -253,12 +253,14 @@ fun LoginRegisterFormContent(
 
             Spacer(modifier = Modifier.height(40.dp))
 
+/*
             TextButton(
                 onClick = onNavigateToSandbox,
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
                 SmartMealText("Перейти в Sandbox", color = PrimaryGreen)
             }
+*/
         }
     }
 }
