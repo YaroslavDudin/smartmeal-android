@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.smartmeal.feature.home.data.api.MenuApi
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
+import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -20,6 +21,9 @@ import kotlinx.coroutines.launch
 class ProductListViewModel(
     private val menuApi: MenuApi
 ) : ViewModel() {
+
+    // Кэш рецептов: ID рецепта -> Полные данные рецепта
+    private val recipeCache = mutableMapOf<Int, RecipeDetailDto>()
 
     var products by mutableStateOf<List<ProductUiModel>>(emptyList())
         private set
@@ -157,6 +161,27 @@ class ProductListViewModel(
             isLoading = true
             errorMessage = null
             try {
+                // 1. Сначала загружаем все недостающие рецепты в кэш
+                val uniqueRecipeIds = menuItems.map { it.recipe }.distinct()
+                val missingIds = uniqueRecipeIds.filter { it !in recipeCache }
+                
+                if (missingIds.isNotEmpty()) {
+                    val deferred = missingIds.map { id ->
+                        async {
+                            val response = menuApi.getRecipe(id)
+                            if (response.isSuccessful && response.body() != null) {
+                                id to response.body()!!
+                            } else {
+                                null
+                            }
+                        }
+                    }
+                    deferred.awaitAll().filterNotNull().forEach { (id, recipe) ->
+                        recipeCache[id] = recipe
+                    }
+                }
+
+                // 2. Теперь строим список продуктов из ВСЕХ элементов меню
                 val rawProducts = mutableListOf<ProductUiModel>()
                 val orderedDateKeys = menuItems
                     .map { it.actual_date }
@@ -165,21 +190,10 @@ class ProductListViewModel(
                 
                 val dateIndexMap = orderedDateKeys.withIndex().associate { it.value to it.index }
 
-                // Оптимизация: параллельная загрузка всех рецептов
-                val deferredRecipes = menuItems.map { menuItem ->
-                    async {
-                        val response = menuApi.getRecipe(menuItem.recipe)
-                        if (response.isSuccessful) menuItem to response.body() else null
-                    }
-                }
-
-                val recipeResults = deferredRecipes.awaitAll().mapNotNull { pair ->
-                    val recipe = pair?.second
-                    if (pair != null && recipe != null) pair.first to recipe else null
-                }
-
-                for ((menuItem, recipe) in recipeResults) {
+                for (menuItem in menuItems) {
+                    val recipe = recipeCache[menuItem.recipe] ?: continue
                     val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
+                    
                     recipe.ingredients.forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {
                             return@forEachIndexed
@@ -194,10 +208,13 @@ class ProductListViewModel(
                             fallbackUnit = ingredient.unit_name
                         )
                         val amountString = formatWeightDisplay(normalizedAmountInGrams)
+                        
+                        // occurrenceId теперь уникален для каждого приема пищи (даже если рецепт совпадает)
                         val occurrenceId = buildOccurrenceId(
                             ingredientName = ingredient.ingredient_name,
                             categoryName = normalizedCategory,
                             actualDate = menuItem.actual_date,
+                            mealType = menuItem.meal_type,
                             ingredientIndex = ingredientIndex
                         )
 
@@ -303,9 +320,10 @@ internal fun buildOccurrenceId(
     ingredientName: String,
     categoryName: String,
     actualDate: String,
+    mealType: String,
     ingredientIndex: Int
 ): String {
-    return "${ingredientName.trim()}_${categoryName.trim()}_${actualDate}_$ingredientIndex"
+    return "${ingredientName.trim()}_${categoryName.trim()}_${actualDate}_${mealType}_$ingredientIndex"
 }
 
 internal fun isExcludedIngredient(name: String): Boolean {
