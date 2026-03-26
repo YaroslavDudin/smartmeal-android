@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.db import models
-from django.db.models import Sum, F
-from django.core.validators import MinValueValidator, URLValidator
+from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 
 
 CALORIES_PER_GRAM = {
@@ -45,19 +45,26 @@ class UnitConversion(models.Model):
     '''Конвертация нестандартной единицы измерения в граммы для конкретного ингредиента.'''
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE, related_name='unit_conversions')
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='in_grams')
-    grams_per_unit = models.DecimalField(max_digits=8, decimal_places=2, help_text='Эквивалент в граммах')
+    base_unit = models.ForeignKey( # базовая единица, в которую конвертируется
+        Unit, on_delete=models.RESTRICT, related_name='conversions_to',
+        help_text='Базовая единица, в которую конвертируется'
+    )
+    amount_per_unit = models.DecimalField( # базовой единицой измерения может быть не только грамм (тот же мл)
+        max_digits=8, decimal_places=2,
+        help_text='Количество в базовой единице'
+    )
 
     class Meta:
         db_table = 'unit_conversion'  # исправлена опечатка: было unit_convertion
         verbose_name = 'Конвертация единицы измерения'
         verbose_name_plural = 'Конвертации единиц измерения'
-        ordering = ['grams_per_unit']
+        ordering = ['ingredient__name', 'amount_per_unit']
         constraints = [
-            models.UniqueConstraint(fields=['ingredient', 'unit'], name='unique_ingredient_unit_conversion')
+            models.UniqueConstraint(fields=['ingredient', 'unit', 'base_unit'], name='unique_ingredient_unit_conversion')
         ]
 
     def __str__(self):
-        return f'Weight of Ingredient ID {self.ingredient_id} in Unit ID {self.unit_id} in grams: {self.grams_per_unit}'
+        return f'Вес ингредиента {self.ingredient} на 1 {self.unit} в {self.base_unit} равен {self.amount_per_unit}'
 
 
 class Ingredient(models.Model):
@@ -79,7 +86,8 @@ class Ingredient(models.Model):
 class IngredientNutrition(models.Model):
     '''Пищевая ценность ингредиента (КБЖУ) на указанную массу (обычно 100 г).'''
     ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE, related_name='ingredient_nutrition')
-    base_weight_g = models.PositiveSmallIntegerField(default=100, help_text='Масса, для которой указаны КБЖУ (в граммах)')
+    base_unit = models.ForeignKey(Unit, on_delete=models.RESTRICT, related_name='ingredient_nutritions')
+    base_weight = models.PositiveSmallIntegerField(default=100, help_text='Масса, для которой указаны КБЖУ (в базовых единицах)')
     protein = models.DecimalField(max_digits=5, decimal_places=1, validators=[MinValueValidator(0)])
     fat = models.DecimalField(max_digits=5, decimal_places=1, validators=[MinValueValidator(0)])
     carbs = models.DecimalField(max_digits=5, decimal_places=1, validators=[MinValueValidator(0)])
@@ -88,6 +96,13 @@ class IngredientNutrition(models.Model):
         db_table = 'ingredient_nutrition'
         verbose_name = 'Пищевая ценность ингредиента'
         verbose_name_plural = 'Пищевые ценности ингредиентов'
+    
+    def clean(self):
+        if self.base_unit_id and not self.base_unit.is_base:
+            raise ValidationError({
+                'base_unit': f'Единица измерения "{self.base_unit}" не является базовой (is_base=False). '
+                    f'Для пищевой ценности можно использовать только базовые единицы'
+            })
 
     @property
     def calories(self):
@@ -99,24 +114,13 @@ class IngredientNutrition(models.Model):
 
     def __str__(self):
         return (
-            f'Nutrition for Ingredient ID {self.ingredient_id}: '
-            f'{self.protein}g protein, {self.carbs}g carbs, {self.fat}g fat, '
-            f'calories per {self.base_weight_g}g: {self.calories}'
+            f'Пищевая ценность ингредиента {self.ingredient}: '
+            f'{self.protein} г белка, {self.carbs} г углеводов, {self.fat} г жиров, '
+            f'калорийность на {self.base_weight} {self.base_unit}: {self.calories}'
         )
 
 
 class RecipeQuerySet(models.QuerySet):
-    def with_nutrition(self):
-        '''
-        Аннотирует queryset суммарным весом рецепта на уровне БД (один запрос вместо N+1).
-        Используй этот метод вместо свойств total_* при работе со списками рецептов.
-        '''
-        return self.annotate(
-            total_weight=Sum(
-                F('recipe_ingredients__amount') * F('recipe_ingredients__ingredient__unit_conversions__grams_per_unit'),
-                output_field=models.DecimalField()
-            )
-        )
 
     def with_prefetched_ingredients(self):
         '''Prefetch всех связанных данных для расчёта КБЖУ без N+1.'''
@@ -162,12 +166,10 @@ class Recipe(models.Model):
         Для списков рецептов предпочтительнее использовать with_prefetched_ingredients().
         '''
         if not hasattr(self, '_nutrition_cache'):
-            weight = Decimal(0)
             protein = Decimal(0)
             fat = Decimal(0)
             carbs = Decimal(0)
             for ri in self.recipe_ingredients.all():
-                weight += ri.amount_in_grams
                 protein += ri.protein
                 fat += ri.fat
                 carbs += ri.carbs
@@ -177,18 +179,12 @@ class Recipe(models.Model):
                 + fat * CALORIES_PER_GRAM['fat']
             )
             self._nutrition_cache = {
-                'weight': weight,
                 'protein': protein,
                 'fat': fat,
                 'carbs': carbs,
                 'calories': calories,
             }
         return self._nutrition_cache
-
-    @property
-    def total_weight_g(self):
-        '''Общий вес рецепта в граммах'''
-        return self._get_nutrition_totals()['weight']
 
     @property
     def total_proteins(self):
@@ -246,54 +242,92 @@ class RecipeIngredient(models.Model):
             models.UniqueConstraint(fields=['recipe', 'ingredient'], name='unique_recipe_ingredient')
         ]
 
-    def _get_grams(self):
-        # Если единица помечена как базовая — конверсия не нужна.
-        if self.unit.is_base:
-            return self.amount
+    def _get_in_base_units(self):
+        if hasattr(self, '_in_base_units_cache'):
+            return self._in_base_units_cache
 
+        # nutrition нужна для определения целевой базовой единицы
         try:
-            conversion = self.ingredient.unit_conversions.get(unit=self.unit)
-            return self.amount * conversion.grams_per_unit
-        except UnitConversion.DoesNotExist:
-            return Decimal(0)
+            nutrition = self.nutrition
+        except ValueError:
+            self._in_base_units_cache = (Decimal(0), self.unit)
+            return self._in_base_units_cache
+
+        # Если единица помечена как базовая и совпадает с единицей измерения пищевой ценности — конверсия не нужна.
+        if self.unit.is_base and self.unit == nutrition.base_unit:
+            self._in_base_units_cache = (self.amount, self.unit)
+            return self._in_base_units_cache
+
+        # Ищем прямую конверсию self.unit в nutrition.base_unit
+        conversion = self.ingredient.unit_conversions.filter(
+            unit=self.unit,
+            base_unit=nutrition.base_unit
+        ).first()
+
+        if conversion is not None:
+            self._in_base_units_cache = (self.amount * conversion.amount_per_unit, nutrition.base_unit)
+            return self._in_base_units_cache
+
+        # Ищем обратную конверсию nutrition.base_unit в self.unit
+        conversion = self.ingredient.unit_conversions.filter(
+            unit=nutrition.base_unit,
+            base_unit=self.unit
+        ).first()
+
+        if conversion is not None:
+            self._in_base_units_cache = (self.amount / conversion.amount_per_unit, nutrition.base_unit)
+            return self._in_base_units_cache
+
+        # Конверсия не найдена
+        raise ValueError(
+            f'Нет конверсии из {self.unit} в {nutrition.base_unit} для ингредиента {self.ingredient}'
+        )
 
     @property
-    def amount_in_grams(self):
-        return self._get_grams()
+    def base_unit(self):
+        _, base_unit = self._get_in_base_units()
+        return base_unit
+
+    @property
+    def amount_in_base_units(self):
+        amount, _ = self._get_in_base_units()
+        return amount
 
     @property
     def nutrition(self):
-        try:
-            return self.ingredient.ingredient_nutrition
-        except IngredientNutrition.DoesNotExist:
-            raise ValueError(f'Отсутствует пищевая ценность для ингредиента "{self.ingredient}"')
+        if not hasattr(self, '_nutrition_cache'):
+            try:
+                self._nutrition_cache = self.ingredient.ingredient_nutrition
+            except IngredientNutrition.DoesNotExist:
+                raise ValueError(f'Отсутствует пищевая ценность для ингредиента "{self.ingredient}"')
+        return self._nutrition_cache
 
     @property
     def protein(self):
-        grams = self.amount_in_grams
+        amount = self.amount_in_base_units
         try:
             nutrition = self.nutrition
         except ValueError:
             return Decimal(0)
-        return (grams / Decimal(nutrition.base_weight_g)) * nutrition.protein
+        return (amount / Decimal(nutrition.base_weight)) * nutrition.protein
 
     @property
     def fat(self):
-        grams = self.amount_in_grams
+        amount = self.amount_in_base_units
         try:
             nutrition = self.nutrition
         except ValueError:
             return Decimal(0)
-        return (grams / Decimal(nutrition.base_weight_g)) * nutrition.fat
+        return (amount / Decimal(nutrition.base_weight)) * nutrition.fat
 
     @property
     def carbs(self):
-        grams = self.amount_in_grams
+        amount = self.amount_in_base_units
         try:
             nutrition = self.nutrition
         except ValueError:
             return Decimal(0)
-        return (grams / Decimal(nutrition.base_weight_g)) * nutrition.carbs
+        return (amount / Decimal(nutrition.base_weight)) * nutrition.carbs
 
     @property
     def calories(self):

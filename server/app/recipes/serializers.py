@@ -24,7 +24,7 @@ class IngredientNutritionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientNutrition
-        fields = ('base_weight_g', 'protein', 'fat', 'carbs', 'calories')
+        fields = ('base_weight', 'base_unit', 'protein', 'fat', 'carbs', 'calories')
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -79,14 +79,13 @@ class RecipeSerializer(serializers.ModelSerializer):
     total_proteins = serializers.SerializerMethodField()
     total_fats = serializers.SerializerMethodField()
     total_carbs = serializers.SerializerMethodField()
-    total_weight_g = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
         fields = (
             'id', 'title', 'image_url', 'cook_time', 'servings',
             'ingredients', 'steps', 'allergies',
-            'total_calories', 'total_proteins', 'total_fats', 'total_carbs', 'total_weight_g',
+            'total_calories', 'total_proteins', 'total_fats', 'total_carbs',
             'per_serving_calories', 'per_serving_proteins', 'per_serving_fats', 'per_serving_carbs',
         )
         
@@ -143,11 +142,4 @@ class RecipeSerializer(serializers.ModelSerializer):
         if not hasattr(self, cache_key):
             carbs = round(obj.total_carbs * self._get_scale(obj), 2)
             setattr(self, cache_key, carbs)
-        return getattr(self, cache_key)
-
-    def get_total_weight_g(self, obj):
-        cache_key = f'_weight_g_{obj.pk}'
-        if not hasattr(self, cache_key):
-            weight_g = round(obj.total_weight_g * self._get_scale(obj), 2)
-            setattr(self, cache_key, weight_g)
         return getattr(self, cache_key)
