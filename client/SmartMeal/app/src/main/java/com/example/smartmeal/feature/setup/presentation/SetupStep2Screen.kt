@@ -32,6 +32,8 @@ import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
 import java.util.Calendar
 
+internal const val MAX_PLAN_SELECTION_DAYS = 256
+
 /**
  * Шаг 2 из 3: выбор типа периода (день / неделя / свой план) и даты через интерактивный календарь.
  */
@@ -65,6 +67,7 @@ fun SetupStep2Content(
     onNextMonth: () -> Unit,
 ) {
     val configuration = LocalConfiguration.current
+    val today = createNormalizedTodayCalendar()
     val isCompactHeight = configuration.screenHeightDp < 640
     val isCompactWidth = configuration.screenWidthDp < 360
     val horizontalPadding = if (isCompactHeight || isCompactWidth) 16.dp else 24.dp
@@ -77,6 +80,8 @@ fun SetupStep2Content(
         isCompactHeight -> 0.95f
         else -> 1f
     }
+    val canNavigatePrevious = canNavigateToOffsetMonth(state.calendarYear, state.calendarMonth, -1, today)
+    val canNavigateNext = canNavigateToOffsetMonth(state.calendarYear, state.calendarMonth, 1, today)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -163,24 +168,14 @@ fun SetupStep2Content(
                 onDaySelected = onSelectDay,
                 onPreviousMonth = onPreviousMonth,
                 onNextMonth = onNextMonth,
+                canNavigatePrevious = canNavigatePrevious,
+                canNavigateNext = canNavigateNext,
                 showNavigation = true,
                 showYear = false,
                 showAdjacentMonths = true,
                 compact = isCompactHeight,
                 modifier = Modifier.padding(calendarPadding),
-                isDateSelectable = { year, month, day ->
-                    val today = Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 0)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        set(Calendar.MILLISECOND, 0)
-                    }
-                    val candidate = Calendar.getInstance().apply {
-                        set(year, month, day, 0, 0, 0)
-                        set(Calendar.MILLISECOND, 0)
-                    }
-                    !candidate.before(today)
-                },
+                isDateSelectable = { year, month, day -> isPlanDateSelectable(year, month, day, today) },
             )
         }
 
@@ -196,6 +191,68 @@ fun SetupStep2Content(
             },
             modifier = Modifier.testTag("setup_step2_next")
         )
+    }
+}
+
+internal fun isPlanDateSelectable(
+    year: Int,
+    month: Int,
+    day: Int,
+    today: Calendar = createNormalizedTodayCalendar(),
+): Boolean {
+    val candidate = createNormalizedCalendar(year, month, day)
+    val maxSelectableDate = createMaxSelectableCalendar(today)
+    return !candidate.before(today) && !candidate.after(maxSelectableDate)
+}
+
+internal fun canNavigateToOffsetMonth(
+    currentYear: Int,
+    currentMonth: Int,
+    monthOffset: Int,
+    today: Calendar = createNormalizedTodayCalendar(),
+): Boolean {
+    val candidateMonth = createNormalizedCalendar(currentYear, currentMonth, 1).apply {
+        add(Calendar.MONTH, monthOffset)
+    }
+    return canDisplayMonthForPlanSelection(
+        year = candidateMonth.get(Calendar.YEAR),
+        month = candidateMonth.get(Calendar.MONTH),
+        today = today,
+    )
+}
+
+internal fun canDisplayMonthForPlanSelection(
+    year: Int,
+    month: Int,
+    today: Calendar = createNormalizedTodayCalendar(),
+): Boolean {
+    val maxSelectableDate = createMaxSelectableCalendar(today)
+    val monthStart = createNormalizedCalendar(year, month, 1)
+    val monthEnd = (monthStart.clone() as Calendar).apply {
+        set(Calendar.DAY_OF_MONTH, getActualMaximum(Calendar.DAY_OF_MONTH))
+    }
+    return !monthEnd.before(today) && !monthStart.after(maxSelectableDate)
+}
+
+internal fun createMaxSelectableCalendar(today: Calendar = createNormalizedTodayCalendar()): Calendar {
+    return (today.clone() as Calendar).apply {
+        add(Calendar.DAY_OF_YEAR, MAX_PLAN_SELECTION_DAYS - 1)
+    }
+}
+
+internal fun createNormalizedTodayCalendar(): Calendar {
+    return Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+}
+
+internal fun createNormalizedCalendar(year: Int, month: Int, day: Int): Calendar {
+    return Calendar.getInstance().apply {
+        set(year, month, day, 0, 0, 0)
+        set(Calendar.MILLISECOND, 0)
     }
 }
 

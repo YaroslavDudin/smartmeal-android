@@ -41,6 +41,7 @@ data class RecipeDetailDto(
     val total_proteins: Double,
     val total_fats: Double,
     val total_carbs: Double,
+    val total_weight_g: Double,
     val per_serving_calories: Double,
     val per_serving_proteins: Double,
     val per_serving_fats: Double,

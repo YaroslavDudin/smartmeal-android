@@ -37,7 +37,7 @@ class Menu(models.Model):
 class MenuItem(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='items')
     recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE, related_name='menu_items')
-    day_offset = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(31)])
+    day_offset = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(255)])
     meal_type = models.ForeignKey(MealType, on_delete=models.PROTECT)
 
     class Meta:

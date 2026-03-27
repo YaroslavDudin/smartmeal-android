@@ -50,6 +50,9 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.QuantityStepper
 import com.example.smartmeal.ui.theme.Padding
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 // Цвета для дизайна
 val LightCream = Color(0xFFFAFAFA)
@@ -130,7 +133,7 @@ fun RecipeDetailScreen(
                                 modifier = Modifier.weight(1f)
                             )
                             SmartMealText(
-                                text = "500 г",
+                                text = formatWeightLabel(recipe.total_weight_g),
                                 fontSize = 20.sp,
                                 color = TextGreen
                             )
@@ -145,7 +148,9 @@ fun RecipeDetailScreen(
                         ) {
                             InfoChip(label = "${recipe.cook_time} мин")
                             Spacer(modifier = Modifier.width(8.dp))
-                            InfoChip(label = "${recipe.per_serving_calories.toInt()} ккал/порция")
+                            InfoChip(
+                                label = "${calculatePer100(recipe.total_calories, recipe.total_weight_g).toInt()} ккал/100 г"
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -188,10 +193,10 @@ fun RecipeDetailScreen(
 
                         // Карточка КБЖУ
                         NutritionCard(
-                            calories = recipe.total_calories.toInt().toString(),
-                            proteins = recipe.total_proteins.toString(),
-                            fats = recipe.total_fats.toString(),
-                            carbs = recipe.total_carbs.toString()
+                            calories = formatNutritionValue(calculatePer100(recipe.total_calories, recipe.total_weight_g)),
+                            proteins = formatNutritionValue(calculatePer100(recipe.total_proteins, recipe.total_weight_g)),
+                            fats = formatNutritionValue(calculatePer100(recipe.total_fats, recipe.total_weight_g)),
+                            carbs = formatNutritionValue(calculatePer100(recipe.total_carbs, recipe.total_weight_g))
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -267,17 +272,29 @@ fun NutritionCard(calories: String, proteins: String, fats: String, carbs: Strin
         shadowElevation = 2.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+                .padding(vertical = 16.dp, horizontal = 8.dp)
         ) {
-            NutritionItem(value = calories, label = "ккал")
-            NutritionItem(value = proteins, label = "белки")
-            NutritionItem(value = fats, label = "жиры")
-            NutritionItem(value = carbs, label = "углеводы")
+            SmartMealText(
+                text = "на 100 г",
+                fontSize = 14.sp,
+                color = TextGray,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 8.dp)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                NutritionItem(value = calories, label = "ккал")
+                NutritionItem(value = proteins, label = "белки")
+                NutritionItem(value = fats, label = "жиры")
+                NutritionItem(value = carbs, label = "углеводы")
+            }
         }
     }
 }
@@ -417,4 +434,24 @@ fun IngredientItem(name: String, amount: String) {
         SmartMealText(text = name, fontSize = 16.sp, color = Color.Black)
         SmartMealText(text = amount, fontSize = 16.sp, color = Color.Gray)
     }
+}
+
+internal fun calculatePer100(totalValue: Double, totalWeightG: Double): Double {
+    if (totalWeightG <= 0.0) return 0.0
+    return (totalValue / totalWeightG) * 100.0
+}
+
+internal fun formatNutritionValue(value: Double): String {
+    val formatter = DecimalFormat("0.#", DecimalFormatSymbols(Locale.US))
+    return formatter.format(value)
+}
+
+internal fun formatWeightLabel(totalWeightG: Double): String {
+    if (totalWeightG <= 0.0) return "—"
+    val normalized = if (totalWeightG % 1.0 == 0.0) {
+        totalWeightG.toInt().toString()
+    } else {
+        formatNutritionValue(totalWeightG)
+    }
+    return "$normalized г"
 }

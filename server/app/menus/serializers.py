@@ -25,7 +25,7 @@ class MenuSerializer(serializers.ModelSerializer):
 class GenerateMenuSerializer(serializers.Serializer):
     """Входные параметры для POST /api/menus/generate/"""
     period = serializers.CharField() # Используем строку, так как может быть "custom"
-    days = serializers.IntegerField(required=False, min_value=1, max_value=31)
+    days = serializers.IntegerField(required=False, min_value=1, max_value=256)
     start_date = serializers.DateField()
     # Если не передан — берётся из профиля пользователя (diet_type)
     diet_type = serializers.IntegerField(required=False, allow_null=True, min_value=1)
