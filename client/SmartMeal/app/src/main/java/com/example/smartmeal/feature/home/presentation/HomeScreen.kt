@@ -85,15 +85,14 @@ fun HomeScreen(
     onLogoutSuccess: () -> Unit,
     onRecipeClick: (Int) -> Unit,
 ) {
-    val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
-    val productListViewModel: ProductListViewModel = viewModel(
-        factory = remember { ProductListViewModelFactory(menuApi) }
-    )
-
     val uiState by viewModel.uiState.collectAsState()
-
+    val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
     val context = LocalContext.current
     val setupPreferences = remember { SetupPreferences(context) }
+    
+    val productListViewModel: ProductListViewModel = viewModel(
+        factory = remember { ProductListViewModelFactory(menuApi, setupPreferences) }
+    )
     val planType = setupPreferences.getPlanType()
     val planRange = setupPreferences.getCustomPlanRange()
     val customPlan = if (planType == SetupPreferences.PLAN_TYPE_CUSTOM) {
@@ -854,12 +853,13 @@ internal fun resolveGenerationStartDateString(
 }
 
 private class ProductListViewModelFactory(
-    private val menuApi: MenuApi
+    private val menuApi: MenuApi,
+    private val preferences: SetupPreferences
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProductListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ProductListViewModel(menuApi) as T
+            return ProductListViewModel(menuApi, preferences) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

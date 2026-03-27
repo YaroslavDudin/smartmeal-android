@@ -133,6 +133,16 @@ class SetupPreferences(context: Context) {
         return sb.toString().take(64).ifBlank { "user" }
     }
 
+    fun setPortionSize(size: Int) {
+        prefs.edit().putInt(scopedKey(KEY_PORTION_SIZE), size).apply()
+    }
+
+    fun getPortionSize(): Int {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return 1
+        return prefs.getInt(scopedKey(KEY_PORTION_SIZE), 1)
+    }
+
     companion object {
         const val PLAN_TYPE_DAILY = "daily"
         const val PLAN_TYPE_WEEKLY = "weekly"
@@ -145,5 +155,6 @@ class SetupPreferences(context: Context) {
         private const val KEY_CUSTOM_START = "custom_plan_start"
         private const val KEY_CUSTOM_END = "custom_plan_end"
         private const val KEY_SELECTED_PLAN_DATE = "selected_plan_date"
+        private const val KEY_PORTION_SIZE = "portion_size"
     }
 }

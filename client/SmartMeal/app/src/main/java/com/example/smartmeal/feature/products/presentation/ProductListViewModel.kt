@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.home.data.api.MenuApi
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
@@ -19,7 +20,8 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
-    private val menuApi: MenuApi
+    private val menuApi: MenuApi,
+    private val preferences: SetupPreferences
 ) : ViewModel() {
 
     // Кэш рецептов: ID рецепта -> Полные данные рецепта
@@ -100,6 +102,7 @@ class ProductListViewModel(
         availableDateKeys = emptyList()
         dateRangeText = "Выберите диапазон дней"
         errorMessage = null
+        recipeCache.clear() // При смене меню чистим кэш
     }
 
     fun selectDateRange(dateKey: String) {
@@ -161,14 +164,19 @@ class ProductListViewModel(
             isLoading = true
             errorMessage = null
             try {
-                // 1. Сначала загружаем все недостающие рецепты в кэш
+                // ИДЕАЛЬНАЯ ЛОГИКА: Берем количество порций из настроек пользователя (SetupStep1)
+                val globalPortionSize = preferences.getPortionSize()
+                
+                // 1. Сначала загружаем все недостающие рецепты в кэш с учетом порций
                 val uniqueRecipeIds = menuItems.map { it.recipe }.distinct()
                 val missingIds = uniqueRecipeIds.filter { it !in recipeCache }
                 
                 if (missingIds.isNotEmpty()) {
                     val deferred = missingIds.map { id ->
                         async {
-                            val response = menuApi.getRecipe(id)
+                            // Запрашиваем рецепт с сервера, ПРИНУДИТЕЛЬНО указав servings
+                            // Так бэкенд вернет веса ингредиентов, уже умноженные на кол-во персон
+                            val response = menuApi.getRecipe(id, servings = globalPortionSize)
                             if (response.isSuccessful && response.body() != null) {
                                 id to response.body()!!
                             } else {
@@ -202,6 +210,8 @@ class ProductListViewModel(
                         val rawCategory = ingredient.category_name ?: "Разное"
                         val normalizedCategory = categoryNormalizeMap[rawCategory] ?: rawCategory
                         val icon = categoryIconMap[normalizedCategory] ?: "🛒"
+                        
+                        // Так как бэкенд уже вернул веса с учетом servings, мы просто форматируем их
                         val normalizedAmountInGrams = resolveAmountInGrams(
                             amountInGrams = ingredient.amount_in_grams,
                             fallbackAmount = ingredient.amount,
@@ -209,7 +219,6 @@ class ProductListViewModel(
                         )
                         val amountString = formatWeightDisplay(normalizedAmountInGrams)
                         
-                        // occurrenceId теперь уникален для каждого приема пищи (даже если рецепт совпадает)
                         val occurrenceId = buildOccurrenceId(
                             ingredientName = ingredient.ingredient_name,
                             categoryName = normalizedCategory,
