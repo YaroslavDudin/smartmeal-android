@@ -63,6 +63,7 @@ val TextGray = Color(0xFF757575)
 @Composable
 fun RecipeDetailScreen(
     recipeId: Int,
+    menuItemId: Int? = null,
     portionSize: Int,
     viewModel: RecipeDetailViewModel,
     onBack: () -> Unit
@@ -70,7 +71,7 @@ fun RecipeDetailScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(recipeId) {
-        viewModel.loadRecipe(recipeId, portionSize)
+        viewModel.loadRecipe(recipeId, menuItemId, portionSize)
     }
 
     Scaffold(

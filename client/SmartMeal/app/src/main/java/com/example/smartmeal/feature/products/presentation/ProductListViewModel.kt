@@ -199,8 +199,21 @@ class ProductListViewModel(
                 val dateIndexMap = orderedDateKeys.withIndex().associate { it.value to it.index }
 
                 for (menuItem in menuItems) {
-                    val recipe = recipeCache[menuItem.recipe] ?: continue
                     val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
+                    
+                    // ИДЕАЛЬНАЯ ЛОГИКА: Сначала проверяем, не менял ли пользователь порции для ЭТОГО конкретного дня/блюда
+                    val overrideServings = preferences.getMenuItemServings(menuItem.id)
+                    val effectiveServings = if (overrideServings > 0) overrideServings else globalPortionSize
+
+                    // Если рецепта нет в кэше или он был загружен с ДРУГИМ количеством порций - загружаем заново
+                    // (Для простоты здесь мы просто перезагружаем, если порции отличаются от глобальных)
+                    val recipe = if (overrideServings > 0) {
+                        val resp = menuApi.getRecipe(menuItem.recipe, servings = effectiveServings)
+                        if (resp.isSuccessful) resp.body() else recipeCache[menuItem.recipe]
+                    } else {
+                        recipeCache[menuItem.recipe]
+                    } ?: continue
+
                     
                     recipe.ingredients.forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {

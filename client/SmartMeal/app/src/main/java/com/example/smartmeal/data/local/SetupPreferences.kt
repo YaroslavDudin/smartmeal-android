@@ -133,6 +133,14 @@ class SetupPreferences(context: Context) {
         return sb.toString().take(64).ifBlank { "user" }
     }
 
+    fun setMenuItemServings(menuItemId: Int, servings: Int) {
+        prefs.edit().putInt("menu_item_servings_$menuItemId", servings).apply()
+    }
+
+    fun getMenuItemServings(menuItemId: Int): Int {
+        return prefs.getInt("menu_item_servings_$menuItemId", 0) // 0 означает отсутствие переопределения
+    }
+
     fun setPortionSize(size: Int) {
         prefs.edit().putInt(scopedKey(KEY_PORTION_SIZE), size).apply()
     }

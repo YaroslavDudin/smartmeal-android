@@ -83,7 +83,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
-    onRecipeClick: (Int) -> Unit,
+    onRecipeClick: (Int, Int?) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
@@ -247,7 +247,7 @@ fun HomeContent(
     onGenerateMenu: () -> Unit,
     onReplaceMeal: (String) -> Unit,
     onToggleFavorite: (Int) -> Unit,
-    onRecipeClick: (Int) -> Unit,
+    onRecipeClick: (Int, Int?) -> Unit,
     onDateSelectedFromPlan: (Date) -> Unit,
     customPlan: CustomPlan?
 ) {
@@ -405,7 +405,7 @@ fun MealSection(
     meal: MenuItemDto,
     onReplaceClick: () -> Unit,
     onFavoriteClick: () -> Unit,
-    onRecipeClick: (Int) -> Unit,
+    onRecipeClick: (Int, Int?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -440,7 +440,7 @@ fun MealSection(
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
-                .clickable { onRecipeClick(item.recipe) }
+                .clickable { onRecipeClick(item.recipe, item.id) }
             ) {
                 MealCard(
                     title = item.recipe_title,
