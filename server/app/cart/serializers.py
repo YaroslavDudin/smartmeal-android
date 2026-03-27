@@ -17,8 +17,8 @@ class CartItemSerializer(serializers.ModelSerializer):
         ingredient = data.get('ingredient')
         
         if not self.instance: # проверка только при создании
-            if not ingredient.add_to_cart:
-                raise serializers.ValidationError({'add_to_cart': 'Этот ингредиент отмечен как не для корзины'})
+            if not ingredient.can_be_added_to_cart:
+                raise serializers.ValidationError({'can_be_added_to_cart': 'Этот ингредиент отмечен как не для корзины'})
             if CartItem.objects.filter(user=user, ingredient=ingredient).exists():
                 raise serializers.ValidationError('Этот ингредиент уже есть в корзине')
         return data

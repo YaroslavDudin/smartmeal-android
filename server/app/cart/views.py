@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from decimal import Decimal
 from django.db import transaction
+from django.db.models import Max
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -64,20 +65,35 @@ class CartViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_404_NOT_FOUND,
                 )
         else:
-            min_start_date = today - timedelta(days=6)
-            date_range = (min_start_date, today)
-            # Ищем самое ближайшее меню к текущей дате
-            menus = user_menus.filter(start_date__range=date_range).order_by('-start_date')
-        
-            if not menus.exists():
-                # Ищем любое ближайшее будущее меню
-                menus = user_menus.filter(start_date__gt=today).order_by('start_date')
-            
-            if not menus.exists():
+            menu = None
+
+            # Ищем меню среди начавшихся раньше или сегодня
+            candidate = (
+                user_menus
+                # сохраняем значение максимального day_offset у соответствующих menu items
+                .annotate(max_day_offset=Max('items__day_offset'))
+                .filter(start_date__lte=today)
+                # Сортируем от самого ближайшего к сегодня
+                .order_by('-start_date')
+                .first()
+            )
+
+            # Если меню найдено и у него есть items
+            if candidate and candidate.max_day_offset is not None:
+                # Проверяем, что меню кончается не раньше или хотя бы сегодня
+                if candidate.start_date + timedelta(days=candidate.max_day_offset) >= today:
+                    menu = candidate
+
+            if menu is None:
+                # Иначе ищем любое ближайшее будущее меню
+                menu = user_menus.filter(start_date__gt=today).order_by('start_date').first()
+
+            if menu is None:
                 # Если все меню в прошлом или их вообще нет
-                return Response({'detail': f'У пользователя {user} нет активного меню'}, status=status.HTTP_404_NOT_FOUND)
-            
-            menu = menus.first()
+                return Response(
+                    {'detail': f'У пользователя {user} нет активного меню'},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
 
         # Если меню начинается раньше текущей даты, разница между датами положительная, иначе отрицательная и берем 0
         day_offset = max((today - menu.start_date).days, 0)
