@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.home.presentation
+package com.example.smartmeal.feature.home.presentation
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
@@ -80,19 +80,23 @@ import java.util.Locale
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(),
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
     val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
     val context = LocalContext.current
     val setupPreferences = remember { SetupPreferences(context) }
+
+    val viewModel: HomeViewModel = viewModel(
+        factory = remember { HomeViewModelFactory(setupPreferences) }
+    )
     
     val productListViewModel: ProductListViewModel = viewModel(
         factory = remember { ProductListViewModelFactory(menuApi, setupPreferences) }
     )
+
+    val uiState by viewModel.uiState.collectAsState()
     val planType = setupPreferences.getPlanType()
     val planRange = setupPreferences.getCustomPlanRange()
     val customPlan = if (planType == SetupPreferences.PLAN_TYPE_CUSTOM) {
@@ -101,19 +105,16 @@ fun HomeScreen(
         null
     }
 
-    LaunchedEffect(customPlan?.startDate?.time, customPlan?.endDate?.time, uiState.selectedDateFromPlan) {
-        if (customPlan == null) {
-            viewModel.clearPlanSelection()
-            return@LaunchedEffect
-        }
+    LaunchedEffect(customPlan?.startDate?.time, customPlan?.endDate?.time) {
+        if (customPlan != null) {
+            val selected = uiState.selectedDate
+            val outOfRange = selected == null ||
+                selected.before(customPlan.startDate) ||
+                selected.after(customPlan.endDate)
 
-        val selected = uiState.selectedDate
-        val outOfRange = selected == null ||
-            selected.before(customPlan.startDate) ||
-            selected.after(customPlan.endDate)
-
-        if (!uiState.selectedDateFromPlan || outOfRange) {
-            viewModel.selectDate(customPlan.startDate, customPlan)
+            if (!uiState.selectedDateFromPlan || outOfRange) {
+                viewModel.selectDate(customPlan.startDate, customPlan)
+            }
         }
     }
 
@@ -179,32 +180,6 @@ fun HomeScreen(
                         onDateSelectedFromPlan = { viewModel.selectDate(it, customPlan) },
                         customPlan = customPlan
                     )
-
-                    // КРАСИВЫЙ LOADING OVERLAY
-                    if (uiState.isLoading && uiState.hasMenu) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Black.copy(alpha = 0.12f))
-                                .clickable(enabled = false) {}, // Блокируем клики под лоадером
-                            contentAlignment = Alignment.Center
-                        ) {
-                            androidx.compose.material3.Surface(
-                                shape = RoundedCornerShape(16.dp),
-                                color = Color.White,
-                                shadowElevation = 8.dp
-                            ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier
-                                        .padding(24.dp)
-                                        .size(48.dp)
-                                        .testTag("home_loading"),
-                                    color = PrimaryGreen,
-                                    strokeWidth = 4.dp
-                                )
-                            }
-                        }
-                    }
                 }
 
                 // ---------------- ПРОДУКТЫ ----------------
@@ -333,7 +308,7 @@ fun HomeContent(
             )
         }
 
-        if (uiState.isLoading) {
+        if (uiState.isLoading && !uiState.hasMenu) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -500,7 +475,7 @@ data class HomeUiState(
     val customPlan: CustomPlan? = null
 )
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     private val menuRepository = MenuRepository(RetrofitClient.createService(MenuApi::class.java))
@@ -693,7 +668,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun clearPlanSelection() {
-        _uiState.update { it.copy(selectedDateFromPlan = false, selectedDate = null) }
+        _uiState.update { it.copy(selectedDateFromPlan = false) }
         updateMealSections()
     }
 
@@ -721,8 +696,10 @@ class HomeViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val updatedItem = menuRepository.replaceMenuItem(menuItem.id) // POST
+                // Плавное обновление: не ставим isLoading = true
+                val updatedItem = menuRepository.replaceMenuItem(menuItem.id)
                 if (updatedItem != null) {
+                    preferences.clearMenuItemServings(menuItem.id)
                     _uiState.update { currentState ->
                         mergeUpdatedMenuItemIntoState(currentState, updatedItem)
                     }
@@ -850,6 +827,18 @@ internal fun resolveGenerationStartDateString(
     fallbackDate: Date = Date()
 ): String {
     return formatter.format(selectedPlanDate ?: fallbackDate)
+}
+
+private class HomeViewModelFactory(
+    private val preferences: SetupPreferences
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HomeViewModel(preferences) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }
 
 private class ProductListViewModelFactory(

@@ -141,6 +141,10 @@ class SetupPreferences(context: Context) {
         return prefs.getInt("menu_item_servings_$menuItemId", 0) // 0 означает отсутствие переопределения
     }
 
+    fun clearMenuItemServings(menuItemId: Int) {
+        prefs.edit().remove("menu_item_servings_$menuItemId").apply()
+    }
+
     fun setPortionSize(size: Int) {
         prefs.edit().putInt(scopedKey(KEY_PORTION_SIZE), size).apply()
     }
