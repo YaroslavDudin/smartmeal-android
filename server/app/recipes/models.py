@@ -44,10 +44,10 @@ class Unit(models.Model):
 class UnitConversion(models.Model):
     '''Конвертация нестандартной единицы измерения в граммы для конкретного ингредиента.'''
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE, related_name='unit_conversions')
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='in_grams')
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='in_other_units')
     base_unit = models.ForeignKey( # базовая единица, в которую конвертируется
         Unit, on_delete=models.RESTRICT, related_name='conversions_to',
-        help_text='Базовая единица, в которую конвертируется'
+        help_text='Единица, в которую конвертируется'
     )
     amount_per_unit = models.DecimalField( # базовой единицой измерения может быть не только грамм (тот же мл)
         max_digits=8, decimal_places=2,
@@ -71,7 +71,7 @@ class Ingredient(models.Model):
     '''Базовый продукт/ингредиент (например: яблоко, куриная грудка, мука).'''
     name = models.CharField(max_length=255, unique=True)
     category = models.ForeignKey(IngredientCategory, on_delete=models.RESTRICT, related_name='ingredients')
-    add_to_cart = models.BooleanField(default=True) # Должен ли ингредиент добавляться в корзину
+    can_be_added_to_cart = models.BooleanField(default=True, help_text='Должен ли ингредиент добавляться в корзину')
     allergies = models.ManyToManyField('accounts.Allergy', blank=True, related_name='ingredients')
 
     class Meta:
@@ -242,47 +242,58 @@ class RecipeIngredient(models.Model):
             # Один ингредиент — одна запись на рецепт (независимо от единицы).
             models.UniqueConstraint(fields=['recipe', 'ingredient'], name='unique_recipe_ingredient')
         ]
+    
+    def _find_conversion(self, target_unit):
+        conversions = self.ingredient.unit_conversions.filter(unit=self.unit)
+        
+        # Прямая: self.unit → target_unit
+        direct = conversions.filter(base_unit=target_unit).first()
+        if direct:
+            return self.amount * direct.amount_per_unit, target_unit
+        
+        # Обратная: target_unit → self.unit
+        reverse = self.ingredient.unit_conversions.filter(
+            unit=target_unit, base_unit=self.unit
+        ).first()
+        if reverse:
+            return self.amount / reverse.amount_per_unit, target_unit
+        
+        return None
 
     def _get_in_base_units(self):
         if hasattr(self, '_in_base_units_cache'):
             return self._in_base_units_cache
+        
+        target_units = []
 
-        # nutrition нужна для определения целевой базовой единицы
         try:
             nutrition = self.nutrition
+            # Если есть пищевая ценность — проверяем совпадение
+            if self.unit.pk == nutrition.base_unit.pk:
+                self._in_base_units_cache = (self.amount, self.unit)
+                return self._in_base_units_cache
+            # если не совпадает кладем в target_units
+            target_units.append(nutrition.base_unit)
         except ValueError:
-            self._in_base_units_cache = (Decimal(0), self.unit)
-            return self._in_base_units_cache
+            # Единица уже базовая и конверсия не нужна
+            if self.unit.is_base:
+                self._in_base_units_cache = (self.amount, self.unit)
+                return self._in_base_units_cache
 
-        # Если единица помечена как базовая и совпадает с единицей измерения пищевой ценности — конверсия не нужна.
-        if self.unit.is_base and self.unit == nutrition.base_unit:
-            self._in_base_units_cache = (self.amount, self.unit)
-            return self._in_base_units_cache
+        # Добавляем базовые единицы как запасные варианты
+        base_units = list(Unit.objects.filter(is_base=True) \
+            .exclude(pk=target_units[0].pk if target_units else None)) # исключаем единицу nutrition если есть
+        target_units.extend(base_units)
 
-        # Ищем прямую конверсию self.unit в nutrition.base_unit
-        conversion = self.ingredient.unit_conversions.filter(
-            unit=self.unit,
-            base_unit=nutrition.base_unit
-        ).first()
+        for target_unit in target_units:
+            result = self._find_conversion(target_unit)
+            if result:
+                self._in_base_units_cache = result
+                return self._in_base_units_cache
 
-        if conversion is not None:
-            self._in_base_units_cache = (self.amount * conversion.amount_per_unit, nutrition.base_unit)
-            return self._in_base_units_cache
-
-        # Ищем обратную конверсию nutrition.base_unit в self.unit
-        conversion = self.ingredient.unit_conversions.filter(
-            unit=nutrition.base_unit,
-            base_unit=self.unit
-        ).first()
-
-        if conversion is not None:
-            self._in_base_units_cache = (self.amount / conversion.amount_per_unit, nutrition.base_unit)
-            return self._in_base_units_cache
-
-        # Конверсия не найдена
-        raise ValueError(
-            f'Нет конверсии из {self.unit} в {nutrition.base_unit} для ингредиента {self.ingredient}'
-        )
+        # Конверсия не найдена — возвращаем 0
+        self._in_base_units_cache = (Decimal(0), self.unit)
+        return self._in_base_units_cache
 
     @property
     def base_unit(self):

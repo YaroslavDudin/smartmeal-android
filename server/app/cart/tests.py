@@ -24,7 +24,7 @@ class CartItemModelTests(TestCase):
         self.ingredient = Ingredient.objects.create(
             name='Картофель', 
             category=self.category,
-            add_to_cart=True,
+            can_be_added_to_cart=True,
         )
 
     def test_create_cart_item(self):
@@ -60,7 +60,7 @@ class CartItemAPITest(APITestCase):
         self.ingredient = Ingredient.objects.create(
             name='Картофель', 
             category=self.category,
-            add_to_cart=True,
+            can_be_added_to_cart=True,
         )
         IngredientNutrition.objects.create(
             ingredient=self.ingredient,
@@ -199,7 +199,7 @@ class CartItemAPITest(APITestCase):
         ingredient = Ingredient.objects.create(
             name='Грустная свекла', 
             category=self.category,
-            add_to_cart=False,
+            can_be_added_to_cart=False,
         )
         data = {
             'ingredient': ingredient.id,
@@ -211,7 +211,7 @@ class CartItemAPITest(APITestCase):
         response = self.client.post(self.base_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('add_to_cart', response.data)
+        self.assertIn('can_be_added_to_cart', response.data)
         self.assertEqual(CartItem.objects.count(), 0)
 
     def test_create_cart_item_missing_ingredient(self):
@@ -433,7 +433,7 @@ class CartItemAPITest(APITestCase):
         new_ingredient = Ingredient.objects.create(
             name='Мука',
             category=self.category,
-            add_to_cart=True,
+            can_be_added_to_cart=True,
         )
         cup_unit = Unit.objects.create(name='стакан')
         new_recipe = Recipe.objects.create(title='Блины', cook_time=20, servings=4)
@@ -475,7 +475,7 @@ class CartItemAPITest(APITestCase):
         not_cart_ingredient = Ingredient.objects.create(
             name='Грустная свекла', 
             category=self.category,
-            add_to_cart=False,
+            can_be_added_to_cart=False,
         )
         recipe = Recipe.objects.create(title='Борщ', cook_time=30, servings=2)
         RecipeIngredient.objects.create(

@@ -92,7 +92,7 @@ class CartViewSet(viewsets.ModelViewSet):
             ri
             for menu_item in menu_items
             for ri in menu_item.recipe.recipe_ingredients.all()
-            if ri.ingredient.add_to_cart # берем только те, которые отмечены для добавления в корзину
+            if ri.ingredient.can_be_added_to_cart # берем только те, которые отмечены для добавления в корзину
         ]
         ingredient_ids = [ri.ingredient.pk for ri in recipe_ingredients]
         # Получаем продукты из корзины, которые будем обновлять и кладем в объект ID ингредиента: CartItem

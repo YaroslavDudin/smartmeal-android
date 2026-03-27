@@ -33,7 +33,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ('id', 'name', 'category', 'category_name', 'nutrition', 'add_to_cart')
+        fields = ('id', 'name', 'category', 'category_name', 'nutrition', 'can_be_added_to_cart')
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
