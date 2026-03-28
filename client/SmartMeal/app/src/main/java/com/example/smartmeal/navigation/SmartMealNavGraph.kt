@@ -162,9 +162,9 @@ fun SmartMealNavGraph(navController: NavHostController) {
                         popUpTo(0) { inclusive = true }
                     }
                 },
-                onRecipeClick = { recipeId ->
+                onRecipeClick = { recipeId, menuItemId ->
                     val portionSize = setupViewModel.state.value.portionSize // количество порций указанное в профиле
-                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize)) // передаем в рецепт
+                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize, menuItemId)) // передаем в рецепт
                 }
             )
         }
@@ -173,19 +173,27 @@ fun SmartMealNavGraph(navController: NavHostController) {
             route = Screen.RecipeDetail.route,
             arguments = listOf(
                 navArgument("recipeId") { type = NavType.IntType },
-                navArgument("portionSize") { type = NavType.IntType }
+                navArgument("portionSize") { type = NavType.IntType },
+                navArgument("menuItemId") { 
+                    type = NavType.IntType
+                    defaultValue = -1 
+                }
             )
         ) { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
             val portionSize = backStackEntry.arguments?.getInt("portionSize") ?: 1
+            val menuItemIdRaw = backStackEntry.arguments?.getInt("menuItemId") ?: -1
+            val menuItemId = if (menuItemIdRaw != -1) menuItemIdRaw else null
+
             val recipeViewModel: RecipeDetailViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                    return RecipeDetailViewModel(recipeApi) as T
+                    return RecipeDetailViewModel(recipeApi, setupPreferences) as T
                 }
             })
             RecipeDetailScreen(
                 recipeId = recipeId,
+                menuItemId = menuItemId,
                 portionSize = portionSize,
                 viewModel = recipeViewModel,
                 onBack = { navController.popBackStack() }

@@ -32,6 +32,7 @@ help:
 	@echo make save_data           - выгрузить данные локально в фикстуры
 	@echo make run                 - запустить сервер разработки
 	@echo make shell               - запустить консоль django
+	@echo make test                - запустить все тесты или конкретный указав APP_NAME=app.<app_name>
 	@echo Сетап с Докером:
 	@echo make docker_env          - создать .env файл из .env.example для Docker (проверьте DB_HOST=db)
 	@echo make docker_secret_key   - сгенерировать SECRET_KEY для Docker (нужен только докер)
@@ -91,6 +92,9 @@ save_data:
 
 shell:
 	$(VENV_PYTHON) manage.py shell
+
+test:
+	$(VENV_PYTHON) manage.py test $(APP_NAME)
 
 
 # Docker:

@@ -261,14 +261,14 @@ fun LoginRegisterFormContent(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // TextButton(
-            //     onClick = onNavigateToSandbox,
-            //     modifier = Modifier
-            //         .padding(bottom = 16.dp)
-            //         .testTag("auth_sandbox_button")
-            // ) {
-            //     SmartMealText("Перейти в Sandbox", color = PrimaryGreen)
-            // }
+/*
+            TextButton(
+                onClick = onNavigateToSandbox,
+                modifier = Modifier.padding(bottom = 16.dp)
+            ) {
+                SmartMealText("Перейти в Sandbox", color = PrimaryGreen)
+            }
+*/
         }
     }
 }

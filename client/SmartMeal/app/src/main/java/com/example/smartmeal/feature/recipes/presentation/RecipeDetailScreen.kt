@@ -63,6 +63,7 @@ val TextGray = Color(0xFF757575)
 @Composable
 fun RecipeDetailScreen(
     recipeId: Int,
+    menuItemId: Int? = null,
     portionSize: Int,
     viewModel: RecipeDetailViewModel,
     onBack: () -> Unit
@@ -70,7 +71,7 @@ fun RecipeDetailScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(recipeId) {
-        viewModel.loadRecipe(recipeId, portionSize)
+        viewModel.loadRecipe(recipeId, menuItemId, portionSize)
     }
 
     Scaffold(
@@ -128,8 +129,9 @@ fun RecipeDetailScreen(
                                 color = Color.Black,
                                 modifier = Modifier.weight(1f)
                             )
+                            val totalWeightStr = recipe.total_weight?.let { "${it.toInt()} г" } ?: ""
                             SmartMealText(
-                                text = "500 г",
+                                text = totalWeightStr,
                                 fontSize = 20.sp,
                                 color = TextGreen
                             )
@@ -211,7 +213,7 @@ fun RecipeDetailScreen(
                                 number = step.step_number,
                                 description = step.description,
                                 imageUrl = step.image_url,
-                                time = "3 мин"
+                                time = step.timer
                             )
                             Spacer(modifier = Modifier.height(24.dp))
                         }
@@ -342,7 +344,7 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 }
 
 @Composable
-fun StepItem(number: Int, description: String, imageUrl: String?, time: String) {
+fun StepItem(number: Int, description: String, imageUrl: String?, time: Int?) {
     Column(modifier = Modifier.fillMaxWidth()) {
         SmartMealText(
             text = buildAnnotatedString {
@@ -355,21 +357,23 @@ fun StepItem(number: Int, description: String, imageUrl: String?, time: String) 
             }
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        if (time != null && time > 0) {
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
-                contentDescription = null,
-                modifier = Modifier.size(16.dp),
-                tint = TextGray
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            SmartMealText(
-                text = time,
-                fontSize = 14.sp,
-                color = TextGray
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = TextGray
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                SmartMealText(
+                    text = "$time мин",
+                    fontSize = 14.sp,
+                    color = TextGray
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))

@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +23,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -35,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
@@ -62,6 +66,7 @@ import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
+import com.example.smartmeal.ui.theme.PrimaryGreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -75,22 +80,23 @@ import java.util.Locale
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(),
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
-    onRecipeClick: (Int) -> Unit,
+    onRecipeClick: (Int, Int?) -> Unit,
 ) {
-
     val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
+    val context = LocalContext.current
+    val setupPreferences = remember { SetupPreferences(context) }
 
+    val viewModel: HomeViewModel = viewModel(
+        factory = remember { HomeViewModelFactory(setupPreferences) }
+    )
+    
     val productListViewModel: ProductListViewModel = viewModel(
-        factory = remember { ProductListViewModelFactory(menuApi) }
+        factory = remember { ProductListViewModelFactory(menuApi, setupPreferences) }
     )
 
     val uiState by viewModel.uiState.collectAsState()
-
-    val context = LocalContext.current
-    val setupPreferences = remember { SetupPreferences(context) }
     val planType = setupPreferences.getPlanType()
     val planRange = setupPreferences.getCustomPlanRange()
     val customPlan = if (planType == SetupPreferences.PLAN_TYPE_CUSTOM) {
@@ -99,24 +105,26 @@ fun HomeScreen(
         null
     }
 
-    var selectedNavItem by remember { mutableIntStateOf(0) }
+    LaunchedEffect(customPlan?.startDate?.time, customPlan?.endDate?.time) {
+        if (customPlan != null) {
+            val selected = uiState.selectedDate
+            val outOfRange = selected == null ||
+                selected.before(customPlan.startDate) ||
+                selected.after(customPlan.endDate)
 
-    LaunchedEffect(uiState.allMenuItems) {
-        if (uiState.allMenuItems.isNotEmpty()) {
-            productListViewModel.generateProductsFromMenuItems(uiState.allMenuItems)
-        } else {
-            productListViewModel.clearProducts()
+            if (!uiState.selectedDateFromPlan || outOfRange) {
+                viewModel.selectDate(customPlan.startDate, customPlan)
+            }
         }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.uiState.value.allMenuItems.takeIf { it.isNotEmpty() }?.let { menuItems ->
-            productListViewModel.generateProductsFromMenuItems(menuItems)
-        }
-        viewModel.onCartUpdated = {
-            val menuItems = viewModel.uiState.value.allMenuItems
-            if (menuItems.isNotEmpty()) {
-                productListViewModel.generateProductsFromMenuItems(menuItems)
+    var selectedNavItem by remember { mutableIntStateOf(0) }
+
+    // Безопасная загрузка продуктов: только при переходе на вкладку Продукты
+    LaunchedEffect(selectedNavItem, uiState.allMenuItems) {
+        if (selectedNavItem == 1) {
+            if (uiState.allMenuItems.isNotEmpty()) {
+                productListViewModel.generateProductsFromMenuItems(uiState.allMenuItems)
             } else {
                 productListViewModel.clearProducts()
             }
@@ -132,33 +140,47 @@ fun HomeScreen(
             )
         }
     ) { innerPadding ->
-
         Box(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-
             when (selectedNavItem) {
-
                 // ---------------- ГЛАВНАЯ ----------------
-                0 -> HomeContent(
-                    uiState = uiState,
-                    onDateSelected = { viewModel.selectDate(it, customPlan) },
-                    onGenerateMenu = {
-                        val storedPlanType = setupPreferences.getPlanType()
-                        val range = setupPreferences.getCustomPlanRange()?.let { (start, end) ->
-                            Date(start) to Date(end)
-                        }
-                        val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
-                        viewModel.generateMenu(storedPlanType, range, selectedPlanDate)
-                    },
-                    onReplaceMeal = { viewModel.replaceMeal(it) },
-                    onToggleFavorite = { viewModel.toggleFavorite(it) },
-                    onRecipeClick = onRecipeClick,
-                    onDateSelectedFromPlan = { viewModel.selectDate(it, customPlan) },
-                    customPlan = customPlan
-                )
+                0 -> Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            onClick = { viewModel.dismissError() },
+                            indication = null,
+                            interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+                        )
+                ) {
+                    HomeContent(
+                        uiState = uiState,
+                        onDateSelected = { viewModel.selectDate(it, customPlan) },
+                        onGenerateMenu = {
+                            val storedPlanType = setupPreferences.getPlanType()
+                            val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
+                            
+                            var customDays: Int? = null
+                            if (storedPlanType == SetupPreferences.PLAN_TYPE_CUSTOM) {
+                                val range = setupPreferences.getCustomPlanRange()
+                                if (range != null) {
+                                    val diff = range.second - range.first
+                                    customDays = (diff / (1000 * 60 * 60 * 24)).toInt() + 1
+                                }
+                            }
+                            
+                            viewModel.generateMenu(storedPlanType, selectedPlanDate, customDays)
+                        },
+                        onReplaceMeal = { viewModel.replaceMeal(it) },
+                        onToggleFavorite = { viewModel.toggleFavorite(it) },
+                        onRecipeClick = onRecipeClick,
+                        onDateSelectedFromPlan = { viewModel.selectDate(it, customPlan) },
+                        customPlan = customPlan
+                    )
+                }
 
                 // ---------------- ПРОДУКТЫ ----------------
                 1 -> {
@@ -200,7 +222,7 @@ fun HomeContent(
     onGenerateMenu: () -> Unit,
     onReplaceMeal: (String) -> Unit,
     onToggleFavorite: (Int) -> Unit,
-    onRecipeClick: (Int) -> Unit,
+    onRecipeClick: (Int, Int?) -> Unit,
     onDateSelectedFromPlan: (Date) -> Unit,
     customPlan: CustomPlan?
 ) {
@@ -212,6 +234,7 @@ fun HomeContent(
         }
         buildAvailableDates(sourceItems, customPlan)
     }
+    
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
     val selectedDateId = uiState.selectedDate?.let(::buildDateSelectorId)
     val hasSingleAvailableDate = availableDates.size == 1
@@ -231,6 +254,7 @@ fun HomeContent(
             color = MaterialTheme.colorScheme.onBackground
         )
 
+        // МЕСЯЦ СВЕРХУ: Динамически берется из выбранной даты
         val monthYearLabel = availableDates.firstOrNull()?.let {
             formatMonthYearForSelector(uiState.selectedDate ?: it)
         }.orEmpty()
@@ -248,6 +272,7 @@ fun HomeContent(
             )
         }
 
+        // ТАБЛЕТКИ КАЛЕНДАРЯ
         Box(modifier = Modifier.testTag("home_day_selector")) {
             if (hasSingleAvailableDate) {
                 SmartMealText(
@@ -283,7 +308,7 @@ fun HomeContent(
             )
         }
 
-        if (uiState.isLoading) {
+        if (uiState.isLoading && !uiState.hasMenu) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -307,7 +332,11 @@ fun HomeContent(
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
                         onClick = onGenerateMenu,
-                        modifier = Modifier.testTag("home_generate_button")
+                        modifier = Modifier.testTag("home_generate_button"),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 6.dp,
+                            pressedElevation = 2.dp
+                        )
                     ) {
                         SmartMealText("Сгенерировать меню")
                     }
@@ -330,7 +359,6 @@ fun HomeContent(
                         onFavoriteClick = { onToggleFavorite(section.meal.id) },
                         onRecipeClick = onRecipeClick
                     )
-
                 }
             }
         }
@@ -352,7 +380,7 @@ fun MealSection(
     meal: MenuItemDto,
     onReplaceClick: () -> Unit,
     onFavoriteClick: () -> Unit,
-    onRecipeClick: (Int) -> Unit,
+    onRecipeClick: (Int, Int?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -387,7 +415,7 @@ fun MealSection(
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
-                .clickable { onRecipeClick(item.recipe) }
+                .clickable { onRecipeClick(item.recipe, item.id) }
             ) {
                 MealCard(
                     title = item.recipe_title,
@@ -418,7 +446,8 @@ fun ProfileScreen(onLogout: () -> Unit, onLogoutSuccess: () -> Unit) {
                 onClick = {
                     onLogout()
                     onLogoutSuccess()
-                }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
             ) {
                 SmartMealText("Выйти из аккаунта")
             }
@@ -446,7 +475,7 @@ data class HomeUiState(
     val customPlan: CustomPlan? = null
 )
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     private val menuRepository = MenuRepository(RetrofitClient.createService(MenuApi::class.java))
@@ -481,7 +510,7 @@ class HomeViewModel : ViewModel() {
                 }
                 _uiState.update {
                     val currentSelectedDate = it.selectedDate?.let(::normalizeDate)
-                    val availableDates = buildAvailableDates(menu.items ?: emptyList(), null)
+                    val availableDates = buildAvailableDates(menu.items ?: emptyList(), CustomPlan(startDate, endDate))
                     val defaultDate = availableDates.firstOrNull()
                     val resolvedSelectedDate = currentSelectedDate?.takeIf { selected ->
                         availableDates.any { it.time == selected.time }
@@ -510,59 +539,44 @@ class HomeViewModel : ViewModel() {
 
     fun generateMenu(
         planType: String?,
-        customRange: Pair<Date, Date>?,
-        selectedPlanDate: Date?
+        selectedPlanDate: Date?,
+        customDays: Int? = null
     ) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val type = planType ?: SetupPreferences.PLAN_TYPE_WEEKLY
-                when (type) {
-                    SetupPreferences.PLAN_TYPE_CUSTOM -> {
-                        val range = customRange
-                        if (range != null) {
-                            val cal = Calendar.getInstance().apply { time = range.first }
-                            val end = range.second
-                            while (!cal.time.after(end)) {
-                                val dayStr = apiDateFormatter.format(cal.time)
-                                val response = generatorApi.autoGenerate(
-                                    AutoGenerateRequest(period = "day", start_date = dayStr)
-                                )
-                                if (!response.isSuccessful) {
-                                    _uiState.update { it.copy(error = "Ошибка генерации меню на $dayStr") }
-                                }
-                                cal.add(Calendar.DAY_OF_YEAR, 1)
-                            }
-                        }
-                    }
-                    SetupPreferences.PLAN_TYPE_DAILY -> {
-                        val startDateStr = resolveGenerationStartDateString(
-                            formatter = apiDateFormatter,
-                            selectedPlanDate = selectedPlanDate
-                        )
-                        val response = generatorApi.autoGenerate(
-                            AutoGenerateRequest(period = "day", start_date = startDateStr)
-                        )
-                        if (!response.isSuccessful) {
-                            _uiState.update { it.copy(error = "Ошибка генерации") }
-                        }
-                    }
-                    else -> {
-                        val startDateStr = resolveGenerationStartDateString(
-                            formatter = apiDateFormatter,
-                            selectedPlanDate = selectedPlanDate
-                        )
-                        val response = generatorApi.autoGenerate(
-                            AutoGenerateRequest(period = "week", start_date = startDateStr)
-                        )
-                        if (!response.isSuccessful) {
-                            _uiState.update { it.copy(error = "Ошибка генерации") }
-                        }
-                    }
+                val periodStr = when {
+                    customDays != null -> "custom"
+                    type == SetupPreferences.PLAN_TYPE_DAILY -> "day"
+                    else -> "week"
                 }
+                val startDateStr = resolveGenerationStartDateString(
+                    formatter = apiDateFormatter,
+                    selectedPlanDate = selectedPlanDate
+                )
+                
+                val response = generatorApi.autoGenerate(
+                    AutoGenerateRequest(
+                        period = periodStr,
+                        start_date = startDateStr,
+                        days = customDays
+                    )
+                )
 
-                val menu = refreshMenu()
-                if (menu != null && !menu.items.isNullOrEmpty()) {} catch (e: Exception) {
+                if (response.isSuccessful) {
+                    refreshMenu()
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val message = try {
+                        val json = org.json.JSONObject(errorBody ?: "{}")
+                        json.optString("detail", "Ошибка генерации")
+                    } catch (e: Exception) {
+                        "Ошибка сервера: ${response.code()}"
+                    }
+                    _uiState.update { it.copy(error = message) }
+                }
+            } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.localizedMessage) }
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
@@ -575,7 +589,7 @@ class HomeViewModel : ViewModel() {
         val menu = state.currentMenu ?: return
 
         try {
-            val resolvedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), null).firstOrNull()
+            val resolvedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), state.customPlan).firstOrNull()
 
             val itemsForDay = if (resolvedDate != null) {
                 val selectedDateStr = apiDateFormatter.format(resolvedDate)
@@ -653,7 +667,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun clearPlanSelection() {
-        _uiState.update { it.copy(selectedDateFromPlan = false, selectedDate = null) }
+        _uiState.update { it.copy(selectedDateFromPlan = false) }
         updateMealSections()
     }
 
@@ -671,7 +685,7 @@ class HomeViewModel : ViewModel() {
     fun replaceMeal(mealType: String) {
         val state = _uiState.value
         val menu = state.currentMenu ?: return
-        val selectedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), null).firstOrNull() ?: return
+        val selectedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), state.customPlan).firstOrNull() ?: return
         val selectedDateStr = apiDateFormatter.format(selectedDate)
         val menuItem = if (state.selectedDateFromPlan) {
             state.allMenuItems.find { it.actual_date == selectedDateStr && it.meal_type == mealType }
@@ -681,8 +695,10 @@ class HomeViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
+                // Плавное обновление: не ставим isLoading = true
                 val updatedItem = menuRepository.replaceMenuItem(menuItem.id)
                 if (updatedItem != null) {
+                    preferences.clearMenuItemServings(menuItem.id)
                     _uiState.update { currentState ->
                         mergeUpdatedMenuItemIntoState(currentState, updatedItem)
                     }
@@ -692,30 +708,38 @@ class HomeViewModel : ViewModel() {
                 _uiState.update { it.copy(error = e.localizedMessage) }
             }
         }
-
-
     }
 
+    fun dismissError() {
+        _uiState.update { it.copy(error = null) }
+    }
 }
 
+// ГЕНЕРАЦИЯ ДАТ: Строит непрерывный план, гарантируя появление всех таблеток
 internal fun buildAvailableDates(
     menuItems: List<MenuItemDto>,
     customPlan: CustomPlan?
 ): List<Date> {
-    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-    val startMillis = customPlan?.startDate?.let(::normalizeDateStatic)?.time
-    val endMillis = customPlan?.endDate?.let(::normalizeDateStatic)?.time
+    if (customPlan != null) {
+        val dates = mutableListOf<Date>()
+        val cal = Calendar.getInstance().apply { 
+            time = normalizeDateStatic(customPlan.startDate) 
+        }
+        val end = normalizeDateStatic(customPlan.endDate)
 
+        while (!cal.time.after(end)) {
+            dates.add(cal.time)
+            cal.add(Calendar.DATE, 1)
+        }
+        return dates
+    }
+
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     return menuItems
         .mapNotNull { item -> formatter.parse(item.actual_date) }
         .map(::normalizeDateStatic)
         .distinct()
         .sorted()
-        .filter { date ->
-            val time = date.time
-            (startMillis == null || time >= startMillis) &&
-                (endMillis == null || time <= endMillis)
-        }
 }
 
 private fun resolveDayNameForDate(date: Date): String {
@@ -804,13 +828,26 @@ internal fun resolveGenerationStartDateString(
     return formatter.format(selectedPlanDate ?: fallbackDate)
 }
 
+private class HomeViewModelFactory(
+    private val preferences: SetupPreferences
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HomeViewModel(preferences) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
 private class ProductListViewModelFactory(
-    private val menuApi: MenuApi
+    private val menuApi: MenuApi,
+    private val preferences: SetupPreferences
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProductListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ProductListViewModel(menuApi) as T
+            return ProductListViewModel(menuApi, preferences) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

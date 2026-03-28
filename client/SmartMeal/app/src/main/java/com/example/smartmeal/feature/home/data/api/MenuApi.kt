@@ -55,7 +55,10 @@ interface MenuApi {
 
     /** Полный рецепт с ингредиентами и шагами */
     @GET("api/recipes/{id}/")
-    suspend fun getRecipe(@Path("id") id: Int): Response<RecipeDetailDto>
+    suspend fun getRecipe(
+        @Path("id") id: Int,
+        @Query("servings") servings: Int? = null
+    ): Response<RecipeDetailDto>
 
     // ─── Корзина ────────────────────────────────────────────────────────────
 

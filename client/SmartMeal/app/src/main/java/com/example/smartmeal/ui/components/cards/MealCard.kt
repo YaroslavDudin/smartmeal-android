@@ -28,6 +28,8 @@ import com.example.smartmeal.ui.components.buttons.CircleIconType
 
 import com.example.smartmeal.ui.components.SmartMealText
 
+import com.example.smartmeal.utils.softBottomShadow
+
 @Composable
 fun MealCard(
     modifier: Modifier = Modifier,
@@ -48,9 +50,11 @@ fun MealCard(
         modifier = modifier
             .fillMaxWidth()
             .height(100.dp)
+            .softBottomShadow(shape = RoundedCornerShape(16.dp))
             .testTag(resolvedCardTag),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(1.dp)
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),

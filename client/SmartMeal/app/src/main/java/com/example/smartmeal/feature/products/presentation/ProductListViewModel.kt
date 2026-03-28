@@ -7,17 +7,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.home.data.api.MenuApi
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
+import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
-    private val menuApi: MenuApi
+    private val menuApi: MenuApi,
+    private val preferences: SetupPreferences
 ) : ViewModel() {
+
+    // Кэш рецептов: ID рецепта -> Полные данные рецепта
+    private val recipeCache = mutableMapOf<Int, RecipeDetailDto>()
 
     var products by mutableStateOf<List<ProductUiModel>>(emptyList())
         private set
@@ -94,6 +102,7 @@ class ProductListViewModel(
         availableDateKeys = emptyList()
         dateRangeText = "Выберите диапазон дней"
         errorMessage = null
+        recipeCache.clear() // При смене меню чистим кэш
     }
 
     fun selectDateRange(dateKey: String) {
@@ -158,11 +167,38 @@ class ProductListViewModel(
             isLoading = true
             errorMessage = null
             try {
+                // ИДЕАЛЬНАЯ ЛОГИКА: Берем количество порций из настроек пользователя (SetupStep1)
+                val globalPortionSize = preferences.getPortionSize()
+                
+                // 1. Сначала загружаем все недостающие рецепты в кэш с учетом порций
+                val uniqueRecipeIds = menuItems.map { it.recipe }.distinct()
+                val missingIds = uniqueRecipeIds.filter { it !in recipeCache }
+                
+                if (missingIds.isNotEmpty()) {
+                    val deferred = missingIds.map { id ->
+                        async {
+                            // Запрашиваем рецепт с сервера, ПРИНУДИТЕЛЬНО указав servings
+                            // Так бэкенд вернет веса ингредиентов, уже умноженные на кол-во персон
+                            val response = menuApi.getRecipe(id, servings = globalPortionSize)
+                            if (response.isSuccessful && response.body() != null) {
+                                id to response.body()!!
+                            } else {
+                                null
+                            }
+                        }
+                    }
+                    deferred.awaitAll().filterNotNull().forEach { (id, recipe) ->
+                        recipeCache[id] = recipe
+                    }
+                }
+
+                // 2. Теперь строим список продуктов из ВСЕХ элементов меню
                 val rawProducts = mutableListOf<ProductUiModel>()
                 val orderedDateKeys = menuItems
                     .map { it.actual_date }
                     .distinct()
                     .sorted()
+                
                 val dateIndexMap = orderedDateKeys.withIndex().associate { it.value to it.index }
                 val uniqueRecipeIds = menuItems.map { it.recipe }.distinct()
                 for (recipeId in uniqueRecipeIds) {
@@ -176,9 +212,22 @@ class ProductListViewModel(
 
                 for (menuItem in menuItems) {
                     val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
-                    val recipe = recipeCache[menuItem.recipe] ?: continue
+                    
+                    // ИДЕАЛЬНАЯ ЛОГИКА: Сначала проверяем, не менял ли пользователь порции для ЭТОГО конкретного дня/блюда
+                    val overrideServings = preferences.getMenuItemServings(menuItem.id)
+                    val effectiveServings = if (overrideServings > 0) overrideServings else globalPortionSize
 
-                    recipe.ingredients?.forEachIndexed { ingredientIndex, ingredient ->
+                    // Если рецепта нет в кэше или он был загружен с ДРУГИМ количеством порций - загружаем заново
+                    // (Для простоты здесь мы просто перезагружаем, если порции отличаются от глобальных)
+                    val recipe = if (overrideServings > 0) {
+                        val resp = menuApi.getRecipe(menuItem.recipe, servings = effectiveServings)
+                        if (resp.isSuccessful) resp.body() else recipeCache[menuItem.recipe]
+                    } else {
+                        recipeCache[menuItem.recipe]
+                    } ?: continue
+
+                    
+                    recipe.ingredients.forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {
                             return@forEachIndexed
                         }
@@ -186,16 +235,20 @@ class ProductListViewModel(
                         val rawCategory = ingredient.category_name ?: "Разное"
                         val normalizedCategory = categoryNormalizeMap[rawCategory] ?: rawCategory
                         val icon = categoryIconMap[normalizedCategory] ?: "🛒"
+                        
+                        // Так как бэкенд уже вернул веса с учетом servings, мы просто форматируем их
                         val normalizedAmountInGrams = resolveAmountInGrams(
-                            amountInGrams = ingredient.amount_in_grams,
+                            amountInGrams = ingredient.amount_in_base_units,
                             fallbackAmount = ingredient.amount,
                             fallbackUnit = ingredient.unit_name
                         )
                         val amountString = formatWeightDisplay(normalizedAmountInGrams)
+                        
                         val occurrenceId = buildOccurrenceId(
                             ingredientName = ingredient.ingredient_name,
                             categoryName = normalizedCategory,
                             actualDate = menuItem.actual_date,
+                            mealType = menuItem.meal_type,
                             ingredientIndex = ingredientIndex
                         )
 
@@ -301,9 +354,10 @@ internal fun buildOccurrenceId(
     ingredientName: String,
     categoryName: String,
     actualDate: String,
+    mealType: String,
     ingredientIndex: Int
 ): String {
-    return "${ingredientName.trim()}_${categoryName.trim()}_${actualDate}_$ingredientIndex"
+    return "${ingredientName.trim()}_${categoryName.trim()}_${actualDate}_${mealType}_$ingredientIndex"
 }
 
 internal fun isExcludedIngredient(name: String): Boolean {

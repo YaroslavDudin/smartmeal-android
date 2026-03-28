@@ -95,6 +95,7 @@ class SetupViewModel(
                         cookTimePreference = user?.preferred_cook_time,
                     )
                 }
+                user?.portion_size?.let { preferences?.setPortionSize(it) }
             } catch (e: Exception) {
                 _state.update { it.copy(isCheckingUser = false, error = "Ошибка загрузки: ${e.message}") }
             }
@@ -108,11 +109,19 @@ class SetupViewModel(
     }
 
     fun incrementPortion() {
-        _state.update { it.copy(portionSize = (it.portionSize + 1).coerceAtMost(20)) }
+        _state.update {
+            val newSize = (it.portionSize + 1).coerceAtMost(20)
+            preferences?.setPortionSize(newSize)
+            it.copy(portionSize = newSize)
+        }
     }
 
     fun decrementPortion() {
-        _state.update { it.copy(portionSize = (it.portionSize - 1).coerceAtLeast(1)) }
+        _state.update {
+            val newSize = (it.portionSize - 1).coerceAtLeast(1)
+            preferences?.setPortionSize(newSize)
+            it.copy(portionSize = newSize)
+        }
     }
 
     // --- Step 2 ---

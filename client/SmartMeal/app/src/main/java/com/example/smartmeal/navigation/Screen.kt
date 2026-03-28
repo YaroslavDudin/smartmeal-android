@@ -16,7 +16,10 @@ sealed class Screen(val route: String) {
     object SetupStep2 : Screen("setup_step2")
     object SetupStep3 : Screen("setup_step3")
 
-    object RecipeDetail : Screen("recipe_detail/{recipeId}/{portionSize}") {
-        fun createRoute(recipeId: Int, portionSize: Int) = "recipe_detail/$recipeId/$portionSize"
+    object RecipeDetail : Screen("recipe_detail/{recipeId}/{portionSize}?menuItemId={menuItemId}") {
+        fun createRoute(recipeId: Int, portionSize: Int, menuItemId: Int? = null): String {
+            val base = "recipe_detail/$recipeId/$portionSize"
+            return if (menuItemId != null) "$base?menuItemId=$menuItemId" else base
+        }
     }
 }

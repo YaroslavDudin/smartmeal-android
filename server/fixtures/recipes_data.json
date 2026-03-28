@@ -218,7 +218,8 @@
     "fields": {
         "ingredient": 1,
         "unit": 3,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -227,7 +228,8 @@
     "fields": {
         "ingredient": 2,
         "unit": 3,
-        "grams_per_unit": "75.00"
+        "base_unit": 1,
+        "amount_per_unit": "75.00"
     }
 },
 {
@@ -236,7 +238,8 @@
     "fields": {
         "ingredient": 3,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -245,7 +248,8 @@
     "fields": {
         "ingredient": 4,
         "unit": 3,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -254,7 +258,8 @@
     "fields": {
         "ingredient": 5,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -263,7 +268,8 @@
     "fields": {
         "ingredient": 6,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -272,7 +278,8 @@
     "fields": {
         "ingredient": 7,
         "unit": 3,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -281,7 +288,8 @@
     "fields": {
         "ingredient": 8,
         "unit": 3,
-        "grams_per_unit": "1500.00"
+        "base_unit": 1,
+        "amount_per_unit": "1500.00"
     }
 },
 {
@@ -290,7 +298,8 @@
     "fields": {
         "ingredient": 9,
         "unit": 3,
-        "grams_per_unit": "500.00"
+        "base_unit": 1,
+        "amount_per_unit": "500.00"
     }
 },
 {
@@ -299,7 +308,8 @@
     "fields": {
         "ingredient": 10,
         "unit": 3,
-        "grams_per_unit": "3000.00"
+        "base_unit": 1,
+        "amount_per_unit": "3000.00"
     }
 },
 {
@@ -308,7 +318,8 @@
     "fields": {
         "ingredient": 11,
         "unit": 3,
-        "grams_per_unit": "300.00"
+        "base_unit": 1,
+        "amount_per_unit": "300.00"
     }
 },
 {
@@ -317,7 +328,8 @@
     "fields": {
         "ingredient": 12,
         "unit": 3,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -326,7 +338,8 @@
     "fields": {
         "ingredient": 13,
         "unit": 3,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -335,7 +348,8 @@
     "fields": {
         "ingredient": 14,
         "unit": 9,
-        "grams_per_unit": "50.00"
+        "base_unit": 1,
+        "amount_per_unit": "50.00"
     }
 },
 {
@@ -344,7 +358,8 @@
     "fields": {
         "ingredient": 15,
         "unit": 3,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -353,7 +368,8 @@
     "fields": {
         "ingredient": 16,
         "unit": 3,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -362,7 +378,8 @@
     "fields": {
         "ingredient": 17,
         "unit": 3,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -371,7 +388,8 @@
     "fields": {
         "ingredient": 18,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -380,7 +398,8 @@
     "fields": {
         "ingredient": 19,
         "unit": 3,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -389,7 +408,8 @@
     "fields": {
         "ingredient": 22,
         "unit": 3,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -398,7 +418,8 @@
     "fields": {
         "ingredient": 23,
         "unit": 3,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -407,7 +428,8 @@
     "fields": {
         "ingredient": 24,
         "unit": 3,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -416,7 +438,8 @@
     "fields": {
         "ingredient": 42,
         "unit": 3,
-        "grams_per_unit": "50.00"
+        "base_unit": 1,
+        "amount_per_unit": "50.00"
     }
 },
 {
@@ -425,7 +448,8 @@
     "fields": {
         "ingredient": 51,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -434,7 +458,8 @@
     "fields": {
         "ingredient": 51,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -443,7 +468,8 @@
     "fields": {
         "ingredient": 52,
         "unit": 5,
-        "grams_per_unit": "2.00"
+        "base_unit": 1,
+        "amount_per_unit": "2.00"
     }
 },
 {
@@ -452,7 +478,8 @@
     "fields": {
         "ingredient": 53,
         "unit": 4,
-        "grams_per_unit": "8.00"
+        "base_unit": 1,
+        "amount_per_unit": "8.00"
     }
 },
 {
@@ -461,7 +488,8 @@
     "fields": {
         "ingredient": 53,
         "unit": 5,
-        "grams_per_unit": "3.00"
+        "base_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
@@ -470,7 +498,8 @@
     "fields": {
         "ingredient": 54,
         "unit": 5,
-        "grams_per_unit": "2.00"
+        "base_unit": 1,
+        "amount_per_unit": "2.00"
     }
 },
 {
@@ -479,7 +508,8 @@
     "fields": {
         "ingredient": 55,
         "unit": 5,
-        "grams_per_unit": "2.00"
+        "base_unit": 1,
+        "amount_per_unit": "2.00"
     }
 },
 {
@@ -488,7 +518,8 @@
     "fields": {
         "ingredient": 56,
         "unit": 8,
-        "grams_per_unit": "1.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -497,7 +528,8 @@
     "fields": {
         "ingredient": 57,
         "unit": 3,
-        "grams_per_unit": "0.50"
+        "base_unit": 1,
+        "amount_per_unit": "0.50"
     }
 },
 {
@@ -506,7 +538,8 @@
     "fields": {
         "ingredient": 72,
         "unit": 4,
-        "grams_per_unit": "10.00"
+        "base_unit": 1,
+        "amount_per_unit": "10.00"
     }
 },
 {
@@ -515,7 +548,8 @@
     "fields": {
         "ingredient": 72,
         "unit": 5,
-        "grams_per_unit": "3.00"
+        "base_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
@@ -524,7 +558,8 @@
     "fields": {
         "ingredient": 72,
         "unit": 7,
-        "grams_per_unit": "130.00"
+        "base_unit": 1,
+        "amount_per_unit": "130.00"
     }
 },
 {
@@ -533,7 +568,8 @@
     "fields": {
         "ingredient": 67,
         "unit": 4,
-        "grams_per_unit": "12.00"
+        "base_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
@@ -542,7 +578,8 @@
     "fields": {
         "ingredient": 67,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -551,7 +588,8 @@
     "fields": {
         "ingredient": 67,
         "unit": 7,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -560,7 +598,8 @@
     "fields": {
         "ingredient": 44,
         "unit": 7,
-        "grams_per_unit": "180.00"
+        "base_unit": 1,
+        "amount_per_unit": "180.00"
     }
 },
 {
@@ -569,7 +608,8 @@
     "fields": {
         "ingredient": 44,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -578,7 +618,8 @@
     "fields": {
         "ingredient": 45,
         "unit": 7,
-        "grams_per_unit": "170.00"
+        "base_unit": 1,
+        "amount_per_unit": "170.00"
     }
 },
 {
@@ -587,7 +628,8 @@
     "fields": {
         "ingredient": 45,
         "unit": 4,
-        "grams_per_unit": "14.00"
+        "base_unit": 1,
+        "amount_per_unit": "14.00"
     }
 },
 {
@@ -596,7 +638,8 @@
     "fields": {
         "ingredient": 46,
         "unit": 7,
-        "grams_per_unit": "80.00"
+        "base_unit": 1,
+        "amount_per_unit": "80.00"
     }
 },
 {
@@ -605,7 +648,8 @@
     "fields": {
         "ingredient": 46,
         "unit": 4,
-        "grams_per_unit": "7.00"
+        "base_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
@@ -614,7 +658,8 @@
     "fields": {
         "ingredient": 47,
         "unit": 7,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -623,7 +668,8 @@
     "fields": {
         "ingredient": 71,
         "unit": 4,
-        "grams_per_unit": "12.00"
+        "base_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
@@ -632,7 +678,8 @@
     "fields": {
         "ingredient": 71,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -641,7 +688,8 @@
     "fields": {
         "ingredient": 36,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -650,25 +698,8 @@
     "fields": {
         "ingredient": 36,
         "unit": 4,
-        "grams_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 50,
-    "fields": {
-        "ingredient": 37,
-        "unit": 7,
-        "grams_per_unit": "250.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 51,
-    "fields": {
-        "ingredient": 37,
-        "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -677,7 +708,8 @@
     "fields": {
         "ingredient": 62,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -686,7 +718,8 @@
     "fields": {
         "ingredient": 62,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -695,7 +728,8 @@
     "fields": {
         "ingredient": 58,
         "unit": 4,
-        "grams_per_unit": "14.00"
+        "base_unit": 1,
+        "amount_per_unit": "14.00"
     }
 },
 {
@@ -704,7 +738,8 @@
     "fields": {
         "ingredient": 58,
         "unit": 7,
-        "grams_per_unit": "210.00"
+        "base_unit": 1,
+        "amount_per_unit": "210.00"
     }
 },
 {
@@ -713,7 +748,8 @@
     "fields": {
         "ingredient": 59,
         "unit": 4,
-        "grams_per_unit": "14.00"
+        "base_unit": 1,
+        "amount_per_unit": "14.00"
     }
 },
 {
@@ -722,7 +758,8 @@
     "fields": {
         "ingredient": 59,
         "unit": 7,
-        "grams_per_unit": "210.00"
+        "base_unit": 1,
+        "amount_per_unit": "210.00"
     }
 },
 {
@@ -731,7 +768,8 @@
     "fields": {
         "ingredient": 41,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -740,7 +778,8 @@
     "fields": {
         "ingredient": 66,
         "unit": 4,
-        "grams_per_unit": "25.00"
+        "base_unit": 1,
+        "amount_per_unit": "25.00"
     }
 },
 {
@@ -749,7 +788,8 @@
     "fields": {
         "ingredient": 66,
         "unit": 5,
-        "grams_per_unit": "8.00"
+        "base_unit": 1,
+        "amount_per_unit": "8.00"
     }
 },
 {
@@ -758,7 +798,8 @@
     "fields": {
         "ingredient": 70,
         "unit": 4,
-        "grams_per_unit": "10.00"
+        "base_unit": 1,
+        "amount_per_unit": "10.00"
     }
 },
 {
@@ -767,7 +808,8 @@
     "fields": {
         "ingredient": 70,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -776,7 +818,8 @@
     "fields": {
         "ingredient": 76,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -785,7 +828,8 @@
     "fields": {
         "ingredient": 77,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -794,7 +838,8 @@
     "fields": {
         "ingredient": 78,
         "unit": 7,
-        "grams_per_unit": "175.00"
+        "base_unit": 1,
+        "amount_per_unit": "175.00"
     }
 },
 {
@@ -803,7 +848,8 @@
     "fields": {
         "ingredient": 79,
         "unit": 4,
-        "grams_per_unit": "17.00"
+        "base_unit": 1,
+        "amount_per_unit": "17.00"
     }
 },
 {
@@ -812,7 +858,8 @@
     "fields": {
         "ingredient": 79,
         "unit": 5,
-        "grams_per_unit": "8.00"
+        "base_unit": 1,
+        "amount_per_unit": "8.00"
     }
 },
 {
@@ -821,7 +868,8 @@
     "fields": {
         "ingredient": 79,
         "unit": 7,
-        "grams_per_unit": "260.00"
+        "base_unit": 1,
+        "amount_per_unit": "260.00"
     }
 },
 {
@@ -830,7 +878,8 @@
     "fields": {
         "ingredient": 65,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -839,7 +888,8 @@
     "fields": {
         "ingredient": 63,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -848,7 +898,8 @@
     "fields": {
         "ingredient": 81,
         "unit": 4,
-        "grams_per_unit": "10.00"
+        "base_unit": 1,
+        "amount_per_unit": "10.00"
     }
 },
 {
@@ -857,7 +908,8 @@
     "fields": {
         "ingredient": 81,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -866,7 +918,8 @@
     "fields": {
         "ingredient": 82,
         "unit": 3,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -875,7 +928,8 @@
     "fields": {
         "ingredient": 83,
         "unit": 7,
-        "grams_per_unit": "170.00"
+        "base_unit": 1,
+        "amount_per_unit": "170.00"
     }
 },
 {
@@ -884,7 +938,8 @@
     "fields": {
         "ingredient": 84,
         "unit": 7,
-        "grams_per_unit": "190.00"
+        "base_unit": 1,
+        "amount_per_unit": "190.00"
     }
 },
 {
@@ -893,7 +948,8 @@
     "fields": {
         "ingredient": 85,
         "unit": 7,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -902,7 +958,8 @@
     "fields": {
         "ingredient": 86,
         "unit": 3,
-        "grams_per_unit": "35.00"
+        "base_unit": 1,
+        "amount_per_unit": "35.00"
     }
 },
 {
@@ -911,7 +968,8 @@
     "fields": {
         "ingredient": 73,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -920,7 +978,8 @@
     "fields": {
         "ingredient": 87,
         "unit": 5,
-        "grams_per_unit": "7.00"
+        "base_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
@@ -929,7 +988,8 @@
     "fields": {
         "ingredient": 88,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -938,7 +998,8 @@
     "fields": {
         "ingredient": 88,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -947,34 +1008,8 @@
     "fields": {
         "ingredient": 90,
         "unit": 7,
-        "grams_per_unit": "155.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 85,
-    "fields": {
-        "ingredient": 91,
-        "unit": 7,
-        "grams_per_unit": "240.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 86,
-    "fields": {
-        "ingredient": 92,
-        "unit": 7,
-        "grams_per_unit": "252.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 87,
-    "fields": {
-        "ingredient": 92,
-        "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "155.00"
     }
 },
 {
@@ -983,7 +1018,8 @@
     "fields": {
         "ingredient": 43,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 1,
+        "amount_per_unit": "240.00"
     }
 },
 {
@@ -992,7 +1028,8 @@
     "fields": {
         "ingredient": 43,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1001,7 +1038,8 @@
     "fields": {
         "ingredient": 39,
         "unit": 7,
-        "grams_per_unit": "230.00"
+        "base_unit": 1,
+        "amount_per_unit": "230.00"
     }
 },
 {
@@ -1010,7 +1048,8 @@
     "fields": {
         "ingredient": 39,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1019,7 +1058,8 @@
     "fields": {
         "ingredient": 38,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 1,
+        "amount_per_unit": "240.00"
     }
 },
 {
@@ -1028,7 +1068,8 @@
     "fields": {
         "ingredient": 38,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1037,7 +1078,8 @@
     "fields": {
         "ingredient": 93,
         "unit": 3,
-        "grams_per_unit": "10.00"
+        "base_unit": 1,
+        "amount_per_unit": "10.00"
     }
 },
 {
@@ -1046,7 +1088,8 @@
     "fields": {
         "ingredient": 94,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1055,25 +1098,8 @@
     "fields": {
         "ingredient": 94,
         "unit": 4,
-        "grams_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 97,
-    "fields": {
-        "ingredient": 95,
-        "unit": 7,
-        "grams_per_unit": "255.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 98,
-    "fields": {
-        "ingredient": 95,
-        "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1082,7 +1108,8 @@
     "fields": {
         "ingredient": 96,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 1,
+        "amount_per_unit": "240.00"
     }
 },
 {
@@ -1091,7 +1118,8 @@
     "fields": {
         "ingredient": 96,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -1100,7 +1128,8 @@
     "fields": {
         "ingredient": 97,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 1,
+        "amount_per_unit": "240.00"
     }
 },
 {
@@ -1109,7 +1138,8 @@
     "fields": {
         "ingredient": 97,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -1118,7 +1148,8 @@
     "fields": {
         "ingredient": 98,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 1,
+        "amount_per_unit": "240.00"
     }
 },
 {
@@ -1127,7 +1158,8 @@
     "fields": {
         "ingredient": 98,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -1136,7 +1168,8 @@
     "fields": {
         "ingredient": 99,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -1145,7 +1178,8 @@
     "fields": {
         "ingredient": 99,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1154,7 +1188,8 @@
     "fields": {
         "ingredient": 100,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -1163,7 +1198,8 @@
     "fields": {
         "ingredient": 100,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1172,7 +1208,8 @@
     "fields": {
         "ingredient": 101,
         "unit": 3,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1181,7 +1218,8 @@
     "fields": {
         "ingredient": 102,
         "unit": 3,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1190,7 +1228,8 @@
     "fields": {
         "ingredient": 103,
         "unit": 3,
-        "grams_per_unit": "30.00"
+        "base_unit": 1,
+        "amount_per_unit": "30.00"
     }
 },
 {
@@ -1199,7 +1238,8 @@
     "fields": {
         "ingredient": 104,
         "unit": 3,
-        "grams_per_unit": "800.00"
+        "base_unit": 1,
+        "amount_per_unit": "800.00"
     }
 },
 {
@@ -1208,7 +1248,8 @@
     "fields": {
         "ingredient": 105,
         "unit": 3,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1217,7 +1258,8 @@
     "fields": {
         "ingredient": 106,
         "unit": 4,
-        "grams_per_unit": "7.00"
+        "base_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
@@ -1226,7 +1268,8 @@
     "fields": {
         "ingredient": 106,
         "unit": 5,
-        "grams_per_unit": "3.00"
+        "base_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
@@ -1235,7 +1278,8 @@
     "fields": {
         "ingredient": 107,
         "unit": 4,
-        "grams_per_unit": "7.00"
+        "base_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
@@ -1244,7 +1288,8 @@
     "fields": {
         "ingredient": 107,
         "unit": 5,
-        "grams_per_unit": "3.00"
+        "base_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
@@ -1253,7 +1298,8 @@
     "fields": {
         "ingredient": 108,
         "unit": 7,
-        "grams_per_unit": "110.00"
+        "base_unit": 1,
+        "amount_per_unit": "110.00"
     }
 },
 {
@@ -1262,7 +1308,8 @@
     "fields": {
         "ingredient": 109,
         "unit": 7,
-        "grams_per_unit": "210.00"
+        "base_unit": 1,
+        "amount_per_unit": "210.00"
     }
 },
 {
@@ -1271,7 +1318,8 @@
     "fields": {
         "ingredient": 109,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -1280,7 +1328,8 @@
     "fields": {
         "ingredient": 109,
         "unit": 5,
-        "grams_per_unit": "7.00"
+        "base_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
@@ -1289,7 +1338,8 @@
     "fields": {
         "ingredient": 110,
         "unit": 4,
-        "grams_per_unit": "10.00"
+        "base_unit": 1,
+        "amount_per_unit": "10.00"
     }
 },
 {
@@ -1298,7 +1348,8 @@
     "fields": {
         "ingredient": 110,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -1307,7 +1358,8 @@
     "fields": {
         "ingredient": 110,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -1316,7 +1368,8 @@
     "fields": {
         "ingredient": 70,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -1325,7 +1378,8 @@
     "fields": {
         "ingredient": 111,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1334,7 +1388,8 @@
     "fields": {
         "ingredient": 111,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1343,7 +1398,8 @@
     "fields": {
         "ingredient": 112,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1352,7 +1408,8 @@
     "fields": {
         "ingredient": 112,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1361,7 +1418,8 @@
     "fields": {
         "ingredient": 112,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1370,7 +1428,8 @@
     "fields": {
         "ingredient": 113,
         "unit": 7,
-        "grams_per_unit": "260.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1379,7 +1438,8 @@
     "fields": {
         "ingredient": 113,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1388,7 +1448,8 @@
     "fields": {
         "ingredient": 113,
         "unit": 5,
-        "grams_per_unit": "7.00"
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1397,7 +1458,8 @@
     "fields": {
         "ingredient": 114,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1406,7 +1468,8 @@
     "fields": {
         "ingredient": 114,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1415,7 +1478,8 @@
     "fields": {
         "ingredient": 114,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1424,7 +1488,8 @@
     "fields": {
         "ingredient": 115,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1433,7 +1498,8 @@
     "fields": {
         "ingredient": 115,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1442,7 +1508,8 @@
     "fields": {
         "ingredient": 115,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1451,7 +1518,8 @@
     "fields": {
         "ingredient": 116,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1460,7 +1528,8 @@
     "fields": {
         "ingredient": 116,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1469,7 +1538,8 @@
     "fields": {
         "ingredient": 116,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1478,7 +1548,8 @@
     "fields": {
         "ingredient": 117,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1487,7 +1558,8 @@
     "fields": {
         "ingredient": 118,
         "unit": 9,
-        "grams_per_unit": "50.00"
+        "base_unit": 1,
+        "amount_per_unit": "50.00"
     }
 },
 {
@@ -1496,7 +1568,8 @@
     "fields": {
         "ingredient": 119,
         "unit": 3,
-        "grams_per_unit": "70.00"
+        "base_unit": 1,
+        "amount_per_unit": "70.00"
     }
 },
 {
@@ -1505,7 +1578,8 @@
     "fields": {
         "ingredient": 120,
         "unit": 3,
-        "grams_per_unit": "800.00"
+        "base_unit": 1,
+        "amount_per_unit": "800.00"
     }
 },
 {
@@ -1514,7 +1588,8 @@
     "fields": {
         "ingredient": 121,
         "unit": 3,
-        "grams_per_unit": "700.00"
+        "base_unit": 1,
+        "amount_per_unit": "700.00"
     }
 },
 {
@@ -1523,7 +1598,8 @@
     "fields": {
         "ingredient": 122,
         "unit": 7,
-        "grams_per_unit": "170.00"
+        "base_unit": 1,
+        "amount_per_unit": "170.00"
     }
 },
 {
@@ -1532,7 +1608,8 @@
     "fields": {
         "ingredient": 122,
         "unit": 3,
-        "grams_per_unit": "2.00"
+        "base_unit": 1,
+        "amount_per_unit": "2.00"
     }
 },
 {
@@ -1541,7 +1618,8 @@
     "fields": {
         "ingredient": 123,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -1550,7 +1628,8 @@
     "fields": {
         "ingredient": 123,
         "unit": 3,
-        "grams_per_unit": "2.00"
+        "base_unit": 1,
+        "amount_per_unit": "2.00"
     }
 },
 {
@@ -1559,7 +1638,8 @@
     "fields": {
         "ingredient": 124,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -1568,7 +1648,8 @@
     "fields": {
         "ingredient": 125,
         "unit": 7,
-        "grams_per_unit": "140.00"
+        "base_unit": 1,
+        "amount_per_unit": "140.00"
     }
 },
 {
@@ -1577,7 +1658,8 @@
     "fields": {
         "ingredient": 126,
         "unit": 7,
-        "grams_per_unit": "125.00"
+        "base_unit": 1,
+        "amount_per_unit": "125.00"
     }
 },
 {
@@ -1586,7 +1668,8 @@
     "fields": {
         "ingredient": 127,
         "unit": 7,
-        "grams_per_unit": "180.00"
+        "base_unit": 1,
+        "amount_per_unit": "180.00"
     }
 },
 {
@@ -1595,7 +1678,8 @@
     "fields": {
         "ingredient": 128,
         "unit": 7,
-        "grams_per_unit": "125.00"
+        "base_unit": 1,
+        "amount_per_unit": "125.00"
     }
 },
 {
@@ -1604,7 +1688,8 @@
     "fields": {
         "ingredient": 129,
         "unit": 7,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -1613,7 +1698,8 @@
     "fields": {
         "ingredient": 129,
         "unit": 4,
-        "grams_per_unit": "9.00"
+        "base_unit": 1,
+        "amount_per_unit": "9.00"
     }
 },
 {
@@ -1622,7 +1708,8 @@
     "fields": {
         "ingredient": 129,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -1631,7 +1718,8 @@
     "fields": {
         "ingredient": 130,
         "unit": 7,
-        "grams_per_unit": "115.00"
+        "base_unit": 1,
+        "amount_per_unit": "115.00"
     }
 },
 {
@@ -1640,7 +1728,8 @@
     "fields": {
         "ingredient": 130,
         "unit": 4,
-        "grams_per_unit": "9.00"
+        "base_unit": 1,
+        "amount_per_unit": "9.00"
     }
 },
 {
@@ -1649,7 +1738,8 @@
     "fields": {
         "ingredient": 130,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -1658,7 +1748,8 @@
     "fields": {
         "ingredient": 131,
         "unit": 7,
-        "grams_per_unit": "125.00"
+        "base_unit": 1,
+        "amount_per_unit": "125.00"
     }
 },
 {
@@ -1667,7 +1758,8 @@
     "fields": {
         "ingredient": 131,
         "unit": 4,
-        "grams_per_unit": "10.00"
+        "base_unit": 1,
+        "amount_per_unit": "10.00"
     }
 },
 {
@@ -1676,7 +1768,8 @@
     "fields": {
         "ingredient": 131,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -1685,7 +1778,8 @@
     "fields": {
         "ingredient": 132,
         "unit": 7,
-        "grams_per_unit": "188.00"
+        "base_unit": 1,
+        "amount_per_unit": "188.00"
     }
 },
 {
@@ -1694,7 +1788,8 @@
     "fields": {
         "ingredient": 132,
         "unit": 4,
-        "grams_per_unit": "12.00"
+        "base_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
@@ -1703,7 +1798,8 @@
     "fields": {
         "ingredient": 132,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1712,7 +1808,8 @@
     "fields": {
         "ingredient": 133,
         "unit": 4,
-        "grams_per_unit": "12.00"
+        "base_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
@@ -1721,7 +1818,8 @@
     "fields": {
         "ingredient": 133,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1730,7 +1828,8 @@
     "fields": {
         "ingredient": 134,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1739,7 +1838,8 @@
     "fields": {
         "ingredient": 134,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1748,7 +1848,8 @@
     "fields": {
         "ingredient": 134,
         "unit": 7,
-        "grams_per_unit": "260.00"
+        "base_unit": 1,
+        "amount_per_unit": "260.00"
     }
 },
 {
@@ -1757,7 +1858,8 @@
     "fields": {
         "ingredient": 135,
         "unit": 7,
-        "grams_per_unit": "240.00"
+        "base_unit": 1,
+        "amount_per_unit": "240.00"
     }
 },
 {
@@ -1766,7 +1868,8 @@
     "fields": {
         "ingredient": 135,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1775,7 +1878,8 @@
     "fields": {
         "ingredient": 135,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1784,7 +1888,8 @@
     "fields": {
         "ingredient": 136,
         "unit": 7,
-        "grams_per_unit": "270.00"
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1793,7 +1898,8 @@
     "fields": {
         "ingredient": 136,
         "unit": 4,
-        "grams_per_unit": "16.00"
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1802,7 +1908,8 @@
     "fields": {
         "ingredient": 136,
         "unit": 5,
-        "grams_per_unit": "6.00"
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1811,7 +1918,8 @@
     "fields": {
         "ingredient": 137,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1820,7 +1928,8 @@
     "fields": {
         "ingredient": 137,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1829,7 +1938,8 @@
     "fields": {
         "ingredient": 137,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1838,7 +1948,8 @@
     "fields": {
         "ingredient": 138,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -1847,7 +1958,8 @@
     "fields": {
         "ingredient": 138,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -1856,7 +1968,8 @@
     "fields": {
         "ingredient": 138,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1865,7 +1978,8 @@
     "fields": {
         "ingredient": 139,
         "unit": 4,
-        "grams_per_unit": "12.00"
+        "base_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
@@ -1874,7 +1988,8 @@
     "fields": {
         "ingredient": 139,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -1883,7 +1998,8 @@
     "fields": {
         "ingredient": 140,
         "unit": 4,
-        "grams_per_unit": "9.00"
+        "base_unit": 1,
+        "amount_per_unit": "9.00"
     }
 },
 {
@@ -1892,7 +2008,8 @@
     "fields": {
         "ingredient": 140,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -1901,7 +2018,8 @@
     "fields": {
         "ingredient": 141,
         "unit": 4,
-        "grams_per_unit": "8.00"
+        "base_unit": 1,
+        "amount_per_unit": "8.00"
     }
 },
 {
@@ -1910,7 +2028,8 @@
     "fields": {
         "ingredient": 141,
         "unit": 5,
-        "grams_per_unit": "3.00"
+        "base_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
@@ -1919,7 +2038,8 @@
     "fields": {
         "ingredient": 30,
         "unit": 3,
-        "grams_per_unit": "1800.00"
+        "base_unit": 1,
+        "amount_per_unit": "1800.00"
     }
 },
 {
@@ -1928,7 +2048,8 @@
     "fields": {
         "ingredient": 34,
         "unit": 3,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -1937,7 +2058,8 @@
     "fields": {
         "ingredient": 33,
         "unit": 3,
-        "grams_per_unit": "14.00"
+        "base_unit": 1,
+        "amount_per_unit": "14.00"
     }
 },
 {
@@ -1946,7 +2068,8 @@
     "fields": {
         "ingredient": 35,
         "unit": 3,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -1955,7 +2078,8 @@
     "fields": {
         "ingredient": 31,
         "unit": 3,
-        "grams_per_unit": "1500.00"
+        "base_unit": 1,
+        "amount_per_unit": "1500.00"
     }
 },
 {
@@ -1964,7 +2088,8 @@
     "fields": {
         "ingredient": 142,
         "unit": 7,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -1973,7 +2098,8 @@
     "fields": {
         "ingredient": 142,
         "unit": 4,
-        "grams_per_unit": "13.00"
+        "base_unit": 1,
+        "amount_per_unit": "13.00"
     }
 },
 {
@@ -1982,7 +2108,8 @@
     "fields": {
         "ingredient": 142,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -1991,7 +2118,8 @@
     "fields": {
         "ingredient": 68,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -2000,7 +2128,8 @@
     "fields": {
         "ingredient": 143,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -2009,7 +2138,8 @@
     "fields": {
         "ingredient": 144,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -2018,7 +2148,8 @@
     "fields": {
         "ingredient": 145,
         "unit": 3,
-        "grams_per_unit": "100.00"
+        "base_unit": 1,
+        "amount_per_unit": "100.00"
     }
 },
 {
@@ -2027,7 +2158,8 @@
     "fields": {
         "ingredient": 69,
         "unit": 7,
-        "grams_per_unit": "330.00"
+        "base_unit": 1,
+        "amount_per_unit": "330.00"
     }
 },
 {
@@ -2036,7 +2168,8 @@
     "fields": {
         "ingredient": 69,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -2045,7 +2178,8 @@
     "fields": {
         "ingredient": 69,
         "unit": 5,
-        "grams_per_unit": "7.00"
+        "base_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
@@ -2054,7 +2188,8 @@
     "fields": {
         "ingredient": 146,
         "unit": 7,
-        "grams_per_unit": "270.00"
+        "base_unit": 1,
+        "amount_per_unit": "270.00"
     }
 },
 {
@@ -2063,7 +2198,8 @@
     "fields": {
         "ingredient": 146,
         "unit": 4,
-        "grams_per_unit": "20.00"
+        "base_unit": 1,
+        "amount_per_unit": "20.00"
     }
 },
 {
@@ -2072,7 +2208,8 @@
     "fields": {
         "ingredient": 146,
         "unit": 5,
-        "grams_per_unit": "7.00"
+        "base_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
@@ -2081,7 +2218,8 @@
     "fields": {
         "ingredient": 147,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -2090,7 +2228,8 @@
     "fields": {
         "ingredient": 147,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -2099,7 +2238,8 @@
     "fields": {
         "ingredient": 147,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -2108,7 +2248,8 @@
     "fields": {
         "ingredient": 148,
         "unit": 4,
-        "grams_per_unit": "12.00"
+        "base_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
@@ -2117,7 +2258,8 @@
     "fields": {
         "ingredient": 148,
         "unit": 5,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -2126,7 +2268,8 @@
     "fields": {
         "ingredient": 149,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -2135,7 +2278,8 @@
     "fields": {
         "ingredient": 149,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -2144,7 +2288,8 @@
     "fields": {
         "ingredient": 149,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -2153,7 +2298,8 @@
     "fields": {
         "ingredient": 150,
         "unit": 7,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -2162,7 +2308,8 @@
     "fields": {
         "ingredient": 150,
         "unit": 4,
-        "grams_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
@@ -2171,7 +2318,8 @@
     "fields": {
         "ingredient": 150,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -2180,7 +2328,8 @@
     "fields": {
         "ingredient": 151,
         "unit": 3,
-        "grams_per_unit": "80.00"
+        "base_unit": 1,
+        "amount_per_unit": "80.00"
     }
 },
 {
@@ -2189,7 +2338,8 @@
     "fields": {
         "ingredient": 152,
         "unit": 3,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -2198,7 +2348,8 @@
     "fields": {
         "ingredient": 153,
         "unit": 3,
-        "grams_per_unit": "70.00"
+        "base_unit": 1,
+        "amount_per_unit": "70.00"
     }
 },
 {
@@ -2207,7 +2358,8 @@
     "fields": {
         "ingredient": 154,
         "unit": 3,
-        "grams_per_unit": "40.00"
+        "base_unit": 1,
+        "amount_per_unit": "40.00"
     }
 },
 {
@@ -2216,7 +2368,8 @@
     "fields": {
         "ingredient": 155,
         "unit": 3,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -2225,7 +2378,8 @@
     "fields": {
         "ingredient": 156,
         "unit": 3,
-        "grams_per_unit": "3.00"
+        "base_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
@@ -2234,7 +2388,8 @@
     "fields": {
         "ingredient": 156,
         "unit": 7,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -2243,7 +2398,8 @@
     "fields": {
         "ingredient": 157,
         "unit": 7,
-        "grams_per_unit": "155.00"
+        "base_unit": 1,
+        "amount_per_unit": "155.00"
     }
 },
 {
@@ -2252,7 +2408,8 @@
     "fields": {
         "ingredient": 157,
         "unit": 3,
-        "grams_per_unit": "2.00"
+        "base_unit": 1,
+        "amount_per_unit": "2.00"
     }
 },
 {
@@ -2261,7 +2418,8 @@
     "fields": {
         "ingredient": 158,
         "unit": 7,
-        "grams_per_unit": "150.00"
+        "base_unit": 1,
+        "amount_per_unit": "150.00"
     }
 },
 {
@@ -2270,7 +2428,8 @@
     "fields": {
         "ingredient": 158,
         "unit": 3,
-        "grams_per_unit": "1.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2279,7 +2438,8 @@
     "fields": {
         "ingredient": 159,
         "unit": 7,
-        "grams_per_unit": "145.00"
+        "base_unit": 1,
+        "amount_per_unit": "145.00"
     }
 },
 {
@@ -2288,7 +2448,8 @@
     "fields": {
         "ingredient": 159,
         "unit": 3,
-        "grams_per_unit": "1.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2297,7 +2458,8 @@
     "fields": {
         "ingredient": 160,
         "unit": 7,
-        "grams_per_unit": "140.00"
+        "base_unit": 1,
+        "amount_per_unit": "140.00"
     }
 },
 {
@@ -2306,7 +2468,8 @@
     "fields": {
         "ingredient": 160,
         "unit": 3,
-        "grams_per_unit": "1.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2315,7 +2478,8 @@
     "fields": {
         "ingredient": 161,
         "unit": 7,
-        "grams_per_unit": "180.00"
+        "base_unit": 1,
+        "amount_per_unit": "180.00"
     }
 },
 {
@@ -2324,7 +2488,8 @@
     "fields": {
         "ingredient": 161,
         "unit": 3,
-        "grams_per_unit": "3.00"
+        "base_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
@@ -2333,7 +2498,8 @@
     "fields": {
         "ingredient": 162,
         "unit": 7,
-        "grams_per_unit": "190.00"
+        "base_unit": 1,
+        "amount_per_unit": "190.00"
     }
 },
 {
@@ -2342,7 +2508,8 @@
     "fields": {
         "ingredient": 162,
         "unit": 3,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -2351,7 +2518,8 @@
     "fields": {
         "ingredient": 163,
         "unit": 7,
-        "grams_per_unit": "210.00"
+        "base_unit": 1,
+        "amount_per_unit": "210.00"
     }
 },
 {
@@ -2360,7 +2528,8 @@
     "fields": {
         "ingredient": 163,
         "unit": 3,
-        "grams_per_unit": "4.00"
+        "base_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
@@ -2369,7 +2538,8 @@
     "fields": {
         "ingredient": 164,
         "unit": 3,
-        "grams_per_unit": "5000.00"
+        "base_unit": 1,
+        "amount_per_unit": "5000.00"
     }
 },
 {
@@ -2378,7 +2548,8 @@
     "fields": {
         "ingredient": 165,
         "unit": 3,
-        "grams_per_unit": "115.00"
+        "base_unit": 1,
+        "amount_per_unit": "115.00"
     }
 },
 {
@@ -2387,7 +2558,8 @@
     "fields": {
         "ingredient": 166,
         "unit": 3,
-        "grams_per_unit": "30.00"
+        "base_unit": 1,
+        "amount_per_unit": "30.00"
     }
 },
 {
@@ -2396,7 +2568,8 @@
     "fields": {
         "ingredient": 167,
         "unit": 3,
-        "grams_per_unit": "120.00"
+        "base_unit": 1,
+        "amount_per_unit": "120.00"
     }
 },
 {
@@ -2405,7 +2578,8 @@
     "fields": {
         "ingredient": 168,
         "unit": 3,
-        "grams_per_unit": "1500.00"
+        "base_unit": 1,
+        "amount_per_unit": "1500.00"
     }
 },
 {
@@ -2414,7 +2588,8 @@
     "fields": {
         "ingredient": 169,
         "unit": 3,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -2423,7 +2598,8 @@
     "fields": {
         "ingredient": 169,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -2432,7 +2608,8 @@
     "fields": {
         "ingredient": 170,
         "unit": 3,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -2441,7 +2618,8 @@
     "fields": {
         "ingredient": 170,
         "unit": 7,
-        "grams_per_unit": "160.00"
+        "base_unit": 1,
+        "amount_per_unit": "160.00"
     }
 },
 {
@@ -2450,7 +2628,8 @@
     "fields": {
         "ingredient": 171,
         "unit": 3,
-        "grams_per_unit": "35.00"
+        "base_unit": 1,
+        "amount_per_unit": "35.00"
     }
 },
 {
@@ -2459,7 +2638,8 @@
     "fields": {
         "ingredient": 172,
         "unit": 3,
-        "grams_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "250.00"
     }
 },
 {
@@ -2468,7 +2648,8 @@
     "fields": {
         "ingredient": 173,
         "unit": 3,
-        "grams_per_unit": "300.00"
+        "base_unit": 1,
+        "amount_per_unit": "300.00"
     }
 },
 {
@@ -2477,7 +2658,8 @@
     "fields": {
         "ingredient": 174,
         "unit": 3,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
     }
 },
 {
@@ -2486,7 +2668,8 @@
     "fields": {
         "ingredient": 175,
         "unit": 9,
-        "grams_per_unit": "50.00"
+        "base_unit": 1,
+        "amount_per_unit": "50.00"
     }
 },
 {
@@ -2495,7 +2678,8 @@
     "fields": {
         "ingredient": 176,
         "unit": 7,
-        "grams_per_unit": "220.00"
+        "base_unit": 1,
+        "amount_per_unit": "220.00"
     }
 },
 {
@@ -2504,7 +2688,8 @@
     "fields": {
         "ingredient": 177,
         "unit": 3,
-        "grams_per_unit": "70.00"
+        "base_unit": 1,
+        "amount_per_unit": "70.00"
     }
 },
 {
@@ -2513,7 +2698,8 @@
     "fields": {
         "ingredient": 178,
         "unit": 3,
-        "grams_per_unit": "425.00"
+        "base_unit": 1,
+        "amount_per_unit": "425.00"
     }
 },
 {
@@ -2522,7 +2708,8 @@
     "fields": {
         "ingredient": 179,
         "unit": 5,
-        "grams_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
@@ -2531,7 +2718,8 @@
     "fields": {
         "ingredient": 180,
         "unit": 9,
-        "grams_per_unit": "50.00"
+        "base_unit": 1,
+        "amount_per_unit": "50.00"
     }
 },
 {
@@ -2540,7 +2728,328 @@
     "fields": {
         "ingredient": 181,
         "unit": 7,
-        "grams_per_unit": "200.00"
+        "base_unit": 1,
+        "amount_per_unit": "200.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 262,
+    "fields": {
+        "ingredient": 91,
+        "unit": 7,
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 263,
+    "fields": {
+        "ingredient": 95,
+        "unit": 7,
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 264,
+    "fields": {
+        "ingredient": 95,
+        "unit": 4,
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 267,
+    "fields": {
+        "ingredient": 92,
+        "unit": 7,
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 268,
+    "fields": {
+        "ingredient": 92,
+        "unit": 4,
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 269,
+    "fields": {
+        "ingredient": 37,
+        "unit": 7,
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 270,
+    "fields": {
+        "ingredient": 37,
+        "unit": 4,
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 273,
+    "fields": {
+        "ingredient": 62,
+        "unit": 5,
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 277,
+    "fields": {
+        "ingredient": 114,
+        "unit": 1,
+        "base_unit": 6,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 278,
+    "fields": {
+        "ingredient": 111,
+        "unit": 5,
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 279,
+    "fields": {
+        "ingredient": 65,
+        "unit": 4,
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 280,
+    "fields": {
+        "ingredient": 62,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 281,
+    "fields": {
+        "ingredient": 113,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "0.96"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 282,
+    "fields": {
+        "ingredient": 111,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 283,
+    "fields": {
+        "ingredient": 112,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.03"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 284,
+    "fields": {
+        "ingredient": 115,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.08"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 285,
+    "fields": {
+        "ingredient": 116,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 286,
+    "fields": {
+        "ingredient": 65,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 287,
+    "fields": {
+        "ingredient": 117,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 288,
+    "fields": {
+        "ingredient": 63,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 289,
+    "fields": {
+        "ingredient": 95,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.03"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 290,
+    "fields": {
+        "ingredient": 36,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.03"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 291,
+    "fields": {
+        "ingredient": 36,
+        "unit": 5,
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 292,
+    "fields": {
+        "ingredient": 91,
+        "unit": 4,
+        "base_unit": 6,
+        "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 293,
+    "fields": {
+        "ingredient": 91,
+        "unit": 5,
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 294,
+    "fields": {
+        "ingredient": 91,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.03"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 295,
+    "fields": {
+        "ingredient": 37,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.01"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 296,
+    "fields": {
+        "ingredient": 92,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "0.96"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 297,
+    "fields": {
+        "ingredient": 77,
+        "unit": 5,
+        "base_unit": 6,
+        "amount_per_unit": "5.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 298,
+    "fields": {
+        "ingredient": 77,
+        "unit": 7,
+        "base_unit": 6,
+        "amount_per_unit": "250.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 299,
+    "fields": {
+        "ingredient": 77,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 300,
+    "fields": {
+        "ingredient": 136,
+        "unit": 6,
+        "base_unit": 1,
+        "amount_per_unit": "1.20"
     }
 },
 {
@@ -2549,6 +3058,7 @@
     "fields": {
         "name": "Картофель",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2558,6 +3068,7 @@
     "fields": {
         "name": "Морковь",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2567,6 +3078,7 @@
     "fields": {
         "name": "Лук репчатый",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2576,6 +3088,7 @@
     "fields": {
         "name": "Чеснок",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2585,6 +3098,7 @@
     "fields": {
         "name": "Помидор",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2594,6 +3108,7 @@
     "fields": {
         "name": "Огурец",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2603,6 +3118,7 @@
     "fields": {
         "name": "Перец болгарский",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2612,6 +3128,7 @@
     "fields": {
         "name": "Капуста белокочанная",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2621,6 +3138,7 @@
     "fields": {
         "name": "Брокколи",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2630,6 +3148,7 @@
     "fields": {
         "name": "Тыква",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2639,6 +3158,7 @@
     "fields": {
         "name": "Кабачок",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2648,6 +3168,7 @@
     "fields": {
         "name": "Баклажан",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2657,6 +3178,7 @@
     "fields": {
         "name": "Свёкла",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2666,6 +3188,7 @@
     "fields": {
         "name": "Укроп свежий",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2675,6 +3198,7 @@
     "fields": {
         "name": "Яблоко",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2684,6 +3208,7 @@
     "fields": {
         "name": "Банан",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2693,6 +3218,7 @@
     "fields": {
         "name": "Апельсин",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": [
             9
         ]
@@ -2704,6 +3230,7 @@
     "fields": {
         "name": "Лимон",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": [
             9
         ]
@@ -2715,6 +3242,7 @@
     "fields": {
         "name": "Груша",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2724,6 +3252,7 @@
     "fields": {
         "name": "Клубника",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2733,6 +3262,7 @@
     "fields": {
         "name": "Виноград",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2742,6 +3272,7 @@
     "fields": {
         "name": "Авокадо",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2751,6 +3282,7 @@
     "fields": {
         "name": "Куриное филе",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2760,6 +3292,7 @@
     "fields": {
         "name": "Куриные бёдра",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2769,6 +3302,7 @@
     "fields": {
         "name": "Говядина",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2778,6 +3312,7 @@
     "fields": {
         "name": "Свинина",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2787,6 +3322,7 @@
     "fields": {
         "name": "Фарш свиной",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2796,6 +3332,7 @@
     "fields": {
         "name": "Бекон",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2805,6 +3342,7 @@
     "fields": {
         "name": "Колбаса варёная",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2814,6 +3352,7 @@
     "fields": {
         "name": "Лосось филе",
         "category": 5,
+        "can_be_added_to_cart": true,
         "allergies": [
             3
         ]
@@ -2825,6 +3364,7 @@
     "fields": {
         "name": "Треска филе",
         "category": 5,
+        "can_be_added_to_cart": true,
         "allergies": [
             3
         ]
@@ -2836,6 +3376,7 @@
     "fields": {
         "name": "Тунец консервированный",
         "category": 5,
+        "can_be_added_to_cart": true,
         "allergies": [
             3
         ]
@@ -2847,6 +3388,7 @@
     "fields": {
         "name": "Креветки неочищенные",
         "category": 5,
+        "can_be_added_to_cart": true,
         "allergies": [
             4
         ]
@@ -2858,6 +3400,7 @@
     "fields": {
         "name": "Мидии неочищенные",
         "category": 5,
+        "can_be_added_to_cart": true,
         "allergies": [
             4
         ]
@@ -2869,6 +3412,7 @@
     "fields": {
         "name": "Кальмар тушки очищенные",
         "category": 5,
+        "can_be_added_to_cart": true,
         "allergies": [
             4
         ]
@@ -2880,6 +3424,7 @@
     "fields": {
         "name": "Молоко 3,2%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -2891,6 +3436,7 @@
     "fields": {
         "name": "Сливки 20%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -2902,6 +3448,7 @@
     "fields": {
         "name": "Йогурт без сахара",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -2913,6 +3460,7 @@
     "fields": {
         "name": "Творог 9%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -2924,6 +3472,7 @@
     "fields": {
         "name": "Сыр твёрдый 30%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -2935,6 +3484,7 @@
     "fields": {
         "name": "Масло сливочное 82,5%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -2946,6 +3496,7 @@
     "fields": {
         "name": "Куриное яйцо",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             2
         ]
@@ -2957,6 +3508,7 @@
     "fields": {
         "name": "Сметана 20%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -2968,6 +3520,7 @@
     "fields": {
         "name": "Рис",
         "category": 6,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2977,6 +3530,7 @@
     "fields": {
         "name": "Греча",
         "category": 6,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2986,6 +3540,7 @@
     "fields": {
         "name": "Овсяные хлопья",
         "category": 6,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -2995,6 +3550,7 @@
     "fields": {
         "name": "Макароны из твердой пшеницы",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3006,6 +3562,7 @@
     "fields": {
         "name": "Лапша пшеничная",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3017,6 +3574,7 @@
     "fields": {
         "name": "Кускус",
         "category": 6,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3028,6 +3586,7 @@
     "fields": {
         "name": "Булгур",
         "category": 6,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3037,6 +3596,7 @@
     "fields": {
         "name": "Соль",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3046,6 +3606,7 @@
     "fields": {
         "name": "Перец черный",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3055,6 +3616,7 @@
     "fields": {
         "name": "Красный перец (Паприка)",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3064,6 +3626,7 @@
     "fields": {
         "name": "Куркума",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3073,6 +3636,7 @@
     "fields": {
         "name": "Корица",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3082,6 +3646,7 @@
     "fields": {
         "name": "Ванилин",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3091,6 +3656,7 @@
     "fields": {
         "name": "Лавровый лист",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3100,6 +3666,7 @@
     "fields": {
         "name": "Масло оливковое",
         "category": 8,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3109,6 +3676,7 @@
     "fields": {
         "name": "Масло подсолнечное",
         "category": 8,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3118,6 +3686,7 @@
     "fields": {
         "name": "Масло кунжутное",
         "category": 8,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3127,6 +3696,7 @@
     "fields": {
         "name": "Масло кокосовое",
         "category": 8,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3136,6 +3706,7 @@
     "fields": {
         "name": "Вода",
         "category": 9,
+        "can_be_added_to_cart": false,
         "allergies": []
     }
 },
@@ -3145,6 +3716,7 @@
     "fields": {
         "name": "Чай черный без сахара",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3154,6 +3726,7 @@
     "fields": {
         "name": "Кофе растворимый",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3163,6 +3736,7 @@
     "fields": {
         "name": "Сок яблочный",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3172,6 +3746,7 @@
     "fields": {
         "name": "Мед цветочный",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3181,6 +3756,7 @@
     "fields": {
         "name": "Сахар белый",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3190,6 +3766,7 @@
     "fields": {
         "name": "Шоколад молочный",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3201,6 +3778,7 @@
     "fields": {
         "name": "Варенье клубничное",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3210,6 +3788,7 @@
     "fields": {
         "name": "Какао-порошок",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3219,6 +3798,7 @@
     "fields": {
         "name": "Манка",
         "category": 6,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3230,6 +3810,7 @@
     "fields": {
         "name": "Мука пшеничная",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3241,6 +3822,7 @@
     "fields": {
         "name": "Дрожжи сухие",
         "category": 22,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3250,6 +3832,7 @@
     "fields": {
         "name": "Разрыхлитель",
         "category": 22,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3259,6 +3842,7 @@
     "fields": {
         "name": "Панировочные сухари",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3270,6 +3854,7 @@
     "fields": {
         "name": "Томатная паста",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3279,6 +3864,7 @@
     "fields": {
         "name": "Соевый соус",
         "category": 21,
+        "can_be_added_to_cart": true,
         "allergies": [
             7
         ]
@@ -3290,6 +3876,7 @@
     "fields": {
         "name": "Арахис",
         "category": 15,
+        "can_be_added_to_cart": true,
         "allergies": [
             5
         ]
@@ -3301,6 +3888,7 @@
     "fields": {
         "name": "Арахисовая паста без сахара",
         "category": 20,
+        "can_be_added_to_cart": true,
         "allergies": [
             5
         ]
@@ -3312,6 +3900,7 @@
     "fields": {
         "name": "Матча зеленая",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3321,6 +3910,7 @@
     "fields": {
         "name": "Багет пшеничный",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3332,6 +3922,7 @@
     "fields": {
         "name": "Красная чечевица",
         "category": 15,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3341,6 +3932,7 @@
     "fields": {
         "name": "Консервированная красная фасоль",
         "category": 24,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3350,6 +3942,7 @@
     "fields": {
         "name": "Консервированный горошек",
         "category": 24,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3359,6 +3952,7 @@
     "fields": {
         "name": "Шампиньоны",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3368,6 +3962,7 @@
     "fields": {
         "name": "Сода пищевая",
         "category": 22,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3377,6 +3972,7 @@
     "fields": {
         "name": "Желатин пищевой в порошке",
         "category": 22,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3386,6 +3982,7 @@
     "fields": {
         "name": "Тофу",
         "category": 15,
+        "can_be_added_to_cart": true,
         "allergies": [
             7
         ]
@@ -3397,6 +3994,7 @@
     "fields": {
         "name": "Бобы эдамаме",
         "category": 15,
+        "can_be_added_to_cart": true,
         "allergies": [
             7
         ]
@@ -3408,6 +4006,7 @@
     "fields": {
         "name": "Сливки 10%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3419,6 +4018,7 @@
     "fields": {
         "name": "Сливки 33%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3430,6 +4030,7 @@
     "fields": {
         "name": "Перепелиное яйцо",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3439,6 +4040,7 @@
     "fields": {
         "name": "Сметана 15%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3450,6 +4052,7 @@
     "fields": {
         "name": "Кефир 3,2%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3461,6 +4064,7 @@
     "fields": {
         "name": "Масло ГХИ",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3470,6 +4074,7 @@
     "fields": {
         "name": "Творог 5%",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3481,6 +4086,7 @@
     "fields": {
         "name": "Творог обезжиренный",
         "category": 3,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3492,6 +4098,7 @@
     "fields": {
         "name": "Мука овсяная",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3501,6 +4108,7 @@
     "fields": {
         "name": "Мука ржаная",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3510,6 +4118,7 @@
     "fields": {
         "name": "Батон",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3521,6 +4130,7 @@
     "fields": {
         "name": "Хлеб ржаной",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -3532,6 +4142,7 @@
     "fields": {
         "name": "Куриные крылышки",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3541,6 +4152,7 @@
     "fields": {
         "name": "Индейка филе",
         "category": 4,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3550,6 +4162,7 @@
     "fields": {
         "name": "Чай черный в пакетиках",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3559,6 +4172,7 @@
     "fields": {
         "name": "Чай черный листовой",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3568,6 +4182,7 @@
     "fields": {
         "name": "Чай зеленый листовой",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3577,6 +4192,7 @@
     "fields": {
         "name": "Кофе в зернах",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3586,6 +4202,7 @@
     "fields": {
         "name": "Кофе молотый",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3595,6 +4212,7 @@
     "fields": {
         "name": "Кэроб необжаренный",
         "category": 23,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3604,6 +4222,7 @@
     "fields": {
         "name": "Молоко овсяное 3,2%",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3613,6 +4232,7 @@
     "fields": {
         "name": "Молоко соевое",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": [
             7
         ]
@@ -3624,6 +4244,7 @@
     "fields": {
         "name": "Молоко кокосовое 17-19%",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3633,6 +4254,7 @@
     "fields": {
         "name": "Молоко миндальное",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3642,6 +4264,7 @@
     "fields": {
         "name": "Сок томатный",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3651,6 +4274,7 @@
     "fields": {
         "name": "Сок фруктовый",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3660,6 +4284,7 @@
     "fields": {
         "name": "Чай зеленый без сахара",
         "category": 9,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3669,6 +4294,7 @@
     "fields": {
         "name": "Петрушка свежая",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3678,6 +4304,7 @@
     "fields": {
         "name": "Сельдерей",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3687,6 +4314,7 @@
     "fields": {
         "name": "Капуста цветная",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3696,6 +4324,7 @@
     "fields": {
         "name": "Капуста пекинская",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3705,6 +4334,7 @@
     "fields": {
         "name": "Фундук очищенный",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -3716,6 +4346,7 @@
     "fields": {
         "name": "Кешью",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -3727,6 +4358,7 @@
     "fields": {
         "name": "Миндаль",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -3738,6 +4370,7 @@
     "fields": {
         "name": "Фисташки неочищенные",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -3749,6 +4382,7 @@
     "fields": {
         "name": "Пекан",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -3760,6 +4394,7 @@
     "fields": {
         "name": "Бразильский орех",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -3771,6 +4406,7 @@
     "fields": {
         "name": "Грецкий орех очищенный",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -3782,6 +4418,7 @@
     "fields": {
         "name": "Кунжут белый",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3791,6 +4428,7 @@
     "fields": {
         "name": "Семена подсолнечника очищенные",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3800,6 +4438,7 @@
     "fields": {
         "name": "Семена тыквы очищенные",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3809,6 +4448,7 @@
     "fields": {
         "name": "Семена льна",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3818,6 +4458,7 @@
     "fields": {
         "name": "Семена чиа",
         "category": 16,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3827,6 +4468,7 @@
     "fields": {
         "name": "Кунжутная паста (Тахини)",
         "category": 20,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3836,6 +4478,7 @@
     "fields": {
         "name": "Майонез классический",
         "category": 21,
+        "can_be_added_to_cart": true,
         "allergies": [
             2
         ]
@@ -3847,6 +4490,7 @@
     "fields": {
         "name": "Терияки",
         "category": 21,
+        "can_be_added_to_cart": true,
         "allergies": [
             7
         ]
@@ -3858,6 +4502,7 @@
     "fields": {
         "name": "Уксус столовый 9%",
         "category": 22,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3867,6 +4512,7 @@
     "fields": {
         "name": "Уксус яблочный 6%",
         "category": 22,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3876,6 +4522,7 @@
     "fields": {
         "name": "Сушеный чеснок",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3885,6 +4532,7 @@
     "fields": {
         "name": "Сушеный лук",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3894,6 +4542,7 @@
     "fields": {
         "name": "Сушеный имбирь",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3903,6 +4552,7 @@
     "fields": {
         "name": "Сахар коричневый",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3912,6 +4562,7 @@
     "fields": {
         "name": "Шоколад темный",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3921,6 +4572,7 @@
     "fields": {
         "name": "Шоколад горький",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3930,6 +4582,7 @@
     "fields": {
         "name": "Шоколад белый",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": [
             1
         ]
@@ -3941,6 +4594,7 @@
     "fields": {
         "name": "Джем клубничный",
         "category": 10,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3950,6 +4604,7 @@
     "fields": {
         "name": "Кетчуп",
         "category": 21,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3959,6 +4614,7 @@
     "fields": {
         "name": "Горчица русская",
         "category": 21,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3968,6 +4624,7 @@
     "fields": {
         "name": "Горчица дижонская",
         "category": 21,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3977,6 +4634,7 @@
     "fields": {
         "name": "Горчица зернистая",
         "category": 21,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -3986,6 +4644,7 @@
     "fields": {
         "name": "Мандарин",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": [
             9
         ]
@@ -3997,6 +4656,7 @@
     "fields": {
         "name": "Гранат неочищенный",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4006,6 +4666,7 @@
     "fields": {
         "name": "Лайм",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": [
             9
         ]
@@ -4017,6 +4678,7 @@
     "fields": {
         "name": "Киви",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4026,6 +4688,7 @@
     "fields": {
         "name": "Хурма",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4035,6 +4698,7 @@
     "fields": {
         "name": "Голубика",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4044,6 +4708,7 @@
     "fields": {
         "name": "Черная смородина",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4053,6 +4718,7 @@
     "fields": {
         "name": "Красная смородина",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4062,6 +4728,7 @@
     "fields": {
         "name": "Клюква",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4071,6 +4738,7 @@
     "fields": {
         "name": "Брусника",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4080,6 +4748,7 @@
     "fields": {
         "name": "Малина красная",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4089,6 +4758,7 @@
     "fields": {
         "name": "Ежевика",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4098,6 +4768,7 @@
     "fields": {
         "name": "Крыжовник",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4107,6 +4778,7 @@
     "fields": {
         "name": "Арбуз",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4116,6 +4788,7 @@
     "fields": {
         "name": "Персик",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4125,6 +4798,7 @@
     "fields": {
         "name": "Абрикос",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4134,6 +4808,7 @@
     "fields": {
         "name": "Нектарин",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4143,6 +4818,7 @@
     "fields": {
         "name": "Ананас целый",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4152,6 +4828,7 @@
     "fields": {
         "name": "Вишня с косточкой",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4161,6 +4838,7 @@
     "fields": {
         "name": "Черешня",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4170,6 +4848,7 @@
     "fields": {
         "name": "Слива",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4179,6 +4858,7 @@
     "fields": {
         "name": "Грейпфрут",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": [
             9
         ]
@@ -4190,6 +4870,7 @@
     "fields": {
         "name": "Манго целый",
         "category": 2,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4199,6 +4880,7 @@
     "fields": {
         "name": "Лаваш тонкий бездрожжевой",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -4210,6 +4892,7 @@
     "fields": {
         "name": "Базилик свежий",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4219,6 +4902,7 @@
     "fields": {
         "name": "Пшено",
         "category": 6,
+        "can_be_added_to_cart": true,
         "allergies": [
             8
         ]
@@ -4230,6 +4914,7 @@
     "fields": {
         "name": "Маринованные огурцы",
         "category": 24,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4239,6 +4924,7 @@
     "fields": {
         "name": "Консервированный нут",
         "category": 24,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4248,6 +4934,7 @@
     "fields": {
         "name": "Карри",
         "category": 7,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4257,6 +4944,7 @@
     "fields": {
         "name": "Руккола",
         "category": 1,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4266,6 +4954,7 @@
     "fields": {
         "name": "Миндальная мука",
         "category": 19,
+        "can_be_added_to_cart": true,
         "allergies": [
             6
         ]
@@ -4276,7 +4965,8 @@
     "pk": 1,
     "fields": {
         "ingredient": 1,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.0",
         "fat": "0.4",
         "carbs": "17.0"
@@ -4287,7 +4977,8 @@
     "pk": 2,
     "fields": {
         "ingredient": 2,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.3",
         "fat": "0.1",
         "carbs": "7.0"
@@ -4298,7 +4989,8 @@
     "pk": 3,
     "fields": {
         "ingredient": 3,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.4",
         "fat": "0.0",
         "carbs": "8.2"
@@ -4309,7 +5001,8 @@
     "pk": 4,
     "fields": {
         "ingredient": 4,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "6.5",
         "fat": "0.5",
         "carbs": "30.0"
@@ -4320,7 +5013,8 @@
     "pk": 5,
     "fields": {
         "ingredient": 5,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.1",
         "fat": "0.2",
         "carbs": "3.8"
@@ -4331,7 +5025,8 @@
     "pk": 6,
     "fields": {
         "ingredient": 6,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.1",
         "carbs": "2.5"
@@ -4342,7 +5037,8 @@
     "pk": 7,
     "fields": {
         "ingredient": 7,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.3",
         "fat": "0.0",
         "carbs": "5.3"
@@ -4353,7 +5049,8 @@
     "pk": 8,
     "fields": {
         "ingredient": 8,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.8",
         "fat": "0.1",
         "carbs": "4.7"
@@ -4364,7 +5061,8 @@
     "pk": 9,
     "fields": {
         "ingredient": 9,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.8",
         "fat": "0.4",
         "carbs": "6.6"
@@ -4375,7 +5073,8 @@
     "pk": 10,
     "fields": {
         "ingredient": 10,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.0",
         "fat": "0.1",
         "carbs": "6.5"
@@ -4386,7 +5085,8 @@
     "pk": 11,
     "fields": {
         "ingredient": 11,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.6",
         "fat": "0.3",
         "carbs": "4.6"
@@ -4397,7 +5097,8 @@
     "pk": 12,
     "fields": {
         "ingredient": 12,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.2",
         "fat": "0.1",
         "carbs": "4.5"
@@ -4408,7 +5109,8 @@
     "pk": 13,
     "fields": {
         "ingredient": 13,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.5",
         "fat": "0.1",
         "carbs": "9.0"
@@ -4419,7 +5121,8 @@
     "pk": 14,
     "fields": {
         "ingredient": 14,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "3.5",
         "fat": "1.1",
         "carbs": "4.9"
@@ -4430,7 +5133,8 @@
     "pk": 15,
     "fields": {
         "ingredient": 15,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.4",
         "fat": "0.4",
         "carbs": "10.0"
@@ -4441,7 +5145,8 @@
     "pk": 16,
     "fields": {
         "ingredient": 16,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.5",
         "fat": "0.2",
         "carbs": "21.0"
@@ -4452,7 +5157,8 @@
     "pk": 17,
     "fields": {
         "ingredient": 17,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.9",
         "fat": "0.2",
         "carbs": "8.1"
@@ -4463,7 +5169,8 @@
     "pk": 18,
     "fields": {
         "ingredient": 18,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.9",
         "fat": "0.1",
         "carbs": "3.0"
@@ -4474,7 +5181,8 @@
     "pk": 19,
     "fields": {
         "ingredient": 19,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.4",
         "fat": "0.3",
         "carbs": "10.0"
@@ -4485,7 +5193,8 @@
     "pk": 20,
     "fields": {
         "ingredient": 20,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.4",
         "carbs": "7.5"
@@ -4496,7 +5205,8 @@
     "pk": 21,
     "fields": {
         "ingredient": 21,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.6",
         "fat": "0.2",
         "carbs": "16.0"
@@ -4507,7 +5217,8 @@
     "pk": 22,
     "fields": {
         "ingredient": 22,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.0",
         "fat": "15.0",
         "carbs": "2.0"
@@ -4518,7 +5229,8 @@
     "pk": 23,
     "fields": {
         "ingredient": 23,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "23.0",
         "fat": "1.2",
         "carbs": "0.5"
@@ -4529,7 +5241,8 @@
     "pk": 24,
     "fields": {
         "ingredient": 24,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "21.0",
         "fat": "8.0",
         "carbs": "0.5"
@@ -4540,7 +5253,8 @@
     "pk": 25,
     "fields": {
         "ingredient": 25,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "19.0",
         "fat": "15.0",
         "carbs": "0.0"
@@ -4551,7 +5265,8 @@
     "pk": 26,
     "fields": {
         "ingredient": 26,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "16.0",
         "fat": "21.0",
         "carbs": "0.0"
@@ -4562,7 +5277,8 @@
     "pk": 27,
     "fields": {
         "ingredient": 27,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "17.0",
         "fat": "20.0",
         "carbs": "0.0"
@@ -4573,7 +5289,8 @@
     "pk": 28,
     "fields": {
         "ingredient": 28,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "23.0",
         "fat": "45.0",
         "carbs": "0.0"
@@ -4584,7 +5301,8 @@
     "pk": 29,
     "fields": {
         "ingredient": 29,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.0",
         "fat": "20.0",
         "carbs": "2.0"
@@ -4595,7 +5313,8 @@
     "pk": 30,
     "fields": {
         "ingredient": 30,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "22.0",
         "fat": "13.0",
         "carbs": "0.0"
@@ -4606,7 +5325,8 @@
     "pk": 31,
     "fields": {
         "ingredient": 31,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "18.0",
         "fat": "0.7",
         "carbs": "0.0"
@@ -4617,7 +5337,8 @@
     "pk": 32,
     "fields": {
         "ingredient": 32,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "23.0",
         "fat": "1.0",
         "carbs": "0.0"
@@ -4628,7 +5349,8 @@
     "pk": 33,
     "fields": {
         "ingredient": 33,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "18.0",
         "fat": "1.0",
         "carbs": "0.0"
@@ -4639,7 +5361,8 @@
     "pk": 34,
     "fields": {
         "ingredient": 34,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "11.0",
         "fat": "2.0",
         "carbs": "3.0"
@@ -4650,7 +5373,8 @@
     "pk": 35,
     "fields": {
         "ingredient": 35,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "18.0",
         "fat": "2.0",
         "carbs": "2.0"
@@ -4661,7 +5385,8 @@
     "pk": 36,
     "fields": {
         "ingredient": 36,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "3.2",
         "fat": "3.6",
         "carbs": "4.8"
@@ -4672,7 +5397,8 @@
     "pk": 37,
     "fields": {
         "ingredient": 37,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "2.5",
         "fat": "20.0",
         "carbs": "4.0"
@@ -4683,7 +5409,8 @@
     "pk": 38,
     "fields": {
         "ingredient": 38,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "5.0",
         "fat": "3.5",
         "carbs": "6.8"
@@ -4694,7 +5421,8 @@
     "pk": 39,
     "fields": {
         "ingredient": 39,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "18.0",
         "fat": "9.0",
         "carbs": "3.0"
@@ -4705,7 +5433,8 @@
     "pk": 40,
     "fields": {
         "ingredient": 40,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "25.0",
         "fat": "30.0",
         "carbs": "0.0"
@@ -4716,7 +5445,8 @@
     "pk": 41,
     "fields": {
         "ingredient": 41,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.5",
         "fat": "82.5",
         "carbs": "0.8"
@@ -4727,7 +5457,8 @@
     "pk": 42,
     "fields": {
         "ingredient": 42,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.7",
         "fat": "11.5",
         "carbs": "0.7"
@@ -4738,7 +5469,8 @@
     "pk": 43,
     "fields": {
         "ingredient": 43,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.8",
         "fat": "20.0",
         "carbs": "3.2"
@@ -4749,7 +5481,8 @@
     "pk": 44,
     "fields": {
         "ingredient": 44,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "6.8",
         "fat": "0.6",
         "carbs": "78.0"
@@ -4760,7 +5493,8 @@
     "pk": 45,
     "fields": {
         "ingredient": 45,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.6",
         "fat": "3.3",
         "carbs": "62.0"
@@ -4771,7 +5505,8 @@
     "pk": 46,
     "fields": {
         "ingredient": 46,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "11.0",
         "fat": "6.0",
         "carbs": "60.0"
@@ -4782,7 +5517,8 @@
     "pk": 47,
     "fields": {
         "ingredient": 47,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "10.4",
         "fat": "1.1",
         "carbs": "70.0"
@@ -4793,7 +5529,8 @@
     "pk": 48,
     "fields": {
         "ingredient": 48,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "10.0",
         "fat": "1.0",
         "carbs": "68.0"
@@ -4804,7 +5541,8 @@
     "pk": 49,
     "fields": {
         "ingredient": 49,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.8",
         "fat": "0.6",
         "carbs": "72.0"
@@ -4815,7 +5553,8 @@
     "pk": 50,
     "fields": {
         "ingredient": 50,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.3",
         "fat": "1.3",
         "carbs": "76.0"
@@ -4826,7 +5565,8 @@
     "pk": 51,
     "fields": {
         "ingredient": 51,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -4837,7 +5577,8 @@
     "pk": 52,
     "fields": {
         "ingredient": 52,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "10.0",
         "fat": "3.0",
         "carbs": "65.0"
@@ -4848,7 +5589,8 @@
     "pk": 53,
     "fields": {
         "ingredient": 53,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "14.0",
         "fat": "13.0",
         "carbs": "54.0"
@@ -4859,7 +5601,8 @@
     "pk": 54,
     "fields": {
         "ingredient": 54,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "8.0",
         "fat": "10.0",
         "carbs": "65.0"
@@ -4870,7 +5613,8 @@
     "pk": 55,
     "fields": {
         "ingredient": 55,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "4.0",
         "fat": "1.0",
         "carbs": "80.0"
@@ -4881,7 +5625,8 @@
     "pk": 56,
     "fields": {
         "ingredient": 56,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -4892,7 +5637,8 @@
     "pk": 57,
     "fields": {
         "ingredient": 57,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "7.6",
         "fat": "8.4",
         "carbs": "48.7"
@@ -4903,7 +5649,8 @@
     "pk": 58,
     "fields": {
         "ingredient": 58,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "99.8",
         "carbs": "0.0"
@@ -4914,7 +5661,8 @@
     "pk": 59,
     "fields": {
         "ingredient": 59,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "99.9",
         "carbs": "0.0"
@@ -4925,7 +5673,8 @@
     "pk": 60,
     "fields": {
         "ingredient": 60,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "99.7",
         "carbs": "0.0"
@@ -4936,7 +5685,8 @@
     "pk": 61,
     "fields": {
         "ingredient": 61,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "99.0",
         "carbs": "0.0"
@@ -4947,7 +5697,8 @@
     "pk": 62,
     "fields": {
         "ingredient": 62,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -4958,7 +5709,8 @@
     "pk": 63,
     "fields": {
         "ingredient": 63,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -4969,7 +5721,8 @@
     "pk": 64,
     "fields": {
         "ingredient": 64,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "15.0",
         "fat": "0.5",
         "carbs": "43.0"
@@ -4980,7 +5733,8 @@
     "pk": 65,
     "fields": {
         "ingredient": 65,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "0.5",
         "fat": "0.2",
         "carbs": "10.0"
@@ -4991,7 +5745,8 @@
     "pk": 66,
     "fields": {
         "ingredient": 66,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.3",
         "fat": "0.0",
         "carbs": "80.0"
@@ -5002,7 +5757,8 @@
     "pk": 67,
     "fields": {
         "ingredient": 67,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "100.0"
@@ -5013,7 +5769,8 @@
     "pk": 68,
     "fields": {
         "ingredient": 68,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "4.9",
         "fat": "31.0",
         "carbs": "59.0"
@@ -5024,7 +5781,8 @@
     "pk": 69,
     "fields": {
         "ingredient": 69,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.3",
         "fat": "0.2",
         "carbs": "53.6"
@@ -5035,7 +5793,8 @@
     "pk": 70,
     "fields": {
         "ingredient": 70,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "24.3",
         "fat": "15.0",
         "carbs": "10.0"
@@ -5046,7 +5805,8 @@
     "pk": 71,
     "fields": {
         "ingredient": 72,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "10.0",
         "fat": "1.0",
         "carbs": "70.0"
@@ -5057,7 +5817,8 @@
     "pk": 72,
     "fields": {
         "ingredient": 73,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "43.0",
         "fat": "40.0",
         "carbs": "41.2"
@@ -5068,7 +5829,8 @@
     "pk": 73,
     "fields": {
         "ingredient": 74,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5079,7 +5841,8 @@
     "pk": 74,
     "fields": {
         "ingredient": 75,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.0",
         "fat": "3.0",
         "carbs": "70.0"
@@ -5090,7 +5853,8 @@
     "pk": 75,
     "fields": {
         "ingredient": 76,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "5.0",
         "fat": "0.5",
         "carbs": "20.0"
@@ -5101,7 +5865,8 @@
     "pk": 76,
     "fields": {
         "ingredient": 77,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "7.0",
         "fat": "0.0",
         "carbs": "8.0"
@@ -5112,7 +5877,8 @@
     "pk": 77,
     "fields": {
         "ingredient": 78,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "26.3",
         "fat": "45.2",
         "carbs": "9.9"
@@ -5123,7 +5889,8 @@
     "pk": 78,
     "fields": {
         "ingredient": 79,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "26.0",
         "fat": "49.0",
         "carbs": "16.0"
@@ -5134,7 +5901,8 @@
     "pk": 80,
     "fields": {
         "ingredient": 81,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "24.9",
         "fat": "0.0",
         "carbs": "51.1"
@@ -5145,7 +5913,8 @@
     "pk": 81,
     "fields": {
         "ingredient": 82,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "7.5",
         "fat": "2.9",
         "carbs": "51.4"
@@ -5156,7 +5925,8 @@
     "pk": 82,
     "fields": {
         "ingredient": 83,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "24.6",
         "fat": "1.1",
         "carbs": "63.4"
@@ -5167,7 +5937,8 @@
     "pk": 83,
     "fields": {
         "ingredient": 84,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "6.0",
         "fat": "0.5",
         "carbs": "14.0"
@@ -5178,7 +5949,8 @@
     "pk": 84,
     "fields": {
         "ingredient": 85,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.8",
         "fat": "0.2",
         "carbs": "6.5"
@@ -5189,7 +5961,8 @@
     "pk": 85,
     "fields": {
         "ingredient": 86,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "4.3",
         "fat": "1.0",
         "carbs": "0.1"
@@ -5200,7 +5973,8 @@
     "pk": 86,
     "fields": {
         "ingredient": 87,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5211,7 +5985,8 @@
     "pk": 87,
     "fields": {
         "ingredient": 88,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "87.2",
         "fat": "0.4",
         "carbs": "0.7"
@@ -5222,7 +5997,8 @@
     "pk": 88,
     "fields": {
         "ingredient": 89,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "20.0",
         "fat": "9.0",
         "carbs": "1.5"
@@ -5233,7 +6009,8 @@
     "pk": 89,
     "fields": {
         "ingredient": 90,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.0",
         "fat": "4.3",
         "carbs": "10.5"
@@ -5244,7 +6021,8 @@
     "pk": 90,
     "fields": {
         "ingredient": 91,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "2.7",
         "fat": "10.0",
         "carbs": "5.0"
@@ -5255,7 +6033,8 @@
     "pk": 91,
     "fields": {
         "ingredient": 92,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.3",
         "fat": "33.0",
         "carbs": "3.4"
@@ -5266,7 +6045,8 @@
     "pk": 92,
     "fields": {
         "ingredient": 93,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "13.1",
         "fat": "11.1",
         "carbs": "0.4"
@@ -5277,7 +6057,8 @@
     "pk": 93,
     "fields": {
         "ingredient": 94,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.7",
         "fat": "15.0",
         "carbs": "3.0"
@@ -5288,7 +6069,8 @@
     "pk": 94,
     "fields": {
         "ingredient": 95,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "2.9",
         "fat": "3.2",
         "carbs": "4.0"
@@ -5299,7 +6081,8 @@
     "pk": 95,
     "fields": {
         "ingredient": 96,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.3",
         "fat": "98.0",
         "carbs": "0.6"
@@ -5310,7 +6093,8 @@
     "pk": 96,
     "fields": {
         "ingredient": 97,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "16.0",
         "fat": "5.0",
         "carbs": "3.0"
@@ -5321,7 +6105,8 @@
     "pk": 97,
     "fields": {
         "ingredient": 98,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "18.0",
         "fat": "0.5",
         "carbs": "3.3"
@@ -5332,7 +6117,8 @@
     "pk": 98,
     "fields": {
         "ingredient": 99,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "14.7",
         "fat": "9.1",
         "carbs": "65.7"
@@ -5343,7 +6129,8 @@
     "pk": 99,
     "fields": {
         "ingredient": 100,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "9.8",
         "fat": "1.3",
         "carbs": "76.6"
@@ -5354,7 +6141,8 @@
     "pk": 100,
     "fields": {
         "ingredient": 101,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "7.5",
         "fat": "2.9",
         "carbs": "51.4"
@@ -5365,7 +6153,8 @@
     "pk": 101,
     "fields": {
         "ingredient": 102,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "4.5",
         "fat": "0.7",
         "carbs": "38.0"
@@ -5376,7 +6165,8 @@
     "pk": 102,
     "fields": {
         "ingredient": 103,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "30.5",
         "fat": "8.1",
         "carbs": "0.0"
@@ -5387,7 +6177,8 @@
     "pk": 103,
     "fields": {
         "ingredient": 104,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "23.7",
         "fat": "1.5",
         "carbs": "0.0"
@@ -5398,7 +6189,8 @@
     "pk": 104,
     "fields": {
         "ingredient": 105,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5409,7 +6201,8 @@
     "pk": 105,
     "fields": {
         "ingredient": 106,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5420,7 +6213,8 @@
     "pk": 106,
     "fields": {
         "ingredient": 107,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5431,7 +6225,8 @@
     "pk": 107,
     "fields": {
         "ingredient": 108,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5442,7 +6237,8 @@
     "pk": 108,
     "fields": {
         "ingredient": 109,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5453,7 +6249,8 @@
     "pk": 109,
     "fields": {
         "ingredient": 110,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "4.4",
         "fat": "0.6",
         "carbs": "39.8"
@@ -5464,7 +6261,8 @@
     "pk": 110,
     "fields": {
         "ingredient": 111,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "1.0",
         "fat": "3.2",
         "carbs": "6.5"
@@ -5475,7 +6273,8 @@
     "pk": 111,
     "fields": {
         "ingredient": 112,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "3.0",
         "fat": "1.5",
         "carbs": "4.8"
@@ -5486,9 +6285,10 @@
     "pk": 112,
     "fields": {
         "ingredient": 113,
-        "base_weight_g": 100,
-        "protein": "1.5",
-        "fat": "18.0",
+        "base_unit": 6,
+        "base_weight": 100,
+        "protein": "1.6",
+        "fat": "19.0",
         "carbs": "2.0"
     }
 },
@@ -5497,7 +6297,8 @@
     "pk": 113,
     "fields": {
         "ingredient": 114,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "0.4",
         "fat": "1.3",
         "carbs": "2.7"
@@ -5508,7 +6309,8 @@
     "pk": 114,
     "fields": {
         "ingredient": 115,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.2",
         "carbs": "3.5"
@@ -5519,7 +6321,8 @@
     "pk": 115,
     "fields": {
         "ingredient": 116,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "0.1",
         "fat": "0.0",
         "carbs": "12.0"
@@ -5530,7 +6333,8 @@
     "pk": 116,
     "fields": {
         "ingredient": 117,
-        "base_weight_g": 100,
+        "base_unit": 6,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5541,7 +6345,8 @@
     "pk": 117,
     "fields": {
         "ingredient": 118,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "3.7",
         "fat": "0.4",
         "carbs": "7.6"
@@ -5552,7 +6357,8 @@
     "pk": 118,
     "fields": {
         "ingredient": 119,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.5",
         "fat": "0.3",
         "carbs": "9.2"
@@ -5563,7 +6369,8 @@
     "pk": 119,
     "fields": {
         "ingredient": 120,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.5",
         "fat": "0.3",
         "carbs": "4.2"
@@ -5574,7 +6381,8 @@
     "pk": 120,
     "fields": {
         "ingredient": 121,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.2",
         "fat": "0.2",
         "carbs": "2.0"
@@ -5585,7 +6393,8 @@
     "pk": 121,
     "fields": {
         "ingredient": 122,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "14.9",
         "fat": "60.7",
         "carbs": "16.7"
@@ -5596,7 +6405,8 @@
     "pk": 122,
     "fields": {
         "ingredient": 123,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "18.2",
         "fat": "43.9",
         "carbs": "26.9"
@@ -5607,7 +6417,8 @@
     "pk": 123,
     "fields": {
         "ingredient": 124,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "21.2",
         "fat": "49.9",
         "carbs": "21.6"
@@ -5618,7 +6429,8 @@
     "pk": 124,
     "fields": {
         "ingredient": 125,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "20.2",
         "fat": "45.3",
         "carbs": "16.6"
@@ -5629,7 +6441,8 @@
     "pk": 125,
     "fields": {
         "ingredient": 126,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "9.2",
         "fat": "72.0",
         "carbs": "13.9"
@@ -5640,7 +6453,8 @@
     "pk": 126,
     "fields": {
         "ingredient": 127,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "14.3",
         "fat": "67.1",
         "carbs": "4.2"
@@ -5651,7 +6465,8 @@
     "pk": 127,
     "fields": {
         "ingredient": 128,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.2",
         "fat": "60.8",
         "carbs": "11.1"
@@ -5662,7 +6477,8 @@
     "pk": 128,
     "fields": {
         "ingredient": 129,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "28.0",
         "fat": "56.4",
         "carbs": "11.0"
@@ -5673,7 +6489,8 @@
     "pk": 129,
     "fields": {
         "ingredient": 130,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "20.8",
         "fat": "51.5",
         "carbs": "10.0"
@@ -5684,7 +6501,8 @@
     "pk": 130,
     "fields": {
         "ingredient": 131,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "25.0",
         "fat": "46.0",
         "carbs": "5.0"
@@ -5695,7 +6513,8 @@
     "pk": 131,
     "fields": {
         "ingredient": 132,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "18.2",
         "fat": "42.2",
         "carbs": "1.6"
@@ -5706,7 +6525,8 @@
     "pk": 132,
     "fields": {
         "ingredient": 133,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "16.5",
         "fat": "30.7",
         "carbs": "42.1"
@@ -5717,7 +6537,8 @@
     "pk": 133,
     "fields": {
         "ingredient": 134,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "17.0",
         "fat": "53.8",
         "carbs": "16.1"
@@ -5728,7 +6549,8 @@
     "pk": 134,
     "fields": {
         "ingredient": 135,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "2.8",
         "fat": "67.0",
         "carbs": "3.7"
@@ -5739,7 +6561,8 @@
     "pk": 135,
     "fields": {
         "ingredient": 136,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "5.9",
         "fat": "0.0",
         "carbs": "15.6"
@@ -5750,7 +6573,8 @@
     "pk": 136,
     "fields": {
         "ingredient": 137,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "0.0"
@@ -5761,7 +6585,8 @@
     "pk": 137,
     "fields": {
         "ingredient": 138,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "2.5"
@@ -5772,7 +6597,8 @@
     "pk": 138,
     "fields": {
         "ingredient": 139,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "16.3",
         "fat": "1.3",
         "carbs": "74.8"
@@ -5783,7 +6609,8 @@
     "pk": 139,
     "fields": {
         "ingredient": 140,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "8.4",
         "fat": "2.8",
         "carbs": "42.6"
@@ -5794,7 +6621,8 @@
     "pk": 140,
     "fields": {
         "ingredient": 141,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "9.0",
         "fat": "4.2",
         "carbs": "71.6"
@@ -5805,7 +6633,8 @@
     "pk": 141,
     "fields": {
         "ingredient": 142,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
         "carbs": "98.1"
@@ -5816,7 +6645,8 @@
     "pk": 142,
     "fields": {
         "ingredient": 143,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "5.5",
         "fat": "28.0",
         "carbs": "57.0"
@@ -5827,7 +6657,8 @@
     "pk": 143,
     "fields": {
         "ingredient": 144,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "8.5",
         "fat": "35.0",
         "carbs": "42.0"
@@ -5838,7 +6669,8 @@
     "pk": 144,
     "fields": {
         "ingredient": 145,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "5.9",
         "fat": "32.1",
         "carbs": "59.0"
@@ -5849,7 +6681,8 @@
     "pk": 145,
     "fields": {
         "ingredient": 146,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.4",
         "fat": "0.2",
         "carbs": "65.0"
@@ -5860,7 +6693,8 @@
     "pk": 146,
     "fields": {
         "ingredient": 147,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.5",
         "fat": "0.5",
         "carbs": "18.0"
@@ -5871,7 +6705,8 @@
     "pk": 147,
     "fields": {
         "ingredient": 148,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "9.0",
         "fat": "10.0",
         "carbs": "18.0"
@@ -5882,7 +6717,8 @@
     "pk": 148,
     "fields": {
         "ingredient": 149,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "7.0",
         "fat": "12.0",
         "carbs": "6.0"
@@ -5893,7 +6729,8 @@
     "pk": 149,
     "fields": {
         "ingredient": 150,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "8.2",
         "fat": "2.5",
         "carbs": "12.3"
@@ -5904,7 +6741,8 @@
     "pk": 150,
     "fields": {
         "ingredient": 151,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.3",
         "carbs": "12.0"
@@ -5915,7 +6753,8 @@
     "pk": 151,
     "fields": {
         "ingredient": 152,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.6",
         "fat": "1.1",
         "carbs": "18.7"
@@ -5926,7 +6765,8 @@
     "pk": 152,
     "fields": {
         "ingredient": 153,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.7",
         "fat": "0.2",
         "carbs": "10.5"
@@ -5937,7 +6777,8 @@
     "pk": 153,
     "fields": {
         "ingredient": 154,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.4",
         "carbs": "8.1"
@@ -5948,7 +6789,8 @@
     "pk": 154,
     "fields": {
         "ingredient": 155,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.5",
         "fat": "0.4",
         "carbs": "18.2"
@@ -5959,7 +6801,8 @@
     "pk": 155,
     "fields": {
         "ingredient": 156,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.7",
         "fat": "0.3",
         "carbs": "14.0"
@@ -5970,7 +6813,8 @@
     "pk": 156,
     "fields": {
         "ingredient": 157,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.0",
         "fat": "0.4",
         "carbs": "7.3"
@@ -5981,7 +6825,8 @@
     "pk": 157,
     "fields": {
         "ingredient": 158,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.6",
         "fat": "0.2",
         "carbs": "7.7"
@@ -5992,7 +6837,8 @@
     "pk": 158,
     "fields": {
         "ingredient": 159,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.5",
         "fat": "0.2",
         "carbs": "3.7"
@@ -6003,7 +6849,8 @@
     "pk": 159,
     "fields": {
         "ingredient": 160,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.7",
         "fat": "0.5",
         "carbs": "8.2"
@@ -6014,7 +6861,8 @@
     "pk": 160,
     "fields": {
         "ingredient": 161,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.5",
         "carbs": "8.3"
@@ -6025,7 +6873,8 @@
     "pk": 161,
     "fields": {
         "ingredient": 162,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.5",
         "fat": "0.5",
         "carbs": "4.4"
@@ -6036,7 +6885,8 @@
     "pk": 162,
     "fields": {
         "ingredient": 163,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.7",
         "fat": "0.2",
         "carbs": "9.1"
@@ -6047,7 +6897,8 @@
     "pk": 163,
     "fields": {
         "ingredient": 164,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.6",
         "fat": "0.1",
         "carbs": "5.8"
@@ -6058,7 +6909,8 @@
     "pk": 164,
     "fields": {
         "ingredient": 165,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.9",
         "fat": "0.1",
         "carbs": "9.5"
@@ -6069,7 +6921,8 @@
     "pk": 165,
     "fields": {
         "ingredient": 166,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.9",
         "fat": "0.1",
         "carbs": "9.0"
@@ -6080,7 +6933,8 @@
     "pk": 166,
     "fields": {
         "ingredient": 167,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.1",
         "fat": "0.3",
         "carbs": "9.0"
@@ -6091,7 +6945,8 @@
     "pk": 167,
     "fields": {
         "ingredient": 168,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.4",
         "fat": "0.2",
         "carbs": "11.5"
@@ -6102,7 +6957,8 @@
     "pk": 168,
     "fields": {
         "ingredient": 169,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.2",
         "carbs": "10.6"
@@ -6113,7 +6969,8 @@
     "pk": 169,
     "fields": {
         "ingredient": 170,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "1.1",
         "fat": "0.4",
         "carbs": "10.6"
@@ -6124,7 +6981,8 @@
     "pk": 170,
     "fields": {
         "ingredient": 171,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.3",
         "carbs": "9.6"
@@ -6135,7 +6993,8 @@
     "pk": 171,
     "fields": {
         "ingredient": 172,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.7",
         "fat": "0.2",
         "carbs": "6.5"
@@ -6146,7 +7005,8 @@
     "pk": 172,
     "fields": {
         "ingredient": 173,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.8",
         "fat": "0.4",
         "carbs": "13.4"
@@ -6157,7 +7017,8 @@
     "pk": 173,
     "fields": {
         "ingredient": 174,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "9.3",
         "fat": "0.0",
         "carbs": "57.6"
@@ -6168,7 +7029,8 @@
     "pk": 174,
     "fields": {
         "ingredient": 175,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "3.2",
         "fat": "0.6",
         "carbs": "1.1"
@@ -6179,7 +7041,8 @@
     "pk": 175,
     "fields": {
         "ingredient": 176,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "11.0",
         "fat": "4.2",
         "carbs": "72.8"
@@ -6190,7 +7053,8 @@
     "pk": 176,
     "fields": {
         "ingredient": 177,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.3",
         "fat": "0.1",
         "carbs": "2.8"
@@ -6201,7 +7065,8 @@
     "pk": 177,
     "fields": {
         "ingredient": 178,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "3.8",
         "fat": "1.5",
         "carbs": "9.0"
@@ -6212,7 +7077,8 @@
     "pk": 178,
     "fields": {
         "ingredient": 179,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "12.0",
         "fat": "10.0",
         "carbs": "26.0"
@@ -6223,7 +7089,8 @@
     "pk": 179,
     "fields": {
         "ingredient": 180,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "0.5",
         "fat": "0.6",
         "carbs": "3.6"
@@ -6234,7 +7101,8 @@
     "pk": 180,
     "fields": {
         "ingredient": 181,
-        "base_weight_g": 100,
+        "base_unit": 1,
+        "base_weight": 100,
         "protein": "20.0",
         "fat": "52.0",
         "carbs": "9.5"
@@ -6601,7 +7469,6 @@
             5
         ],
         "meal_types": [
-            1,
             2,
             3
         ]

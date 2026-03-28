@@ -40,7 +40,7 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onRecipeClick = {},
+                    onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
                     customPlan = null
                 )
@@ -64,7 +64,7 @@ class HomeScreenTest {
                     onGenerateMenu = { clicked = true },
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onRecipeClick = {},
+                    onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
                     customPlan = null
                 )
@@ -109,7 +109,7 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onRecipeClick = {},
+                    onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
                     customPlan = null
                 )
@@ -158,7 +158,7 @@ class HomeScreenTest {
                         )
                     },
                     onToggleFavorite = {},
-                    onRecipeClick = {},
+                    onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
                     customPlan = null
                 )
@@ -193,7 +193,7 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onRecipeClick = {},
+                    onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
                     customPlan = null
                 )
@@ -220,7 +220,7 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onRecipeClick = {},
+                    onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
                     customPlan = null
                 )
@@ -246,7 +246,7 @@ class HomeScreenTest {
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
-                    onRecipeClick = {},
+                    onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
                     customPlan = null
                 )
