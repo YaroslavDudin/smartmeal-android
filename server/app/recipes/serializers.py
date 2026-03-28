@@ -28,7 +28,7 @@ class IngredientNutritionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientNutrition
-        fields = ('base_weight_g', 'protein', 'fat', 'carbs', 'calories')
+        fields = ('base_weight', 'base_unit', 'protein', 'fat', 'carbs', 'calories')
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -37,19 +37,20 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ('id', 'name', 'category', 'category_name', 'nutrition')
+        fields = ('id', 'name', 'category', 'category_name', 'nutrition', 'can_be_added_to_cart')
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
     ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
     unit_name = serializers.CharField(source='unit.name', read_only=True)
     category_name = serializers.CharField(source='ingredient.category.name', read_only=True)
+    base_unit_name = serializers.CharField(source='base_unit.name', read_only=True)
+    # переопределение количества под нужное количество персон
     amount = serializers.SerializerMethodField()
-    amount_in_grams = serializers.SerializerMethodField()
 
     class Meta:
         model = RecipeIngredient
-        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'amount_in_grams', 'unit', 'unit_name', 'category_name')
+        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'base_unit_name', 'unit', 'unit_name', 'category_name')
     
     # перерасчет количества под указанное количество персон
     # если нету в контексте передается как есть в рецепте
@@ -70,15 +71,6 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
             scaled_amount,
         )
         return scaled_amount
-
-    def get_amount_in_grams(self, obj):
-        target_servings = self.context.get('target_servings')
-        recipe_servings = self.context.get('recipe_servings')
-        base_amount_in_grams = obj.amount_in_grams
-        if not target_servings or not recipe_servings:
-            return round(base_amount_in_grams, 2)
-        scale = Decimal(target_servings) / Decimal(recipe_servings)
-        return round(base_amount_in_grams * scale, 2)
 
 
 class RecipeStepSerializer(serializers.ModelSerializer):
@@ -103,14 +95,13 @@ class RecipeSerializer(serializers.ModelSerializer):
     total_proteins = serializers.SerializerMethodField()
     total_fats = serializers.SerializerMethodField()
     total_carbs = serializers.SerializerMethodField()
-    total_weight_g = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
         fields = (
             'id', 'title', 'image_url', 'cook_time', 'servings',
             'ingredients', 'steps', 'allergies',
-            'total_calories', 'total_proteins', 'total_fats', 'total_carbs', 'total_weight_g',
+            'total_calories', 'total_proteins', 'total_fats', 'total_carbs',
             'per_serving_calories', 'per_serving_proteins', 'per_serving_fats', 'per_serving_carbs',
         )
         
@@ -167,11 +158,4 @@ class RecipeSerializer(serializers.ModelSerializer):
         if not hasattr(self, cache_key):
             carbs = round(obj.total_carbs * self._get_scale(obj), 2)
             setattr(self, cache_key, carbs)
-        return getattr(self, cache_key)
-
-    def get_total_weight_g(self, obj):
-        cache_key = f'_weight_g_{obj.pk}'
-        if not hasattr(self, cache_key):
-            weight_g = round(obj.total_weight_g * self._get_scale(obj), 2)
-            setattr(self, cache_key, weight_g)
         return getattr(self, cache_key)

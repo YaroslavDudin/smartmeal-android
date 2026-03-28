@@ -20,7 +20,7 @@ class RecipeStepInline(admin.TabularInline):
 class UnitConversionInline(admin.TabularInline):
     model = UnitConversion
     extra = 1
-    autocomplete_fields = ['unit']
+    autocomplete_fields = ['unit', 'base_unit']
 
 
 class IngredientNutritionInline(admin.StackedInline):
@@ -41,7 +41,7 @@ class RecipeAdmin(admin.ModelAdmin):
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name', 'category')
-    list_filter = ('category', 'allergies')
+    list_filter = ('category', 'allergies', 'can_be_added_to_cart')
     search_fields = ('name',)
     inlines = [UnitConversionInline, IngredientNutritionInline]
 
@@ -60,7 +60,7 @@ class UnitAdmin(admin.ModelAdmin):
 
 @admin.register(UnitConversion)
 class UnitConversionAdmin(admin.ModelAdmin):
-    list_display = ('ingredient', 'unit', 'grams_per_unit')
+    list_display = ('ingredient', 'unit', 'amount_per_unit')
     list_filter = ('unit',)
     search_fields = ('ingredient__name', 'unit__name')
     autocomplete_fields = ['ingredient', 'unit']
