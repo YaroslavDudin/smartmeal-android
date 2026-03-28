@@ -41,6 +41,7 @@ data class RecipeDetailDto(
     val total_proteins: Double,
     val total_fats: Double,
     val total_carbs: Double,
+    val total_weight: Double? = null,
     val per_serving_calories: Double,
     val per_serving_proteins: Double,
     val per_serving_fats: Double,
@@ -60,7 +61,8 @@ data class RecipeIngredientDto(
 data class RecipeStepDto(
     val step_number: Int,
     val description: String,
-    val image_url: String? = null
+    val image_url: String? = null,
+    val timer: Int? = null
 )
 
 data class CartItemDto(
