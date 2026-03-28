@@ -63,7 +63,7 @@ class RecipeDtoParsingTest {
                 }
               ],
               "steps": [
-                { "step_number": 1, "description": "Нарезать свёклу соломкой" }
+                { "step_number": 1, "description": "Нарезать свёклу соломкой", "timer": 1 }
               ]
             }
         """.trimIndent()
@@ -82,5 +82,6 @@ class RecipeDtoParsingTest {
         assertEquals("г", recipe.ingredients.first().unit_name)
         assertEquals(1, recipe.steps.size)
         assertEquals(1, recipe.steps.first().step_number)
+        assertEquals(1, recipe.steps.first().timer)
     }
 }

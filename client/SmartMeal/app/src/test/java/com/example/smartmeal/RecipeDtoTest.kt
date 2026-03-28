@@ -64,7 +64,7 @@ class RecipeDtoTest {
                 }
               ],
               "steps": [
-                { "step_number": 1, "description": "Нарезать свёклу соломкой" }
+                { "step_number": 1, "description": "Нарезать свёклу соломкой", "timer": 1 }
               ]
             }
         """.trimIndent()
@@ -80,5 +80,6 @@ class RecipeDtoTest {
         assertNotNull(result.ingredients.firstOrNull())
         assertEquals("Свёкла", result.ingredients.first().ingredient_name)
         assertEquals(1, result.steps.first().step_number)
+        assertEquals(1, result.steps.first().timer)
     }
 }

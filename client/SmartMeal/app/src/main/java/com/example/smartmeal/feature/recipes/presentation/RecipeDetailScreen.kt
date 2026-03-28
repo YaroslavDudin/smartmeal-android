@@ -217,7 +217,7 @@ fun RecipeDetailScreen(
                                 number = step.step_number,
                                 description = step.description,
                                 imageUrl = step.image_url,
-                                time = "3 мин"
+                                time = formatStepTimerLabel(step.timer)
                             )
                             Spacer(modifier = Modifier.height(24.dp))
                         }
@@ -360,7 +360,7 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 }
 
 @Composable
-fun StepItem(number: Int, description: String, imageUrl: String?, time: String) {
+fun StepItem(number: Int, description: String, imageUrl: String?, time: String?) {
     Column(modifier = Modifier.fillMaxWidth()) {
         SmartMealText(
             text = buildAnnotatedString {
@@ -375,22 +375,24 @@ fun StepItem(number: Int, description: String, imageUrl: String?, time: String) 
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
-                contentDescription = null,
-                modifier = Modifier.size(16.dp),
-                tint = TextGray
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            SmartMealText(
-                text = time,
-                fontSize = 14.sp,
-                color = TextGray
-            )
-        }
+        if (time != null) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = TextGray
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                SmartMealText(
+                    text = time,
+                    fontSize = 14.sp,
+                    color = TextGray
+                )
+            }
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+        }
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -454,4 +456,10 @@ internal fun formatWeightLabel(totalWeightG: Double): String {
         formatNutritionValue(totalWeightG)
     }
     return "$normalized г"
+}
+
+internal fun formatStepTimerLabel(timerMinutes: Int?): String? {
+    val minutes = timerMinutes ?: return null
+    if (minutes <= 0) return null
+    return if (minutes == 1) "$minutes мин" else "$minutes мин"
 }
