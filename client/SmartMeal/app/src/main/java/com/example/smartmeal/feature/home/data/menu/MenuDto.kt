@@ -52,7 +52,7 @@ data class RecipeDetailDto(
 data class RecipeIngredientDto(
     val ingredient_name: String,
     val amount: Double,
-    val amount_in_grams: Double? = null,
+    val amount_in_base_units: Double? = null,
     val unit_name: String,
     val category_name: String? = null
 )
