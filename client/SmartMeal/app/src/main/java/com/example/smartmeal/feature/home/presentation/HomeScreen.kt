@@ -57,6 +57,7 @@ import com.example.smartmeal.feature.menu_generator.data.api.GeneratorApi
 import com.example.smartmeal.feature.menu_generator.data.models.AutoGenerateRequest
 import com.example.smartmeal.feature.products.presentation.ProductListViewModel
 import com.example.smartmeal.feature.products.presentation.ProductListScreen
+import com.example.smartmeal.feature.statistics.presentation.StatisticsScreen
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.CircleIconButton
 import com.example.smartmeal.ui.components.buttons.CircleIconType
@@ -426,13 +427,6 @@ fun MealSection(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun StatisticsScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        SmartMealText("Статистика – в разработке")
     }
 }
 
