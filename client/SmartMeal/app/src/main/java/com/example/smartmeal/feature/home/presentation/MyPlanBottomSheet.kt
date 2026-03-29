@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.home.presentation
+package com.example.smartmeal.feature.home.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,12 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,15 +48,6 @@ private val MY_PLAN_MONTH_NAMES = listOf(
     "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
 )
 private val MY_PLAN_DAY_LABELS = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
-
-
-data class PlanDay(
-    val date: Date,
-    val dayNumber: Int,
-    val month: Int,
-    val year: Int,
-    val isInPlan: Boolean
-)
 
 @Composable
 fun MyPlanButton(
@@ -93,40 +79,51 @@ fun MyPlanButton(
 fun MyPlanCalendarDialog(
     plan: CustomPlan,
     selectedDate: Date?,
+    isRangeSelection: Boolean = false,
     onDateClick: (Date) -> Unit,
+    onRangeSelected: ((Date, Date) -> Unit)? = null,
     onDismiss: () -> Unit,
 ) {
     val startCal = Calendar.getInstance().apply { time = plan.startDate }
     val endCal = Calendar.getInstance().apply { time = plan.endDate }
-    val normalizedSelectedDateMillis = selectedDate?.let(::normalizeDateMillis)
+    
+    // Текущая дата для фильтрации прошедших дней
+    val today = remember { 
+        Calendar.getInstance().apply { 
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time 
+    }
+    
+    // Состояние для выбора диапазона (всегда сбрасывается при открытии)
+    var rangeStart by remember { mutableStateOf<Date?>(null) }
+    
+    val normalizedSelectedDateMillis = if (isRangeSelection) null else selectedDate?.let(::normalizeDateMillis)
+    
     val initialCalendar = Calendar.getInstance().apply {
         time = when {
             normalizedSelectedDateMillis != null &&
                 normalizedSelectedDateMillis in normalizeDateMillis(plan.startDate)..normalizeDateMillis(plan.endDate) -> {
                 Date(normalizedSelectedDateMillis)
             }
-            else -> plan.startDate
+            else -> if (plan.startDate.before(today) && plan.endDate.after(today)) today else plan.startDate
         }
     }
 
-    var displayYear by remember(plan.startDate, plan.endDate, normalizedSelectedDateMillis) {
-        mutableIntStateOf(initialCalendar.get(Calendar.YEAR))
-    }
-    var displayMonth by remember(plan.startDate, plan.endDate, normalizedSelectedDateMillis) {
-        mutableIntStateOf(initialCalendar.get(Calendar.MONTH))
-    }
+    var displayYear by remember { mutableIntStateOf(initialCalendar.get(Calendar.YEAR)) }
+    var displayMonth by remember { mutableIntStateOf(initialCalendar.get(Calendar.MONTH)) }
 
-    val planDates: Set<Triple<Int, Int, Int>> = remember(plan) {
+    val planDates: Set<Triple<Int, Int, Int>> = remember(plan, today, isRangeSelection) {
         buildSet {
             val cur = Calendar.getInstance().apply { time = plan.startDate }
             while (!cur.time.after(plan.endDate)) {
-                add(
-                    Triple(
-                        cur.get(Calendar.DAY_OF_MONTH),
-                        cur.get(Calendar.MONTH),
-                        cur.get(Calendar.YEAR),
-                    )
-                )
+                // В режиме выбора диапазона (продукты) убираем прошедшие даты
+                val isPast = isRangeSelection && cur.time.before(today)
+                if (!isPast) {
+                    add(Triple(cur.get(Calendar.DAY_OF_MONTH), cur.get(Calendar.MONTH), cur.get(Calendar.YEAR)))
+                }
                 cur.add(Calendar.DAY_OF_YEAR, 1)
             }
         }
@@ -139,22 +136,24 @@ fun MyPlanCalendarDialog(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.40f))
+                .background(Color.Black.copy(alpha = 0.5f))
                 .clickable { onDismiss() },
-            contentAlignment = Alignment.TopCenter,
+            contentAlignment = Alignment.Center,
         ) {
             Card(
                 modifier = Modifier
-                    .padding(top = 140.dp, start = 24.dp, end = 24.dp)
+                    .padding(horizontal = 24.dp)
+                    .widthIn(max = 400.dp)
                     .clickable(enabled = false) {},
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 16.dp)
-                        .widthIn(min = 280.dp, max = 360.dp),
+                        .padding(20.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -162,24 +161,17 @@ fun MyPlanCalendarDialog(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Мой план",
+                            text = if (isRangeSelection) "Выберите период" else "Выберите дату",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = TextBlack,
                         )
-                        IconButton(
-                            onClick = onDismiss,
-                            modifier = Modifier.size(32.dp),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = "Закрыть",
-                                tint = TextBlack,
-                            )
+                        IconButton(onClick = onDismiss, modifier = Modifier.size(32.dp)) {
+                            Icon(Icons.Default.Close, contentDescription = "Закрыть", tint = Color.Gray)
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -187,58 +179,44 @@ fun MyPlanCalendarDialog(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         val canGoPrev = displayYear > startCal.get(Calendar.YEAR) ||
-                            (displayYear == startCal.get(Calendar.YEAR) &&
-                                displayMonth > startCal.get(Calendar.MONTH))
+                            (displayYear == startCal.get(Calendar.YEAR) && displayMonth > startCal.get(Calendar.MONTH))
 
                         IconButton(
                             onClick = {
-                                val cal = Calendar.getInstance().apply { set(displayYear, displayMonth, 1) }
-                                cal.add(Calendar.MONTH, -1)
+                                val cal = Calendar.getInstance().apply { set(displayYear, displayMonth, 1); add(Calendar.MONTH, -1) }
                                 displayYear = cal.get(Calendar.YEAR)
                                 displayMonth = cal.get(Calendar.MONTH)
                             },
                             enabled = canGoPrev,
-                            modifier = Modifier.size(36.dp),
+                            modifier = Modifier.size(40.dp),
                         ) {
-                            Text(
-                                text = "‹",
-                                fontSize = 22.sp,
-                                color = if (canGoPrev) PrimaryGreen else Color.LightGray,
-                                fontWeight = FontWeight.Bold,
-                            )
+                            Text("‹", fontSize = 28.sp, color = if (canGoPrev) PrimaryGreen else Color.LightGray, fontWeight = FontWeight.Bold)
                         }
 
                         Text(
-                            text = MY_PLAN_MONTH_NAMES[displayMonth],
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Medium,
+                            text = "${MY_PLAN_MONTH_NAMES[displayMonth]} $displayYear",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
                             color = TextBlack,
                         )
 
                         val canGoNext = displayYear < endCal.get(Calendar.YEAR) ||
-                            (displayYear == endCal.get(Calendar.YEAR) &&
-                                displayMonth < endCal.get(Calendar.MONTH))
+                            (displayYear == endCal.get(Calendar.YEAR) && displayMonth < endCal.get(Calendar.MONTH))
 
                         IconButton(
                             onClick = {
-                                val cal = Calendar.getInstance().apply { set(displayYear, displayMonth, 1) }
-                                cal.add(Calendar.MONTH, 1)
+                                val cal = Calendar.getInstance().apply { set(displayYear, displayMonth, 1); add(Calendar.MONTH, 1) }
                                 displayYear = cal.get(Calendar.YEAR)
                                 displayMonth = cal.get(Calendar.MONTH)
                             },
                             enabled = canGoNext,
-                            modifier = Modifier.size(36.dp),
+                            modifier = Modifier.size(40.dp),
                         ) {
-                            Text(
-                                text = "›",
-                                fontSize = 22.sp,
-                                color = if (canGoNext) PrimaryGreen else Color.LightGray,
-                                fontWeight = FontWeight.Bold,
-                            )
+                            Text("›", fontSize = 28.sp, color = if (canGoNext) PrimaryGreen else Color.LightGray, fontWeight = FontWeight.Bold)
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Row(modifier = Modifier.fillMaxWidth()) {
                         MY_PLAN_DAY_LABELS.forEach { label ->
@@ -248,49 +226,39 @@ fun MyPlanCalendarDialog(
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = Color.Gray,
-                                fontWeight = FontWeight.Medium,
                             )
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(4.dp))
 
                     PlanCalendarGrid(
                         year = displayYear,
                         month = displayMonth,
                         planDates = planDates,
                         selectedDateMillis = normalizedSelectedDateMillis,
+                        rangeStartMillis = rangeStart?.let(::normalizeDateMillis),
                         onDateClick = { day ->
-                            val clickedCal = Calendar.getInstance()
-                            clickedCal.set(displayYear, displayMonth, day, 0, 0, 0)
-                            clickedCal.set(Calendar.MILLISECOND, 0)
-                            onDateClick(clickedCal.time)
-                            onDismiss()
-                        },
+                            val clickedDate = Calendar.getInstance().apply {
+                                set(displayYear, displayMonth, day, 0, 0, 0)
+                                set(Calendar.MILLISECOND, 0)
+                            }.time
+                            
+                            if (isRangeSelection) {
+                                if (rangeStart == null) {
+                                    rangeStart = clickedDate
+                                } else {
+                                    val start = rangeStart!!
+                                    if (clickedDate.before(start)) {
+                                        onRangeSelected?.invoke(clickedDate, start)
+                                    } else {
+                                        onRangeSelected?.invoke(start, clickedDate)
+                                    }
+                                    onDismiss()
+                                }
+                            } else {
+                                onDateClick(clickedDate)
+                            }
+                        }
                     )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(10.dp)
-                                .clip(CircleShape)
-                                .background(PrimaryGreen),
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "Дни вашего плана",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.Gray,
-                        )
-                    }
                 }
             }
         }
@@ -303,6 +271,7 @@ private fun PlanCalendarGrid(
     month: Int,
     planDates: Set<Triple<Int, Int, Int>>,
     selectedDateMillis: Long?,
+    rangeStartMillis: Long? = null,
     onDateClick: (Int) -> Unit,
 ) {
     val cal = Calendar.getInstance().apply { set(year, month, 1) }
@@ -320,10 +289,21 @@ private fun PlanCalendarGrid(
                     val cellIndex = row * 7 + col
                     val dayNumber = cellIndex - firstDayOffset + 1
                     val isCurrentMonth = dayNumber in 1..daysInMonth
-                    val isInPlan = isCurrentMonth &&
-                        planDates.contains(Triple(dayNumber, month, year))
-                    val isSelected = isCurrentMonth &&
-                        selectedDateMillis == createHomeDateMillis(year, month, dayNumber)
+                    val isInPlan = isCurrentMonth && planDates.contains(Triple(dayNumber, month, year))
+                    
+                    val currentDayMillis = if (isCurrentMonth) createHomeDateMillis(year, month, dayNumber) else null
+                    
+                    val isSelected = isCurrentMonth && currentDayMillis == selectedDateMillis
+                    val isRangeStart = isCurrentMonth && currentDayMillis == rangeStartMillis
+                    
+                    // Подсветка промежутка (если выбран старт)
+                    val isInSelectionRange = isCurrentMonth && rangeStartMillis != null && 
+                        currentDayMillis != null && selectedDateMillis != null &&
+                        currentDayMillis in minOf(rangeStartMillis, selectedDateMillis)..maxOf(rangeStartMillis, selectedDateMillis)
+
+                    // Для режима "в процессе выбора" (когда нажали первый раз, но не второй)
+                    val isTentativeRange = isCurrentMonth && rangeStartMillis != null && currentDayMillis != null &&
+                        currentDayMillis == rangeStartMillis
 
                     Box(
                         modifier = Modifier
@@ -334,12 +314,16 @@ private fun PlanCalendarGrid(
                                 if (isInPlan) {
                                     Modifier
                                         .clip(CircleShape)
-                                        .background(if (isSelected) PrimaryGreen else PrimaryGreen.copy(alpha = 0.16f))
+                                        .background(
+                                            when {
+                                                isSelected || isRangeStart || isTentativeRange -> PrimaryGreen
+                                                isInSelectionRange -> PrimaryGreen.copy(alpha = 0.3f)
+                                                else -> PrimaryGreen.copy(alpha = 0.16f)
+                                            }
+                                        )
                                         .clickable { onDateClick(dayNumber) }
                                 } else if (isCurrentMonth) {
-                                    Modifier
-                                        .clip(CircleShape)
-                                        .clickable(enabled = false) {}
+                                    Modifier.clip(CircleShape).clickable(enabled = false) {}
                                 } else {
                                     Modifier
                                 }
@@ -350,9 +334,9 @@ private fun PlanCalendarGrid(
                             Text(
                                 text = dayNumber.toString(),
                                 fontSize = 13.sp,
-                                fontWeight = if (isSelected) FontWeight.Bold else if (isInPlan) FontWeight.SemiBold else FontWeight.Normal,
+                                fontWeight = if (isSelected || isRangeStart || isTentativeRange) FontWeight.Bold else if (isInPlan) FontWeight.SemiBold else FontWeight.Normal,
                                 color = when {
-                                    isSelected -> Color.White
+                                    isSelected || isRangeStart || isTentativeRange -> Color.White
                                     isInPlan -> PrimaryGreen
                                     else -> TextBlack.copy(alpha = 0.35f)
                                 },
@@ -370,7 +354,9 @@ private fun PlanCalendarGrid(
 fun MyPlanSection(
     customPlan: CustomPlan?,
     selectedDate: Date?,
+    isRangeSelection: Boolean = false,
     onDateSelectedFromPlan: (Date) -> Unit,
+    onRangeSelected: ((Date, Date) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     var showDialog by remember { mutableStateOf(false) }
@@ -385,8 +371,13 @@ fun MyPlanSection(
         MyPlanCalendarDialog(
             plan = customPlan,
             selectedDate = selectedDate,
+            isRangeSelection = isRangeSelection,
             onDateClick = { date ->
                 onDateSelectedFromPlan(date)
+                showDialog = false
+            },
+            onRangeSelected = { start, end ->
+                onRangeSelected?.invoke(start, end)
                 showDialog = false
             },
             onDismiss = { showDialog = false },
