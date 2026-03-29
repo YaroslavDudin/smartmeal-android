@@ -162,18 +162,32 @@ fun HomeScreen(
                         onDateSelected = { viewModel.selectDate(it, customPlan) },
                         onGenerateMenu = {
                             val storedPlanType = setupPreferences.getPlanType()
-                            val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
+                            val range = setupPreferences.getCustomPlanRange()
+                            val selectedPlanDateMillis = setupPreferences.getSelectedPlanDate()
                             
+                            var finalStartDate: Date? = null
                             var customDays: Int? = null
-                            if (storedPlanType == SetupPreferences.PLAN_TYPE_CUSTOM) {
-                                val range = setupPreferences.getCustomPlanRange()
-                                if (range != null) {
-                                    val diff = range.second - range.first
-                                    customDays = (diff / (1000 * 60 * 60 * 24)).toInt() + 1
+                            
+                            when (storedPlanType) {
+                                SetupPreferences.PLAN_TYPE_CUSTOM -> {
+                                    if (range != null) {
+                                        finalStartDate = Date(range.first)
+                                        val diff = range.second - range.first
+                                        customDays = (diff / (1000 * 60 * 60 * 24)).toInt() + 1
+                                    }
+                                }
+                                SetupPreferences.PLAN_TYPE_WEEKLY, SetupPreferences.PLAN_TYPE_DAILY -> {
+                                    if (selectedPlanDateMillis != null) {
+                                        finalStartDate = Date(selectedPlanDateMillis)
+                                    }
                                 }
                             }
                             
-                            viewModel.generateMenu(storedPlanType, selectedPlanDate, customDays)
+                            // Если по какой-то причине даты нет в преференсах, но тип плана есть
+                            // (например, старые данные), попробуем взять текущую дату
+                            val startDateToPass = finalStartDate ?: Date()
+                            
+                            viewModel.generateMenu(storedPlanType, startDateToPass, customDays)
                         },
                         onReplaceMeal = { viewModel.replaceMeal(it) },
                         onToggleFavorite = { viewModel.toggleFavorite(it) },
@@ -492,29 +506,82 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private suspend fun refreshMenu(): MenuDto? {
         _uiState.update { it.copy(isLoading = true, error = null) }
         return try {
-            val menu = menuRepository.getLatestMenu()
             val allItemsResponse = menuApi.getMenuItems()
             val allItems = if (allItemsResponse.isSuccessful) allItemsResponse.body() ?: emptyList() else emptyList()
-            if (menu != null) {
-                val startDate = apiDateFormatter.parse(menu.start_date) ?: Date()
-                val maxOffset = menu.items?.maxOfOrNull { it.day_offset } ?: 0
-                val endDate = startDate.let {
-                    val cal = Calendar.getInstance().apply { time = it }
-                    cal.add(Calendar.DAY_OF_YEAR, maxOffset)
-                    cal.time
+            
+            val planType = preferences.getPlanType()
+            val planRange = preferences.getCustomPlanRange()
+            val selectedPlanDateMillis = preferences.getSelectedPlanDate()
+            
+            // 1. Определяем границы активного плана
+            val (planStart, planEnd) = when (planType) {
+                SetupPreferences.PLAN_TYPE_CUSTOM -> {
+                    if (planRange != null) Date(planRange.first) to Date(planRange.second)
+                    else null to null
                 }
+                SetupPreferences.PLAN_TYPE_WEEKLY -> {
+                    if (selectedPlanDateMillis != null) {
+                        val start = Date(selectedPlanDateMillis)
+                        val end = Calendar.getInstance().apply { 
+                            time = start
+                            add(Calendar.DATE, 6)
+                        }.time
+                        start to end
+                    } else null to null
+                }
+                SetupPreferences.PLAN_TYPE_DAILY -> {
+                    if (selectedPlanDateMillis != null) Date(selectedPlanDateMillis) to Date(selectedPlanDateMillis)
+                    else null to null
+                }
+                else -> null to null
+            }
+
+            // 2. Ищем последнее меню
+            val latestMenu = menuRepository.getLatestMenu()
+            
+            // 3. Проверяем, подходит ли это меню под наш план
+            var hasMenuForPlan = false
+            var currentMenuToDisplay: MenuDto? = null
+            
+            if (latestMenu != null && planStart != null && planEnd != null) {
+                val menuStart = apiDateFormatter.parse(latestMenu.start_date) ?: Date(0)
+                // Меню подходит, если оно начинается не раньше плана и не позже его окончания
+                // (или хотя бы пересекается)
+                if (!menuStart.before(normalizeDate(planStart)) && !menuStart.after(normalizeDate(planEnd))) {
+                    hasMenuForPlan = true
+                    currentMenuToDisplay = latestMenu
+                }
+            } else if (latestMenu != null && planType == null) {
+                // Если плана нет вообще, показываем что есть
+                hasMenuForPlan = true
+                currentMenuToDisplay = latestMenu
+            }
+
+            if (hasMenuForPlan && currentMenuToDisplay != null) {
+                val menuItems = currentMenuToDisplay.items ?: emptyList()
+                val menuStart = apiDateFormatter.parse(currentMenuToDisplay.start_date) ?: Date()
+                val maxOffset = menuItems.maxOfOrNull { it.day_offset } ?: 0
+                val menuEnd = Calendar.getInstance().apply { 
+                    time = menuStart
+                    add(Calendar.DATE, maxOffset)
+                }.time
+
                 _uiState.update {
-                    val currentSelectedDate = it.selectedDate?.let(::normalizeDate)
-                    val availableDates = buildAvailableDates(menu.items ?: emptyList(), CustomPlan(startDate, endDate))
-                    val defaultDate = availableDates.firstOrNull()
-                    val resolvedSelectedDate = currentSelectedDate?.takeIf { selected ->
-                        availableDates.any { it.time == selected.time }
-                    } ?: defaultDate
+                    val today = normalizeDate(Date())
+                    val availableDates = buildAvailableDates(menuItems, CustomPlan(menuStart, menuEnd))
+                    
+                    // Если сегодня в меню — выбираем сегодня, иначе первый день меню
+                    val resolvedSelectedDate = if (availableDates.any { it.time == today.time }) {
+                        today
+                    } else {
+                        availableDates.firstOrNull()
+                    }
+
                     it.copy(
                         isLoading = false,
                         hasMenu = true,
-                        currentMenu = menu,
-                        customPlan = CustomPlan(startDate, endDate),
+                        currentMenu = currentMenuToDisplay,
+                        customPlan = CustomPlan(menuStart, menuEnd),
                         allMenuItems = allItems,
                         selectedDate = resolvedSelectedDate,
                         selectedDay = resolvedSelectedDate?.let(::resolveDayNameForDate).orEmpty(),
@@ -523,9 +590,19 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 }
                 updateMealSections()
             } else {
-                _uiState.update { it.copy(isLoading = false, hasMenu = false, allMenuItems = allItems) }
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        hasMenu = false, 
+                        allMenuItems = allItems,
+                        // Если меню нет, но план есть — ставим дату на начало плана для отображения "пустых таблеток"
+                        selectedDate = planStart?.let(::normalizeDate),
+                        selectedDay = planStart?.let(::resolveDayNameForDate).orEmpty(),
+                        customPlan = if (planStart != null && planEnd != null) CustomPlan(planStart, planEnd) else null
+                    ) 
+                }
             }
-            menu
+            currentMenuToDisplay
         } catch (e: Exception) {
             _uiState.update { it.copy(isLoading = false, error = "Ошибка: ${e.localizedMessage}") }
             null
