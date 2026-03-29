@@ -133,6 +133,13 @@
     }
 },
 {
+    "model": "recipes.ingredientcategory",
+    "pk": 25,
+    "fields": {
+        "name": "Крахмальные изделия"
+    }
+},
+{
     "model": "recipes.unit",
     "pk": 1,
     "fields": {
@@ -219,7 +226,7 @@
         "ingredient": 1,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -229,7 +236,7 @@
         "ingredient": 2,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "75.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -239,7 +246,7 @@
         "ingredient": 3,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -249,7 +256,7 @@
         "ingredient": 4,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -259,7 +266,7 @@
         "ingredient": 5,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -269,7 +276,7 @@
         "ingredient": 6,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -279,7 +286,7 @@
         "ingredient": 7,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -289,7 +296,7 @@
         "ingredient": 8,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "1500.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -299,7 +306,7 @@
         "ingredient": 9,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "500.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -309,7 +316,7 @@
         "ingredient": 10,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "3000.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -319,7 +326,7 @@
         "ingredient": 11,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "300.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -329,7 +336,7 @@
         "ingredient": 12,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -339,7 +346,7 @@
         "ingredient": 13,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -349,7 +356,7 @@
         "ingredient": 14,
         "unit": 9,
         "base_unit": 1,
-        "amount_per_unit": "50.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -359,7 +366,7 @@
         "ingredient": 15,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -369,7 +376,7 @@
         "ingredient": 16,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -379,7 +386,7 @@
         "ingredient": 17,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -389,7 +396,7 @@
         "ingredient": 18,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -399,7 +406,7 @@
         "ingredient": 19,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -409,7 +416,7 @@
         "ingredient": 22,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -419,7 +426,7 @@
         "ingredient": 23,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -429,7 +436,7 @@
         "ingredient": 24,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -439,7 +446,7 @@
         "ingredient": 42,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "50.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -449,7 +456,7 @@
         "ingredient": 51,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -459,7 +466,7 @@
         "ingredient": 51,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -469,7 +476,7 @@
         "ingredient": 52,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "2.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -479,7 +486,7 @@
         "ingredient": 53,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "8.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -489,7 +496,7 @@
         "ingredient": 53,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "3.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -499,7 +506,7 @@
         "ingredient": 54,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "2.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -509,7 +516,7 @@
         "ingredient": 55,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "2.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -529,7 +536,7 @@
         "ingredient": 57,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "0.50"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -539,7 +546,7 @@
         "ingredient": 72,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "10.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -549,7 +556,7 @@
         "ingredient": 72,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "3.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -559,7 +566,7 @@
         "ingredient": 72,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "130.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -569,7 +576,7 @@
         "ingredient": 67,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "12.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -579,7 +586,7 @@
         "ingredient": 67,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -589,7 +596,7 @@
         "ingredient": 67,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -599,7 +606,7 @@
         "ingredient": 44,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "180.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -609,7 +616,7 @@
         "ingredient": 44,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -619,7 +626,7 @@
         "ingredient": 45,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "170.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -629,7 +636,7 @@
         "ingredient": 45,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "14.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -639,7 +646,7 @@
         "ingredient": 46,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "80.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -649,7 +656,7 @@
         "ingredient": 46,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "7.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -659,7 +666,7 @@
         "ingredient": 47,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -669,7 +676,7 @@
         "ingredient": 71,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "12.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -679,7 +686,7 @@
         "ingredient": 71,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -688,8 +695,8 @@
     "fields": {
         "ingredient": 36,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -698,8 +705,28 @@
     "fields": {
         "ingredient": 36,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 50,
+    "fields": {
+        "ingredient": 37,
+        "unit": 7,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 51,
+    "fields": {
+        "ingredient": 37,
+        "unit": 4,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -708,8 +735,8 @@
     "fields": {
         "ingredient": 62,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -718,8 +745,8 @@
     "fields": {
         "ingredient": 62,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -729,7 +756,7 @@
         "ingredient": 58,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "14.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -739,7 +766,7 @@
         "ingredient": 58,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "210.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -749,7 +776,7 @@
         "ingredient": 59,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "14.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -759,7 +786,7 @@
         "ingredient": 59,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "210.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -769,7 +796,7 @@
         "ingredient": 41,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -779,7 +806,7 @@
         "ingredient": 66,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "25.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -789,7 +816,7 @@
         "ingredient": 66,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "8.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -799,7 +826,7 @@
         "ingredient": 70,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "10.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -809,7 +836,7 @@
         "ingredient": 70,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -819,7 +846,7 @@
         "ingredient": 76,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -828,8 +855,8 @@
     "fields": {
         "ingredient": 77,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -839,7 +866,7 @@
         "ingredient": 78,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "175.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -849,7 +876,7 @@
         "ingredient": 79,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "17.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -859,7 +886,7 @@
         "ingredient": 79,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "8.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -869,7 +896,7 @@
         "ingredient": 79,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "260.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -878,8 +905,8 @@
     "fields": {
         "ingredient": 65,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -888,8 +915,8 @@
     "fields": {
         "ingredient": 63,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -899,7 +926,7 @@
         "ingredient": 81,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "10.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -909,7 +936,7 @@
         "ingredient": 81,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -919,7 +946,7 @@
         "ingredient": 82,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -929,7 +956,7 @@
         "ingredient": 83,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "170.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -939,7 +966,7 @@
         "ingredient": 84,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "190.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -949,7 +976,7 @@
         "ingredient": 85,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -959,7 +986,7 @@
         "ingredient": 86,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "35.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -969,7 +996,7 @@
         "ingredient": 73,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -979,7 +1006,7 @@
         "ingredient": 87,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "7.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -989,7 +1016,7 @@
         "ingredient": 88,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -999,7 +1026,7 @@
         "ingredient": 88,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1009,7 +1036,37 @@
         "ingredient": 90,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "155.00"
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 85,
+    "fields": {
+        "ingredient": 91,
+        "unit": 7,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 86,
+    "fields": {
+        "ingredient": 92,
+        "unit": 7,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 87,
+    "fields": {
+        "ingredient": 92,
+        "unit": 4,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1019,7 +1076,7 @@
         "ingredient": 43,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "240.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1029,7 +1086,7 @@
         "ingredient": 43,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1039,7 +1096,7 @@
         "ingredient": 39,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "230.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1049,7 +1106,7 @@
         "ingredient": 39,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1059,7 +1116,7 @@
         "ingredient": 38,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "240.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1069,7 +1126,7 @@
         "ingredient": 38,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1079,7 +1136,7 @@
         "ingredient": 93,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "10.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1089,7 +1146,7 @@
         "ingredient": 94,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1099,7 +1156,27 @@
         "ingredient": 94,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 97,
+    "fields": {
+        "ingredient": 95,
+        "unit": 7,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 98,
+    "fields": {
+        "ingredient": 95,
+        "unit": 4,
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1109,7 +1186,7 @@
         "ingredient": 96,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "240.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1119,7 +1196,7 @@
         "ingredient": 96,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1129,7 +1206,7 @@
         "ingredient": 97,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "240.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1139,7 +1216,7 @@
         "ingredient": 97,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1149,7 +1226,7 @@
         "ingredient": 98,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "240.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1159,7 +1236,7 @@
         "ingredient": 98,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1169,7 +1246,7 @@
         "ingredient": 99,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1179,7 +1256,7 @@
         "ingredient": 99,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1189,7 +1266,7 @@
         "ingredient": 100,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1199,7 +1276,7 @@
         "ingredient": 100,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1209,7 +1286,7 @@
         "ingredient": 101,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1219,7 +1296,7 @@
         "ingredient": 102,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1229,7 +1306,7 @@
         "ingredient": 103,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "30.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1239,7 +1316,7 @@
         "ingredient": 104,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "800.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1249,7 +1326,7 @@
         "ingredient": 105,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1259,7 +1336,7 @@
         "ingredient": 106,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "7.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1269,7 +1346,7 @@
         "ingredient": 106,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "3.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1279,7 +1356,7 @@
         "ingredient": 107,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "7.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1289,7 +1366,7 @@
         "ingredient": 107,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "3.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1299,7 +1376,7 @@
         "ingredient": 108,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "110.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1309,7 +1386,7 @@
         "ingredient": 109,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "210.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1319,7 +1396,7 @@
         "ingredient": 109,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1329,7 +1406,7 @@
         "ingredient": 109,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "7.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1339,7 +1416,7 @@
         "ingredient": 110,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "10.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1349,7 +1426,7 @@
         "ingredient": 110,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1359,7 +1436,7 @@
         "ingredient": 110,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1369,7 +1446,7 @@
         "ingredient": 70,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1378,8 +1455,8 @@
     "fields": {
         "ingredient": 111,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1388,8 +1465,8 @@
     "fields": {
         "ingredient": 111,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1398,8 +1475,8 @@
     "fields": {
         "ingredient": 112,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1408,8 +1485,8 @@
     "fields": {
         "ingredient": 112,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1418,8 +1495,8 @@
     "fields": {
         "ingredient": 112,
         "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1428,8 +1505,8 @@
     "fields": {
         "ingredient": 113,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1438,8 +1515,8 @@
     "fields": {
         "ingredient": 113,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1448,8 +1525,8 @@
     "fields": {
         "ingredient": 113,
         "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1458,8 +1535,8 @@
     "fields": {
         "ingredient": 114,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1468,8 +1545,8 @@
     "fields": {
         "ingredient": 114,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1478,8 +1555,8 @@
     "fields": {
         "ingredient": 114,
         "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1488,8 +1565,8 @@
     "fields": {
         "ingredient": 115,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1498,8 +1575,8 @@
     "fields": {
         "ingredient": 115,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1508,8 +1585,8 @@
     "fields": {
         "ingredient": 115,
         "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1518,8 +1595,8 @@
     "fields": {
         "ingredient": 116,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1528,8 +1605,8 @@
     "fields": {
         "ingredient": 116,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1538,8 +1615,8 @@
     "fields": {
         "ingredient": 116,
         "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1548,8 +1625,8 @@
     "fields": {
         "ingredient": 117,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1559,7 +1636,7 @@
         "ingredient": 118,
         "unit": 9,
         "base_unit": 1,
-        "amount_per_unit": "50.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1569,7 +1646,7 @@
         "ingredient": 119,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "70.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1579,7 +1656,7 @@
         "ingredient": 120,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "800.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1589,7 +1666,7 @@
         "ingredient": 121,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "700.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1599,7 +1676,7 @@
         "ingredient": 122,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "170.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1609,7 +1686,7 @@
         "ingredient": 122,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "2.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1619,7 +1696,7 @@
         "ingredient": 123,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1629,7 +1706,7 @@
         "ingredient": 123,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "2.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1639,7 +1716,7 @@
         "ingredient": 124,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1649,7 +1726,7 @@
         "ingredient": 125,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "140.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1659,7 +1736,7 @@
         "ingredient": 126,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "125.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1669,7 +1746,7 @@
         "ingredient": 127,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "180.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1679,7 +1756,7 @@
         "ingredient": 128,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "125.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1689,7 +1766,7 @@
         "ingredient": 129,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1699,7 +1776,7 @@
         "ingredient": 129,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "9.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1709,7 +1786,7 @@
         "ingredient": 129,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1719,7 +1796,7 @@
         "ingredient": 130,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "115.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1729,7 +1806,7 @@
         "ingredient": 130,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "9.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1739,7 +1816,7 @@
         "ingredient": 130,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1749,7 +1826,7 @@
         "ingredient": 131,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "125.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1759,7 +1836,7 @@
         "ingredient": 131,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "10.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1769,7 +1846,7 @@
         "ingredient": 131,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1779,7 +1856,7 @@
         "ingredient": 132,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "188.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1789,7 +1866,7 @@
         "ingredient": 132,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "12.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1799,7 +1876,7 @@
         "ingredient": 132,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1809,7 +1886,7 @@
         "ingredient": 133,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "12.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1819,7 +1896,7 @@
         "ingredient": 133,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1829,7 +1906,7 @@
         "ingredient": 134,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1839,7 +1916,7 @@
         "ingredient": 134,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1849,7 +1926,7 @@
         "ingredient": 134,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "260.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1859,7 +1936,7 @@
         "ingredient": 135,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "240.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1869,7 +1946,7 @@
         "ingredient": 135,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1879,7 +1956,7 @@
         "ingredient": 135,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1888,8 +1965,8 @@
     "fields": {
         "ingredient": 136,
         "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1898,8 +1975,8 @@
     "fields": {
         "ingredient": 136,
         "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1908,8 +1985,8 @@
     "fields": {
         "ingredient": 136,
         "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
+        "base_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1919,7 +1996,7 @@
         "ingredient": 137,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1929,7 +2006,7 @@
         "ingredient": 137,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1939,7 +2016,7 @@
         "ingredient": 137,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1949,7 +2026,7 @@
         "ingredient": 138,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1959,7 +2036,7 @@
         "ingredient": 138,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1969,7 +2046,7 @@
         "ingredient": 138,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1979,7 +2056,7 @@
         "ingredient": 139,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "12.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1989,7 +2066,7 @@
         "ingredient": 139,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1999,7 +2076,7 @@
         "ingredient": 140,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "9.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2009,7 +2086,7 @@
         "ingredient": 140,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2019,7 +2096,7 @@
         "ingredient": 141,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "8.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2029,7 +2106,7 @@
         "ingredient": 141,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "3.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2039,7 +2116,7 @@
         "ingredient": 30,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "1800.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2049,7 +2126,7 @@
         "ingredient": 34,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2059,7 +2136,7 @@
         "ingredient": 33,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "14.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2069,7 +2146,7 @@
         "ingredient": 35,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2079,7 +2156,7 @@
         "ingredient": 31,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "1500.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2089,7 +2166,7 @@
         "ingredient": 142,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2099,7 +2176,7 @@
         "ingredient": 142,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "13.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2109,7 +2186,7 @@
         "ingredient": 142,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2119,7 +2196,7 @@
         "ingredient": 68,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2129,7 +2206,7 @@
         "ingredient": 143,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2139,7 +2216,7 @@
         "ingredient": 144,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2149,7 +2226,7 @@
         "ingredient": 145,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2159,7 +2236,7 @@
         "ingredient": 69,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "330.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2169,7 +2246,7 @@
         "ingredient": 69,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2179,7 +2256,7 @@
         "ingredient": 69,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "7.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2189,7 +2266,7 @@
         "ingredient": 146,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "270.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2199,7 +2276,7 @@
         "ingredient": 146,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "20.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2209,7 +2286,7 @@
         "ingredient": 146,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "7.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2219,7 +2296,7 @@
         "ingredient": 147,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2229,7 +2306,7 @@
         "ingredient": 147,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2239,7 +2316,7 @@
         "ingredient": 147,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2249,7 +2326,7 @@
         "ingredient": 148,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "12.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2259,7 +2336,7 @@
         "ingredient": 148,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2269,7 +2346,7 @@
         "ingredient": 149,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2279,7 +2356,7 @@
         "ingredient": 149,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2289,7 +2366,7 @@
         "ingredient": 149,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2299,7 +2376,7 @@
         "ingredient": 150,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2309,7 +2386,7 @@
         "ingredient": 150,
         "unit": 4,
         "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2319,7 +2396,7 @@
         "ingredient": 150,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2329,7 +2406,7 @@
         "ingredient": 151,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "80.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2339,7 +2416,7 @@
         "ingredient": 152,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2349,7 +2426,7 @@
         "ingredient": 153,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "70.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2359,7 +2436,7 @@
         "ingredient": 154,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "40.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2369,7 +2446,7 @@
         "ingredient": 155,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2379,7 +2456,7 @@
         "ingredient": 156,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "3.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2389,7 +2466,7 @@
         "ingredient": 156,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2399,7 +2476,7 @@
         "ingredient": 157,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "155.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2409,7 +2486,7 @@
         "ingredient": 157,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "2.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2419,7 +2496,7 @@
         "ingredient": 158,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "150.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2439,7 +2516,7 @@
         "ingredient": 159,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "145.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2459,7 +2536,7 @@
         "ingredient": 160,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "140.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2479,7 +2556,7 @@
         "ingredient": 161,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "180.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2489,7 +2566,7 @@
         "ingredient": 161,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "3.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2499,7 +2576,7 @@
         "ingredient": 162,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "190.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2509,7 +2586,7 @@
         "ingredient": 162,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2519,7 +2596,7 @@
         "ingredient": 163,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "210.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2529,7 +2606,7 @@
         "ingredient": 163,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "4.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2539,7 +2616,7 @@
         "ingredient": 164,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "5000.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2549,7 +2626,7 @@
         "ingredient": 165,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "115.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2559,7 +2636,7 @@
         "ingredient": 166,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "30.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2569,7 +2646,7 @@
         "ingredient": 167,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "120.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2579,7 +2656,7 @@
         "ingredient": 168,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "1500.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2589,7 +2666,7 @@
         "ingredient": 169,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2599,7 +2676,7 @@
         "ingredient": 169,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2609,7 +2686,7 @@
         "ingredient": 170,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2619,7 +2696,7 @@
         "ingredient": 170,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "160.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2629,7 +2706,7 @@
         "ingredient": 171,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "35.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2639,7 +2716,7 @@
         "ingredient": 172,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2649,7 +2726,7 @@
         "ingredient": 173,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "300.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2659,7 +2736,7 @@
         "ingredient": 174,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2669,7 +2746,7 @@
         "ingredient": 175,
         "unit": 9,
         "base_unit": 1,
-        "amount_per_unit": "50.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2679,7 +2756,7 @@
         "ingredient": 176,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "220.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2689,7 +2766,7 @@
         "ingredient": 177,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "70.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2699,7 +2776,7 @@
         "ingredient": 178,
         "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "425.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2709,7 +2786,7 @@
         "ingredient": 179,
         "unit": 5,
         "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2719,7 +2796,7 @@
         "ingredient": 180,
         "unit": 9,
         "base_unit": 1,
-        "amount_per_unit": "50.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -2729,327 +2806,27 @@
         "ingredient": 181,
         "unit": 7,
         "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "amount_per_unit": "1.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 262,
     "fields": {
-        "ingredient": 91,
-        "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
+        "ingredient": 192,
+        "unit": 3,
+        "base_unit": 1,
+        "amount_per_unit": "16.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 263,
     "fields": {
-        "ingredient": 95,
-        "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 264,
-    "fields": {
-        "ingredient": 95,
-        "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 267,
-    "fields": {
-        "ingredient": 92,
-        "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 268,
-    "fields": {
-        "ingredient": 92,
-        "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 269,
-    "fields": {
-        "ingredient": 37,
-        "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 270,
-    "fields": {
-        "ingredient": 37,
-        "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 273,
-    "fields": {
-        "ingredient": 62,
-        "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 277,
-    "fields": {
-        "ingredient": 114,
-        "unit": 1,
-        "base_unit": 6,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 278,
-    "fields": {
-        "ingredient": 111,
-        "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 279,
-    "fields": {
-        "ingredient": 65,
-        "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 280,
-    "fields": {
-        "ingredient": 62,
-        "unit": 6,
+        "ingredient": 210,
+        "unit": 3,
         "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 281,
-    "fields": {
-        "ingredient": 113,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "0.96"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 282,
-    "fields": {
-        "ingredient": 111,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 283,
-    "fields": {
-        "ingredient": 112,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.03"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 284,
-    "fields": {
-        "ingredient": 115,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.08"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 285,
-    "fields": {
-        "ingredient": 116,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 286,
-    "fields": {
-        "ingredient": 65,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 287,
-    "fields": {
-        "ingredient": 117,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 288,
-    "fields": {
-        "ingredient": 63,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 289,
-    "fields": {
-        "ingredient": 95,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.03"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 290,
-    "fields": {
-        "ingredient": 36,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.03"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 291,
-    "fields": {
-        "ingredient": 36,
-        "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 292,
-    "fields": {
-        "ingredient": 91,
-        "unit": 4,
-        "base_unit": 6,
-        "amount_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 293,
-    "fields": {
-        "ingredient": 91,
-        "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 294,
-    "fields": {
-        "ingredient": 91,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.03"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 295,
-    "fields": {
-        "ingredient": 37,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.01"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 296,
-    "fields": {
-        "ingredient": 92,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "0.96"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 297,
-    "fields": {
-        "ingredient": 77,
-        "unit": 5,
-        "base_unit": 6,
-        "amount_per_unit": "5.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 298,
-    "fields": {
-        "ingredient": 77,
-        "unit": 7,
-        "base_unit": 6,
-        "amount_per_unit": "250.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 299,
-    "fields": {
-        "ingredient": 77,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 300,
-    "fields": {
-        "ingredient": 136,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.20"
+        "amount_per_unit": "50.00"
     }
 },
 {
@@ -3706,7 +3483,7 @@
     "fields": {
         "name": "Вода",
         "category": 9,
-        "can_be_added_to_cart": false,
+        "can_be_added_to_cart": true,
         "allergies": []
     }
 },
@@ -4961,6 +4738,325 @@
     }
 },
 {
+    "model": "recipes.ingredient",
+    "pk": 182,
+    "fields": {
+        "name": "Изюм",
+        "category": 2,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 183,
+    "fields": {
+        "name": "Хлеб цельнозерновой",
+        "category": 19,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            8
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 184,
+    "fields": {
+        "name": "Лимонный сок",
+        "category": 7,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            9
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 185,
+    "fields": {
+        "name": "Молоко 2.5%",
+        "category": 3,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 186,
+    "fields": {
+        "name": "Йогурт греческий 2%",
+        "category": 3,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 187,
+    "fields": {
+        "name": "Шпинат свежий",
+        "category": 1,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 188,
+    "fields": {
+        "name": "Творожный сыр",
+        "category": 3,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 189,
+    "fields": {
+        "name": "Семга слабосоленая",
+        "category": 5,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 190,
+    "fields": {
+        "name": "Лапша гречневая (Соба)",
+        "category": 19,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            8
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 191,
+    "fields": {
+        "name": "Соус терияки",
+        "category": 21,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 192,
+    "fields": {
+        "name": "Листы для лазаньи",
+        "category": 19,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            8,
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 193,
+    "fields": {
+        "name": "Сыр Пармезан",
+        "category": 3,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 194,
+    "fields": {
+        "name": "Салат Айсберг",
+        "category": 1,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 195,
+    "fields": {
+        "name": "Помидоры черри",
+        "category": 1,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 196,
+    "fields": {
+        "name": "Сухарики пшеничные",
+        "category": 19,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            8
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 197,
+    "fields": {
+        "name": "Соус Цезарь",
+        "category": 21,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 198,
+    "fields": {
+        "name": "Горох колотый",
+        "category": 15,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 199,
+    "fields": {
+        "name": "Ребра свиные копченые",
+        "category": 4,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 200,
+    "fields": {
+        "name": "Филе щуки",
+        "category": 5,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 201,
+    "fields": {
+        "name": "Консервированная кукуруза",
+        "category": 24,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 202,
+    "fields": {
+        "name": "Сыр Чеддер",
+        "category": 3,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 203,
+    "fields": {
+        "name": "Филе минтая",
+        "category": 5,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 204,
+    "fields": {
+        "name": "Свиная вырезка",
+        "category": 4,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 205,
+    "fields": {
+        "name": "Фарш индейки",
+        "category": 4,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 206,
+    "fields": {
+        "name": "Лапша стеклянная (фунчоза)",
+        "category": 25,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 207,
+    "fields": {
+        "name": "Креветки очищенные",
+        "category": 5,
+        "can_be_added_to_cart": true,
+        "allergies": [
+            4
+        ]
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 208,
+    "fields": {
+        "name": "Фарш куриный",
+        "category": 4,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 209,
+    "fields": {
+        "name": "Соус барбекю",
+        "category": 21,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
+    "model": "recipes.ingredient",
+    "pk": 210,
+    "fields": {
+        "name": "Сосиски молочные",
+        "category": 4,
+        "can_be_added_to_cart": true,
+        "allergies": []
+    }
+},
+{
     "model": "recipes.ingredientnutrition",
     "pk": 1,
     "fields": {
@@ -5385,7 +5481,7 @@
     "pk": 36,
     "fields": {
         "ingredient": 36,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "3.2",
         "fat": "3.6",
@@ -5397,7 +5493,7 @@
     "pk": 37,
     "fields": {
         "ingredient": 37,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "2.5",
         "fat": "20.0",
@@ -5697,7 +5793,7 @@
     "pk": 62,
     "fields": {
         "ingredient": 62,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
@@ -5709,7 +5805,7 @@
     "pk": 63,
     "fields": {
         "ingredient": 63,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
@@ -5733,7 +5829,7 @@
     "pk": 65,
     "fields": {
         "ingredient": 65,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "0.5",
         "fat": "0.2",
@@ -5865,7 +5961,7 @@
     "pk": 76,
     "fields": {
         "ingredient": 77,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "7.0",
         "fat": "0.0",
@@ -6021,7 +6117,7 @@
     "pk": 90,
     "fields": {
         "ingredient": 91,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "2.7",
         "fat": "10.0",
@@ -6069,7 +6165,7 @@
     "pk": 94,
     "fields": {
         "ingredient": 95,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "2.9",
         "fat": "3.2",
@@ -6261,7 +6357,7 @@
     "pk": 110,
     "fields": {
         "ingredient": 111,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "1.0",
         "fat": "3.2",
@@ -6273,7 +6369,7 @@
     "pk": 111,
     "fields": {
         "ingredient": 112,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "3.0",
         "fat": "1.5",
@@ -6285,10 +6381,10 @@
     "pk": 112,
     "fields": {
         "ingredient": 113,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
-        "protein": "1.6",
-        "fat": "19.0",
+        "protein": "1.5",
+        "fat": "18.0",
         "carbs": "2.0"
     }
 },
@@ -6297,7 +6393,7 @@
     "pk": 113,
     "fields": {
         "ingredient": 114,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "0.4",
         "fat": "1.3",
@@ -6309,7 +6405,7 @@
     "pk": 114,
     "fields": {
         "ingredient": 115,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "0.8",
         "fat": "0.2",
@@ -6321,7 +6417,7 @@
     "pk": 115,
     "fields": {
         "ingredient": 116,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "0.1",
         "fat": "0.0",
@@ -6333,7 +6429,7 @@
     "pk": 116,
     "fields": {
         "ingredient": 117,
-        "base_unit": 6,
+        "base_unit": 1,
         "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
@@ -7106,6 +7202,354 @@
         "protein": "20.0",
         "fat": "52.0",
         "carbs": "9.5"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 181,
+    "fields": {
+        "ingredient": 182,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "2.9",
+        "fat": "0.6",
+        "carbs": "71.2"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 182,
+    "fields": {
+        "ingredient": 183,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "6.5",
+        "fat": "2.7",
+        "carbs": "31.7"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 183,
+    "fields": {
+        "ingredient": 184,
+        "base_unit": 6,
+        "base_weight": 100,
+        "protein": "0.4",
+        "fat": "0.2",
+        "carbs": "6.9"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 184,
+    "fields": {
+        "ingredient": 185,
+        "base_unit": 6,
+        "base_weight": 100,
+        "protein": "2.9",
+        "fat": "2.5",
+        "carbs": "4.8"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 185,
+    "fields": {
+        "ingredient": 186,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "8.0",
+        "fat": "2.0",
+        "carbs": "4.2"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 186,
+    "fields": {
+        "ingredient": 187,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "3.0",
+        "fat": "0.3",
+        "carbs": "2.5"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 187,
+    "fields": {
+        "ingredient": 188,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "7.0",
+        "fat": "24.0",
+        "carbs": "4.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 188,
+    "fields": {
+        "ingredient": 189,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "22.0",
+        "fat": "15.0",
+        "carbs": "0.5"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 189,
+    "fields": {
+        "ingredient": 190,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "10.0",
+        "fat": "0.5",
+        "carbs": "62.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 190,
+    "fields": {
+        "ingredient": 191,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "5.9",
+        "fat": "0.0",
+        "carbs": "15.5"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 191,
+    "fields": {
+        "ingredient": 192,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "12.0",
+        "fat": "1.5",
+        "carbs": "72.7"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 192,
+    "fields": {
+        "ingredient": 193,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "33.0",
+        "fat": "28.0",
+        "carbs": "0.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 193,
+    "fields": {
+        "ingredient": 194,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "0.9",
+        "fat": "0.1",
+        "carbs": "1.8"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 194,
+    "fields": {
+        "ingredient": 195,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "1.1",
+        "fat": "0.2",
+        "carbs": "16.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 195,
+    "fields": {
+        "ingredient": 196,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "7.3",
+        "fat": "3.6",
+        "carbs": "7.3"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 196,
+    "fields": {
+        "ingredient": 197,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "4.4",
+        "fat": "36.5",
+        "carbs": "3.7"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 197,
+    "fields": {
+        "ingredient": 198,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "23.0",
+        "fat": "3.9",
+        "carbs": "53.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 198,
+    "fields": {
+        "ingredient": 199,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "10.0",
+        "fat": "52.7",
+        "carbs": "0.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 199,
+    "fields": {
+        "ingredient": 200,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "19.0",
+        "fat": "1.1",
+        "carbs": "0.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 200,
+    "fields": {
+        "ingredient": 201,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "3.0",
+        "fat": "1.2",
+        "carbs": "15.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 201,
+    "fields": {
+        "ingredient": 202,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "25.0",
+        "fat": "33.0",
+        "carbs": "0.1"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 202,
+    "fields": {
+        "ingredient": 203,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "18.0",
+        "fat": "1.1",
+        "carbs": "0.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 203,
+    "fields": {
+        "ingredient": 204,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "20.5",
+        "fat": "7.7",
+        "carbs": "0.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 204,
+    "fields": {
+        "ingredient": 205,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "20.0",
+        "fat": "9.0",
+        "carbs": "0.5"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 205,
+    "fields": {
+        "ingredient": 206,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "0.7",
+        "fat": "0.5",
+        "carbs": "86.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 206,
+    "fields": {
+        "ingredient": 207,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "21.0",
+        "fat": "2.0",
+        "carbs": "1.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 207,
+    "fields": {
+        "ingredient": 208,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "18.0",
+        "fat": "8.0",
+        "carbs": "0.5"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 208,
+    "fields": {
+        "ingredient": 209,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "1.0",
+        "fat": "0.3",
+        "carbs": "40.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 209,
+    "fields": {
+        "ingredient": 210,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "12.0",
+        "fat": "24.0",
+        "carbs": "2.0"
     }
 },
 {
@@ -8315,6 +8759,542 @@
         ],
         "meal_types": [
             2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 70,
+    "fields": {
+        "title": "Сырники с ванилью и изюмом",
+        "image_url": "recipes/70/main/Сырники_с_ванилью_и_изюмом.png",
+        "cook_time": 20,
+        "servings": 1,
+        "diet_types": [
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 71,
+    "fields": {
+        "title": "Пшенная каша на кокосовом молоке с бананом",
+        "image_url": "recipes/71/main/Пшенная_каша_на_кокосовом_молоке_с_бананом.png",
+        "cook_time": 25,
+        "servings": 1,
+        "diet_types": [
+            1,
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 72,
+    "fields": {
+        "title": "Тосты с гуакамоле и яйцом пашот",
+        "image_url": "recipes/72/main/Тосты_с_гуакамоле_и_яйцом_пашот.png",
+        "cook_time": 15,
+        "servings": 1,
+        "diet_types": [
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 73,
+    "fields": {
+        "title": "Запеченная овсянка с ягодами и орехами",
+        "image_url": "recipes/73/main/Запеченная_овсянка_с_ягодами_и_орехами.png",
+        "cook_time": 30,
+        "servings": 1,
+        "diet_types": [
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 74,
+    "fields": {
+        "title": "Блинчики из кабачков с йогуртовым соусом",
+        "image_url": "recipes/74/main/Блинчики_из_кабачков_с_йогуртовым_соусом.png",
+        "cook_time": 20,
+        "servings": 1,
+        "diet_types": [
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 75,
+    "fields": {
+        "title": "Фриттата с брокколи и сладким перцем",
+        "image_url": "recipes/75/main/Фриттата_с_брокколи_и_сладким_перцем.png",
+        "cook_time": 25,
+        "servings": 1,
+        "diet_types": [
+            2,
+            3,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 76,
+    "fields": {
+        "title": "Ленивые вареники со сметаной",
+        "image_url": "recipes/76/main/Ленивые_вареники_со_сметаной.png",
+        "cook_time": 15,
+        "servings": 1,
+        "diet_types": [
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 77,
+    "fields": {
+        "title": "Смузи-боул с киви, шпинатом и семенами чиа",
+        "image_url": "recipes/77/main/Смузи_боул_с_киви_шпинатом_и_семенами_чиа.png",
+        "cook_time": 10,
+        "servings": 1,
+        "diet_types": [
+            1,
+            2,
+            6,
+            4,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 78,
+    "fields": {
+        "title": "Ржаной сэндвич с творожным сыром и слабосоленой семгой",
+        "image_url": "recipes/78/main/Ржаной_сэндвич_с_творожным_сыром_и_слабосоленой_семгой.png",
+        "cook_time": 10,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 79,
+    "fields": {
+        "title": "Рисовый пудинг с карамелизированным яблоком",
+        "image_url": "recipes/79/main/Рисовый_пудинг_с_карамелизированным_яблоком.png",
+        "cook_time": 35,
+        "servings": 1,
+        "diet_types": [
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            1
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 80,
+    "fields": {
+        "title": "Крем-суп из шампиньонов со сливками",
+        "image_url": "recipes/80/main/Крем_суп_из_шампиньонов_со_сливками.png",
+        "cook_time": 30,
+        "servings": 1,
+        "diet_types": [
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 81,
+    "fields": {
+        "title": "Томатный суп гаспачо с базиликом",
+        "image_url": "recipes/81/main/Томатный_суп_гаспачо_с_базиликом.png",
+        "cook_time": 15,
+        "servings": 1,
+        "diet_types": [
+            1,
+            2,
+            6,
+            4,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 82,
+    "fields": {
+        "title": "Соба с курицей терияки",
+        "image_url": "recipes/82/main/Соба_с_курицей_терияки.png",
+        "cook_time": 25,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 83,
+    "fields": {
+        "title": "Уха из красной рыбы с картофелем",
+        "image_url": "recipes/83/main/Уха_из_красной_рыбы_с_картофелем.png",
+        "cook_time": 40,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 84,
+    "fields": {
+        "title": "Плов с говядиной и морковью",
+        "image_url": "recipes/84/main/Плов_с_говядиной_и_морковью.png",
+        "cook_time": 60,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 85,
+    "fields": {
+        "title": "Лазанья с мясным фаршем и соусом бешамель",
+        "image_url": "recipes/85/main/Лазанья_с_мясным_фаршем_и_соусом_бешамель.png",
+        "cook_time": 70,
+        "servings": 1,
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 86,
+    "fields": {
+        "title": "Салат \"Цезарь\" с куриной грудкой",
+        "image_url": "recipes/86/main/Салат_Цезарь_с_куриной_грудкой.png",
+        "cook_time": 20,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 87,
+    "fields": {
+        "title": "Гороховый суп с копченостями",
+        "image_url": "recipes/87/main/Гороховый_суп_с_копченостями.png",
+        "cook_time": 50,
+        "servings": 1,
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 88,
+    "fields": {
+        "title": "Котлеты из щуки с картофельным пюре",
+        "image_url": "recipes/88/main/Котлеты_из_щуки_с_картофельным_пюре.png",
+        "cook_time": 45,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 89,
+    "fields": {
+        "title": "Кесадилья с курицей, кукурузой и сыром",
+        "image_url": "recipes/89/main/Кесадилья_с_курицей_кукурузой_и_сыром.png",
+        "cook_time": 20,
+        "servings": 1,
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 90,
+    "fields": {
+        "title": "Запеченное филе минтая под сырной корочкой",
+        "image_url": "recipes/90/main/Запеченное_филе_минтая_под_сырной_корочкой.png",
+        "cook_time": 35,
+        "servings": 1,
+        "diet_types": [
+            3,
+            6,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 91,
+    "fields": {
+        "title": "Свиные медальоны в грибном соусе",
+        "image_url": "recipes/91/main/Свиные_медальоны_в_грибном_соусе.png",
+        "cook_time": 40,
+        "servings": 1,
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 92,
+    "fields": {
+        "title": "Рататуй из свежих овощей",
+        "image_url": "recipes/92/main/Рататуй_из_свежих_овощей.png",
+        "cook_time": 50,
+        "servings": 1,
+        "diet_types": [
+            1,
+            2,
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 93,
+    "fields": {
+        "title": "Тефтели из индейки в томатном соусе",
+        "image_url": "recipes/93/main/Тефтели_из_индейки_в_томатном_соусе.png",
+        "cook_time": 45,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 94,
+    "fields": {
+        "title": "Фунчоза с креветками и овощами",
+        "image_url": "recipes/94/main/Фунчоза_с_креветками_и_овощами.png",
+        "cook_time": 20,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 95,
+    "fields": {
+        "title": "Запеченные баклажаны, фаршированные куриным фаршем",
+        "image_url": "recipes/95/main/Запеченные_баклажаны_фаршированные_куриным_фаршем.png",
+        "cook_time": 45,
+        "servings": 1,
+        "diet_types": [
+            3,
+            6,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 96,
+    "fields": {
+        "title": "Бефстроганов из говядины",
+        "image_url": "recipes/96/main/Бефстроганов_из_говядины.png",
+        "cook_time": 50,
+        "servings": 1,
+        "diet_types": [
+            3,
+            6,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 97,
+    "fields": {
+        "title": "Салат с кальмарами, яйцом и свежим огурцом",
+        "image_url": "recipes/97/main/Салат_с_кальмарами_яйцом_и_свежим_огурцом.png",
+        "cook_time": 15,
+        "servings": 1,
+        "diet_types": [
+            3,
+            6,
+            5
+        ],
+        "meal_types": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 98,
+    "fields": {
+        "title": "Куриные крылышки барбекю в духовке",
+        "image_url": "recipes/98/main/Куриные_крылышки_барбекю_в_духовке.png",
+        "cook_time": 45,
+        "servings": 1,
+        "diet_types": [
+            6,
+            5
+        ],
+        "meal_types": [
+            3
+        ]
+    }
+},
+{
+    "model": "recipes.recipe",
+    "pk": 99,
+    "fields": {
+        "title": "Тушеная капуста с сосисками",
+        "image_url": "recipes/99/main/Тушеная_капуста_с_сосисками.png",
+        "cook_time": 30,
+        "servings": 1,
+        "diet_types": [
+            6
+        ],
+        "meal_types": [
+            2,
+            3
         ]
     }
 },
@@ -12949,6 +13929,1266 @@
     }
 },
 {
+    "model": "recipes.recipeingredient",
+    "pk": 506,
+    "fields": {
+        "recipe": 70,
+        "ingredient": 97,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 507,
+    "fields": {
+        "recipe": 70,
+        "ingredient": 42,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 508,
+    "fields": {
+        "recipe": 70,
+        "ingredient": 72,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 509,
+    "fields": {
+        "recipe": 70,
+        "ingredient": 182,
+        "amount": "20.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 510,
+    "fields": {
+        "recipe": 70,
+        "ingredient": 67,
+        "amount": "15.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 511,
+    "fields": {
+        "recipe": 71,
+        "ingredient": 176,
+        "amount": "60.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 512,
+    "fields": {
+        "recipe": 71,
+        "ingredient": 113,
+        "amount": "150.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 513,
+    "fields": {
+        "recipe": 71,
+        "ingredient": 62,
+        "amount": "100.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 514,
+    "fields": {
+        "recipe": 71,
+        "ingredient": 16,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 515,
+    "fields": {
+        "recipe": 72,
+        "ingredient": 183,
+        "amount": "60.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 516,
+    "fields": {
+        "recipe": 72,
+        "ingredient": 22,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 517,
+    "fields": {
+        "recipe": 72,
+        "ingredient": 42,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 518,
+    "fields": {
+        "recipe": 72,
+        "ingredient": 184,
+        "amount": "5.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 519,
+    "fields": {
+        "recipe": 73,
+        "ingredient": 46,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 520,
+    "fields": {
+        "recipe": 73,
+        "ingredient": 185,
+        "amount": "100.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 521,
+    "fields": {
+        "recipe": 73,
+        "ingredient": 161,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 522,
+    "fields": {
+        "recipe": 73,
+        "ingredient": 128,
+        "amount": "15.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 523,
+    "fields": {
+        "recipe": 74,
+        "ingredient": 11,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 524,
+    "fields": {
+        "recipe": 74,
+        "ingredient": 42,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 525,
+    "fields": {
+        "recipe": 74,
+        "ingredient": 72,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 526,
+    "fields": {
+        "recipe": 74,
+        "ingredient": 186,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 527,
+    "fields": {
+        "recipe": 75,
+        "ingredient": 42,
+        "amount": "3.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 528,
+    "fields": {
+        "recipe": 75,
+        "ingredient": 9,
+        "amount": "80.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 529,
+    "fields": {
+        "recipe": 75,
+        "ingredient": 7,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 530,
+    "fields": {
+        "recipe": 75,
+        "ingredient": 185,
+        "amount": "30.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 531,
+    "fields": {
+        "recipe": 76,
+        "ingredient": 97,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 532,
+    "fields": {
+        "recipe": 76,
+        "ingredient": 72,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 533,
+    "fields": {
+        "recipe": 76,
+        "ingredient": 42,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 534,
+    "fields": {
+        "recipe": 76,
+        "ingredient": 94,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 535,
+    "fields": {
+        "recipe": 77,
+        "ingredient": 154,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 536,
+    "fields": {
+        "recipe": 77,
+        "ingredient": 187,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 537,
+    "fields": {
+        "recipe": 77,
+        "ingredient": 16,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 538,
+    "fields": {
+        "recipe": 77,
+        "ingredient": 133,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 539,
+    "fields": {
+        "recipe": 78,
+        "ingredient": 102,
+        "amount": "70.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 540,
+    "fields": {
+        "recipe": 78,
+        "ingredient": 188,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 541,
+    "fields": {
+        "recipe": 78,
+        "ingredient": 189,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 542,
+    "fields": {
+        "recipe": 78,
+        "ingredient": 6,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 543,
+    "fields": {
+        "recipe": 79,
+        "ingredient": 44,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 544,
+    "fields": {
+        "recipe": 79,
+        "ingredient": 185,
+        "amount": "150.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 545,
+    "fields": {
+        "recipe": 79,
+        "ingredient": 15,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 546,
+    "fields": {
+        "recipe": 79,
+        "ingredient": 41,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 547,
+    "fields": {
+        "recipe": 79,
+        "ingredient": 67,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 548,
+    "fields": {
+        "recipe": 80,
+        "ingredient": 86,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 549,
+    "fields": {
+        "recipe": 80,
+        "ingredient": 1,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 550,
+    "fields": {
+        "recipe": 80,
+        "ingredient": 3,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 551,
+    "fields": {
+        "recipe": 80,
+        "ingredient": 37,
+        "amount": "50.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 552,
+    "fields": {
+        "recipe": 80,
+        "ingredient": 62,
+        "amount": "200.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 553,
+    "fields": {
+        "recipe": 81,
+        "ingredient": 5,
+        "amount": "300.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 554,
+    "fields": {
+        "recipe": 81,
+        "ingredient": 6,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 555,
+    "fields": {
+        "recipe": 81,
+        "ingredient": 7,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 556,
+    "fields": {
+        "recipe": 81,
+        "ingredient": 58,
+        "amount": "15.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 557,
+    "fields": {
+        "recipe": 82,
+        "ingredient": 190,
+        "amount": "80.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 558,
+    "fields": {
+        "recipe": 82,
+        "ingredient": 23,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 559,
+    "fields": {
+        "recipe": 82,
+        "ingredient": 191,
+        "amount": "30.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 560,
+    "fields": {
+        "recipe": 82,
+        "ingredient": 129,
+        "amount": "5.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 561,
+    "fields": {
+        "recipe": 83,
+        "ingredient": 30,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 562,
+    "fields": {
+        "recipe": 83,
+        "ingredient": 1,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 563,
+    "fields": {
+        "recipe": 83,
+        "ingredient": 2,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 564,
+    "fields": {
+        "recipe": 83,
+        "ingredient": 62,
+        "amount": "400.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 565,
+    "fields": {
+        "recipe": 84,
+        "ingredient": 44,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 566,
+    "fields": {
+        "recipe": 84,
+        "ingredient": 25,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 567,
+    "fields": {
+        "recipe": 84,
+        "ingredient": 2,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 568,
+    "fields": {
+        "recipe": 84,
+        "ingredient": 3,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 569,
+    "fields": {
+        "recipe": 84,
+        "ingredient": 59,
+        "amount": "20.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 570,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 192,
+        "amount": "3.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 571,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 27,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 572,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 76,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 573,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 185,
+        "amount": "100.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 574,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 193,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 575,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 23,
+        "amount": "120.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 576,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 194,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 577,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 195,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 578,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 196,
+        "amount": "20.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 579,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 197,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 580,
+    "fields": {
+        "recipe": 87,
+        "ingredient": 198,
+        "amount": "80.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 581,
+    "fields": {
+        "recipe": 87,
+        "ingredient": 199,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 582,
+    "fields": {
+        "recipe": 87,
+        "ingredient": 1,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 583,
+    "fields": {
+        "recipe": 87,
+        "ingredient": 2,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 584,
+    "fields": {
+        "recipe": 87,
+        "ingredient": 62,
+        "amount": "400.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 585,
+    "fields": {
+        "recipe": 88,
+        "ingredient": 200,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 586,
+    "fields": {
+        "recipe": 88,
+        "ingredient": 42,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 587,
+    "fields": {
+        "recipe": 88,
+        "ingredient": 1,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 588,
+    "fields": {
+        "recipe": 88,
+        "ingredient": 41,
+        "amount": "15.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 589,
+    "fields": {
+        "recipe": 89,
+        "ingredient": 174,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 590,
+    "fields": {
+        "recipe": 89,
+        "ingredient": 23,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 591,
+    "fields": {
+        "recipe": 89,
+        "ingredient": 201,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 592,
+    "fields": {
+        "recipe": 89,
+        "ingredient": 202,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 593,
+    "fields": {
+        "recipe": 90,
+        "ingredient": 203,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 594,
+    "fields": {
+        "recipe": 90,
+        "ingredient": 40,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 595,
+    "fields": {
+        "recipe": 90,
+        "ingredient": 94,
+        "amount": "20.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 596,
+    "fields": {
+        "recipe": 90,
+        "ingredient": 5,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 597,
+    "fields": {
+        "recipe": 91,
+        "ingredient": 204,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 598,
+    "fields": {
+        "recipe": 91,
+        "ingredient": 86,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 599,
+    "fields": {
+        "recipe": 91,
+        "ingredient": 37,
+        "amount": "50.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 600,
+    "fields": {
+        "recipe": 91,
+        "ingredient": 59,
+        "amount": "10.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 601,
+    "fields": {
+        "recipe": 92,
+        "ingredient": 12,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 602,
+    "fields": {
+        "recipe": 92,
+        "ingredient": 11,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 603,
+    "fields": {
+        "recipe": 92,
+        "ingredient": 5,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 604,
+    "fields": {
+        "recipe": 92,
+        "ingredient": 76,
+        "amount": "20.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 605,
+    "fields": {
+        "recipe": 93,
+        "ingredient": 205,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 606,
+    "fields": {
+        "recipe": 93,
+        "ingredient": 44,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 607,
+    "fields": {
+        "recipe": 93,
+        "ingredient": 76,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 608,
+    "fields": {
+        "recipe": 93,
+        "ingredient": 2,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 609,
+    "fields": {
+        "recipe": 94,
+        "ingredient": 206,
+        "amount": "60.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 610,
+    "fields": {
+        "recipe": 94,
+        "ingredient": 207,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 611,
+    "fields": {
+        "recipe": 94,
+        "ingredient": 7,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 612,
+    "fields": {
+        "recipe": 94,
+        "ingredient": 77,
+        "amount": "20.00",
+        "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 613,
+    "fields": {
+        "recipe": 95,
+        "ingredient": 12,
+        "amount": "1.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 614,
+    "fields": {
+        "recipe": 95,
+        "ingredient": 208,
+        "amount": "120.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 615,
+    "fields": {
+        "recipe": 95,
+        "ingredient": 3,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 616,
+    "fields": {
+        "recipe": 95,
+        "ingredient": 40,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 617,
+    "fields": {
+        "recipe": 96,
+        "ingredient": 25,
+        "amount": "200.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 618,
+    "fields": {
+        "recipe": 96,
+        "ingredient": 43,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 619,
+    "fields": {
+        "recipe": 96,
+        "ingredient": 76,
+        "amount": "10.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 620,
+    "fields": {
+        "recipe": 96,
+        "ingredient": 3,
+        "amount": "50.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 621,
+    "fields": {
+        "recipe": 97,
+        "ingredient": 35,
+        "amount": "150.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 622,
+    "fields": {
+        "recipe": 97,
+        "ingredient": 42,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 623,
+    "fields": {
+        "recipe": 97,
+        "ingredient": 6,
+        "amount": "100.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 624,
+    "fields": {
+        "recipe": 97,
+        "ingredient": 135,
+        "amount": "30.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 625,
+    "fields": {
+        "recipe": 98,
+        "ingredient": 103,
+        "amount": "250.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 626,
+    "fields": {
+        "recipe": 98,
+        "ingredient": 209,
+        "amount": "40.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 627,
+    "fields": {
+        "recipe": 98,
+        "ingredient": 4,
+        "amount": "5.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 628,
+    "fields": {
+        "recipe": 99,
+        "ingredient": 8,
+        "amount": "250.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 629,
+    "fields": {
+        "recipe": 99,
+        "ingredient": 210,
+        "amount": "2.00",
+        "unit": 3
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 630,
+    "fields": {
+        "recipe": 99,
+        "ingredient": 76,
+        "amount": "20.00",
+        "unit": 1
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 631,
+    "fields": {
+        "recipe": 99,
+        "ingredient": 59,
+        "amount": "10.00",
+        "unit": 6
+    }
+},
+{
     "model": "recipes.recipestep",
     "pk": 1,
     "fields": {
@@ -15465,6 +17705,1326 @@
         "description": "Посыпьте семенами тыквы и нарубленной рукколой. Подавайте сразу.",
         "image_url": "",
         "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 245,
+    "fields": {
+        "recipe": 70,
+        "step_number": 1,
+        "description": "В глубокой миске смешать творог с яйцом и сахаром до однородности.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 246,
+    "fields": {
+        "recipe": 70,
+        "step_number": 2,
+        "description": "Добавить муку и изюм, тщательно перемешать творожную массу.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 247,
+    "fields": {
+        "recipe": 70,
+        "step_number": 3,
+        "description": "Сформировать небольшие сырники и слегка обвалять их в муке.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 248,
+    "fields": {
+        "recipe": 70,
+        "step_number": 4,
+        "description": "Обжарить на разогретой сковороде с двух сторон до золотистой корочки (по 3-4 минуты с каждой стороны).",
+        "image_url": "",
+        "timer": 8
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 249,
+    "fields": {
+        "recipe": 71,
+        "step_number": 1,
+        "description": "Пшено тщательно промыть горячей водой, чтобы убрать горечь.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 250,
+    "fields": {
+        "recipe": 71,
+        "step_number": 2,
+        "description": "Залить крупу водой и варить на медленном огне, пока вода почти не впитается.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 251,
+    "fields": {
+        "recipe": 71,
+        "step_number": 3,
+        "description": "Влить кокосовое молоко, перемешать и варить до загустения.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 252,
+    "fields": {
+        "recipe": 71,
+        "step_number": 4,
+        "description": "Выложить кашу в тарелку и украсить нарезанным кружочками бананом.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 253,
+    "fields": {
+        "recipe": 72,
+        "step_number": 1,
+        "description": "Хлеб подсушить в тостере или на сухой сковороде без масла.",
+        "image_url": "",
+        "timer": 3
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 254,
+    "fields": {
+        "recipe": 72,
+        "step_number": 2,
+        "description": "Мякоть авокадо размять вилкой, добавить лимонный сок и щепотку соли.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 255,
+    "fields": {
+        "recipe": 72,
+        "step_number": 3,
+        "description": "Сварить яйцо пашот: вскипятить воду, сделать венчиком воронку и аккуратно влить яйцо.",
+        "image_url": "",
+        "timer": 3
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 256,
+    "fields": {
+        "recipe": 72,
+        "step_number": 4,
+        "description": "Намазать пасту из авокадо на тосты, сверху аккуратно выложить яйцо пашот.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 257,
+    "fields": {
+        "recipe": 73,
+        "step_number": 1,
+        "description": "В миске смешать овсяные хлопья с молоком.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 258,
+    "fields": {
+        "recipe": 73,
+        "step_number": 2,
+        "description": "Выложить полученную массу в небольшую форму для запекания.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 259,
+    "fields": {
+        "recipe": 73,
+        "step_number": 3,
+        "description": "Сверху равномерно распределить ягоды и посыпать рублеными грецкими орехами.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 260,
+    "fields": {
+        "recipe": 73,
+        "step_number": 4,
+        "description": "Запекать в разогретой до 180 градусов духовке.",
+        "image_url": "",
+        "timer": 20
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 261,
+    "fields": {
+        "recipe": 74,
+        "step_number": 1,
+        "description": "Кабачок натереть на крупной терке и слегка отжать руками лишнюю жидкость.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 262,
+    "fields": {
+        "recipe": 74,
+        "step_number": 2,
+        "description": "Добавить к кабачку яйцо, муку и соль. Хорошо перемешать тесто.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 263,
+    "fields": {
+        "recipe": 74,
+        "step_number": 3,
+        "description": "Выкладывать тесто ложкой на разогретую сковороду и жарить блинчики с двух сторон до румяности.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 264,
+    "fields": {
+        "recipe": 74,
+        "step_number": 4,
+        "description": "Подавать горячими, добавив сверху по ложке греческого йогурта.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 265,
+    "fields": {
+        "recipe": 75,
+        "step_number": 1,
+        "description": "Брокколи разобрать на мелкие соцветия, болгарский перец нарезать кубиками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 266,
+    "fields": {
+        "recipe": 75,
+        "step_number": 2,
+        "description": "В миске взбить яйца с молоком и солью.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 267,
+    "fields": {
+        "recipe": 75,
+        "step_number": 3,
+        "description": "Овощи слегка обжарить на сковороде (подходящей для духовки).",
+        "image_url": "",
+        "timer": 3
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 268,
+    "fields": {
+        "recipe": 75,
+        "step_number": 4,
+        "description": "Залить овощи яичной смесью и отправить в разогретую до 180 градусов духовку.",
+        "image_url": "",
+        "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 269,
+    "fields": {
+        "recipe": 76,
+        "step_number": 1,
+        "description": "Творог перетереть с яйцом и небольшой щепоткой соли.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 270,
+    "fields": {
+        "recipe": 76,
+        "step_number": 2,
+        "description": "Всыпать муку и замесить мягкое, слегка липкое тесто.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 271,
+    "fields": {
+        "recipe": 76,
+        "step_number": 3,
+        "description": "Скатать из теста колбаску и нарезать ее на небольшие кусочки.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 272,
+    "fields": {
+        "recipe": 76,
+        "step_number": 4,
+        "description": "Бросить вареники в кипящую подсоленную воду. После того как они всплывут, варить до готовности.",
+        "image_url": "",
+        "timer": 2
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 273,
+    "fields": {
+        "recipe": 77,
+        "step_number": 1,
+        "description": "Киви и банан очистить от кожуры и нарезать произвольными кусочками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 274,
+    "fields": {
+        "recipe": 77,
+        "step_number": 2,
+        "description": "Поместить фрукты и свежий шпинат в блендер, измельчить до состояния гладкого пюре.",
+        "image_url": "",
+        "timer": 1
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 275,
+    "fields": {
+        "recipe": 77,
+        "step_number": 3,
+        "description": "Перелить смузи в глубокую миску.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 276,
+    "fields": {
+        "recipe": 77,
+        "step_number": 4,
+        "description": "Сверху посыпать семенами чиа. По желанию можно добавить немного орехов.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 277,
+    "fields": {
+        "recipe": 78,
+        "step_number": 1,
+        "description": "Кусочки ржаного хлеба слегка подсушить на сковороде (по желанию).",
+        "image_url": "",
+        "timer": 2
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 278,
+    "fields": {
+        "recipe": 78,
+        "step_number": 2,
+        "description": "Намазать каждый кусок хлеба плотным слоем творожного сыра.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 279,
+    "fields": {
+        "recipe": 78,
+        "step_number": 3,
+        "description": "Свежий огурец нарезать тонкими слайсами или кружочками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 280,
+    "fields": {
+        "recipe": 78,
+        "step_number": 4,
+        "description": "Выложить на сыр слайсы слабосоленой семги и кусочки огурца. Накрыть вторым куском хлеба.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 281,
+    "fields": {
+        "recipe": 79,
+        "step_number": 1,
+        "description": "Рис залить молоком и варить на медленном огне до полной готовности, постоянно помешивая.",
+        "image_url": "",
+        "timer": 25
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 282,
+    "fields": {
+        "recipe": 79,
+        "step_number": 2,
+        "description": "Яблоко очистить от сердцевины и нарезать мелкими кубиками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 283,
+    "fields": {
+        "recipe": 79,
+        "step_number": 3,
+        "description": "На сковороде растопить сливочное масло, добавить яблоки и сахар. Томить до карамельного цвета.",
+        "image_url": "",
+        "timer": 7
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 284,
+    "fields": {
+        "recipe": 79,
+        "step_number": 4,
+        "description": "Выложить готовый рисовый пудинг в креманку, сверху украсить карамелизированными яблоками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 285,
+    "fields": {
+        "recipe": 80,
+        "step_number": 1,
+        "description": "Лук и картофель нарезать кубиками, шампиньоны — пластинками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 286,
+    "fields": {
+        "recipe": 80,
+        "step_number": 2,
+        "description": "Обжарить лук до прозрачности, добавить грибы и жарить до испарения жидкости.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 287,
+    "fields": {
+        "recipe": 80,
+        "step_number": 3,
+        "description": "Добавить картофель, залить водой и варить до мягкости картофеля.",
+        "image_url": "",
+        "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 288,
+    "fields": {
+        "recipe": 80,
+        "step_number": 4,
+        "description": "Пюрировать суп блендером, влить сливки, посолить и прогреть еще минуту.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 289,
+    "fields": {
+        "recipe": 81,
+        "step_number": 1,
+        "description": "На помидорах сделать надрезы, обдать кипятком и снять кожуру.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 290,
+    "fields": {
+        "recipe": 81,
+        "step_number": 2,
+        "description": "Огурец и перец очистить от кожуры и семян, нарезать произвольно.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 291,
+    "fields": {
+        "recipe": 81,
+        "step_number": 3,
+        "description": "Поместить все овощи в блендер, добавить оливковое масло, соль и измельчить до однородности.",
+        "image_url": "",
+        "timer": 2
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 292,
+    "fields": {
+        "recipe": 81,
+        "step_number": 4,
+        "description": "Перед подачей охладить в холодильнике",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 293,
+    "fields": {
+        "recipe": 82,
+        "step_number": 1,
+        "description": "Отварить собу в кипящей воде до готовности, откинуть на дуршлаг.",
+        "image_url": "",
+        "timer": 7
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 294,
+    "fields": {
+        "recipe": 82,
+        "step_number": 2,
+        "description": "Куриное филе нарезать тонкими полосками и обжарить на сильном огне до золотистой корочки.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 295,
+    "fields": {
+        "recipe": 82,
+        "step_number": 3,
+        "description": "Влить соус терияки к курице, перемешать и томить еще минуту на медленном огне.",
+        "image_url": "",
+        "timer": 1
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 296,
+    "fields": {
+        "recipe": 82,
+        "step_number": 4,
+        "description": "Добавить лапшу к курице в соусе, перемешать, прогреть и посыпать кунжутом перед подачей.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 297,
+    "fields": {
+        "recipe": 83,
+        "step_number": 1,
+        "description": "Картофель и морковь нарезать кубиками, рыбу — крупными кусками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 298,
+    "fields": {
+        "recipe": 83,
+        "step_number": 2,
+        "description": "Воду довести до кипения, опустить туда овощи и варить до полуготовности.",
+        "image_url": "",
+        "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 299,
+    "fields": {
+        "recipe": 83,
+        "step_number": 3,
+        "description": "Добавить куски рыбы, лавровый лист, соль, перец и варить на медленном огне до готовности рыбы.",
+        "image_url": "",
+        "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 300,
+    "fields": {
+        "recipe": 83,
+        "step_number": 4,
+        "description": "Снять с огня, дать настояться под крышкой 10 минут перед подачей.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 301,
+    "fields": {
+        "recipe": 84,
+        "step_number": 1,
+        "description": "Говядину и лук нарезать кубиками, морковь — длинной соломкой. Рис тщательно промыть.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 302,
+    "fields": {
+        "recipe": 84,
+        "step_number": 2,
+        "description": "В казане или глубокой сковороде сильно разогреть масло, обжарить мясо до корочки, затем добавить лук и морковь.",
+        "image_url": "",
+        "timer": 20
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 303,
+    "fields": {
+        "recipe": 84,
+        "step_number": 3,
+        "description": "Засыпать рис сверху, не перемешивая, залить кипятком (чтобы вода покрывала рис на 1.5-2 см).",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 304,
+    "fields": {
+        "recipe": 84,
+        "step_number": 4,
+        "description": "Варить на сильном огне без крышки до впитывания воды, затем закрыть крышкой и томить на минимальном огне до готовности риса.",
+        "image_url": "",
+        "timer": 30
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 305,
+    "fields": {
+        "recipe": 85,
+        "step_number": 1,
+        "description": "Приготовить соус Болоньезе: фарш обжарить, добавить томатную пасту, соль, специи и тушить.",
+        "image_url": "",
+        "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 306,
+    "fields": {
+        "recipe": 85,
+        "step_number": 2,
+        "description": "Приготовить соус Бешамель: растопить сливочное масло, добавить муку, затем постепенно влить молоко, постоянно помешивая до загустения.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 307,
+    "fields": {
+        "recipe": 85,
+        "step_number": 3,
+        "description": "В форму для запекания выложить слоями: соус Бешамель, лист лазаньи, Болоньезе, Бешамель, Пармезан. Повторить слои.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 308,
+    "fields": {
+        "recipe": 85,
+        "step_number": 4,
+        "description": "Запекать в духовке при 180 градусах до золотистой корочки.",
+        "image_url": "",
+        "timer": 35
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 309,
+    "fields": {
+        "recipe": 86,
+        "step_number": 1,
+        "description": "Куриное филе нарезать кусочками, посолить, поперчить и обжарить на сковороде до готовности.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 310,
+    "fields": {
+        "recipe": 86,
+        "step_number": 2,
+        "description": "Листья салата Айсберг порвать руками и выложить в глубокую тарелку.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 311,
+    "fields": {
+        "recipe": 86,
+        "step_number": 3,
+        "description": "Добавить нарезанные пополам помидоры черри, готовую курицу и сухарики.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 312,
+    "fields": {
+        "recipe": 86,
+        "step_number": 4,
+        "description": "Полить салат соусом Цезарь перед самой подачей и аккуратно перемешать.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 313,
+    "fields": {
+        "recipe": 87,
+        "step_number": 1,
+        "description": "Горох предварительно замочить в воде (минимум на 2 часа).",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 314,
+    "fields": {
+        "recipe": 87,
+        "step_number": 2,
+        "description": "Залить ребра водой, довести до кипения и варить на медленном огне.",
+        "image_url": "",
+        "timer": 20
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 315,
+    "fields": {
+        "recipe": 87,
+        "step_number": 3,
+        "description": "Добавить замоченный горох, нарезанные картофель и морковь.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 316,
+    "fields": {
+        "recipe": 87,
+        "step_number": 4,
+        "description": "Варить до полной мягкости гороха и овощей.",
+        "image_url": "",
+        "timer": 30
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 317,
+    "fields": {
+        "recipe": 88,
+        "step_number": 1,
+        "description": "Картофель очистить и поставить вариться в подсоленной воде.",
+        "image_url": "",
+        "timer": 25
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 318,
+    "fields": {
+        "recipe": 88,
+        "step_number": 2,
+        "description": "Филе рыбы пропустить через мясорубку, добавить яйцо, соль, перец, сформировать котлеты.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 319,
+    "fields": {
+        "recipe": 88,
+        "step_number": 3,
+        "description": "Обжарить котлеты на сковороде с двух сторон до золотистой корочки.",
+        "image_url": "",
+        "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 320,
+    "fields": {
+        "recipe": 88,
+        "step_number": 4,
+        "description": "Из готового картофеля слить воду, добавить сливочное масло и растолочь в пюре.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 321,
+    "fields": {
+        "recipe": 89,
+        "step_number": 1,
+        "description": "Куриное филе нарезать мелкими кубиками и быстро обжарить до готовности.",
+        "image_url": "",
+        "timer": 7
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 322,
+    "fields": {
+        "recipe": 89,
+        "step_number": 2,
+        "description": "Сыр натереть на терке, смешать с готовой курицей и кукурузой.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 323,
+    "fields": {
+        "recipe": 89,
+        "step_number": 3,
+        "description": "На одну половину тортильи выложить начинку, накрыть второй половиной.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 324,
+    "fields": {
+        "recipe": 89,
+        "step_number": 4,
+        "description": "Обжарить кесадилью на сухой сковороде с двух сторон до расплавления сыра (по 2.5 минуты с каждой стороны).",
+        "image_url": "",
+        "timer": 5
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 325,
+    "fields": {
+        "recipe": 90,
+        "step_number": 1,
+        "description": "Филе минтая промыть, обсушить бумажным полотенцем, посолить и поперчить.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 326,
+    "fields": {
+        "recipe": 90,
+        "step_number": 2,
+        "description": "Помидоры нарезать тонкими кружочками, сыр натереть на крупной терке.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 327,
+    "fields": {
+        "recipe": 90,
+        "step_number": 3,
+        "description": "Выложить рыбу в форму для запекания, смазать сметаной, сверху уложить помидоры.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 328,
+    "fields": {
+        "recipe": 90,
+        "step_number": 4,
+        "description": "Посыпать тертым сыром и запекать в духовке при 190 градусах до румяной корочки.",
+        "image_url": "",
+        "timer": 25
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 329,
+    "fields": {
+        "recipe": 91,
+        "step_number": 1,
+        "description": "Свиную вырезку нарезать поперек волокон на медальоны толщиной 1.5-2 см, слегка отбить.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 330,
+    "fields": {
+        "recipe": 91,
+        "step_number": 2,
+        "description": "Обжарить мясо на раскаленной сковороде с двух сторон до румяной корочки (по 4 минуты с каждой стороны).",
+        "image_url": "",
+        "timer": 8
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 331,
+    "fields": {
+        "recipe": 91,
+        "step_number": 3,
+        "description": "Шампиньоны нарезать пластинками и добавить к мясу, жарить до испарения жидкости.",
+        "image_url": "",
+        "timer": 7
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 332,
+    "fields": {
+        "recipe": 91,
+        "step_number": 4,
+        "description": "Влить сливки, посолить, поперчить и томить на слабом огне до загустения соуса.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 333,
+    "fields": {
+        "recipe": 92,
+        "step_number": 1,
+        "description": "Баклажан, кабачок и половину помидоров нарезать одинаковыми тонкими кружочками.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 334,
+    "fields": {
+        "recipe": 92,
+        "step_number": 2,
+        "description": "Оставшиеся помидоры пробить в блендере с томатной пастой, солью, чесноком и травами.",
+        "image_url": "",
+        "timer": 2
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 335,
+    "fields": {
+        "recipe": 92,
+        "step_number": 3,
+        "description": "На дно формы для запекания вылить томатный соус, сверху плотно выложить овощные кружочки, чередуя их.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 336,
+    "fields": {
+        "recipe": 92,
+        "step_number": 4,
+        "description": "Накрыть фольгой и запекать при 180 градусах.",
+        "image_url": "",
+        "timer": 40
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 337,
+    "fields": {
+        "recipe": 93,
+        "step_number": 1,
+        "description": "Рис отварить до полуготовности и остудить.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 338,
+    "fields": {
+        "recipe": 93,
+        "step_number": 2,
+        "description": "Смешать фарш с рисом, посолить, поперчить и сформировать небольшие тефтели.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 339,
+    "fields": {
+        "recipe": 93,
+        "step_number": 3,
+        "description": "Морковь натереть на терке, обжарить в глубокой сковороде, добавить томатную пасту и немного воды.",
+        "image_url": "",
+        "timer": 5
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 340,
+    "fields": {
+        "recipe": 93,
+        "step_number": 4,
+        "description": "Выложить тефтели в соус, накрыть крышкой и тушить на медленном огне до готовности.",
+        "image_url": "",
+        "timer": 25
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 341,
+    "fields": {
+        "recipe": 94,
+        "step_number": 1,
+        "description": "Фунчозу залить кипятком и оставить под крышкой, затем промыть холодной водой.",
+        "image_url": "",
+        "timer": 5
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 342,
+    "fields": {
+        "recipe": 94,
+        "step_number": 2,
+        "description": "Болгарский перец нарезать тонкой соломкой.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 343,
+    "fields": {
+        "recipe": 94,
+        "step_number": 3,
+        "description": "На сильном огне обжарить креветки с овощами до готовности креветок.",
+        "image_url": "",
+        "timer": 4
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 344,
+    "fields": {
+        "recipe": 94,
+        "step_number": 4,
+        "description": "Добавить в сковороду фунчозу и соевый соус, тщательно перемешать и прогреть.",
+        "image_url": "",
+        "timer": 2
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 345,
+    "fields": {
+        "recipe": 95,
+        "step_number": 1,
+        "description": "Баклажан разрезать вдоль пополам, выскоблить ложкой серединку (мякоть сохранить).",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 346,
+    "fields": {
+        "recipe": 95,
+        "step_number": 2,
+        "description": "Лук и мякоть баклажана мелко нарезать и обжарить вместе с куриным фаршем до полуготовности.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 347,
+    "fields": {
+        "recipe": 95,
+        "step_number": 3,
+        "description": "Наполнить \"лодочки\" из баклажанов получившейся мясной начинкой.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 348,
+    "fields": {
+        "recipe": 95,
+        "step_number": 4,
+        "description": "Посыпать тертым сыром и запекать в духовке при 190 градусах до мягкости баклажана.",
+        "image_url": "",
+        "timer": 25
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 349,
+    "fields": {
+        "recipe": 96,
+        "step_number": 1,
+        "description": "Говядину нарезать тонкими длинными брусочками, лук — полукольцами.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 350,
+    "fields": {
+        "recipe": 96,
+        "step_number": 2,
+        "description": "Быстро обжарить мясо на раскаленной сковороде порциями, чтобы оно не пустило сок.",
+        "image_url": "",
+        "timer": 5
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 351,
+    "fields": {
+        "recipe": 96,
+        "step_number": 3,
+        "description": "Убавить огонь, добавить лук, обжаривать до золотистого цвета.",
+        "image_url": "",
+        "timer": 5
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 352,
+    "fields": {
+        "recipe": 96,
+        "step_number": 4,
+        "description": "Смешать сметану с томатной пастой и ложкой воды, залить мясо и тушить под крышкой до мягкости.",
+        "image_url": "",
+        "timer": 30
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 353,
+    "fields": {
+        "recipe": 97,
+        "step_number": 1,
+        "description": "Тушку кальмара очистить от пленки и хиорды, бросить в кипящую подсоленную воду ровно на 2 минуты, затем остудить.",
+        "image_url": "",
+        "timer": 2
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 354,
+    "fields": {
+        "recipe": 97,
+        "step_number": 2,
+        "description": "Яйца отварить вкрутую и остудить в ледяной воде.",
+        "image_url": "",
+        "timer": 10
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 355,
+    "fields": {
+        "recipe": 97,
+        "step_number": 3,
+        "description": "Остывший кальмар, яйца и свежий огурец нарезать тонкой соломкой.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 356,
+    "fields": {
+        "recipe": 97,
+        "step_number": 4,
+        "description": "Смешать все ингредиенты в салатнике, заправить майонезом или натуральным йогуртом, посолить по вкусу.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 357,
+    "fields": {
+        "recipe": 98,
+        "step_number": 1,
+        "description": "Куриные крылья разрезать по суставам (самый маленький край выбросить), промыть и обсушить.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 358,
+    "fields": {
+        "recipe": 98,
+        "step_number": 2,
+        "description": "Смешать соус барбекю с измельченным чесноком, солью и перцем. Замариновать крылья (по возможности оставить на 30 мин).",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 359,
+    "fields": {
+        "recipe": 98,
+        "step_number": 3,
+        "description": "Выложить крылья на противень, застеленный фольгой или пергаментом.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 360,
+    "fields": {
+        "recipe": 98,
+        "step_number": 4,
+        "description": "Запекать в разогретой до 200 градусов духовке до карамельной корочки.",
+        "image_url": "",
+        "timer": 35
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 361,
+    "fields": {
+        "recipe": 99,
+        "step_number": 1,
+        "description": "Капусту тонко нашинковать, слегка помять руками с солью.",
+        "image_url": "",
+        "timer": null
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 362,
+    "fields": {
+        "recipe": 99,
+        "step_number": 2,
+        "description": "Выложить капусту в глубокую сковороду, добавить полстакана воды и тушить под крышкой.",
+        "image_url": "",
+        "timer": 15
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 363,
+    "fields": {
+        "recipe": 99,
+        "step_number": 3,
+        "description": "Сосиски нарезать кружочками и слегка обжарить на отдельной сковороде с маслом.",
+        "image_url": "",
+        "timer": 5
+    }
+},
+{
+    "model": "recipes.recipestep",
+    "pk": 364,
+    "fields": {
+        "recipe": 99,
+        "step_number": 4,
+        "description": "Добавить к капусте сосиски, томатную пасту, перемешать и тушить до мягкости капусты.",
+        "image_url": "",
+        "timer": 10
     }
 }
 ]
