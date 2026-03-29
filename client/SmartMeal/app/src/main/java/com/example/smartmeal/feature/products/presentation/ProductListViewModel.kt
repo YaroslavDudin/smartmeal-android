@@ -216,7 +216,7 @@ class ProductListViewModel(
                     } ?: continue
 
 
-                    recipe.ingredients.forEachIndexed { ingredientIndex, ingredient ->
+                    (recipe.ingredients ?: emptyList()).forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {
                             return@forEachIndexed
                         }

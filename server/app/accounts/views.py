@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -123,3 +124,17 @@ class UserFavoriteViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @action(detail=False, methods=['post'])
+    def toggle(self, request):
+        recipe_id = request.data.get('recipe')
+        if not recipe_id:
+            return Response({"error": "Recipe ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        favorite = UserFavorite.objects.filter(user=request.user, recipe_id=recipe_id).first()
+        if favorite:
+            favorite.delete()
+            return Response({"is_favorite": False}, status=status.HTTP_200_OK)
+        else:
+            UserFavorite.objects.create(user=request.user, recipe_id=recipe_id)
+            return Response({"is_favorite": True}, status=status.HTTP_201_CREATED)

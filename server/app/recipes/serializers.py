@@ -98,6 +98,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientSerializer(source='recipe_ingredients', many=True, read_only=True)
     steps = RecipeStepSerializer(many=True, read_only=True)
     allergies = serializers.SerializerMethodField()
+    is_favorite = serializers.SerializerMethodField()
 
     # Все КБЖУ-поля — это @property на модели, DRF достаёт их через getattr.
     # Указываем явно, чтобы контролировать точность вывода.
@@ -116,10 +117,16 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = (
             'id', 'title', 'image_url', 'cook_time', 'servings',
-            'ingredients', 'steps', 'allergies',
+            'ingredients', 'steps', 'allergies', 'is_favorite',
             'total_calories', 'total_proteins', 'total_fats', 'total_carbs', 'total_weight',
             'per_serving_calories', 'per_serving_proteins', 'per_serving_fats', 'per_serving_carbs',
         )
+
+    def get_is_favorite(self, obj):
+        user = self.context.get('request').user
+        if user.is_authenticated:
+            return obj.favorited_by.filter(user=user).exists()
+        return False
         
     # отношение количества персон к количеству порций в рецепте
     def _get_scale(self, obj):

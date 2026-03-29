@@ -67,4 +67,21 @@ class RecipeDetailViewModel(
         currentMenuItemId?.let { preferences?.setMenuItemServings(it, servings) }
         loadRecipe(currentRecipeId, currentMenuItemId, servings)
     }
+
+    fun toggleFavorite() {
+        val recipe = _state.value.recipe ?: return
+        viewModelScope.launch {
+            try {
+                val response = api.toggleFavorite(com.example.smartmeal.feature.recipes.data.api.ToggleFavoriteRequest(recipe.id))
+                if (response.isSuccessful) {
+                    val isFavorite = response.body()?.is_favorite ?: false
+                    _state.update { it.copy(
+                        recipe = it.recipe?.copy(is_favorite = isFavorite)
+                    )}
+                }
+            } catch (e: Exception) {
+                _state.update { it.copy(error = "Ошибка: ${e.localizedMessage}") }
+            }
+        }
+    }
 }

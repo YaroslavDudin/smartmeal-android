@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +24,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,7 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.smartmeal.feature.home.data.api.UserFavoriteDto
 import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.components.cards.MealCard
 import com.example.smartmeal.ui.theme.BgLightGray
 import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.HintGray
@@ -44,14 +49,15 @@ private val CardYellow = Color(0xFFFFF4C2)
 private val LogoutRed = Color(0xFFE53935)
 
 // Подэкраны внутри вкладки профиля
-enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET }
+enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES }
 
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
-    onGoToProducts: () -> Unit      // переключает BottomNav → вкладка "Продукты"
+    onGoToProducts: () -> Unit,      // переключает BottomNav → вкладка "Продукты"
+    onRecipeClick: (Int) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
     var subScreen by remember { mutableStateOf(ProfileSubScreen.NONE) }
@@ -71,6 +77,14 @@ fun ProfileScreen(
             DietScreen(
                 viewModel = viewModel,
                 onBack = { subScreen = ProfileSubScreen.NONE }
+            )
+
+        ProfileSubScreen.FAVORITES ->
+            FavoritesScreen(
+                favorites = state.favorites,
+                onBack = { subScreen = ProfileSubScreen.NONE },
+                onRecipeClick = onRecipeClick,
+                onFavoriteClick = { viewModel.toggleFavorite(it) }
             )
 
         ProfileSubScreen.NONE -> {
@@ -139,7 +153,6 @@ fun ProfileScreen(
                             .padding(horizontal = 20.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        // Мои аллергии — показываем текущие имена
                         val allergyLabel = if (state.currentAllergyNames.isNotEmpty())
                             "Мои аллергии:\n${state.currentAllergyNames.joinToString(", ")}"
                         else "Мои аллергии"
@@ -148,7 +161,6 @@ fun ProfileScreen(
                             subScreen = ProfileSubScreen.ALLERGIES
                         }
 
-                        // Мой рацион — показываем текущий тип
                         val dietLabel = if (state.currentDietTypeName != null)
                             "Мой рацион:\n${state.currentDietTypeName}"
                         else "Мой рацион"
@@ -157,7 +169,6 @@ fun ProfileScreen(
                             subScreen = ProfileSubScreen.DIET
                         }
 
-                        // Количество персон — inline stepper с сохранением на сервер
                         PortionStepperCard(
                             count = state.pendingPortionSize,
                             isSaving = state.isSaving,
@@ -166,19 +177,18 @@ fun ProfileScreen(
                             onSave = { viewModel.savePortion() }
                         )
 
-                        // Изменить время готовки - TODO
                         ProfileMenuCard(emoji = "⏱️", label = "Изменить время готовки") { /* TODO */ }
 
-                        // Заказать продукты - TODO
                         ProfileMenuCard(emoji = "🛒", label = "Заказать продукты") {
-
+                            onGoToProducts()
                         }
 
-                        // Избранное — TODO
-                        ProfileMenuCard(emoji = "⭐", label = "Избранное") { /* TODO */ }
+                        ProfileMenuCard(emoji = "⭐", label = "Избранное") {
+                            viewModel.loadFavorites()
+                            subScreen = ProfileSubScreen.FAVORITES
+                        }
                     }
 
-                    // ── Кнопка Выйти — внизу ──────────────────────────────
                     Spacer(modifier = Modifier.height(40.dp))
 
                     Box(
@@ -201,7 +211,6 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(32.dp))
                 }
 
-                // ── Модалка подтверждения выхода ──────────────────────────
                 if (showLogoutDialog) {
                     LogoutConfirmDialog(
                         onConfirm = {
@@ -216,8 +225,6 @@ fun ProfileScreen(
         }
     }
 }
-
-// ─── Вспомогательные composable ──────────────────────────────────────────────
 
 @Composable
 private fun ProfileMenuCard(emoji: String, label: String, onClick: () -> Unit) {
@@ -296,7 +303,6 @@ private fun PortionStepperCard(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Кнопка сохранить — появляется справа
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
@@ -366,10 +372,113 @@ private fun LogoutConfirmDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     }
 }
 
-data class ProfileMenuItem(val emoji: String?, val label: String, val isStepper: Boolean = false)
-
 private fun personLabel(n: Int): String = when {
     n % 10 == 1 && n % 100 != 11 -> "персона"
     n % 10 in 2..4 && n % 100 !in 12..14 -> "персоны"
     else -> "персон"
+}
+
+@Composable
+fun FavoritesScreen(
+    favorites: List<UserFavoriteDto>,
+    onBack: () -> Unit,
+    onRecipeClick: (Int) -> Unit,
+    onFavoriteClick: (Int) -> Unit
+) {
+    val recentlyRemoved = remember { mutableStateListOf<UserFavoriteDto>() }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BgLightGray)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(CardYellow)
+                    .clickable { onBack() },
+                contentAlignment = Alignment.Center
+            ) {
+                SmartMealText(text = "<", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            SmartMealText(
+                text = "Избранное",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+
+        if (favorites.isEmpty() && recentlyRemoved.isEmpty()) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                SmartMealText(text = "У вас пока нет избранных рецептов", color = HintGray)
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 20.dp, start = 20.dp, end = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(
+                    items = favorites,
+                    key = { it.id } // Используем id самого Favorite для ключа
+                ) { favorite ->
+                    MealCard(
+                        title = favorite.recipe_title,
+                        cookTime = "${favorite.recipe_cook_time} мин",
+                        imageUrl = favorite.recipe_image_url,
+                        isFavorite = true,
+                        onFavoriteClick = {
+                            recentlyRemoved.add(favorite)
+                            onFavoriteClick(favorite.recipe)
+                        },
+                        modifier = Modifier
+                            .animateItem()
+                            .clickable { onRecipeClick(favorite.recipe) }
+                    )
+                }
+
+                if (recentlyRemoved.isNotEmpty()) {
+                    item(key = "recently_removed_header") {
+                        Column(modifier = Modifier.animateItem()) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            SmartMealText(
+                                text = "Недавно удаленные",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = HintGray,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                        }
+                    }
+
+                    items(
+                        items = recentlyRemoved,
+                        key = { "removed_${it.id}" }
+                    ) { item ->
+                        MealCard(
+                            title = item.recipe_title,
+                            cookTime = "${item.recipe_cook_time} мин",
+                            imageUrl = item.recipe_image_url,
+                            isFavorite = false,
+                            onFavoriteClick = {
+                                recentlyRemoved.remove(item)
+                                onFavoriteClick(item.recipe)
+                            },
+                            modifier = Modifier
+                                .animateItem()
+                                .clickable { onRecipeClick(item.recipe) }
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.recipes.presentation
+package com.example.smartmeal.feature.recipes.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -76,7 +77,13 @@ fun RecipeDetailScreen(
 
     Scaffold(
         containerColor = LightCream,
-        topBar = { CustomRecipeTopBar(onBack = onBack) }
+        topBar = { 
+            CustomRecipeTopBar(
+                isFavorite = state.recipe?.is_favorite ?: false,
+                onFavoriteClick = { viewModel.toggleFavorite() },
+                onBack = onBack 
+            ) 
+        }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -183,7 +190,7 @@ fun RecipeDetailScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         // Полосатый блок ингредиентов
-                        IngredientsCard(ingredients = recipe.ingredients)
+                        IngredientsCard(ingredients = recipe.ingredients ?: emptyList())
 
                         Spacer(modifier = Modifier.height(24.dp))
 
@@ -208,7 +215,7 @@ fun RecipeDetailScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         // Шаги
-                        recipe.steps.forEach { step ->
+                        (recipe.steps ?: emptyList()).forEach { step ->
                             StepItem(
                                 number = step.step_number,
                                 description = step.description,
@@ -226,7 +233,11 @@ fun RecipeDetailScreen(
 }
 
 @Composable
-fun CustomRecipeTopBar(onBack: () -> Unit) {
+fun CustomRecipeTopBar(
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit,
+    onBack: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -249,11 +260,12 @@ fun CustomRecipeTopBar(onBack: () -> Unit) {
                     modifier = Modifier.size(32.dp)
                 )
             }
-            IconButton(onClick = { /* TODO */ }) {
+            IconButton(onClick = onFavoriteClick) {
                 Icon(
-                    imageVector = Icons.Default.StarBorder,
-                    contentDescription = "В избранное",
-                    modifier = Modifier.size(32.dp)
+                    imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
+                    contentDescription = if (isFavorite) "Убрать из избранного" else "В избранное",
+                    modifier = Modifier.size(32.dp),
+                    tint = if (isFavorite) Color(0xFFFFD700) else Color.Black
                 )
             }
         }

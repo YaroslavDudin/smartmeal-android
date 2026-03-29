@@ -8,6 +8,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 
 interface SetupApi {
 
@@ -22,4 +23,10 @@ interface SetupApi {
 
     @GET("api/accounts/allergies/")
     suspend fun getAllergies(): Response<List<AllergyDto>>
+
+    @GET("api/accounts/favorites/")
+    suspend fun getFavorites(): Response<List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>>
+
+    @POST("api/accounts/favorites/toggle/")
+    suspend fun toggleFavorite(@Body request: com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest): Response<com.example.smartmeal.feature.home.data.api.ToggleFavoriteResponse>
 }

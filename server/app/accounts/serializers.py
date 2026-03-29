@@ -95,8 +95,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class UserFavoriteSerializer(serializers.ModelSerializer):
     recipe_title = serializers.CharField(source='recipe.title', read_only=True)
     recipe_image_url = serializers.ImageField(source='recipe.image_url', read_only=True)
+    recipe_cook_time = serializers.IntegerField(source='recipe.cook_time', read_only=True)
     
     class Meta:
         model = UserFavorite
-        fields = ('id', 'recipe', 'recipe_title', 'recipe_image_url')
+        fields = ('id', 'recipe', 'recipe_title', 'recipe_image_url', 'recipe_cook_time')
         read_only_fields = ('created_at',)

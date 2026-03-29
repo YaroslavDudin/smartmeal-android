@@ -18,6 +18,7 @@ data class MenuItemDto(
     val actual_date: String,
     val cook_time: Int = 0,
     val image_url: String? = null,
+    val is_favorite: Boolean = false,
 )
 
 data class RecipeShortDto(
@@ -28,7 +29,8 @@ data class RecipeShortDto(
     val total_calories: Double,
     val total_proteins: Double,
     val total_fats: Double,
-    val total_carbs: Double
+    val total_carbs: Double,
+    val is_favorite: Boolean = false,
 )
 
 data class RecipeDetailDto(
@@ -46,8 +48,9 @@ data class RecipeDetailDto(
     val per_serving_proteins: Double,
     val per_serving_fats: Double,
     val per_serving_carbs: Double,
-    val ingredients: List<RecipeIngredientDto>,
-    val steps: List<RecipeStepDto>
+    val ingredients: List<RecipeIngredientDto>? = null,
+    val steps: List<RecipeStepDto>? = null,
+    val is_favorite: Boolean = false,
 )
 
 data class RecipeIngredientDto(

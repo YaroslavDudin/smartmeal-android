@@ -79,6 +79,16 @@ interface MenuApi {
     /** Удалить позицию из корзины */
     @DELETE("api/cart/{id}/")
     suspend fun deleteCartItem(@Path("id") id: Int): Response<Unit>
+
+    // ─── Избранное ──────────────────────────────────────────────────────────
+
+    /** Список избранных рецептов текущего пользователя */
+    @GET("api/accounts/favorites/")
+    suspend fun getFavorites(): Response<List<UserFavoriteDto>>
+
+    /** Переключить статус избранного для рецепта */
+    @POST("api/accounts/favorites/toggle/")
+    suspend fun toggleFavorite(@Body request: ToggleFavoriteRequest): Response<ToggleFavoriteResponse>
 }
 
 // ─── Request-классы для MenuApi ─────────────────────────────────────────────
@@ -86,4 +96,20 @@ interface MenuApi {
 data class UpdateCartItemRequest(
     val is_checked: Boolean? = null,
     val amount: String? = null
+)
+
+data class ToggleFavoriteRequest(
+    val recipe: Int
+)
+
+data class ToggleFavoriteResponse(
+    val is_favorite: Boolean
+)
+
+data class UserFavoriteDto(
+    val id: Int,
+    val recipe: Int,
+    val recipe_title: String,
+    val recipe_image_url: String?,
+    val recipe_cook_time: Int
 )

@@ -37,6 +37,9 @@ data class ProfileState(
     val pendingAllergyIds: Set<Int> = emptySet(),
     val pendingDietTypeId: Int? = null,
     val pendingPortionSize: Int = 1,
+
+    // Избранное
+    val favorites: List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto> = emptyList()
 )
 
 class ProfileViewModel(
@@ -51,6 +54,7 @@ class ProfileViewModel(
 
     init {
         loadProfile()
+        loadFavorites()
     }
 
     // ─── Загрузка профиля + справочников ─────────────────────────────────────
@@ -92,6 +96,34 @@ class ProfileViewModel(
                 user?.portion_size?.let { preferences.setPortionSize(it) }
             } catch (e: Exception) {
                 _state.update { it.copy(isLoading = false, error = "Ошибка загрузки: ${e.message}") }
+            }
+        }
+    }
+
+    // ─── Избранное ──────────────────────────────────────────────────────────
+
+    fun loadFavorites() {
+        viewModelScope.launch {
+            try {
+                val resp = api.getFavorites()
+                if (resp.isSuccessful) {
+                    _state.update { it.copy(favorites = resp.body() ?: emptyList()) }
+                }
+            } catch (e: Exception) {
+                // Ошибку избранного можно не показывать как критическую
+            }
+        }
+    }
+
+    fun toggleFavorite(recipeId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = api.toggleFavorite(com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest(recipeId))
+                if (response.isSuccessful) {
+                    loadFavorites()
+                }
+            } catch (e: Exception) {
+                // Ошибку избранного можно не показывать как критическую
             }
         }
     }
