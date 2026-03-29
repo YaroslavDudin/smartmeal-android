@@ -240,10 +240,10 @@ private fun PortionStepper(
             modifier = Modifier
                 .size(40.dp)
                 .testTag("setup_step1_portion_dec")
-                .dropShadow(shape = RoundedCornerShape(8.dp), shadow = SETUP_SHADOW)
                 .clickable(onClick = onDecrement),
             shape = RoundedCornerShape(8.dp),
             color = LightGreenBg,
+            shadowElevation = 4.dp,
         ) {
             Box(contentAlignment = Alignment.Center) {
                 SmartMealText(
@@ -269,10 +269,10 @@ private fun PortionStepper(
             modifier = Modifier
                 .size(40.dp)
                 .testTag("setup_step1_portion_inc")
-                .dropShadow(shape = RoundedCornerShape(8.dp), shadow = SETUP_SHADOW)
                 .clickable(onClick = onIncrement),
             shape = RoundedCornerShape(8.dp),
             color = PrimaryGreen,
+            shadowElevation = 4.dp,
         ) {
             Box(contentAlignment = Alignment.Center) {
                 SmartMealText(
