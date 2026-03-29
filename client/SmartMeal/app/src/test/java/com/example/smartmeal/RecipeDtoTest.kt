@@ -51,7 +51,7 @@ class RecipeDtoTest {
               "total_proteins": 45.0,
               "total_fats": 30.0,
               "total_carbs": 150.0,
-              "total_weight_g": 1600.0,
+              "total_weight": 1600.0,
               "per_serving_calories": 300.0,
               "per_serving_proteins": 11.25,
               "per_serving_fats": 7.5,
@@ -75,7 +75,7 @@ class RecipeDtoTest {
         assertEquals("Борщ", result.title)
         assertEquals(60, result.cook_time)
         assertEquals(4, result.servings)
-        assertEquals(1600.0, result.total_weight_g, 0.001)
+        assertEquals(1600.0, result.total_weight ?: 0.0, 0.001)
         assertEquals(300.0, result.per_serving_calories, 0.001)
         assertNotNull(result.ingredients.firstOrNull())
         assertEquals("Свёкла", result.ingredients.first().ingredient_name)

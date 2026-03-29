@@ -4,6 +4,7 @@ from app.recipes.models import Ingredient, IngredientCategory, Recipe, RecipeIng
 from app.recipes.serializers import RecipeSerializer
 
 
+
 class RecipesModelTests(TestCase):
     def test_create_recipe(self):
         recipe = Recipe.objects.create(
@@ -35,4 +36,4 @@ class RecipesModelTests(TestCase):
         ingredient_data = serializer.data["ingredients"][0]
 
         self.assertEqual(Decimal(str(ingredient_data["amount"])), Decimal("200.00"))
-        self.assertEqual(Decimal(str(ingredient_data["amount_in_grams"])), Decimal("200.00"))
+        self.assertEqual(ingredient_data["base_unit_name"], "г")

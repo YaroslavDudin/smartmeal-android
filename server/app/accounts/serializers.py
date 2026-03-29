@@ -3,7 +3,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 from rest_framework_simplejwt.exceptions import AuthenticationFailed, InvalidToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from app.accounts.models import DietType, Allergy
+from app.accounts.models import DietType, Allergy, UserFavorite
 
 
 User = get_user_model()
@@ -90,3 +90,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('password_confirm')
         return User.objects.create_user(**validated_data)
+
+
+class UserFavoriteSerializer(serializers.ModelSerializer):
+    recipe_title = serializers.CharField(source='recipe.title', read_only=True)
+    recipe_image_url = serializers.ImageField(source='recipe.image_url', read_only=True)
+    
+    class Meta:
+        model = UserFavorite
+        fields = ('id', 'recipe', 'recipe_title', 'recipe_image_url')
+        read_only_fields = ('created_at',)

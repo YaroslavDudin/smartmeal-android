@@ -50,7 +50,7 @@ class RecipeDtoParsingTest {
               "total_proteins": 45.0,
               "total_fats": 30.0,
               "total_carbs": 150.0,
-              "total_weight_g": 1600.0,
+              "total_weight": 1600.0,
               "per_serving_calories": 300.0,
               "per_serving_proteins": 11.25,
               "per_serving_fats": 7.5,
@@ -74,7 +74,7 @@ class RecipeDtoParsingTest {
         assertEquals("Борщ", recipe.title)
         assertEquals(60, recipe.cook_time)
         assertEquals(4, recipe.servings)
-        assertEquals(1600.0, recipe.total_weight_g, 0.001)
+        assertEquals(1600.0, recipe.total_weight ?: 0.0, 0.001)
         assertEquals(300.0, recipe.per_serving_calories, 0.001)
         assertNotNull(recipe.ingredients)
         assertEquals(1, recipe.ingredients.size)

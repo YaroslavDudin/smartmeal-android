@@ -8,7 +8,7 @@ class CartItem(models.Model):
     ingredient = models.ForeignKey('recipes.Ingredient', on_delete=models.CASCADE, related_name='in_carts')
     total_amount = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0.01)])
     unit = models.ForeignKey('recipes.Unit', on_delete=models.RESTRICT)
-    is_checked = models.BooleanField(default=True)
+    is_checked = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'cart_item'

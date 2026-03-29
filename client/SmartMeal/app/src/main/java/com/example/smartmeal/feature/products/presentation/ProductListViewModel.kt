@@ -226,7 +226,7 @@ class ProductListViewModel(
                         
                         // Так как бэкенд уже вернул веса с учетом servings, мы просто форматируем их
                         val normalizedAmountInGrams = resolveAmountInGrams(
-                            amountInGrams = ingredient.amount_in_grams,
+                            amountInGrams = ingredient.amount_in_base_units,
                             fallbackAmount = ingredient.amount,
                             fallbackUnit = ingredient.unit_name
                         )

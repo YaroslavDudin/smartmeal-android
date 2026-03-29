@@ -41,7 +41,7 @@ data class RecipeDetailDto(
     val total_proteins: Double,
     val total_fats: Double,
     val total_carbs: Double,
-    val total_weight_g: Double,
+    val total_weight: Double? = null,
     val per_serving_calories: Double,
     val per_serving_proteins: Double,
     val per_serving_fats: Double,
@@ -53,7 +53,8 @@ data class RecipeDetailDto(
 data class RecipeIngredientDto(
     val ingredient_name: String,
     val amount: Double,
-    val amount_in_grams: Double? = null,
+    val amount_in_base_units: Double? = null,
+    val base_unit_name: String? = null,
     val unit_name: String,
     val category_name: String? = null
 )
