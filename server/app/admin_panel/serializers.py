@@ -71,18 +71,19 @@ class AdminIngredientNutritionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientNutrition
-        fields = ['id', 'base_weight_g', 'protein', 'fat', 'carbs', 'calories']
+        fields = ['id', 'base_weight', 'base_unit', 'protein', 'fat', 'carbs', 'calories']
 
     def get_calories(self, obj):
         return float(obj.calories)
 
 
 class AdminUnitConversionSerializer(serializers.ModelSerializer):
-    unit_name = serializers.CharField(source='unit.name', read_only=True)
+    from_unit_name = serializers.CharField(source='from_unit.name', read_only=True)
+    to_unit_name = serializers.CharField(source='to_unit.name', read_only=True)
 
     class Meta:
         model = UnitConversion
-        fields = ['id', 'unit', 'unit_name', 'grams_per_unit']
+        fields = ['id', 'from_unit', 'from_unit_name', 'to_unit', 'to_unit_name', 'amount_per_unit']
 
 
 class AdminIngredientSerializer(serializers.ModelSerializer):
@@ -134,10 +135,7 @@ class AdminRecipeShortSerializer(serializers.ModelSerializer):
         return list(obj.diet_types.values_list('name', flat=True))
 
     def get_total_calories(self, obj):
-        try:
-            return float(obj.total_calories)
-        except Exception:
-            return 0.0
+        float(obj.total_calories)
 
 
 class AdminRecipeSerializer(serializers.ModelSerializer):
@@ -165,28 +163,16 @@ class AdminRecipeSerializer(serializers.ModelSerializer):
         return list(obj.diet_types.values_list('name', flat=True))
 
     def get_total_calories(self, obj):
-        try:
-            return float(obj.total_calories)
-        except Exception:
-            return 0.0
+        float(obj.total_calories)
 
     def get_total_proteins(self, obj):
-        try:
-            return float(obj.total_proteins)
-        except Exception:
-            return 0.0
+        float(obj.total_proteins)
 
     def get_total_fats(self, obj):
-        try:
-            return float(obj.total_fats)
-        except Exception:
-            return 0.0
+        float(obj.total_fats)
 
     def get_total_carbs(self, obj):
-        try:
-            return float(obj.total_carbs)
-        except Exception:
-            return 0.0
+        float(obj.total_carbs)
 
 
 class AdminRecipeWriteSerializer(serializers.ModelSerializer):

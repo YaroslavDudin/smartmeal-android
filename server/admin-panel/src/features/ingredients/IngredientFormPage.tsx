@@ -23,7 +23,8 @@ const ingredientSchema = z.object({
   category: z.number({ coerce: true }).nullable().optional(),
   nutrition: z
     .object({
-      base_weight_g: z.number({ coerce: true }).min(0),
+      base_weight: z.number({ coerce: true }).min(0),
+      base_unit: z.number({ coerce: true }).min(0),
       protein: z.number({ coerce: true }).min(0),
       fat: z.number({ coerce: true }).min(0),
       carbs: z.number({ coerce: true }).min(0),
@@ -43,7 +44,7 @@ export function IngredientFormPage() {
   const ingredientId = id ? Number(id) : null
 
   const [unitConversions, setUnitConversions] = useState<UnitConversion[]>([])
-  const [newConversion, setNewConversion] = useState({ unit: '', grams_per_unit: '' })
+  const [newConversion, setNewConversion] = useState({ from_unit: '', to_unit: '', amount_per_unit: '' })
   const [addingConversion, setAddingConversion] = useState(false)
   const [deleteConversionTarget, setDeleteConversionTarget] = useState<UnitConversion | null>(null)
   const [hasNutrition, setHasNutrition] = useState(false)
@@ -81,7 +82,8 @@ export function IngredientFormPage() {
       setValue('category', ingredient.category ?? null)
       if (ingredient.nutrition) {
         setHasNutrition(true)
-        setValue('nutrition.base_weight_g', Number(ingredient.nutrition.base_weight_g))
+        setValue('nutrition.base_weight', Number(ingredient.nutrition.base_weight))
+        setValue('nutrition.base_unit', Number(ingredient.nutrition.base_unit))
         setValue('nutrition.protein', Number(ingredient.nutrition.protein))
         setValue('nutrition.fat', Number(ingredient.nutrition.fat))
         setValue('nutrition.carbs', Number(ingredient.nutrition.carbs))
@@ -149,18 +151,19 @@ export function IngredientFormPage() {
       toast.error('Сначала сохраните ингредиент')
       return
     }
-    if (!newConversion.unit || !newConversion.grams_per_unit) {
+    if (!newConversion.from_unit || !newConversion.to_unit || !newConversion.amount_per_unit) {
       toast.error('Заполните все поля')
       return
     }
     setAddingConversion(true)
     try {
       const added = await api.post(`/ingredients/${ingredientId}/conversions/`, {
-        unit: Number(newConversion.unit),
-        grams_per_unit: newConversion.grams_per_unit,
+        from_unit: Number(newConversion.from_unit),
+        to_unit: Number(newConversion.to_unit),
+        amount_per_unit: newConversion.amount_per_unit,
       })
       setUnitConversions((prev) => [...prev, added.data as UnitConversion])
-      setNewConversion({ unit: '', grams_per_unit: '' })
+      setNewConversion({ from_unit: '', to_unit: '', amount_per_unit: '' })
       toast.success('Конвертация добавлена')
     } catch {
       toast.error('Не удалось добавить конвертацию')
@@ -259,13 +262,25 @@ export function IngredientFormPage() {
                 <div>
                   <label className="block text-xs text-[var(--text-muted)] mb-1">Базовый вес (г)</label>
                   <input
-                    {...register('nutrition.base_weight_g', { valueAsNumber: true })}
+                    {...register('nutrition.base_weight', { valueAsNumber: true })}
                     type="number"
                     className="input"
                     placeholder="100"
                     step="0.01"
                     min={0}
                   />
+                </div>
+                <div>
+                  <label className="block text-xs text-[var(--text-muted)] mb-1">Единица измерения</label>
+                  <select
+                    {...register('nutrition.base_unit', { valueAsNumber: true })}
+                    className="input"
+                  >
+                    <option value="">Выберите единицу</option>
+                    {units?.filter(u => u.is_base).map((u) => (
+                      <option key={u.id} value={u.id}>{u.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-xs text-[var(--text-muted)] mb-1">Белки (г)</label>
@@ -357,8 +372,9 @@ export function IngredientFormPage() {
               <tbody>
                 {unitConversions.map((conv) => (
                   <tr key={conv.id} className="border-b border-[var(--border-color)] last:border-0">
-                    <td className="table-cell font-medium">{conv.unit_name}</td>
-                    <td className="table-cell text-center">{conv.grams_per_unit} г</td>
+                    <td className="table-cell font-medium">{conv.from_unit_name}</td>
+                    <td className="table-cell font-medium">{conv.to_unit_name}</td>
+                    <td className="table-cell text-center">{conv.amount_per_unit} г</td>
                     <td className="table-cell text-right">
                       <button
                         className="btn-ghost p-1.5 text-red-500 hover:text-red-600"
@@ -380,8 +396,18 @@ export function IngredientFormPage() {
             <div className="flex gap-3 flex-wrap">
               <select
                 className="input flex-1 min-w-[150px]"
-                value={newConversion.unit}
-                onChange={(e) => setNewConversion({ ...newConversion, unit: e.target.value })}
+                value={newConversion.from_unit}
+                onChange={(e) => setNewConversion({ ...newConversion, from_unit: e.target.value })}
+              >
+                <option value="">Выберите единицу</option>
+                {units?.map((u) => (
+                  <option key={u.id} value={u.id}>{u.name}</option>
+                ))}
+              </select>
+              <select
+                className="input flex-1 min-w-[150px]"
+                value={newConversion.to_unit}
+                onChange={(e) => setNewConversion({ ...newConversion, to_unit: e.target.value })}
               >
                 <option value="">Выберите единицу</option>
                 {units?.map((u) => (
@@ -391,9 +417,9 @@ export function IngredientFormPage() {
               <input
                 className="input w-40"
                 type="number"
-                placeholder="Грамм на единицу"
-                value={newConversion.grams_per_unit}
-                onChange={(e) => setNewConversion({ ...newConversion, grams_per_unit: e.target.value })}
+                placeholder="Количество на единицу"
+                value={newConversion.amount_per_unit}
+                onChange={(e) => setNewConversion({ ...newConversion, amount_per_unit: e.target.value })}
                 min={0}
                 step="0.01"
               />
@@ -417,7 +443,7 @@ export function IngredientFormPage() {
       <ConfirmDialog
         open={!!deleteConversionTarget}
         title="Удалить конвертацию?"
-        description={`Конвертация для единицы "${deleteConversionTarget?.unit_name}" будет удалена.`}
+        description={`Конвертация для единицы "${deleteConversionTarget?.from_unit_name}" в единицу "${deleteConversionTarget?.to_unit_name}" будет удалена.`}
         onConfirm={handleDeleteConversion}
         onCancel={() => setDeleteConversionTarget(null)}
       />

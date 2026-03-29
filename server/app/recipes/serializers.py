@@ -47,29 +47,45 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
     base_unit_name = serializers.CharField(source='base_unit.name', read_only=True)
     # переопределение количества под нужное количество персон
     amount = serializers.SerializerMethodField()
+    amount_in_base_units = serializers.SerializerMethodField()
 
     class Meta:
         model = RecipeIngredient
-        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'base_unit_name', 'unit', 'unit_name', 'category_name')
+        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'amount_in_base_units', 'base_unit_name', 'unit', 'unit_name', 'category_name')
+    
+    # отношение количества персон к количеству порций в рецепте
+    def _get_scale(self, obj):
+        cache_key = f'_scale_{obj.pk}'
+        if not hasattr(self, cache_key):
+            target_servings = self.context.get('target_servings')
+            recipe_servings = self.context.get('recipe_servings')
+            if not target_servings or not recipe_servings:
+                scale = Decimal(1)
+            else:
+                scale = Decimal(target_servings) / Decimal(recipe_servings)
+            setattr(self, cache_key, scale)
+        return getattr(self, cache_key)
     
     # перерасчет количества под указанное количество персон
     # если нету в контексте передается как есть в рецепте
     def get_amount(self, obj):
-        target_servings = self.context.get('target_servings')
-        recipe_servings = self.context.get('recipe_servings')
-        if not target_servings or not recipe_servings:
-            return obj.amount
-        scale = Decimal(target_servings) / Decimal(recipe_servings)
+        scale = self._get_scale(obj)
         scaled_amount = round(obj.amount * scale, 2)
         logger.debug(
             "Scaling recipe ingredient amount recipe_ingredient_id=%s ingredient_id=%s target_servings=%s recipe_servings=%s original_amount=%s scaled_amount=%s",
             obj.id,
             obj.ingredient_id,
-            target_servings,
-            recipe_servings,
+            self.context.get('target_servings'),
+            self.context.get('recipe_servings'),
             obj.amount,
             scaled_amount,
         )
+        return scaled_amount
+    
+    # перерасчет количества под указанное количество персон в базовых единицах
+    def get_amount_in_base_units(self, obj):
+        scale = self._get_scale(obj)
+        scaled_amount = round(obj.amount_in_base_units * scale, 2)
         return scaled_amount
 
 

@@ -37,14 +37,17 @@ export interface Unit {
 export interface UnitConversion {
   id: number
   ingredient: number
-  unit: number
-  unit_name: string
-  grams_per_unit: string
+  from_unit: number
+  from_unit_name: string
+  to_unit: number
+  to_unit_name: string
+  amount_per_unit: string
 }
 
 export interface IngredientNutrition {
   id: number
-  base_weight_g: string
+  base_weight: string
+  base_unit: number
   protein: string
   fat: string
   carbs: string
@@ -107,7 +110,7 @@ export interface Menu {
   id: number
   user: number
   user_email: string
-  period: 'day' | 'week'
+  period: 'day' | 'week' | 'custom'
   start_date: string
   created_at: string
   items: MenuItem[]
@@ -118,7 +121,7 @@ export interface MenuItem {
   recipe: number
   recipe_title: string
   day_offset: number
-  meal_type: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'drink'
+  meal_type: 'breakfast' | 'lunch' | 'dinner'
   actual_date: string
 }
 
