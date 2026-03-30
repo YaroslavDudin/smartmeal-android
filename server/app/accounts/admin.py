@@ -2,6 +2,11 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User, Allergy, DietType, UserFavorite
 
+class UserFavoriteInline(admin.TabularInline):
+    model = UserFavorite
+    extra = 0
+    autocomplete_fields = ('recipe',)
+
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'username', 'portion_size', 'is_staff')
@@ -9,6 +14,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         ('Дополнительная информация', {'fields': ('portion_size', 'allergies', 'diet_type')}),
     )
+    inlines = [UserFavoriteInline]
 
 @admin.register(Allergy)
 class AllergyAdmin(admin.ModelAdmin):
