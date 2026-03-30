@@ -565,7 +565,7 @@ export function RecipeFormPage() {
                   {step.timer && (
                     <p className="text-xs text-[var(--text-muted)] mt-1 flex items-center gap-1">
                       <Timer className="w-3 h-3" />
-                      Таймер: {step.timer} сек
+                      Таймер: {step.timer} минут
                     </p>
                   )}
                   {step.image_url && (
@@ -618,7 +618,7 @@ export function RecipeFormPage() {
                 <input
                   className="input w-32"
                   type="number"
-                  placeholder="Таймер (сек)"
+                  placeholder="Таймер (минуты)"
                   value={newStep.timer}
                   onChange={(e) => setNewStep({ ...newStep, timer: e.target.value })}
                   min={0}
