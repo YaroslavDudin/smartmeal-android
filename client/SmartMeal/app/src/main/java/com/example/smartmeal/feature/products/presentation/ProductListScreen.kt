@@ -69,7 +69,9 @@ fun ProductListScreen(
     onDateSelected: (String) -> Unit,
     onProductChecked: (Collection<String>, Boolean) -> Unit,
     onCheckAll: (Collection<String>, Boolean) -> Unit,
+    onReselectPlan: () -> Unit,
     modifier: Modifier = Modifier,
+    hasNoAvailableDays: Boolean = false,
     isLoading: Boolean = false,
     errorMessage: String? = null
 ) {
@@ -79,6 +81,7 @@ fun ProductListScreen(
             .distinct()
             .sorted()
             .mapNotNull(::parseApiDate)
+            .filter { !it.before(normalizeProductDate(Date())) }
     }
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
     val filteredProducts = remember(products, selectedStartDateKey, selectedEndDateKey) {
@@ -107,6 +110,7 @@ fun ProductListScreen(
     val hasSingleAvailableDate = availableDates.size == 1
     val contentState = when {
         isLoading -> ProductContentState.Loading
+        hasNoAvailableDays -> ProductContentState.Expired
         !errorMessage.isNullOrBlank() -> ProductContentState.Error
         aggregatedProducts.isEmpty() -> ProductContentState.Empty
         else -> ProductContentState.List
@@ -141,51 +145,55 @@ fun ProductListScreen(
             )
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("products_date_selector")
-        ) {
-            if (hasSingleAvailableDate) {
-                SmartMealText(
-                    text = formatSelectedDateLabel(availableDates.first()),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = TextBlack,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(top = 8.dp, bottom = 14.dp)
-                        .testTag("products_selected_date_summary")
-                )
-            } else {
-                DateSelector(
-                    items = dateSelectorItems,
-                    selectedStartId = selectedStartDateKey,
-                    selectedEndId = selectedEndDateKey,
-                    onItemClick = onDateSelected
-                )
+        if (availableDates.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("products_date_selector")
+            ) {
+                if (hasSingleAvailableDate) {
+                    SmartMealText(
+                        text = formatSelectedDateLabel(availableDates.first()),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = TextBlack,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(top = 8.dp, bottom = 14.dp)
+                            .testTag("products_selected_date_summary")
+                    )
+                } else {
+                    DateSelector(
+                        items = dateSelectorItems,
+                        selectedStartId = selectedStartDateKey,
+                        selectedEndId = selectedEndDateKey,
+                        onItemClick = onDateSelected
+                    )
+                }
             }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)
-                .padding(bottom = 8.dp)
-                .testTag("checkAllRow"),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
-        ) {
-            SmartMealText(
-                text = "Выбрать всё",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextBlack,
-                modifier = Modifier.padding(end = 8.dp)
-            )
-            Checkbox(
-                checked = allVisibleChecked,
-                onCheckedChange = { onCheckAll(allVisibleProductIds, !allVisibleChecked) },
-                modifier = Modifier.testTag("checkAllButton")
-            )
+        if (contentState == ProductContentState.List) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .padding(bottom = 8.dp)
+                    .testTag("checkAllRow"),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                SmartMealText(
+                    text = "Выбрать всё",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextBlack,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Checkbox(
+                    checked = allVisibleChecked,
+                    onCheckedChange = { onCheckAll(allVisibleProductIds, !allVisibleChecked) },
+                    modifier = Modifier.testTag("checkAllButton")
+                )
+            }
         }
 
         AnimatedContent(
@@ -231,6 +239,30 @@ fun ProductListScreen(
                             .padding(top = 32.dp)
                             .testTag("emptyProducts")
                     )
+                }
+
+                ProductContentState.Expired -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 32.dp)
+                            .testTag("products_expired_state"),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        SmartMealText(
+                            text = "Доступные дни закончились. Выберите план и дату заново",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = TextBlack,
+                            modifier = Modifier.padding(horizontal = 24.dp)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        androidx.compose.material3.Button(
+                            onClick = onReselectPlan,
+                            modifier = Modifier.testTag("products_reselect_plan_button")
+                        ) {
+                            SmartMealText("Выбрать план и дату")
+                        }
+                    }
                 }
 
                 ProductContentState.List -> {
@@ -393,7 +425,18 @@ private sealed interface ProductContentState {
     data object Loading : ProductContentState
     data object Empty : ProductContentState
     data object Error : ProductContentState
+    data object Expired : ProductContentState
     data object List : ProductContentState
+}
+
+private fun normalizeProductDate(date: Date): Date {
+    return java.util.Calendar.getInstance().apply {
+        time = date
+        set(java.util.Calendar.HOUR_OF_DAY, 0)
+        set(java.util.Calendar.MINUTE, 0)
+        set(java.util.Calendar.SECOND, 0)
+        set(java.util.Calendar.MILLISECOND, 0)
+    }.time
 }
 
 internal fun filterProductsByDateRange(

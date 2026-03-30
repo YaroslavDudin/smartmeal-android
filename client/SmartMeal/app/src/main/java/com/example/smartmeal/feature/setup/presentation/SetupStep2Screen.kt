@@ -42,6 +42,7 @@ fun SetupStep2Screen(
     viewModel: SetupViewModel,
     onBack: () -> Unit,
     onNext: () -> Unit,
+    nextButtonText: String = "Дальше",
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -53,6 +54,7 @@ fun SetupStep2Screen(
         onSelectDay = viewModel::selectDay,
         onPreviousMonth = { viewModel.navigateCalendarMonth(-1) },
         onNextMonth = { viewModel.navigateCalendarMonth(1) },
+        nextButtonText = nextButtonText,
     )
 }
 
@@ -61,6 +63,7 @@ fun SetupStep2Content(
     state: SetupState,
     onBack: () -> Unit,
     onNext: () -> Unit,
+    nextButtonText: String = "Дальше",
     onSelectPeriodType: (PeriodType) -> Unit,
     onSelectDay: (Int, Int, Int) -> Unit,
     onPreviousMonth: () -> Unit,
@@ -183,7 +186,7 @@ fun SetupStep2Content(
         Spacer(modifier = Modifier.height(if (isCompactHeight) 16.dp else 24.dp))
 
         WidePrimaryButton(
-            text = "Дальше",
+            text = nextButtonText,
             onClick = onNext,
             enabled = when (state.periodType) {
                 PeriodType.CUSTOM -> state.selectedStartDateMillis != null && state.selectedEndDateMillis != null

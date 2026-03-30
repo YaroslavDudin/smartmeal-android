@@ -13,7 +13,9 @@ sealed class Screen(val route: String) {
     // Флоу первоначальной настройки профиля (показывается после авторизации, если профиль не настроен)
     object SetupIntro : Screen("setup_intro")
     object SetupStep1 : Screen("setup_step1")
-    object SetupStep2 : Screen("setup_step2")
+    object SetupStep2 : Screen("setup_step2?reselect={reselect}") {
+        fun createRoute(reselect: Boolean = false): String = "setup_step2?reselect=$reselect"
+    }
     object SetupStep3 : Screen("setup_step3")
 
     object RecipeDetail : Screen("recipe_detail/{recipeId}/{portionSize}?menuItemId={menuItemId}") {
