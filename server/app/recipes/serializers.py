@@ -92,7 +92,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 class RecipeStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeStep
-        fields = ('step_number', 'description', 'image_url', 'timer')
+        fields = ('step_number', 'description', 'image_url')
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -111,26 +111,29 @@ class RecipeSerializer(serializers.ModelSerializer):
     total_proteins = serializers.SerializerMethodField()
     total_fats = serializers.SerializerMethodField()
     total_carbs = serializers.SerializerMethodField()
-    total_weight = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
         fields = (
             'id', 'title', 'image_url', 'cook_time', 'servings',
             'ingredients', 'steps', 'allergies',
-            'total_calories', 'total_proteins', 'total_fats', 'total_carbs', 'total_weight',
+            'total_calories', 'total_proteins', 'total_fats', 'total_carbs',
             'per_serving_calories', 'per_serving_proteins', 'per_serving_fats', 'per_serving_carbs',
         )
         
+    # указать target servings как указанное в рецепте количество порций, если неопределено
+    def to_representation(self, instance):
+        if not self.context.get('target_servings'):
+            self.context['target_servings'] = instance.servings
+        self.context['recipe_servings'] = instance.servings
+        return super().to_representation(instance)
+
     # отношение количества персон к количеству порций в рецепте
     def _get_scale(self, obj):
         cache_key = f'_scale_{obj.pk}'
         if not hasattr(self, cache_key):
             target_servings = self.context.get('target_servings')
-            if not target_servings:
-                scale = Decimal(1)
-            else:
-                scale = Decimal(target_servings) / Decimal(obj.servings)
+            scale = Decimal(target_servings) / Decimal(obj.servings)
             setattr(self, cache_key, scale)
         return getattr(self, cache_key)
     
@@ -171,12 +174,4 @@ class RecipeSerializer(serializers.ModelSerializer):
         if not hasattr(self, cache_key):
             carbs = round(obj.total_carbs * self._get_scale(obj), 2)
             setattr(self, cache_key, carbs)
-        return getattr(self, cache_key)
-
-    def get_total_weight(self, obj):
-        cache_key = f'_weight_{obj.pk}'
-        if not hasattr(self, cache_key):
-            total_weight = sum(ri.amount_in_base_units for ri in obj.recipe_ingredients.all())
-            weight = round(total_weight * self._get_scale(obj), 0)
-            setattr(self, cache_key, weight)
         return getattr(self, cache_key)

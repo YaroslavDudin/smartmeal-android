@@ -170,7 +170,7 @@ class Recipe(models.Model):
         if not hasattr(self, '_nutrition_cache'):
             protein = fat = carbs = Decimal(0)
             for ri in self.recipe_ingredients.all():
-                p, f, c = ri.get_macros()
+                p, f, c = ri._get_macros()
                 protein += p
                 fat += f
                 carbs += c
@@ -300,7 +300,7 @@ class RecipeIngredient(models.Model):
     @property
     def amount_in_base_units(self):
         # Переводим в те же базовые единицы, что в пищевой ценности ингредиента
-        return self._amount_in_nutrition_units
+        return self.get_amount_in_target_units(self.nutrition.base_unit)
 
     @property
     def nutrition(self):

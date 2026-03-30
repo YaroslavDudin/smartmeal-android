@@ -224,8 +224,8 @@
     "pk": 1,
     "fields": {
         "ingredient": 1,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -234,8 +234,8 @@
     "pk": 2,
     "fields": {
         "ingredient": 2,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "75.00"
     }
 },
@@ -244,8 +244,8 @@
     "pk": 3,
     "fields": {
         "ingredient": 3,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -254,8 +254,8 @@
     "pk": 4,
     "fields": {
         "ingredient": 4,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -264,8 +264,8 @@
     "pk": 5,
     "fields": {
         "ingredient": 5,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -274,8 +274,8 @@
     "pk": 6,
     "fields": {
         "ingredient": 6,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -284,8 +284,8 @@
     "pk": 7,
     "fields": {
         "ingredient": 7,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -294,8 +294,8 @@
     "pk": 8,
     "fields": {
         "ingredient": 8,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "1500.00"
     }
 },
@@ -304,8 +304,8 @@
     "pk": 9,
     "fields": {
         "ingredient": 9,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "500.00"
     }
 },
@@ -314,8 +314,8 @@
     "pk": 10,
     "fields": {
         "ingredient": 10,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "3000.00"
     }
 },
@@ -324,8 +324,8 @@
     "pk": 11,
     "fields": {
         "ingredient": 11,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "300.00"
     }
 },
@@ -334,8 +334,8 @@
     "pk": 12,
     "fields": {
         "ingredient": 12,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -344,8 +344,8 @@
     "pk": 13,
     "fields": {
         "ingredient": 13,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -354,8 +354,8 @@
     "pk": 14,
     "fields": {
         "ingredient": 14,
-        "unit": 9,
-        "base_unit": 1,
+        "from_unit": 9,
+        "to_unit": 1,
         "amount_per_unit": "50.00"
     }
 },
@@ -364,8 +364,8 @@
     "pk": 15,
     "fields": {
         "ingredient": 15,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -374,8 +374,8 @@
     "pk": 16,
     "fields": {
         "ingredient": 16,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -384,8 +384,8 @@
     "pk": 17,
     "fields": {
         "ingredient": 17,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -394,8 +394,8 @@
     "pk": 18,
     "fields": {
         "ingredient": 18,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -404,8 +404,8 @@
     "pk": 19,
     "fields": {
         "ingredient": 19,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -414,8 +414,8 @@
     "pk": 20,
     "fields": {
         "ingredient": 22,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -424,8 +424,8 @@
     "pk": 21,
     "fields": {
         "ingredient": 23,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -434,8 +434,8 @@
     "pk": 22,
     "fields": {
         "ingredient": 24,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -444,8 +444,8 @@
     "pk": 23,
     "fields": {
         "ingredient": 42,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "50.00"
     }
 },
@@ -454,8 +454,8 @@
     "pk": 24,
     "fields": {
         "ingredient": 51,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -464,8 +464,8 @@
     "pk": 25,
     "fields": {
         "ingredient": 51,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -474,8 +474,8 @@
     "pk": 26,
     "fields": {
         "ingredient": 52,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "2.00"
     }
 },
@@ -484,8 +484,8 @@
     "pk": 27,
     "fields": {
         "ingredient": 53,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "8.00"
     }
 },
@@ -494,8 +494,8 @@
     "pk": 28,
     "fields": {
         "ingredient": 53,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "3.00"
     }
 },
@@ -504,8 +504,8 @@
     "pk": 29,
     "fields": {
         "ingredient": 54,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "2.00"
     }
 },
@@ -514,8 +514,8 @@
     "pk": 30,
     "fields": {
         "ingredient": 55,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "2.00"
     }
 },
@@ -524,8 +524,8 @@
     "pk": 31,
     "fields": {
         "ingredient": 56,
-        "unit": 8,
-        "base_unit": 1,
+        "from_unit": 8,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -534,8 +534,8 @@
     "pk": 32,
     "fields": {
         "ingredient": 57,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "0.50"
     }
 },
@@ -544,8 +544,8 @@
     "pk": 33,
     "fields": {
         "ingredient": 72,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "10.00"
     }
 },
@@ -554,8 +554,8 @@
     "pk": 34,
     "fields": {
         "ingredient": 72,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "3.00"
     }
 },
@@ -564,8 +564,8 @@
     "pk": 35,
     "fields": {
         "ingredient": 72,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "130.00"
     }
 },
@@ -574,8 +574,8 @@
     "pk": 36,
     "fields": {
         "ingredient": 67,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "12.00"
     }
 },
@@ -584,8 +584,8 @@
     "pk": 37,
     "fields": {
         "ingredient": 67,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -594,8 +594,8 @@
     "pk": 38,
     "fields": {
         "ingredient": 67,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -604,8 +604,8 @@
     "pk": 39,
     "fields": {
         "ingredient": 44,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "180.00"
     }
 },
@@ -614,8 +614,8 @@
     "pk": 40,
     "fields": {
         "ingredient": 44,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -624,8 +624,8 @@
     "pk": 41,
     "fields": {
         "ingredient": 45,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "170.00"
     }
 },
@@ -634,8 +634,8 @@
     "pk": 42,
     "fields": {
         "ingredient": 45,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "14.00"
     }
 },
@@ -644,8 +644,8 @@
     "pk": 43,
     "fields": {
         "ingredient": 46,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "80.00"
     }
 },
@@ -654,8 +654,8 @@
     "pk": 44,
     "fields": {
         "ingredient": 46,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "7.00"
     }
 },
@@ -664,8 +664,8 @@
     "pk": 45,
     "fields": {
         "ingredient": 47,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -674,8 +674,8 @@
     "pk": 46,
     "fields": {
         "ingredient": 71,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "12.00"
     }
 },
@@ -684,8 +684,8 @@
     "pk": 47,
     "fields": {
         "ingredient": 71,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -694,8 +694,8 @@
     "pk": 48,
     "fields": {
         "ingredient": 36,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -704,29 +704,9 @@
     "pk": 49,
     "fields": {
         "ingredient": 36,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 50,
-    "fields": {
-        "ingredient": 37,
-        "unit": 7,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 51,
-    "fields": {
-        "ingredient": 37,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
     }
 },
 {
@@ -734,8 +714,8 @@
     "pk": 52,
     "fields": {
         "ingredient": 62,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -744,8 +724,8 @@
     "pk": 53,
     "fields": {
         "ingredient": 62,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -754,8 +734,8 @@
     "pk": 54,
     "fields": {
         "ingredient": 58,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "14.00"
     }
 },
@@ -764,8 +744,8 @@
     "pk": 55,
     "fields": {
         "ingredient": 58,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "210.00"
     }
 },
@@ -774,8 +754,8 @@
     "pk": 56,
     "fields": {
         "ingredient": 59,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "14.00"
     }
 },
@@ -784,8 +764,8 @@
     "pk": 57,
     "fields": {
         "ingredient": 59,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "210.00"
     }
 },
@@ -794,8 +774,8 @@
     "pk": 58,
     "fields": {
         "ingredient": 41,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -804,8 +784,8 @@
     "pk": 59,
     "fields": {
         "ingredient": 66,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "25.00"
     }
 },
@@ -814,8 +794,8 @@
     "pk": 60,
     "fields": {
         "ingredient": 66,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "8.00"
     }
 },
@@ -824,8 +804,8 @@
     "pk": 61,
     "fields": {
         "ingredient": 70,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "10.00"
     }
 },
@@ -834,8 +814,8 @@
     "pk": 62,
     "fields": {
         "ingredient": 70,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -844,8 +824,8 @@
     "pk": 63,
     "fields": {
         "ingredient": 76,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -854,8 +834,8 @@
     "pk": 64,
     "fields": {
         "ingredient": 77,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -864,8 +844,8 @@
     "pk": 65,
     "fields": {
         "ingredient": 78,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "175.00"
     }
 },
@@ -874,8 +854,8 @@
     "pk": 66,
     "fields": {
         "ingredient": 79,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "17.00"
     }
 },
@@ -884,8 +864,8 @@
     "pk": 67,
     "fields": {
         "ingredient": 79,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "8.00"
     }
 },
@@ -894,8 +874,8 @@
     "pk": 68,
     "fields": {
         "ingredient": 79,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "260.00"
     }
 },
@@ -904,8 +884,8 @@
     "pk": 69,
     "fields": {
         "ingredient": 65,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -914,8 +894,8 @@
     "pk": 70,
     "fields": {
         "ingredient": 63,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -924,8 +904,8 @@
     "pk": 73,
     "fields": {
         "ingredient": 81,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "10.00"
     }
 },
@@ -934,8 +914,8 @@
     "pk": 74,
     "fields": {
         "ingredient": 81,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -944,8 +924,8 @@
     "pk": 75,
     "fields": {
         "ingredient": 82,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -954,8 +934,8 @@
     "pk": 76,
     "fields": {
         "ingredient": 83,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "170.00"
     }
 },
@@ -964,8 +944,8 @@
     "pk": 77,
     "fields": {
         "ingredient": 84,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "190.00"
     }
 },
@@ -974,8 +954,8 @@
     "pk": 78,
     "fields": {
         "ingredient": 85,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -984,8 +964,8 @@
     "pk": 79,
     "fields": {
         "ingredient": 86,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "35.00"
     }
 },
@@ -994,8 +974,8 @@
     "pk": 80,
     "fields": {
         "ingredient": 73,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -1004,8 +984,8 @@
     "pk": 81,
     "fields": {
         "ingredient": 87,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "7.00"
     }
 },
@@ -1014,8 +994,8 @@
     "pk": 82,
     "fields": {
         "ingredient": 88,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -1024,8 +1004,8 @@
     "pk": 83,
     "fields": {
         "ingredient": 88,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1034,39 +1014,9 @@
     "pk": 84,
     "fields": {
         "ingredient": 90,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "155.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 85,
-    "fields": {
-        "ingredient": 91,
-        "unit": 7,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 86,
-    "fields": {
-        "ingredient": 92,
-        "unit": 7,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 87,
-    "fields": {
-        "ingredient": 92,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1074,8 +1024,8 @@
     "pk": 88,
     "fields": {
         "ingredient": 43,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "240.00"
     }
 },
@@ -1084,8 +1034,8 @@
     "pk": 89,
     "fields": {
         "ingredient": 43,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1094,8 +1044,8 @@
     "pk": 90,
     "fields": {
         "ingredient": 39,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "230.00"
     }
 },
@@ -1104,8 +1054,8 @@
     "pk": 91,
     "fields": {
         "ingredient": 39,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1114,8 +1064,8 @@
     "pk": 92,
     "fields": {
         "ingredient": 38,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "240.00"
     }
 },
@@ -1124,8 +1074,8 @@
     "pk": 93,
     "fields": {
         "ingredient": 38,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1134,8 +1084,8 @@
     "pk": 94,
     "fields": {
         "ingredient": 93,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "10.00"
     }
 },
@@ -1144,8 +1094,8 @@
     "pk": 95,
     "fields": {
         "ingredient": 94,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -1154,29 +1104,9 @@
     "pk": 96,
     "fields": {
         "ingredient": 94,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 97,
-    "fields": {
-        "ingredient": 95,
-        "unit": 7,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
-    }
-},
-{
-    "model": "recipes.unitconversion",
-    "pk": 98,
-    "fields": {
-        "ingredient": 95,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
     }
 },
 {
@@ -1184,8 +1114,8 @@
     "pk": 99,
     "fields": {
         "ingredient": 96,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "240.00"
     }
 },
@@ -1194,8 +1124,8 @@
     "pk": 100,
     "fields": {
         "ingredient": 96,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -1204,8 +1134,8 @@
     "pk": 101,
     "fields": {
         "ingredient": 97,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "240.00"
     }
 },
@@ -1214,8 +1144,8 @@
     "pk": 102,
     "fields": {
         "ingredient": 97,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -1224,8 +1154,8 @@
     "pk": 103,
     "fields": {
         "ingredient": 98,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "240.00"
     }
 },
@@ -1234,8 +1164,8 @@
     "pk": 104,
     "fields": {
         "ingredient": 98,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -1244,8 +1174,8 @@
     "pk": 105,
     "fields": {
         "ingredient": 99,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -1254,8 +1184,8 @@
     "pk": 106,
     "fields": {
         "ingredient": 99,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1264,8 +1194,8 @@
     "pk": 107,
     "fields": {
         "ingredient": 100,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -1274,8 +1204,8 @@
     "pk": 108,
     "fields": {
         "ingredient": 100,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1284,8 +1214,8 @@
     "pk": 109,
     "fields": {
         "ingredient": 101,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -1294,8 +1224,8 @@
     "pk": 110,
     "fields": {
         "ingredient": 102,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -1304,8 +1234,8 @@
     "pk": 111,
     "fields": {
         "ingredient": 103,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "30.00"
     }
 },
@@ -1314,8 +1244,8 @@
     "pk": 112,
     "fields": {
         "ingredient": 104,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "800.00"
     }
 },
@@ -1324,8 +1254,8 @@
     "pk": 113,
     "fields": {
         "ingredient": 105,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -1334,8 +1264,8 @@
     "pk": 114,
     "fields": {
         "ingredient": 106,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "7.00"
     }
 },
@@ -1344,8 +1274,8 @@
     "pk": 115,
     "fields": {
         "ingredient": 106,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "3.00"
     }
 },
@@ -1354,8 +1284,8 @@
     "pk": 116,
     "fields": {
         "ingredient": 107,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "7.00"
     }
 },
@@ -1364,8 +1294,8 @@
     "pk": 117,
     "fields": {
         "ingredient": 107,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "3.00"
     }
 },
@@ -1374,8 +1304,8 @@
     "pk": 118,
     "fields": {
         "ingredient": 108,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "110.00"
     }
 },
@@ -1384,8 +1314,8 @@
     "pk": 119,
     "fields": {
         "ingredient": 109,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "210.00"
     }
 },
@@ -1394,8 +1324,8 @@
     "pk": 120,
     "fields": {
         "ingredient": 109,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -1404,8 +1334,8 @@
     "pk": 121,
     "fields": {
         "ingredient": 109,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "7.00"
     }
 },
@@ -1414,8 +1344,8 @@
     "pk": 122,
     "fields": {
         "ingredient": 110,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "10.00"
     }
 },
@@ -1424,8 +1354,8 @@
     "pk": 123,
     "fields": {
         "ingredient": 110,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -1434,8 +1364,8 @@
     "pk": 124,
     "fields": {
         "ingredient": 110,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -1444,8 +1374,8 @@
     "pk": 125,
     "fields": {
         "ingredient": 70,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -1454,8 +1384,8 @@
     "pk": 126,
     "fields": {
         "ingredient": 111,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1464,8 +1394,8 @@
     "pk": 127,
     "fields": {
         "ingredient": 111,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -1474,8 +1404,8 @@
     "pk": 128,
     "fields": {
         "ingredient": 112,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1484,8 +1414,8 @@
     "pk": 129,
     "fields": {
         "ingredient": 112,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -1494,8 +1424,8 @@
     "pk": 130,
     "fields": {
         "ingredient": 112,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -1504,8 +1434,8 @@
     "pk": 131,
     "fields": {
         "ingredient": 113,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1514,8 +1444,8 @@
     "pk": 132,
     "fields": {
         "ingredient": 113,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -1524,8 +1454,8 @@
     "pk": 133,
     "fields": {
         "ingredient": 113,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -1534,8 +1464,8 @@
     "pk": 134,
     "fields": {
         "ingredient": 114,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1544,8 +1474,8 @@
     "pk": 135,
     "fields": {
         "ingredient": 114,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -1554,8 +1484,8 @@
     "pk": 136,
     "fields": {
         "ingredient": 114,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -1564,8 +1494,8 @@
     "pk": 137,
     "fields": {
         "ingredient": 115,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1574,8 +1504,8 @@
     "pk": 138,
     "fields": {
         "ingredient": 115,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -1584,8 +1514,8 @@
     "pk": 139,
     "fields": {
         "ingredient": 115,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -1594,8 +1524,8 @@
     "pk": 140,
     "fields": {
         "ingredient": 116,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1604,8 +1534,8 @@
     "pk": 141,
     "fields": {
         "ingredient": 116,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -1614,8 +1544,8 @@
     "pk": 142,
     "fields": {
         "ingredient": 116,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -1624,8 +1554,8 @@
     "pk": 143,
     "fields": {
         "ingredient": 117,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1634,8 +1564,8 @@
     "pk": 144,
     "fields": {
         "ingredient": 118,
-        "unit": 9,
-        "base_unit": 1,
+        "from_unit": 9,
+        "to_unit": 1,
         "amount_per_unit": "50.00"
     }
 },
@@ -1644,8 +1574,8 @@
     "pk": 145,
     "fields": {
         "ingredient": 119,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "70.00"
     }
 },
@@ -1654,8 +1584,8 @@
     "pk": 146,
     "fields": {
         "ingredient": 120,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "800.00"
     }
 },
@@ -1664,8 +1594,8 @@
     "pk": 147,
     "fields": {
         "ingredient": 121,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "700.00"
     }
 },
@@ -1674,8 +1604,8 @@
     "pk": 148,
     "fields": {
         "ingredient": 122,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "170.00"
     }
 },
@@ -1684,8 +1614,8 @@
     "pk": 149,
     "fields": {
         "ingredient": 122,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "2.00"
     }
 },
@@ -1694,8 +1624,8 @@
     "pk": 150,
     "fields": {
         "ingredient": 123,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -1704,8 +1634,8 @@
     "pk": 151,
     "fields": {
         "ingredient": 123,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "2.00"
     }
 },
@@ -1714,8 +1644,8 @@
     "pk": 152,
     "fields": {
         "ingredient": 124,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -1724,8 +1654,8 @@
     "pk": 153,
     "fields": {
         "ingredient": 125,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "140.00"
     }
 },
@@ -1734,8 +1664,8 @@
     "pk": 154,
     "fields": {
         "ingredient": 126,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "125.00"
     }
 },
@@ -1744,8 +1674,8 @@
     "pk": 155,
     "fields": {
         "ingredient": 127,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "180.00"
     }
 },
@@ -1754,8 +1684,8 @@
     "pk": 156,
     "fields": {
         "ingredient": 128,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "125.00"
     }
 },
@@ -1764,8 +1694,8 @@
     "pk": 157,
     "fields": {
         "ingredient": 129,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -1774,8 +1704,8 @@
     "pk": 158,
     "fields": {
         "ingredient": 129,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "9.00"
     }
 },
@@ -1784,8 +1714,8 @@
     "pk": 159,
     "fields": {
         "ingredient": 129,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -1794,8 +1724,8 @@
     "pk": 160,
     "fields": {
         "ingredient": 130,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "115.00"
     }
 },
@@ -1804,8 +1734,8 @@
     "pk": 161,
     "fields": {
         "ingredient": 130,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "9.00"
     }
 },
@@ -1814,8 +1744,8 @@
     "pk": 162,
     "fields": {
         "ingredient": 130,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -1824,8 +1754,8 @@
     "pk": 163,
     "fields": {
         "ingredient": 131,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "125.00"
     }
 },
@@ -1834,8 +1764,8 @@
     "pk": 164,
     "fields": {
         "ingredient": 131,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "10.00"
     }
 },
@@ -1844,8 +1774,8 @@
     "pk": 165,
     "fields": {
         "ingredient": 131,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -1854,8 +1784,8 @@
     "pk": 166,
     "fields": {
         "ingredient": 132,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "188.00"
     }
 },
@@ -1864,8 +1794,8 @@
     "pk": 167,
     "fields": {
         "ingredient": 132,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "12.00"
     }
 },
@@ -1874,8 +1804,8 @@
     "pk": 168,
     "fields": {
         "ingredient": 132,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -1884,8 +1814,8 @@
     "pk": 169,
     "fields": {
         "ingredient": 133,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "12.00"
     }
 },
@@ -1894,8 +1824,8 @@
     "pk": 170,
     "fields": {
         "ingredient": 133,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -1904,8 +1834,8 @@
     "pk": 171,
     "fields": {
         "ingredient": 134,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1914,8 +1844,8 @@
     "pk": 172,
     "fields": {
         "ingredient": 134,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -1924,8 +1854,8 @@
     "pk": 173,
     "fields": {
         "ingredient": 134,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "260.00"
     }
 },
@@ -1934,8 +1864,8 @@
     "pk": 174,
     "fields": {
         "ingredient": 135,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "240.00"
     }
 },
@@ -1944,8 +1874,8 @@
     "pk": 175,
     "fields": {
         "ingredient": 135,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -1954,8 +1884,8 @@
     "pk": 176,
     "fields": {
         "ingredient": 135,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -1964,8 +1894,8 @@
     "pk": 177,
     "fields": {
         "ingredient": 136,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -1974,8 +1904,8 @@
     "pk": 178,
     "fields": {
         "ingredient": 136,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -1984,8 +1914,8 @@
     "pk": 179,
     "fields": {
         "ingredient": 136,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -1994,8 +1924,8 @@
     "pk": 180,
     "fields": {
         "ingredient": 137,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -2004,8 +1934,8 @@
     "pk": 181,
     "fields": {
         "ingredient": 137,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -2014,8 +1944,8 @@
     "pk": 182,
     "fields": {
         "ingredient": 137,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2024,8 +1954,8 @@
     "pk": 183,
     "fields": {
         "ingredient": 138,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -2034,8 +1964,8 @@
     "pk": 184,
     "fields": {
         "ingredient": 138,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -2044,8 +1974,8 @@
     "pk": 185,
     "fields": {
         "ingredient": 138,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2054,8 +1984,8 @@
     "pk": 186,
     "fields": {
         "ingredient": 139,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "12.00"
     }
 },
@@ -2064,8 +1994,8 @@
     "pk": 187,
     "fields": {
         "ingredient": 139,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -2074,8 +2004,8 @@
     "pk": 188,
     "fields": {
         "ingredient": 140,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "9.00"
     }
 },
@@ -2084,8 +2014,8 @@
     "pk": 189,
     "fields": {
         "ingredient": 140,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -2094,8 +2024,8 @@
     "pk": 190,
     "fields": {
         "ingredient": 141,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "8.00"
     }
 },
@@ -2104,8 +2034,8 @@
     "pk": 191,
     "fields": {
         "ingredient": 141,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "3.00"
     }
 },
@@ -2114,8 +2044,8 @@
     "pk": 192,
     "fields": {
         "ingredient": 30,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "1800.00"
     }
 },
@@ -2124,8 +2054,8 @@
     "pk": 193,
     "fields": {
         "ingredient": 34,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -2134,8 +2064,8 @@
     "pk": 194,
     "fields": {
         "ingredient": 33,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "14.00"
     }
 },
@@ -2144,8 +2074,8 @@
     "pk": 195,
     "fields": {
         "ingredient": 35,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -2154,8 +2084,8 @@
     "pk": 196,
     "fields": {
         "ingredient": 31,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "1500.00"
     }
 },
@@ -2164,8 +2094,8 @@
     "pk": 197,
     "fields": {
         "ingredient": 142,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -2174,8 +2104,8 @@
     "pk": 198,
     "fields": {
         "ingredient": 142,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "13.00"
     }
 },
@@ -2184,8 +2114,8 @@
     "pk": 199,
     "fields": {
         "ingredient": 142,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2194,8 +2124,8 @@
     "pk": 200,
     "fields": {
         "ingredient": 68,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -2204,8 +2134,8 @@
     "pk": 201,
     "fields": {
         "ingredient": 143,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -2214,8 +2144,8 @@
     "pk": 202,
     "fields": {
         "ingredient": 144,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -2224,8 +2154,8 @@
     "pk": 203,
     "fields": {
         "ingredient": 145,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "100.00"
     }
 },
@@ -2234,8 +2164,8 @@
     "pk": 204,
     "fields": {
         "ingredient": 69,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "330.00"
     }
 },
@@ -2244,8 +2174,8 @@
     "pk": 205,
     "fields": {
         "ingredient": 69,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -2254,8 +2184,8 @@
     "pk": 206,
     "fields": {
         "ingredient": 69,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "7.00"
     }
 },
@@ -2264,8 +2194,8 @@
     "pk": 207,
     "fields": {
         "ingredient": 146,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "270.00"
     }
 },
@@ -2274,8 +2204,8 @@
     "pk": 208,
     "fields": {
         "ingredient": 146,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "20.00"
     }
 },
@@ -2284,8 +2214,8 @@
     "pk": 209,
     "fields": {
         "ingredient": 146,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "7.00"
     }
 },
@@ -2294,8 +2224,8 @@
     "pk": 210,
     "fields": {
         "ingredient": 147,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -2304,8 +2234,8 @@
     "pk": 211,
     "fields": {
         "ingredient": 147,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -2314,8 +2244,8 @@
     "pk": 212,
     "fields": {
         "ingredient": 147,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2324,8 +2254,8 @@
     "pk": 213,
     "fields": {
         "ingredient": 148,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "12.00"
     }
 },
@@ -2334,8 +2264,8 @@
     "pk": 214,
     "fields": {
         "ingredient": 148,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -2344,8 +2274,8 @@
     "pk": 215,
     "fields": {
         "ingredient": 149,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -2354,8 +2284,8 @@
     "pk": 216,
     "fields": {
         "ingredient": 149,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2364,8 +2294,8 @@
     "pk": 217,
     "fields": {
         "ingredient": 149,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -2374,8 +2304,8 @@
     "pk": 218,
     "fields": {
         "ingredient": 150,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -2384,8 +2314,8 @@
     "pk": 219,
     "fields": {
         "ingredient": 150,
-        "unit": 4,
-        "base_unit": 1,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
     }
 },
@@ -2394,8 +2324,8 @@
     "pk": 220,
     "fields": {
         "ingredient": 150,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2404,8 +2334,8 @@
     "pk": 221,
     "fields": {
         "ingredient": 151,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "80.00"
     }
 },
@@ -2414,8 +2344,8 @@
     "pk": 222,
     "fields": {
         "ingredient": 152,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -2424,8 +2354,8 @@
     "pk": 223,
     "fields": {
         "ingredient": 153,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "70.00"
     }
 },
@@ -2434,8 +2364,8 @@
     "pk": 224,
     "fields": {
         "ingredient": 154,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "40.00"
     }
 },
@@ -2444,8 +2374,8 @@
     "pk": 225,
     "fields": {
         "ingredient": 155,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -2454,8 +2384,8 @@
     "pk": 226,
     "fields": {
         "ingredient": 156,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "3.00"
     }
 },
@@ -2464,8 +2394,8 @@
     "pk": 227,
     "fields": {
         "ingredient": 156,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -2474,8 +2404,8 @@
     "pk": 228,
     "fields": {
         "ingredient": 157,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "155.00"
     }
 },
@@ -2484,8 +2414,8 @@
     "pk": 229,
     "fields": {
         "ingredient": 157,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "2.00"
     }
 },
@@ -2494,8 +2424,8 @@
     "pk": 230,
     "fields": {
         "ingredient": 158,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "150.00"
     }
 },
@@ -2504,8 +2434,8 @@
     "pk": 231,
     "fields": {
         "ingredient": 158,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -2514,8 +2444,8 @@
     "pk": 232,
     "fields": {
         "ingredient": 159,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "145.00"
     }
 },
@@ -2524,8 +2454,8 @@
     "pk": 233,
     "fields": {
         "ingredient": 159,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -2534,8 +2464,8 @@
     "pk": 234,
     "fields": {
         "ingredient": 160,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "140.00"
     }
 },
@@ -2544,8 +2474,8 @@
     "pk": 235,
     "fields": {
         "ingredient": 160,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -2554,8 +2484,8 @@
     "pk": 236,
     "fields": {
         "ingredient": 161,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "180.00"
     }
 },
@@ -2564,8 +2494,8 @@
     "pk": 237,
     "fields": {
         "ingredient": 161,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "3.00"
     }
 },
@@ -2574,8 +2504,8 @@
     "pk": 238,
     "fields": {
         "ingredient": 162,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "190.00"
     }
 },
@@ -2584,8 +2514,8 @@
     "pk": 239,
     "fields": {
         "ingredient": 162,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -2594,8 +2524,8 @@
     "pk": 240,
     "fields": {
         "ingredient": 163,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "210.00"
     }
 },
@@ -2604,8 +2534,8 @@
     "pk": 241,
     "fields": {
         "ingredient": 163,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "4.00"
     }
 },
@@ -2614,8 +2544,8 @@
     "pk": 242,
     "fields": {
         "ingredient": 164,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "5000.00"
     }
 },
@@ -2624,8 +2554,8 @@
     "pk": 243,
     "fields": {
         "ingredient": 165,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "115.00"
     }
 },
@@ -2634,8 +2564,8 @@
     "pk": 244,
     "fields": {
         "ingredient": 166,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "30.00"
     }
 },
@@ -2644,8 +2574,8 @@
     "pk": 245,
     "fields": {
         "ingredient": 167,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "120.00"
     }
 },
@@ -2654,8 +2584,8 @@
     "pk": 246,
     "fields": {
         "ingredient": 168,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "1500.00"
     }
 },
@@ -2664,8 +2594,8 @@
     "pk": 247,
     "fields": {
         "ingredient": 169,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2674,8 +2604,8 @@
     "pk": 248,
     "fields": {
         "ingredient": 169,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -2684,8 +2614,8 @@
     "pk": 249,
     "fields": {
         "ingredient": 170,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2694,8 +2624,8 @@
     "pk": 250,
     "fields": {
         "ingredient": 170,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "160.00"
     }
 },
@@ -2704,8 +2634,8 @@
     "pk": 251,
     "fields": {
         "ingredient": 171,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "35.00"
     }
 },
@@ -2714,8 +2644,8 @@
     "pk": 252,
     "fields": {
         "ingredient": 172,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "250.00"
     }
 },
@@ -2724,8 +2654,8 @@
     "pk": 253,
     "fields": {
         "ingredient": 173,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "300.00"
     }
 },
@@ -2734,8 +2664,8 @@
     "pk": 254,
     "fields": {
         "ingredient": 174,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -2744,8 +2674,8 @@
     "pk": 255,
     "fields": {
         "ingredient": 175,
-        "unit": 9,
-        "base_unit": 1,
+        "from_unit": 9,
+        "to_unit": 1,
         "amount_per_unit": "50.00"
     }
 },
@@ -2754,8 +2684,8 @@
     "pk": 256,
     "fields": {
         "ingredient": 176,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "220.00"
     }
 },
@@ -2764,8 +2694,8 @@
     "pk": 257,
     "fields": {
         "ingredient": 177,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "70.00"
     }
 },
@@ -2774,8 +2704,8 @@
     "pk": 258,
     "fields": {
         "ingredient": 178,
-        "unit": 3,
-        "base_unit": 1,
+        "from_unit": 3,
+        "to_unit": 1,
         "amount_per_unit": "425.00"
     }
 },
@@ -2784,8 +2714,8 @@
     "pk": 259,
     "fields": {
         "ingredient": 179,
-        "unit": 5,
-        "base_unit": 1,
+        "from_unit": 5,
+        "to_unit": 1,
         "amount_per_unit": "5.00"
     }
 },
@@ -2794,8 +2724,8 @@
     "pk": 260,
     "fields": {
         "ingredient": 180,
-        "unit": 9,
-        "base_unit": 1,
+        "from_unit": 9,
+        "to_unit": 1,
         "amount_per_unit": "50.00"
     }
 },
@@ -2804,8 +2734,8 @@
     "pk": 261,
     "fields": {
         "ingredient": 181,
-        "unit": 7,
-        "base_unit": 1,
+        "from_unit": 7,
+        "to_unit": 1,
         "amount_per_unit": "200.00"
     }
 },
@@ -2814,8 +2744,8 @@
     "pk": 262,
     "fields": {
         "ingredient": 91,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -2824,8 +2754,8 @@
     "pk": 263,
     "fields": {
         "ingredient": 95,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -2834,8 +2764,8 @@
     "pk": 264,
     "fields": {
         "ingredient": 95,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -2844,8 +2774,8 @@
     "pk": 267,
     "fields": {
         "ingredient": 92,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -2854,8 +2784,8 @@
     "pk": 268,
     "fields": {
         "ingredient": 92,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -2864,8 +2794,8 @@
     "pk": 269,
     "fields": {
         "ingredient": 37,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -2874,8 +2804,8 @@
     "pk": 270,
     "fields": {
         "ingredient": 37,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -2884,8 +2814,8 @@
     "pk": 273,
     "fields": {
         "ingredient": 62,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -2894,8 +2824,8 @@
     "pk": 277,
     "fields": {
         "ingredient": 114,
-        "unit": 1,
-        "base_unit": 6,
+        "from_unit": 1,
+        "to_unit": 6,
         "amount_per_unit": "1.00"
     }
 },
@@ -2904,8 +2834,8 @@
     "pk": 278,
     "fields": {
         "ingredient": 111,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -2914,8 +2844,8 @@
     "pk": 279,
     "fields": {
         "ingredient": 65,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -2924,8 +2854,8 @@
     "pk": 280,
     "fields": {
         "ingredient": 62,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -2934,8 +2864,8 @@
     "pk": 281,
     "fields": {
         "ingredient": 113,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "0.96"
     }
 },
@@ -2944,8 +2874,8 @@
     "pk": 282,
     "fields": {
         "ingredient": 111,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -2954,8 +2884,8 @@
     "pk": 283,
     "fields": {
         "ingredient": 112,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.03"
     }
 },
@@ -2964,8 +2894,8 @@
     "pk": 284,
     "fields": {
         "ingredient": 115,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.08"
     }
 },
@@ -2974,8 +2904,8 @@
     "pk": 285,
     "fields": {
         "ingredient": 116,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -2984,8 +2914,8 @@
     "pk": 286,
     "fields": {
         "ingredient": 65,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -2994,8 +2924,8 @@
     "pk": 287,
     "fields": {
         "ingredient": 117,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -3004,8 +2934,8 @@
     "pk": 288,
     "fields": {
         "ingredient": 63,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -3014,8 +2944,8 @@
     "pk": 289,
     "fields": {
         "ingredient": 95,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.03"
     }
 },
@@ -3024,8 +2954,8 @@
     "pk": 290,
     "fields": {
         "ingredient": 36,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.03"
     }
 },
@@ -3034,8 +2964,8 @@
     "pk": 291,
     "fields": {
         "ingredient": 36,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -3044,8 +2974,8 @@
     "pk": 292,
     "fields": {
         "ingredient": 91,
-        "unit": 4,
-        "base_unit": 6,
+        "from_unit": 4,
+        "to_unit": 6,
         "amount_per_unit": "15.00"
     }
 },
@@ -3054,8 +2984,8 @@
     "pk": 293,
     "fields": {
         "ingredient": 91,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -3064,8 +2994,8 @@
     "pk": 294,
     "fields": {
         "ingredient": 91,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.03"
     }
 },
@@ -3074,8 +3004,8 @@
     "pk": 295,
     "fields": {
         "ingredient": 37,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.01"
     }
 },
@@ -3084,8 +3014,8 @@
     "pk": 296,
     "fields": {
         "ingredient": 92,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "0.96"
     }
 },
@@ -3094,8 +3024,8 @@
     "pk": 297,
     "fields": {
         "ingredient": 77,
-        "unit": 5,
-        "base_unit": 6,
+        "from_unit": 5,
+        "to_unit": 6,
         "amount_per_unit": "5.00"
     }
 },
@@ -3104,8 +3034,8 @@
     "pk": 298,
     "fields": {
         "ingredient": 77,
-        "unit": 7,
-        "base_unit": 6,
+        "from_unit": 7,
+        "to_unit": 6,
         "amount_per_unit": "250.00"
     }
 },
@@ -3114,8 +3044,8 @@
     "pk": 299,
     "fields": {
         "ingredient": 77,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.00"
     }
 },
@@ -3124,8 +3054,8 @@
     "pk": 300,
     "fields": {
         "ingredient": 136,
-        "unit": 6,
-        "base_unit": 1,
+        "from_unit": 6,
+        "to_unit": 1,
         "amount_per_unit": "1.20"
     }
 },
@@ -3133,250 +3063,320 @@
     "model": "recipes.unitconversion",
     "pk": 301,
     "fields": {
-        "ingredient": 183,
-        "unit": 3,
-        "base_unit": 1,
-        "amount_per_unit": "30.00"
+        "ingredient": 51,
+        "from_unit": 8,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 302,
     "fields": {
-        "ingredient": 192,
-        "unit": 3,
-        "base_unit": 1,
-        "amount_per_unit": "17.00"
+        "ingredient": 52,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "7.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 303,
     "fields": {
-        "ingredient": 195,
-        "unit": 3,
-        "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "ingredient": 52,
+        "from_unit": 8,
+        "to_unit": 1,
+        "amount_per_unit": "0.30"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 304,
     "fields": {
-        "ingredient": 210,
-        "unit": 3,
-        "base_unit": 1,
-        "amount_per_unit": "50.00"
+        "ingredient": 11,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 305,
     "fields": {
-        "ingredient": 184,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
+        "ingredient": 14,
+        "from_unit": 3,
+        "to_unit": 1,
+        "amount_per_unit": "3.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 306,
     "fields": {
-        "ingredient": 184,
-        "unit": 5,
-        "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "ingredient": 14,
+        "from_unit": 5,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 307,
     "fields": {
-        "ingredient": 185,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
+        "ingredient": 49,
+        "from_unit": 7,
+        "to_unit": 1,
+        "amount_per_unit": "180.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 308,
     "fields": {
-        "ingredient": 185,
-        "unit": 7,
-        "base_unit": 1,
-        "amount_per_unit": "250.00"
+        "ingredient": 50,
+        "from_unit": 7,
+        "to_unit": 1,
+        "amount_per_unit": "180.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 309,
     "fields": {
-        "ingredient": 185,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "ingredient": 55,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "8.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 310,
     "fields": {
-        "ingredient": 191,
-        "unit": 6,
-        "base_unit": 1,
-        "amount_per_unit": "1.00"
+        "ingredient": 56,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "8.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 311,
     "fields": {
-        "ingredient": 191,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "ingredient": 60,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 312,
     "fields": {
-        "ingredient": 197,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "ingredient": 61,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "12.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 313,
     "fields": {
-        "ingredient": 209,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "ingredient": 64,
+        "from_unit": 5,
+        "to_unit": 1,
+        "amount_per_unit": "2.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 314,
     "fields": {
-        "ingredient": 209,
-        "unit": 5,
-        "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "ingredient": 74,
+        "from_unit": 5,
+        "to_unit": 1,
+        "amount_per_unit": "4.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 315,
     "fields": {
-        "ingredient": 197,
-        "unit": 5,
-        "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "ingredient": 75,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "10.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 316,
     "fields": {
-        "ingredient": 198,
-        "unit": 7,
-        "base_unit": 1,
-        "amount_per_unit": "200.00"
+        "ingredient": 32,
+        "from_unit": 10,
+        "to_unit": 1,
+        "amount_per_unit": "185.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 317,
     "fields": {
-        "ingredient": 60,
-        "unit": 5,
-        "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "ingredient": 178,
+        "from_unit": 10,
+        "to_unit": 1,
+        "amount_per_unit": "400.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 318,
     "fields": {
-        "ingredient": 60,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "ingredient": 183,
+        "from_unit": 3,
+        "to_unit": 1,
+        "amount_per_unit": "30.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 319,
     "fields": {
-        "ingredient": 186,
-        "unit": 4,
-        "base_unit": 1,
-        "amount_per_unit": "15.00"
+        "ingredient": 192,
+        "from_unit": 3,
+        "to_unit": 1,
+        "amount_per_unit": "17.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 320,
     "fields": {
-        "ingredient": 75,
-        "unit": 7,
-        "base_unit": 1,
-        "amount_per_unit": "125.00"
+        "ingredient": 195,
+        "from_unit": 3,
+        "to_unit": 1,
+        "amount_per_unit": "15.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 321,
     "fields": {
-        "ingredient": 194,
-        "unit": 3,
-        "base_unit": 1,
-        "amount_per_unit": "300.00"
+        "ingredient": 210,
+        "from_unit": 3,
+        "to_unit": 1,
+        "amount_per_unit": "50.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 322,
     "fields": {
-        "ingredient": 76,
-        "unit": 5,
-        "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "ingredient": 184,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 323,
     "fields": {
-        "ingredient": 187,
-        "unit": 9,
-        "base_unit": 1,
-        "amount_per_unit": "100.00"
+        "ingredient": 184,
+        "from_unit": 5,
+        "to_unit": 1,
+        "amount_per_unit": "5.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 324,
     "fields": {
-        "ingredient": 127,
-        "unit": 3,
-        "base_unit": 1,
-        "amount_per_unit": "5.00"
+        "ingredient": 185,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
     "model": "recipes.unitconversion",
     "pk": 325,
     "fields": {
-        "ingredient": 182,
-        "unit": 4,
-        "base_unit": 1,
+        "ingredient": 191,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 326,
+    "fields": {
+        "ingredient": 191,
+        "from_unit": 4,
+        "to_unit": 1,
         "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 327,
+    "fields": {
+        "ingredient": 197,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 328,
+    "fields": {
+        "ingredient": 209,
+        "from_unit": 4,
+        "to_unit": 1,
+        "amount_per_unit": "15.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 329,
+    "fields": {
+        "ingredient": 38,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.05"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 330,
+    "fields": {
+        "ingredient": 59,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 331,
+    "fields": {
+        "ingredient": 58,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
+    "model": "recipes.unitconversion",
+    "pk": 332,
+    "fields": {
+        "ingredient": 60,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
     }
 },
 {
@@ -7953,9 +7953,9 @@
         "ingredient": 198,
         "base_unit": 1,
         "base_weight": 100,
-        "protein": "23.0",
-        "fat": "3.9",
-        "carbs": "53.0"
+        "protein": "8.3",
+        "fat": "0.4",
+        "carbs": "12.8"
     }
 },
 {
@@ -8100,6 +8100,18 @@
         "protein": "12.0",
         "fat": "24.0",
         "carbs": "2.0"
+    }
+},
+{
+    "model": "recipes.ingredientnutrition",
+    "pk": 210,
+    "fields": {
+        "ingredient": 71,
+        "base_unit": 1,
+        "base_weight": 100,
+        "protein": "10.0",
+        "fat": "1.0",
+        "carbs": "78.0"
     }
 },
 {
@@ -9894,8 +9906,8 @@
     "fields": {
         "recipe": 1,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "0.15",
+        "unit": 5
     }
 },
 {
@@ -10494,8 +10506,8 @@
     "fields": {
         "recipe": 9,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "0.15",
+        "unit": 5
     }
 },
 {
@@ -10775,7 +10787,7 @@
         "recipe": 14,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 3
+        "unit": 8
     }
 },
 {
@@ -10964,8 +10976,8 @@
     "fields": {
         "recipe": 17,
         "ingredient": 94,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -11265,7 +11277,7 @@
         "recipe": 23,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 3
+        "unit": 8
     }
 },
 {
@@ -11284,8 +11296,8 @@
     "fields": {
         "recipe": 23,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "0.15",
+        "unit": 5
     }
 },
 {
@@ -11314,8 +11326,8 @@
     "fields": {
         "recipe": 24,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "0.15",
+        "unit": 5
     }
 },
 {
@@ -11524,8 +11536,8 @@
     "fields": {
         "recipe": 28,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "0.15",
+        "unit": 5
     }
 },
 {
@@ -11625,7 +11637,7 @@
         "recipe": 30,
         "ingredient": 66,
         "amount": "1.00",
-        "unit": 9
+        "unit": 5
     }
 },
 {
@@ -11784,8 +11796,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -11844,8 +11856,8 @@
     "fields": {
         "recipe": 34,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -11904,8 +11916,8 @@
     "fields": {
         "recipe": 35,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -12174,8 +12186,8 @@
     "fields": {
         "recipe": 39,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -12974,8 +12986,8 @@
     "fields": {
         "recipe": 52,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -13144,8 +13156,8 @@
     "fields": {
         "recipe": 53,
         "ingredient": 85,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -13404,8 +13416,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -14054,8 +14066,8 @@
     "fields": {
         "recipe": 64,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -14224,8 +14236,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 8
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
@@ -15736,6 +15748,596 @@
         "ingredient": 59,
         "amount": "10.00",
         "unit": 6
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 632,
+    "fields": {
+        "recipe": 96,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 633,
+    "fields": {
+        "recipe": 74,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 634,
+    "fields": {
+        "recipe": 13,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 635,
+    "fields": {
+        "recipe": 22,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 636,
+    "fields": {
+        "recipe": 12,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 637,
+    "fields": {
+        "recipe": 6,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 638,
+    "fields": {
+        "recipe": 90,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 639,
+    "fields": {
+        "recipe": 90,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 640,
+    "fields": {
+        "recipe": 90,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 641,
+    "fields": {
+        "recipe": 95,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 642,
+    "fields": {
+        "recipe": 56,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 643,
+    "fields": {
+        "recipe": 89,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 644,
+    "fields": {
+        "recipe": 88,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 645,
+    "fields": {
+        "recipe": 88,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 646,
+    "fields": {
+        "recipe": 80,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 647,
+    "fields": {
+        "recipe": 80,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 648,
+    "fields": {
+        "recipe": 98,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 649,
+    "fields": {
+        "recipe": 98,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 650,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 651,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 652,
+    "fields": {
+        "recipe": 85,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 653,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 654,
+    "fields": {
+        "recipe": 11,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 655,
+    "fields": {
+        "recipe": 9,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 656,
+    "fields": {
+        "recipe": 76,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 657,
+    "fields": {
+        "recipe": 27,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 658,
+    "fields": {
+        "recipe": 24,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 659,
+    "fields": {
+        "recipe": 54,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 660,
+    "fields": {
+        "recipe": 21,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 661,
+    "fields": {
+        "recipe": 28,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 662,
+    "fields": {
+        "recipe": 5,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 663,
+    "fields": {
+        "recipe": 92,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 664,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 665,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 666,
+    "fields": {
+        "recipe": 86,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 667,
+    "fields": {
+        "recipe": 97,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 668,
+    "fields": {
+        "recipe": 91,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 669,
+    "fields": {
+        "recipe": 91,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 670,
+    "fields": {
+        "recipe": 82,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 671,
+    "fields": {
+        "recipe": 1,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 672,
+    "fields": {
+        "recipe": 70,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 673,
+    "fields": {
+        "recipe": 15,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 674,
+    "fields": {
+        "recipe": 93,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 675,
+    "fields": {
+        "recipe": 93,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 676,
+    "fields": {
+        "recipe": 93,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 677,
+    "fields": {
+        "recipe": 81,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 678,
+    "fields": {
+        "recipe": 81,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 679,
+    "fields": {
+        "recipe": 18,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 680,
+    "fields": {
+        "recipe": 72,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 681,
+    "fields": {
+        "recipe": 72,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 682,
+    "fields": {
+        "recipe": 99,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 683,
+    "fields": {
+        "recipe": 83,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 684,
+    "fields": {
+        "recipe": 83,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 685,
+    "fields": {
+        "recipe": 75,
+        "ingredient": 51,
+        "amount": "0.50",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 686,
+    "fields": {
+        "recipe": 75,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 687,
+    "fields": {
+        "recipe": 75,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 688,
+    "fields": {
+        "recipe": 94,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 689,
+    "fields": {
+        "recipe": 94,
+        "ingredient": 59,
+        "amount": "1.00",
+        "unit": 4
+    }
+},
+{
+    "model": "recipes.recipeingredient",
+    "pk": 690,
+    "fields": {
+        "recipe": 46,
+        "ingredient": 52,
+        "amount": "0.25",
+        "unit": 5
     }
 },
 {
