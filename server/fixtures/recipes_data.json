@@ -3380,6 +3380,16 @@
     }
 },
 {
+    "model": "recipes.unitconversion",
+    "pk": 333,
+    "fields": {
+        "ingredient": 138,
+        "from_unit": 6,
+        "to_unit": 1,
+        "amount_per_unit": "1.00"
+    }
+},
+{
     "model": "recipes.ingredient",
     "pk": 1,
     "fields": {
@@ -6295,7 +6305,7 @@
     "pk": 58,
     "fields": {
         "ingredient": 58,
-        "base_unit": 1,
+        "base_unit": 6,
         "base_weight": 100,
         "protein": "0.0",
         "fat": "99.8",
@@ -6307,7 +6317,7 @@
     "pk": 59,
     "fields": {
         "ingredient": 59,
-        "base_unit": 1,
+        "base_unit": 6,
         "base_weight": 100,
         "protein": "0.0",
         "fat": "99.9",
@@ -6319,7 +6329,7 @@
     "pk": 60,
     "fields": {
         "ingredient": 60,
-        "base_unit": 1,
+        "base_unit": 6,
         "base_weight": 100,
         "protein": "0.0",
         "fat": "99.7",
@@ -7231,7 +7241,7 @@
     "pk": 137,
     "fields": {
         "ingredient": 138,
-        "base_unit": 1,
+        "base_unit": 6,
         "base_weight": 100,
         "protein": "0.0",
         "fat": "0.0",
@@ -9886,8 +9896,8 @@
     "fields": {
         "recipe": 1,
         "ingredient": 58,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -9896,8 +9906,8 @@
     "fields": {
         "recipe": 1,
         "ingredient": 18,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -9906,8 +9916,8 @@
     "fields": {
         "recipe": 1,
         "ingredient": 52,
-        "amount": "0.15",
-        "unit": 5
+        "amount": "0.30",
+        "unit": 1
     }
 },
 {
@@ -9956,8 +9966,8 @@
     "fields": {
         "recipe": 2,
         "ingredient": 14,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -9976,8 +9986,8 @@
     "fields": {
         "recipe": 3,
         "ingredient": 1,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -9996,8 +10006,8 @@
     "fields": {
         "recipe": 3,
         "ingredient": 2,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "225.00",
+        "unit": 1
     }
 },
 {
@@ -10006,8 +10016,8 @@
     "fields": {
         "recipe": 3,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10016,8 +10026,8 @@
     "fields": {
         "recipe": 3,
         "ingredient": 13,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -10026,8 +10036,8 @@
     "fields": {
         "recipe": 3,
         "ingredient": 76,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 1
     }
 },
 {
@@ -10036,8 +10046,8 @@
     "fields": {
         "recipe": 3,
         "ingredient": 59,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -10076,8 +10086,8 @@
     "fields": {
         "recipe": 4,
         "ingredient": 37,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "250.00",
+        "unit": 6
     }
 },
 {
@@ -10086,8 +10096,8 @@
     "fields": {
         "recipe": 4,
         "ingredient": 2,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "225.00",
+        "unit": 1
     }
 },
 {
@@ -10096,8 +10106,8 @@
     "fields": {
         "recipe": 4,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10117,7 +10127,7 @@
         "recipe": 4,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -10126,8 +10136,8 @@
     "fields": {
         "recipe": 4,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -10136,8 +10146,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 50,
-        "amount": "1.50",
-        "unit": 7
+        "amount": "270.00",
+        "unit": 1
     }
 },
 {
@@ -10156,8 +10166,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10166,8 +10176,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 13,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -10176,8 +10186,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 11,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "15.00",
+        "unit": 1
     }
 },
 {
@@ -10186,8 +10196,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 59,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -10196,8 +10206,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 62,
-        "amount": "3.00",
-        "unit": 7
+        "amount": "750.00",
+        "unit": 6
     }
 },
 {
@@ -10206,8 +10216,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -10226,8 +10236,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 2,
-        "amount": "6.00",
-        "unit": 3
+        "amount": "450.00",
+        "unit": 1
     }
 },
 {
@@ -10236,8 +10246,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 36,
-        "amount": "0.50",
-        "unit": 7
+        "amount": "125.00",
+        "unit": 6
     }
 },
 {
@@ -10256,8 +10266,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 13,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -10276,8 +10286,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 75,
-        "amount": "4.00",
-        "unit": 4
+        "amount": "40.00",
+        "unit": 1
     }
 },
 {
@@ -10286,8 +10296,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 59,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "42.00",
+        "unit": 6
     }
 },
 {
@@ -10296,8 +10306,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "7.00",
+        "unit": 1
     }
 },
 {
@@ -10306,8 +10316,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 14,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -10316,8 +10326,8 @@
     "fields": {
         "recipe": 7,
         "ingredient": 12,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "400.00",
+        "unit": 1
     }
 },
 {
@@ -10326,8 +10336,8 @@
     "fields": {
         "recipe": 7,
         "ingredient": 5,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -10346,8 +10356,8 @@
     "fields": {
         "recipe": 7,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -10356,8 +10366,8 @@
     "fields": {
         "recipe": 7,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -10366,8 +10376,8 @@
     "fields": {
         "recipe": 7,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -10376,8 +10386,8 @@
     "fields": {
         "recipe": 7,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -10386,8 +10396,8 @@
     "fields": {
         "recipe": 8,
         "ingredient": 46,
-        "amount": "2.00",
-        "unit": 7
+        "amount": "160.00",
+        "unit": 1
     }
 },
 {
@@ -10396,8 +10406,8 @@
     "fields": {
         "recipe": 8,
         "ingredient": 16,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -10426,8 +10436,8 @@
     "fields": {
         "recipe": 8,
         "ingredient": 67,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -10436,8 +10446,8 @@
     "fields": {
         "recipe": 8,
         "ingredient": 74,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "4.00",
+        "unit": 1
     }
 },
 {
@@ -10466,8 +10476,8 @@
     "fields": {
         "recipe": 9,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -10486,8 +10496,8 @@
     "fields": {
         "recipe": 9,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -10496,8 +10506,8 @@
     "fields": {
         "recipe": 9,
         "ingredient": 18,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -10506,8 +10516,8 @@
     "fields": {
         "recipe": 9,
         "ingredient": 52,
-        "amount": "0.15",
-        "unit": 5
+        "amount": "0.30",
+        "unit": 1
     }
 },
 {
@@ -10516,8 +10526,8 @@
     "fields": {
         "recipe": 10,
         "ingredient": 46,
-        "amount": "0.50",
-        "unit": 7
+        "amount": "40.00",
+        "unit": 1
     }
 },
 {
@@ -10526,8 +10536,8 @@
     "fields": {
         "recipe": 10,
         "ingredient": 36,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "250.00",
+        "unit": 6
     }
 },
 {
@@ -10536,8 +10546,8 @@
     "fields": {
         "recipe": 10,
         "ingredient": 15,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -10546,8 +10556,8 @@
     "fields": {
         "recipe": 10,
         "ingredient": 55,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "8.00",
+        "unit": 1
     }
 },
 {
@@ -10556,8 +10566,8 @@
     "fields": {
         "recipe": 10,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "8.00",
+        "unit": 1
     }
 },
 {
@@ -10586,8 +10596,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 44,
-        "amount": "0.50",
-        "unit": 7
+        "amount": "90.00",
+        "unit": 1
     }
 },
 {
@@ -10596,8 +10606,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 2,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "225.00",
+        "unit": 1
     }
 },
 {
@@ -10606,8 +10616,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10616,8 +10626,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 13,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -10626,8 +10636,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 1,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -10636,8 +10646,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "7.00",
+        "unit": 1
     }
 },
 {
@@ -10646,8 +10656,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 45,
-        "amount": "1.50",
-        "unit": 7
+        "amount": "255.00",
+        "unit": 1
     }
 },
 {
@@ -10666,8 +10676,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 2,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -10676,8 +10686,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10686,8 +10696,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 76,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 1
     }
 },
 {
@@ -10696,8 +10706,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 59,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -10706,8 +10716,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 62,
-        "amount": "3.00",
-        "unit": 7
+        "amount": "750.00",
+        "unit": 6
     }
 },
 {
@@ -10716,8 +10726,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -10736,8 +10746,8 @@
     "fields": {
         "recipe": 13,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10746,8 +10756,8 @@
     "fields": {
         "recipe": 13,
         "ingredient": 6,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10756,8 +10766,8 @@
     "fields": {
         "recipe": 13,
         "ingredient": 59,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -10766,8 +10776,8 @@
     "fields": {
         "recipe": 13,
         "ingredient": 18,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -10776,8 +10786,8 @@
     "fields": {
         "recipe": 14,
         "ingredient": 49,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "180.00",
+        "unit": 1
     }
 },
 {
@@ -10787,7 +10797,7 @@
         "recipe": 14,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -10796,8 +10806,8 @@
     "fields": {
         "recipe": 14,
         "ingredient": 14,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "3.00",
+        "unit": 1
     }
 },
 {
@@ -10806,8 +10816,8 @@
     "fields": {
         "recipe": 14,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -10816,8 +10826,8 @@
     "fields": {
         "recipe": 14,
         "ingredient": 58,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "42.00",
+        "unit": 6
     }
 },
 {
@@ -10826,8 +10836,8 @@
     "fields": {
         "recipe": 14,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -10836,8 +10846,8 @@
     "fields": {
         "recipe": 14,
         "ingredient": 62,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "250.00",
+        "unit": 6
     }
 },
 {
@@ -10856,8 +10866,8 @@
     "fields": {
         "recipe": 15,
         "ingredient": 2,
-        "amount": "8.00",
-        "unit": 3
+        "amount": "600.00",
+        "unit": 1
     }
 },
 {
@@ -10866,8 +10876,8 @@
     "fields": {
         "recipe": 15,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -10876,8 +10886,8 @@
     "fields": {
         "recipe": 15,
         "ingredient": 76,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 1
     }
 },
 {
@@ -10886,8 +10896,8 @@
     "fields": {
         "recipe": 15,
         "ingredient": 59,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -10906,8 +10916,8 @@
     "fields": {
         "recipe": 15,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "7.00",
+        "unit": 1
     }
 },
 {
@@ -10916,8 +10926,8 @@
     "fields": {
         "recipe": 15,
         "ingredient": 1,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -10946,8 +10956,8 @@
     "fields": {
         "recipe": 17,
         "ingredient": 71,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "36.00",
+        "unit": 1
     }
 },
 {
@@ -10956,8 +10966,8 @@
     "fields": {
         "recipe": 17,
         "ingredient": 67,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "36.00",
+        "unit": 1
     }
 },
 {
@@ -10966,8 +10976,8 @@
     "fields": {
         "recipe": 17,
         "ingredient": 56,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "16.00",
+        "unit": 1
     }
 },
 {
@@ -10996,8 +11006,8 @@
     "fields": {
         "recipe": 18,
         "ingredient": 36,
-        "amount": "2.00",
-        "unit": 7
+        "amount": "500.00",
+        "unit": 6
     }
 },
 {
@@ -11006,8 +11016,8 @@
     "fields": {
         "recipe": 18,
         "ingredient": 72,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "130.00",
+        "unit": 1
     }
 },
 {
@@ -11026,8 +11036,8 @@
     "fields": {
         "recipe": 18,
         "ingredient": 67,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -11036,8 +11046,8 @@
     "fields": {
         "recipe": 18,
         "ingredient": 59,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "42.00",
+        "unit": 6
     }
 },
 {
@@ -11056,8 +11066,8 @@
     "fields": {
         "recipe": 19,
         "ingredient": 4,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "15.00",
+        "unit": 1
     }
 },
 {
@@ -11066,8 +11076,8 @@
     "fields": {
         "recipe": 19,
         "ingredient": 77,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "45.00",
+        "unit": 6
     }
 },
 {
@@ -11076,8 +11086,8 @@
     "fields": {
         "recipe": 19,
         "ingredient": 60,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "12.00",
+        "unit": 6
     }
 },
 {
@@ -11086,8 +11096,8 @@
     "fields": {
         "recipe": 19,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -11096,8 +11106,8 @@
     "fields": {
         "recipe": 21,
         "ingredient": 14,
-        "amount": "4.00",
-        "unit": 3
+        "amount": "12.00",
+        "unit": 1
     }
 },
 {
@@ -11116,8 +11126,8 @@
     "fields": {
         "recipe": 21,
         "ingredient": 44,
-        "amount": "0.50",
-        "unit": 7
+        "amount": "90.00",
+        "unit": 1
     }
 },
 {
@@ -11126,8 +11136,8 @@
     "fields": {
         "recipe": 21,
         "ingredient": 13,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -11136,8 +11146,8 @@
     "fields": {
         "recipe": 21,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -11146,18 +11156,8 @@
     "fields": {
         "recipe": 21,
         "ingredient": 76,
-        "amount": "2.00",
-        "unit": 4
-    }
-},
-{
-    "model": "recipes.recipeingredient",
-    "pk": 146,
-    "fields": {
-        "recipe": 21,
-        "ingredient": 56,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 1
     }
 },
 {
@@ -11176,8 +11176,8 @@
     "fields": {
         "recipe": 21,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -11196,8 +11196,8 @@
     "fields": {
         "recipe": 22,
         "ingredient": 4,
-        "amount": "4.00",
-        "unit": 3
+        "amount": "20.00",
+        "unit": 1
     }
 },
 {
@@ -11206,8 +11206,8 @@
     "fields": {
         "recipe": 22,
         "ingredient": 77,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "45.00",
+        "unit": 6
     }
 },
 {
@@ -11216,8 +11216,8 @@
     "fields": {
         "recipe": 22,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -11227,7 +11227,7 @@
         "recipe": 22,
         "ingredient": 14,
         "amount": "1.00",
-        "unit": 5
+        "unit": 1
     }
 },
 {
@@ -11236,8 +11236,8 @@
     "fields": {
         "recipe": 22,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -11266,8 +11266,8 @@
     "fields": {
         "recipe": 23,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -11277,7 +11277,7 @@
         "recipe": 23,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -11286,8 +11286,8 @@
     "fields": {
         "recipe": 23,
         "ingredient": 18,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -11296,8 +11296,8 @@
     "fields": {
         "recipe": 23,
         "ingredient": 52,
-        "amount": "0.15",
-        "unit": 5
+        "amount": "0.30",
+        "unit": 1
     }
 },
 {
@@ -11326,8 +11326,8 @@
     "fields": {
         "recipe": 24,
         "ingredient": 52,
-        "amount": "0.15",
-        "unit": 5
+        "amount": "0.30",
+        "unit": 1
     }
 },
 {
@@ -11336,8 +11336,8 @@
     "fields": {
         "recipe": 24,
         "ingredient": 14,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -11346,8 +11346,8 @@
     "fields": {
         "recipe": 25,
         "ingredient": 44,
-        "amount": "0.50",
-        "unit": 7
+        "amount": "90.00",
+        "unit": 1
     }
 },
 {
@@ -11356,8 +11356,8 @@
     "fields": {
         "recipe": 25,
         "ingredient": 36,
-        "amount": "2.00",
-        "unit": 7
+        "amount": "500.00",
+        "unit": 6
     }
 },
 {
@@ -11366,8 +11366,8 @@
     "fields": {
         "recipe": 25,
         "ingredient": 62,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "250.00",
+        "unit": 6
     }
 },
 {
@@ -11376,8 +11376,8 @@
     "fields": {
         "recipe": 25,
         "ingredient": 67,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "12.00",
+        "unit": 1
     }
 },
 {
@@ -11406,8 +11406,8 @@
     "fields": {
         "recipe": 26,
         "ingredient": 16,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -11426,8 +11426,8 @@
     "fields": {
         "recipe": 26,
         "ingredient": 38,
-        "amount": "150.00",
-        "unit": 6
+        "amount": "157.50",
+        "unit": 1
     }
 },
 {
@@ -11456,8 +11456,8 @@
     "fields": {
         "recipe": 27,
         "ingredient": 2,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -11466,8 +11466,8 @@
     "fields": {
         "recipe": 27,
         "ingredient": 59,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -11476,8 +11476,8 @@
     "fields": {
         "recipe": 27,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -11516,8 +11516,8 @@
     "fields": {
         "recipe": 28,
         "ingredient": 5,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -11536,8 +11536,8 @@
     "fields": {
         "recipe": 28,
         "ingredient": 52,
-        "amount": "0.15",
-        "unit": 5
+        "amount": "0.30",
+        "unit": 1
     }
 },
 {
@@ -11556,8 +11556,8 @@
     "fields": {
         "recipe": 29,
         "ingredient": 2,
-        "amount": "4.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -11566,8 +11566,8 @@
     "fields": {
         "recipe": 29,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -11596,8 +11596,8 @@
     "fields": {
         "recipe": 29,
         "ingredient": 52,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -11606,8 +11606,8 @@
     "fields": {
         "recipe": 30,
         "ingredient": 64,
-        "amount": "2.00",
-        "unit": 5
+        "amount": "4.00",
+        "unit": 1
     }
 },
 {
@@ -11626,8 +11626,8 @@
     "fields": {
         "recipe": 30,
         "ingredient": 55,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -11636,8 +11636,8 @@
     "fields": {
         "recipe": 30,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "8.00",
+        "unit": 1
     }
 },
 {
@@ -11656,8 +11656,8 @@
     "fields": {
         "recipe": 31,
         "ingredient": 18,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -11666,8 +11666,8 @@
     "fields": {
         "recipe": 31,
         "ingredient": 66,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -11686,8 +11686,8 @@
     "fields": {
         "recipe": 31,
         "ingredient": 67,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -11696,8 +11696,8 @@
     "fields": {
         "recipe": 32,
         "ingredient": 70,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "20.00",
+        "unit": 1
     }
 },
 {
@@ -11716,8 +11716,8 @@
     "fields": {
         "recipe": 32,
         "ingredient": 92,
-        "amount": "100.00",
-        "unit": 6
+        "amount": "96.00",
+        "unit": 1
     }
 },
 {
@@ -11726,8 +11726,8 @@
     "fields": {
         "recipe": 32,
         "ingredient": 67,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -11746,8 +11746,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 5,
-        "amount": "4.00",
-        "unit": 3
+        "amount": "400.00",
+        "unit": 1
     }
 },
 {
@@ -11756,8 +11756,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 4,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "15.00",
+        "unit": 1
     }
 },
 {
@@ -11766,8 +11766,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 58,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "42.00",
+        "unit": 6
     }
 },
 {
@@ -11776,8 +11776,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 175,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -11787,7 +11787,7 @@
         "recipe": 33,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -11796,8 +11796,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -11826,8 +11826,8 @@
     "fields": {
         "recipe": 34,
         "ingredient": 43,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 1
     }
 },
 {
@@ -11836,8 +11836,8 @@
     "fields": {
         "recipe": 34,
         "ingredient": 4,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -11847,7 +11847,7 @@
         "recipe": 34,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -11856,8 +11856,8 @@
     "fields": {
         "recipe": 34,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -11876,8 +11876,8 @@
     "fields": {
         "recipe": 35,
         "ingredient": 43,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "45.00",
+        "unit": 1
     }
 },
 {
@@ -11886,8 +11886,8 @@
     "fields": {
         "recipe": 35,
         "ingredient": 14,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -11896,8 +11896,8 @@
     "fields": {
         "recipe": 35,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -11907,7 +11907,7 @@
         "recipe": 35,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -11916,8 +11916,8 @@
     "fields": {
         "recipe": 35,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -11926,8 +11926,8 @@
     "fields": {
         "recipe": 24,
         "ingredient": 43,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 1
     }
 },
 {
@@ -11936,8 +11936,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 82,
-        "amount": "1.50",
-        "unit": 3
+        "amount": "375.00",
+        "unit": 1
     }
 },
 {
@@ -11966,8 +11966,8 @@
     "fields": {
         "recipe": 36,
         "ingredient": 22,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -11987,7 +11987,7 @@
         "recipe": 36,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -12026,8 +12026,8 @@
     "fields": {
         "recipe": 37,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -12046,8 +12046,8 @@
     "fields": {
         "recipe": 37,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12056,8 +12056,8 @@
     "fields": {
         "recipe": 37,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12076,8 +12076,8 @@
     "fields": {
         "recipe": 38,
         "ingredient": 11,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -12086,8 +12086,8 @@
     "fields": {
         "recipe": 38,
         "ingredient": 7,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -12096,8 +12096,8 @@
     "fields": {
         "recipe": 38,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -12106,8 +12106,8 @@
     "fields": {
         "recipe": 38,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -12116,8 +12116,8 @@
     "fields": {
         "recipe": 38,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12126,8 +12126,8 @@
     "fields": {
         "recipe": 38,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12177,7 +12177,7 @@
         "recipe": 39,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -12186,8 +12186,8 @@
     "fields": {
         "recipe": 39,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -12206,8 +12206,8 @@
     "fields": {
         "recipe": 40,
         "ingredient": 22,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -12216,8 +12216,8 @@
     "fields": {
         "recipe": 40,
         "ingredient": 6,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12226,8 +12226,8 @@
     "fields": {
         "recipe": 40,
         "ingredient": 18,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -12236,8 +12236,8 @@
     "fields": {
         "recipe": 40,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -12246,8 +12246,8 @@
     "fields": {
         "recipe": 40,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12256,8 +12256,8 @@
     "fields": {
         "recipe": 40,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12276,8 +12276,8 @@
     "fields": {
         "recipe": 42,
         "ingredient": 10,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "1500.00",
+        "unit": 1
     }
 },
 {
@@ -12286,8 +12286,8 @@
     "fields": {
         "recipe": 42,
         "ingredient": 4,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "15.00",
+        "unit": 1
     }
 },
 {
@@ -12296,8 +12296,8 @@
     "fields": {
         "recipe": 42,
         "ingredient": 58,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "42.00",
+        "unit": 6
     }
 },
 {
@@ -12306,8 +12306,8 @@
     "fields": {
         "recipe": 42,
         "ingredient": 53,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "3.00",
+        "unit": 1
     }
 },
 {
@@ -12316,8 +12316,8 @@
     "fields": {
         "recipe": 42,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12326,8 +12326,8 @@
     "fields": {
         "recipe": 42,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12346,8 +12346,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 2,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -12356,8 +12356,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12366,8 +12366,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 11,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -12376,8 +12376,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -12386,8 +12386,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 61,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -12396,8 +12396,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 57,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12406,8 +12406,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12416,8 +12416,8 @@
     "fields": {
         "recipe": 43,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12436,8 +12436,8 @@
     "fields": {
         "recipe": 44,
         "ingredient": 15,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -12446,8 +12446,8 @@
     "fields": {
         "recipe": 44,
         "ingredient": 16,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -12456,8 +12456,8 @@
     "fields": {
         "recipe": 44,
         "ingredient": 19,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -12476,8 +12476,8 @@
     "fields": {
         "recipe": 44,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -12486,8 +12486,8 @@
     "fields": {
         "recipe": 44,
         "ingredient": 18,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -12516,8 +12516,8 @@
     "fields": {
         "recipe": 45,
         "ingredient": 2,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -12526,8 +12526,8 @@
     "fields": {
         "recipe": 45,
         "ingredient": 61,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -12536,8 +12536,8 @@
     "fields": {
         "recipe": 45,
         "ingredient": 18,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12546,8 +12546,8 @@
     "fields": {
         "recipe": 45,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12556,8 +12556,8 @@
     "fields": {
         "recipe": 45,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12576,8 +12576,8 @@
     "fields": {
         "recipe": 46,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -12586,8 +12586,8 @@
     "fields": {
         "recipe": 46,
         "ingredient": 58,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -12597,7 +12597,7 @@
         "recipe": 46,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -12616,8 +12616,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 2,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -12626,8 +12626,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12636,8 +12636,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -12646,8 +12646,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -12656,8 +12656,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -12666,8 +12666,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 54,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12676,8 +12676,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12686,8 +12686,8 @@
     "fields": {
         "recipe": 48,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12726,8 +12726,8 @@
     "fields": {
         "recipe": 49,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12736,8 +12736,8 @@
     "fields": {
         "recipe": 49,
         "ingredient": 2,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -12746,8 +12746,8 @@
     "fields": {
         "recipe": 49,
         "ingredient": 59,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -12756,8 +12756,8 @@
     "fields": {
         "recipe": 49,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12766,8 +12766,8 @@
     "fields": {
         "recipe": 49,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12786,8 +12786,8 @@
     "fields": {
         "recipe": 50,
         "ingredient": 10,
-        "amount": "0.25",
-        "unit": 3
+        "amount": "750.00",
+        "unit": 1
     }
 },
 {
@@ -12796,8 +12796,8 @@
     "fields": {
         "recipe": 50,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -12806,8 +12806,8 @@
     "fields": {
         "recipe": 50,
         "ingredient": 55,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -12816,8 +12816,8 @@
     "fields": {
         "recipe": 50,
         "ingredient": 61,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "12.00",
+        "unit": 1
     }
 },
 {
@@ -12846,8 +12846,8 @@
     "fields": {
         "recipe": 51,
         "ingredient": 2,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -12856,8 +12856,8 @@
     "fields": {
         "recipe": 51,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12866,8 +12866,8 @@
     "fields": {
         "recipe": 51,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -12876,8 +12876,8 @@
     "fields": {
         "recipe": 51,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -12886,8 +12886,8 @@
     "fields": {
         "recipe": 51,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -12896,8 +12896,8 @@
     "fields": {
         "recipe": 51,
         "ingredient": 53,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "3.00",
+        "unit": 1
     }
 },
 {
@@ -12906,8 +12906,8 @@
     "fields": {
         "recipe": 51,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -12946,8 +12946,8 @@
     "fields": {
         "recipe": 52,
         "ingredient": 6,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12956,8 +12956,8 @@
     "fields": {
         "recipe": 52,
         "ingredient": 5,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -12966,8 +12966,8 @@
     "fields": {
         "recipe": 52,
         "ingredient": 58,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -12977,7 +12977,7 @@
         "recipe": 52,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -12986,8 +12986,8 @@
     "fields": {
         "recipe": 52,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -12996,8 +12996,8 @@
     "fields": {
         "recipe": 7,
         "ingredient": 175,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -13006,8 +13006,8 @@
     "fields": {
         "recipe": 33,
         "ingredient": 118,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -13016,8 +13016,8 @@
     "fields": {
         "recipe": 50,
         "ingredient": 176,
-        "amount": "0.75",
-        "unit": 7
+        "amount": "165.00",
+        "unit": 1
     }
 },
 {
@@ -13026,8 +13026,8 @@
     "fields": {
         "recipe": 46,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -13036,8 +13036,8 @@
     "fields": {
         "recipe": 46,
         "ingredient": 7,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -13056,8 +13056,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 139,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "4.00",
+        "unit": 1
     }
 },
 {
@@ -13066,8 +13066,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 53,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.50",
+        "unit": 1
     }
 },
 {
@@ -13076,8 +13076,8 @@
     "fields": {
         "recipe": 1,
         "ingredient": 1,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -13086,8 +13086,8 @@
     "fields": {
         "recipe": 29,
         "ingredient": 1,
-        "amount": "6.00",
-        "unit": 3
+        "amount": "900.00",
+        "unit": 1
     }
 },
 {
@@ -13096,8 +13096,8 @@
     "fields": {
         "recipe": 23,
         "ingredient": 2,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -13106,8 +13106,8 @@
     "fields": {
         "recipe": 23,
         "ingredient": 11,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -13126,8 +13126,8 @@
     "fields": {
         "recipe": 34,
         "ingredient": 14,
-        "amount": "1.00",
-        "unit": 9
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -13136,8 +13136,8 @@
     "fields": {
         "recipe": 53,
         "ingredient": 1,
-        "amount": "4.00",
-        "unit": 3
+        "amount": "600.00",
+        "unit": 1
     }
 },
 {
@@ -13146,8 +13146,8 @@
     "fields": {
         "recipe": 53,
         "ingredient": 2,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -13186,8 +13186,8 @@
     "fields": {
         "recipe": 53,
         "ingredient": 135,
-        "amount": "5.00",
-        "unit": 4
+        "amount": "75.00",
+        "unit": 1
     }
 },
 {
@@ -13196,8 +13196,8 @@
     "fields": {
         "recipe": 53,
         "ingredient": 177,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "210.00",
+        "unit": 1
     }
 },
 {
@@ -13206,8 +13206,8 @@
     "fields": {
         "recipe": 53,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -13226,8 +13226,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 178,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "425.00",
+        "unit": 1
     }
 },
 {
@@ -13236,8 +13236,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 174,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -13246,8 +13246,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -13256,8 +13256,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 6,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -13266,8 +13266,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 7,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -13276,8 +13276,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 121,
-        "amount": "0.25",
-        "unit": 3
+        "amount": "175.00",
+        "unit": 1
     }
 },
 {
@@ -13286,8 +13286,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 58,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "28.00",
+        "unit": 6
     }
 },
 {
@@ -13296,8 +13296,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 18,
-        "amount": "0.25",
-        "unit": 3
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -13306,8 +13306,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 53,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.50",
+        "unit": 1
     }
 },
 {
@@ -13316,8 +13316,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 134,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "15.00",
+        "unit": 1
     }
 },
 {
@@ -13326,8 +13326,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 139,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "4.00",
+        "unit": 1
     }
 },
 {
@@ -13346,8 +13346,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 7,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -13356,8 +13356,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 5,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -13366,8 +13366,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 3,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "50.00",
+        "unit": 1
     }
 },
 {
@@ -13376,8 +13376,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 54,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -13386,8 +13386,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 53,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.50",
+        "unit": 1
     }
 },
 {
@@ -13396,8 +13396,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 58,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -13407,7 +13407,7 @@
         "recipe": 55,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -13416,8 +13416,8 @@
     "fields": {
         "recipe": 55,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -13426,8 +13426,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 178,
-        "amount": "1.00",
-        "unit": 10
+        "amount": "400.00",
+        "unit": 1
     }
 },
 {
@@ -13436,8 +13436,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 113,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "250.00",
+        "unit": 6
     }
 },
 {
@@ -13446,8 +13446,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 5,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -13456,8 +13456,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -13466,8 +13466,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 4,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "15.00",
+        "unit": 1
     }
 },
 {
@@ -13476,8 +13476,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 54,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -13486,8 +13486,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 53,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "3.00",
+        "unit": 1
     }
 },
 {
@@ -13496,8 +13496,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 141,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.50",
+        "unit": 1
     }
 },
 {
@@ -13506,8 +13506,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 61,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "12.00",
+        "unit": 1
     }
 },
 {
@@ -13516,8 +13516,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -13526,8 +13526,8 @@
     "fields": {
         "recipe": 57,
         "ingredient": 133,
-        "amount": "4.00",
-        "unit": 4
+        "amount": "48.00",
+        "unit": 1
     }
 },
 {
@@ -13536,8 +13536,8 @@
     "fields": {
         "recipe": 57,
         "ingredient": 113,
-        "amount": "1.50",
-        "unit": 7
+        "amount": "375.00",
+        "unit": 6
     }
 },
 {
@@ -13546,8 +13546,8 @@
     "fields": {
         "recipe": 57,
         "ingredient": 173,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -13556,8 +13556,8 @@
     "fields": {
         "recipe": 57,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -13566,8 +13566,8 @@
     "fields": {
         "recipe": 57,
         "ingredient": 153,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "35.00",
+        "unit": 1
     }
 },
 {
@@ -13576,8 +13576,8 @@
     "fields": {
         "recipe": 58,
         "ingredient": 90,
-        "amount": "2.00",
-        "unit": 7
+        "amount": "310.00",
+        "unit": 1
     }
 },
 {
@@ -13586,8 +13586,8 @@
     "fields": {
         "recipe": 58,
         "ingredient": 77,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 6
     }
 },
 {
@@ -13596,8 +13596,8 @@
     "fields": {
         "recipe": 58,
         "ingredient": 129,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "9.00",
+        "unit": 1
     }
 },
 {
@@ -13606,8 +13606,8 @@
     "fields": {
         "recipe": 58,
         "ingredient": 60,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "12.00",
+        "unit": 6
     }
 },
 {
@@ -13616,8 +13616,8 @@
     "fields": {
         "recipe": 58,
         "ingredient": 141,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.50",
+        "unit": 1
     }
 },
 {
@@ -13626,8 +13626,8 @@
     "fields": {
         "recipe": 58,
         "ingredient": 153,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "70.00",
+        "unit": 1
     }
 },
 {
@@ -13636,8 +13636,8 @@
     "fields": {
         "recipe": 59,
         "ingredient": 45,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "170.00",
+        "unit": 1
     }
 },
 {
@@ -13646,8 +13646,8 @@
     "fields": {
         "recipe": 59,
         "ingredient": 62,
-        "amount": "2.00",
-        "unit": 7
+        "amount": "500.00",
+        "unit": 6
     }
 },
 {
@@ -13666,8 +13666,8 @@
     "fields": {
         "recipe": 59,
         "ingredient": 156,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -13676,8 +13676,8 @@
     "fields": {
         "recipe": 59,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -13686,8 +13686,8 @@
     "fields": {
         "recipe": 59,
         "ingredient": 114,
-        "amount": "0.50",
-        "unit": 7
+        "amount": "125.00",
+        "unit": 6
     }
 },
 {
@@ -13697,7 +13697,7 @@
         "recipe": 59,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -13706,8 +13706,8 @@
     "fields": {
         "recipe": 60,
         "ingredient": 120,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "400.00",
+        "unit": 1
     }
 },
 {
@@ -13726,8 +13726,8 @@
     "fields": {
         "recipe": 60,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -13736,8 +13736,8 @@
     "fields": {
         "recipe": 60,
         "ingredient": 96,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "20.00",
+        "unit": 1
     }
 },
 {
@@ -13746,8 +13746,8 @@
     "fields": {
         "recipe": 60,
         "ingredient": 77,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "15.00",
+        "unit": 6
     }
 },
 {
@@ -13756,8 +13756,8 @@
     "fields": {
         "recipe": 60,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -13766,8 +13766,8 @@
     "fields": {
         "recipe": 60,
         "ingredient": 118,
-        "amount": "0.50",
-        "unit": 9
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -13806,8 +13806,8 @@
     "fields": {
         "recipe": 61,
         "ingredient": 132,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -13816,8 +13816,8 @@
     "fields": {
         "recipe": 61,
         "ingredient": 129,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "18.00",
+        "unit": 1
     }
 },
 {
@@ -13826,8 +13826,8 @@
     "fields": {
         "recipe": 61,
         "ingredient": 61,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -13836,8 +13836,8 @@
     "fields": {
         "recipe": 61,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -13846,8 +13846,8 @@
     "fields": {
         "recipe": 61,
         "ingredient": 55,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -13857,7 +13857,7 @@
         "recipe": 61,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -13866,8 +13866,8 @@
     "fields": {
         "recipe": 62,
         "ingredient": 120,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "800.00",
+        "unit": 1
     }
 },
 {
@@ -13896,8 +13896,8 @@
     "fields": {
         "recipe": 62,
         "ingredient": 3,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -13906,8 +13906,8 @@
     "fields": {
         "recipe": 62,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -13936,8 +13936,8 @@
     "fields": {
         "recipe": 62,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -13946,8 +13946,8 @@
     "fields": {
         "recipe": 62,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -13966,8 +13966,8 @@
     "fields": {
         "recipe": 63,
         "ingredient": 119,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "210.00",
+        "unit": 1
     }
 },
 {
@@ -13976,8 +13976,8 @@
     "fields": {
         "recipe": 63,
         "ingredient": 92,
-        "amount": "100.00",
-        "unit": 6
+        "amount": "96.00",
+        "unit": 1
     }
 },
 {
@@ -13986,8 +13986,8 @@
     "fields": {
         "recipe": 63,
         "ingredient": 96,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "20.00",
+        "unit": 1
     }
 },
 {
@@ -13996,8 +13996,8 @@
     "fields": {
         "recipe": 63,
         "ingredient": 4,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "10.00",
+        "unit": 1
     }
 },
 {
@@ -14006,8 +14006,8 @@
     "fields": {
         "recipe": 63,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -14016,8 +14016,8 @@
     "fields": {
         "recipe": 63,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -14057,7 +14057,7 @@
         "recipe": 64,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -14066,8 +14066,8 @@
     "fields": {
         "recipe": 64,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -14096,8 +14096,8 @@
     "fields": {
         "recipe": 65,
         "ingredient": 10,
-        "amount": "0.50",
-        "unit": 3
+        "amount": "1500.00",
+        "unit": 1
     }
 },
 {
@@ -14106,8 +14106,8 @@
     "fields": {
         "recipe": 65,
         "ingredient": 15,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "400.00",
+        "unit": 1
     }
 },
 {
@@ -14116,8 +14116,8 @@
     "fields": {
         "recipe": 65,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -14126,8 +14126,8 @@
     "fields": {
         "recipe": 65,
         "ingredient": 61,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "24.00",
+        "unit": 1
     }
 },
 {
@@ -14136,8 +14136,8 @@
     "fields": {
         "recipe": 65,
         "ingredient": 55,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -14146,8 +14146,8 @@
     "fields": {
         "recipe": 65,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -14156,8 +14156,8 @@
     "fields": {
         "recipe": 65,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -14166,8 +14166,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 32,
-        "amount": "1.00",
-        "unit": 10
+        "amount": "185.00",
+        "unit": 1
     }
 },
 {
@@ -14176,8 +14176,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 22,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -14186,8 +14186,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 173,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "300.00",
+        "unit": 1
     }
 },
 {
@@ -14196,8 +14196,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 121,
-        "amount": "0.25",
-        "unit": 3
+        "amount": "175.00",
+        "unit": 1
     }
 },
 {
@@ -14206,8 +14206,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 153,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "70.00",
+        "unit": 1
     }
 },
 {
@@ -14216,8 +14216,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 58,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -14227,7 +14227,7 @@
         "recipe": 66,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -14236,8 +14236,8 @@
     "fields": {
         "recipe": 66,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -14256,8 +14256,8 @@
     "fields": {
         "recipe": 67,
         "ingredient": 161,
-        "amount": "1.00",
-        "unit": 7
+        "amount": "180.00",
+        "unit": 1
     }
 },
 {
@@ -14266,8 +14266,8 @@
     "fields": {
         "recipe": 67,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -14276,8 +14276,8 @@
     "fields": {
         "recipe": 67,
         "ingredient": 138,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "15.00",
+        "unit": 6
     }
 },
 {
@@ -14286,8 +14286,8 @@
     "fields": {
         "recipe": 67,
         "ingredient": 61,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "12.00",
+        "unit": 1
     }
 },
 {
@@ -14296,8 +14296,8 @@
     "fields": {
         "recipe": 67,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -14306,8 +14306,8 @@
     "fields": {
         "recipe": 67,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -14316,8 +14316,8 @@
     "fields": {
         "recipe": 67,
         "ingredient": 139,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.00",
+        "unit": 1
     }
 },
 {
@@ -14346,8 +14346,8 @@
     "fields": {
         "recipe": 68,
         "ingredient": 61,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "12.00",
+        "unit": 1
     }
 },
 {
@@ -14356,8 +14356,8 @@
     "fields": {
         "recipe": 68,
         "ingredient": 55,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -14366,8 +14366,8 @@
     "fields": {
         "recipe": 68,
         "ingredient": 66,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -14377,7 +14377,7 @@
         "recipe": 68,
         "ingredient": 51,
         "amount": "1.00",
-        "unit": 8
+        "unit": 1
     }
 },
 {
@@ -14396,8 +14396,8 @@
     "fields": {
         "recipe": 69,
         "ingredient": 131,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "20.00",
+        "unit": 1
     }
 },
 {
@@ -14406,8 +14406,8 @@
     "fields": {
         "recipe": 69,
         "ingredient": 58,
-        "amount": "3.00",
-        "unit": 4
+        "amount": "42.00",
+        "unit": 6
     }
 },
 {
@@ -14416,8 +14416,8 @@
     "fields": {
         "recipe": 69,
         "ingredient": 18,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -14426,8 +14426,8 @@
     "fields": {
         "recipe": 69,
         "ingredient": 4,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -14436,8 +14436,8 @@
     "fields": {
         "recipe": 69,
         "ingredient": 51,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -14446,8 +14446,8 @@
     "fields": {
         "recipe": 69,
         "ingredient": 52,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "1.00",
+        "unit": 1
     }
 },
 {
@@ -14456,8 +14456,8 @@
     "fields": {
         "recipe": 63,
         "ingredient": 150,
-        "amount": "2.00",
-        "unit": 4
+        "amount": "30.00",
+        "unit": 1
     }
 },
 {
@@ -14466,8 +14466,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 179,
-        "amount": "1.00",
-        "unit": 5
+        "amount": "5.00",
+        "unit": 1
     }
 },
 {
@@ -14476,8 +14476,8 @@
     "fields": {
         "recipe": 69,
         "ingredient": 180,
-        "amount": "0.50",
-        "unit": 9
+        "amount": "25.00",
+        "unit": 1
     }
 },
 {
@@ -14486,8 +14486,8 @@
     "fields": {
         "recipe": 68,
         "ingredient": 181,
-        "amount": "0.50",
-        "unit": 7
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -14576,8 +14576,8 @@
     "fields": {
         "recipe": 71,
         "ingredient": 16,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -14786,8 +14786,8 @@
     "fields": {
         "recipe": 77,
         "ingredient": 154,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "80.00",
+        "unit": 1
     }
 },
 {
@@ -14806,8 +14806,8 @@
     "fields": {
         "recipe": 77,
         "ingredient": 16,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "150.00",
+        "unit": 1
     }
 },
 {
@@ -14886,8 +14886,8 @@
     "fields": {
         "recipe": 79,
         "ingredient": 15,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -15027,7 +15027,7 @@
         "recipe": 82,
         "ingredient": 191,
         "amount": "30.00",
-        "unit": 6
+        "unit": 1
     }
 },
 {
@@ -15136,8 +15136,8 @@
     "fields": {
         "recipe": 85,
         "ingredient": 192,
-        "amount": "3.00",
-        "unit": 3
+        "amount": "51.00",
+        "unit": 1
     }
 },
 {
@@ -15326,8 +15326,8 @@
     "fields": {
         "recipe": 89,
         "ingredient": 174,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -15566,8 +15566,8 @@
     "fields": {
         "recipe": 95,
         "ingredient": 12,
-        "amount": "1.00",
-        "unit": 3
+        "amount": "200.00",
+        "unit": 1
     }
 },
 {
@@ -15726,8 +15726,8 @@
     "fields": {
         "recipe": 99,
         "ingredient": 210,
-        "amount": "2.00",
-        "unit": 3
+        "amount": "100.00",
+        "unit": 1
     }
 },
 {
@@ -15756,8 +15756,8 @@
     "fields": {
         "recipe": 96,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -15766,8 +15766,8 @@
     "fields": {
         "recipe": 74,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15776,8 +15776,8 @@
     "fields": {
         "recipe": 13,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15786,8 +15786,8 @@
     "fields": {
         "recipe": 22,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15796,8 +15796,8 @@
     "fields": {
         "recipe": 12,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15806,8 +15806,8 @@
     "fields": {
         "recipe": 6,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15816,8 +15816,8 @@
     "fields": {
         "recipe": 90,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15826,8 +15826,8 @@
     "fields": {
         "recipe": 90,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -15836,8 +15836,8 @@
     "fields": {
         "recipe": 90,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -15846,8 +15846,8 @@
     "fields": {
         "recipe": 95,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -15856,8 +15856,8 @@
     "fields": {
         "recipe": 56,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -15866,8 +15866,8 @@
     "fields": {
         "recipe": 89,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -15876,8 +15876,8 @@
     "fields": {
         "recipe": 88,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15886,8 +15886,8 @@
     "fields": {
         "recipe": 88,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -15896,8 +15896,8 @@
     "fields": {
         "recipe": 80,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15906,8 +15906,8 @@
     "fields": {
         "recipe": 80,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -15916,8 +15916,8 @@
     "fields": {
         "recipe": 98,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15926,8 +15926,8 @@
     "fields": {
         "recipe": 98,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -15936,8 +15936,8 @@
     "fields": {
         "recipe": 85,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15946,8 +15946,8 @@
     "fields": {
         "recipe": 85,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -15956,8 +15956,8 @@
     "fields": {
         "recipe": 85,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -15966,8 +15966,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15976,8 +15976,8 @@
     "fields": {
         "recipe": 11,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -15986,8 +15986,8 @@
     "fields": {
         "recipe": 9,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -15996,8 +15996,8 @@
     "fields": {
         "recipe": 76,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16006,8 +16006,8 @@
     "fields": {
         "recipe": 27,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16016,8 +16016,8 @@
     "fields": {
         "recipe": 24,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16026,8 +16026,8 @@
     "fields": {
         "recipe": 54,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16036,8 +16036,8 @@
     "fields": {
         "recipe": 21,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16046,8 +16046,8 @@
     "fields": {
         "recipe": 28,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16056,8 +16056,8 @@
     "fields": {
         "recipe": 5,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16066,8 +16066,8 @@
     "fields": {
         "recipe": 92,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16076,8 +16076,8 @@
     "fields": {
         "recipe": 86,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16086,8 +16086,8 @@
     "fields": {
         "recipe": 86,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16096,8 +16096,8 @@
     "fields": {
         "recipe": 86,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -16106,8 +16106,8 @@
     "fields": {
         "recipe": 97,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16116,8 +16116,8 @@
     "fields": {
         "recipe": 91,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16126,8 +16126,8 @@
     "fields": {
         "recipe": 91,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16136,8 +16136,8 @@
     "fields": {
         "recipe": 82,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -16146,8 +16146,8 @@
     "fields": {
         "recipe": 1,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16156,8 +16156,8 @@
     "fields": {
         "recipe": 70,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -16166,8 +16166,8 @@
     "fields": {
         "recipe": 15,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16176,8 +16176,8 @@
     "fields": {
         "recipe": 93,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16186,8 +16186,8 @@
     "fields": {
         "recipe": 93,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16196,8 +16196,8 @@
     "fields": {
         "recipe": 93,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -16206,8 +16206,8 @@
     "fields": {
         "recipe": 81,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16216,8 +16216,8 @@
     "fields": {
         "recipe": 81,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16226,8 +16226,8 @@
     "fields": {
         "recipe": 18,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16236,8 +16236,8 @@
     "fields": {
         "recipe": 72,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16246,8 +16246,8 @@
     "fields": {
         "recipe": 72,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -16256,8 +16256,8 @@
     "fields": {
         "recipe": 99,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16266,8 +16266,8 @@
     "fields": {
         "recipe": 83,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16276,8 +16276,8 @@
     "fields": {
         "recipe": 83,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16286,8 +16286,8 @@
     "fields": {
         "recipe": 75,
         "ingredient": 51,
-        "amount": "0.50",
-        "unit": 5
+        "amount": "2.50",
+        "unit": 1
     }
 },
 {
@@ -16296,8 +16296,8 @@
     "fields": {
         "recipe": 75,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16306,8 +16306,8 @@
     "fields": {
         "recipe": 75,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -16316,8 +16316,8 @@
     "fields": {
         "recipe": 94,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
@@ -16326,8 +16326,8 @@
     "fields": {
         "recipe": 94,
         "ingredient": 59,
-        "amount": "1.00",
-        "unit": 4
+        "amount": "14.00",
+        "unit": 6
     }
 },
 {
@@ -16336,8 +16336,8 @@
     "fields": {
         "recipe": 46,
         "ingredient": 52,
-        "amount": "0.25",
-        "unit": 5
+        "amount": "0.50",
+        "unit": 1
     }
 },
 {
