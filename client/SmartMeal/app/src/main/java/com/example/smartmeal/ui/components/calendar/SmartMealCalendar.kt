@@ -56,6 +56,8 @@ fun SmartMealCalendar(
     onPreviousMonth: () -> Unit,
     onNextMonth: () -> Unit,
     modifier: Modifier = Modifier,
+    canNavigatePrevious: Boolean = true,
+    canNavigateNext: Boolean = true,
     showNavigation: Boolean = true,
     showYear: Boolean = true,
     showAdjacentMonths: Boolean = false,
@@ -108,11 +110,12 @@ fun SmartMealCalendar(
                 IconButton(
                     onClick = onPreviousMonth,
                     modifier = Modifier.size(iconSize),
+                    enabled = canNavigatePrevious,
                 ) {
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                         contentDescription = "Предыдущий месяц",
-                        tint = TextBlack,
+                        tint = if (canNavigatePrevious) TextBlack else Color.LightGray,
                     )
                 }
                 SmartMealText(
@@ -124,11 +127,12 @@ fun SmartMealCalendar(
                 IconButton(
                     onClick = onNextMonth,
                     modifier = Modifier.size(iconSize),
+                    enabled = canNavigateNext,
                 ) {
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = "Следующий месяц",
-                        tint = TextBlack,
+                        tint = if (canNavigateNext) TextBlack else Color.LightGray,
                     )
                 }
             }

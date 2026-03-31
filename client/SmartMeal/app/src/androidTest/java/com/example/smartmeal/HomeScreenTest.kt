@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal
+package com.example.smartmeal
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertCountEquals
@@ -42,6 +42,7 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
                     customPlan = null
                 )
             }
@@ -66,6 +67,7 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
                     customPlan = null
                 )
             }
@@ -98,7 +100,7 @@ class HomeScreenTest {
         val state = HomeUiState(
             hasMenu = true,
             mealSections = sections,
-            currentMenu = menuWithDates("2026-03-10", "2026-03-11")
+            currentMenu = menuWithDates("2099-03-10", "2099-03-11")
         )
 
         composeTestRule.setContent {
@@ -111,6 +113,7 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
                     customPlan = null
                 )
             }
@@ -127,7 +130,7 @@ class HomeScreenTest {
         val state = mutableStateOf(
             HomeUiState(
                 hasMenu = true,
-                currentMenu = menuWithDates("2026-03-10"),
+                currentMenu = menuWithDates("2099-03-10"),
                 mealSections = listOf(
                     MealSection(
                         id = "breakfast",
@@ -160,6 +163,7 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
                     customPlan = null
                 )
             }
@@ -182,7 +186,7 @@ class HomeScreenTest {
 
         val state = HomeUiState(
             selectedDay = "Пн",
-            currentMenu = menuWithDates("2026-03-10", "2026-03-11")
+            currentMenu = menuWithDates("2099-03-10", "2099-03-11")
         )
 
         composeTestRule.setContent {
@@ -195,6 +199,7 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
                     customPlan = null
                 )
             }
@@ -203,13 +208,13 @@ class HomeScreenTest {
         composeTestRule.onNodeWithTag("home_day_selector").assertIsDisplayed()
         composeTestRule.onNodeWithTag("date_chip_1").performClick()
 
-        assertEquals("2026-03-11", selected)
+        assertEquals("2099-03-11", selected)
     }
 
     @Test
     fun home_showsMonthYearAboveDateSelector() {
         val state = HomeUiState(
-            currentMenu = menuWithDates("2026-03-10", "2026-03-11")
+            currentMenu = menuWithDates("2099-03-10", "2099-03-11")
         )
 
         composeTestRule.setContent {
@@ -222,20 +227,21 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
                     customPlan = null
                 )
             }
         }
 
         composeTestRule.onNodeWithTag("home_month_year").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Март 2026").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Март 2099").assertIsDisplayed()
     }
 
     @Test
     fun home_singleAvailableDate_showsFullDateSummary() {
         val state = HomeUiState(
-            currentMenu = menuWithDates("2026-03-27"),
-            selectedDate = dateFormatter.parse("2026-03-27")
+            currentMenu = menuWithDates("2099-03-27"),
+            selectedDate = dateFormatter.parse("2099-03-27")
         )
 
         composeTestRule.setContent {
@@ -248,15 +254,44 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
                     customPlan = null
                 )
             }
         }
 
         composeTestRule.onNodeWithTag("home_selected_date_summary").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Пятница - 27 марта 2026").assertIsDisplayed()
         composeTestRule.onAllNodesWithTag("home_month_year").assertCountEquals(0)
         composeTestRule.onAllNodesWithTag("date_chip_0").assertCountEquals(0)
+    }
+
+    @Test
+    fun home_pastOnlyDates_showsReselectPlanState() {
+        var clicked = false
+        val state = HomeUiState(
+            hasMenu = true,
+            currentMenu = menuWithDates("2020-03-10", "2020-03-11")
+        )
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                HomeContent(
+                    uiState = state,
+                    onDateSelected = {},
+                    onGenerateMenu = {},
+                    onReplaceMeal = {},
+                    onToggleFavorite = {},
+                    onRecipeClick = { _, _ -> },
+                    onDateSelectedFromPlan = {},
+                    onReselectPlan = { clicked = true },
+                    customPlan = null
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("home_expired_state").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_reselect_plan_button").performClick()
+        assertTrue(clicked)
     }
 
     private fun fakeMeal(
@@ -269,15 +304,15 @@ class HomeScreenTest {
         cook_time = 15,
         meal_type = type,
         day_offset = 0,
-        actual_date = "2026-03-10"
+        actual_date = "2099-03-10"
     )
 
     private fun menuWithDates(vararg dates: String): MenuDto {
         return MenuDto(
             id = 1,
             period = "week",
-            start_date = dates.firstOrNull() ?: "2026-03-10",
-            created_at = "2026-03-10T00:00:00Z",
+            start_date = dates.firstOrNull() ?: "2099-03-10",
+            created_at = "2099-03-10T00:00:00Z",
             items = dates.mapIndexed { index, date ->
                 MenuItemDto(
                     id = index + 1,

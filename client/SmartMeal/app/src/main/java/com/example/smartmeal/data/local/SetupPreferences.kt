@@ -115,6 +115,26 @@ class SetupPreferences(context: Context) {
             .apply()
     }
 
+    fun setPendingPlanRegeneration(pending: Boolean) {
+        val key = scopedKey(KEY_PENDING_PLAN_REGENERATION)
+        if (pending) {
+            prefs.edit().putBoolean(key, true).apply()
+        } else {
+            prefs.edit().remove(key).apply()
+        }
+    }
+
+    fun consumePendingPlanRegeneration(): Boolean {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return false
+        val key = scopedKey(KEY_PENDING_PLAN_REGENERATION)
+        val pending = prefs.getBoolean(key, false)
+        if (pending) {
+            prefs.edit().remove(key).apply()
+        }
+        return pending
+    }
+
     private fun scopedKey(base: String): String {
         val active = getActiveUserKey()
         return if (active.isNullOrBlank()) base else "${base}_$active"
@@ -168,5 +188,6 @@ class SetupPreferences(context: Context) {
         private const val KEY_CUSTOM_END = "custom_plan_end"
         private const val KEY_SELECTED_PLAN_DATE = "selected_plan_date"
         private const val KEY_PORTION_SIZE = "portion_size"
+        private const val KEY_PENDING_PLAN_REGENERATION = "pending_plan_regeneration"
     }
 }

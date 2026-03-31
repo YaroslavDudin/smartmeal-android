@@ -125,15 +125,32 @@ fun SmartMealNavGraph(navController: NavHostController) {
             SetupStep1Screen(
                 viewModel = setupViewModel,
                 onBack = { navController.popBackStack() },
-                onNext = { navController.navigate(Screen.SetupStep2.route) },
+                onNext = { navController.navigate(Screen.SetupStep2.createRoute()) },
             )
         }
 
-        composable(route = Screen.SetupStep2.route) {
+        composable(
+            route = Screen.SetupStep2.route,
+            arguments = listOf(
+                navArgument("reselect") {
+                    type = NavType.BoolType
+                    defaultValue = false
+                }
+            )
+        ) { backStackEntry ->
+            val isReselectFlow = backStackEntry.arguments?.getBoolean("reselect") ?: false
             SetupStep2Screen(
                 viewModel = setupViewModel,
                 onBack = { navController.popBackStack() },
-                onNext = { navController.navigate(Screen.SetupStep3.route) },
+                onNext = {
+                    if (isReselectFlow) {
+                        setupPreferences.setPendingPlanRegeneration(true)
+                        navController.popBackStack()
+                    } else {
+                        navController.navigate(Screen.SetupStep3.route)
+                    }
+                },
+                nextButtonText = if (isReselectFlow) "Готово" else "Дальше",
             )
         }
 
@@ -161,6 +178,9 @@ fun SmartMealNavGraph(navController: NavHostController) {
                     navController.navigate(Screen.Welcome.route) {
                         popUpTo(0) { inclusive = true }
                     }
+                },
+                onReselectPlan = {
+                    navController.navigate(Screen.SetupStep2.createRoute(reselect = true))
                 },
                 onRecipeClick = { recipeId, menuItemId ->
                     val portionSize = setupViewModel.state.value.portionSize // количество порций указанное в профиле

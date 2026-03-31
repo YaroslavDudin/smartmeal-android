@@ -7,25 +7,32 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -53,7 +60,6 @@ import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
-import com.example.smartmeal.feature.home.presentation.MyPlanSection
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -70,12 +76,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
+    onReselectPlan: () -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
 ) {
     val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
     val setupApi = remember { RetrofitClient.createService(SetupApi::class.java) }
     val context = LocalContext.current
     val setupPreferences = remember { SetupPreferences(context) }
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     val viewModel: HomeViewModel = viewModel(
         factory = remember { HomeViewModelFactory(setupPreferences) }
@@ -101,7 +109,7 @@ fun HomeScreen(
     val planRange = setupPreferences.getCustomPlanRange()
     val selectedPlanDateMillis = setupPreferences.getSelectedPlanDate()
     
-    // ТВОЯ ЛОГИКА ПЛАНОВ
+    // ТВОЯ ЛОГИКА ПЛАНОВ (СОХРАНЕНА)
     val customPlan = remember(planType, planRange, selectedPlanDateMillis) {
         when (planType) {
             SetupPreferences.PLAN_TYPE_CUSTOM -> {
@@ -124,17 +132,35 @@ fun HomeScreen(
             else -> null
         }
     }
+    
+    val visibleCustomPlan = remember(customPlan?.startDate?.time, customPlan?.endDate?.time) {
+        trimCustomPlanToToday(customPlan)
+    }
 
-    LaunchedEffect(customPlan) {
-        if (customPlan != null) {
+    LaunchedEffect(visibleCustomPlan?.startDate?.time, visibleCustomPlan?.endDate?.time) {
+        if (visibleCustomPlan != null) {
             val selected = uiState.selectedDate
             val outOfRange = selected == null ||
-                selected.before(normalizeDateStatic(customPlan.startDate)) ||
-                selected.after(normalizeDateStatic(customPlan.endDate))
+                selected.before(visibleCustomPlan.startDate) ||
+                selected.after(visibleCustomPlan.endDate)
 
             if (!uiState.selectedDateFromPlan || outOfRange) {
-                viewModel.selectDate(customPlan.startDate, customPlan)
+                viewModel.selectDate(visibleCustomPlan.startDate, visibleCustomPlan)
             }
+        }
+    }
+
+    DisposableEffect(lifecycleOwner, planType, planRange?.first, planRange?.second) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME && setupPreferences.consumePendingPlanRegeneration()) {
+                val selectedPlanDate = setupPreferences.getSelectedPlanDate()?.let(::Date)
+                val customDays = resolveCustomDays(setupPreferences.getCustomPlanRange())
+                viewModel.generateMenu(setupPreferences.getPlanType(), selectedPlanDate, customDays)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 
@@ -161,7 +187,7 @@ fun HomeScreen(
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
             when (selectedNavItem) {
-                // ── ГЛАВНАЯ (ТВОЯ ЛОГИКА) ───────────────────────────────────
+                // ── ГЛАВНАЯ (ТВОЯ ЛОГИКА С БАГФИКСАМИ) ─────────────────────
                 0 -> Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -173,7 +199,7 @@ fun HomeScreen(
                 ) {
                     HomeContent(
                         uiState = uiState,
-                        onDateSelected = { viewModel.selectDate(it, customPlan) },
+                        onDateSelected = { viewModel.selectDate(it, visibleCustomPlan) },
                         onGenerateMenu = {
                             val storedPlanType = setupPreferences.getPlanType()
                             val range = setupPreferences.getCustomPlanRange()
@@ -186,8 +212,7 @@ fun HomeScreen(
                                 SetupPreferences.PLAN_TYPE_CUSTOM -> {
                                     if (range != null) {
                                         finalStartDate = Date(range.first)
-                                        val diff = range.second - range.first
-                                        customDays = (diff / (1000 * 60 * 60 * 24)).toInt() + 1
+                                        customDays = resolveCustomDays(range)
                                     }
                                 }
                                 SetupPreferences.PLAN_TYPE_WEEKLY, SetupPreferences.PLAN_TYPE_DAILY -> {
@@ -203,8 +228,9 @@ fun HomeScreen(
                         onReplaceMeal = { viewModel.replaceMeal(it) },
                         onToggleFavorite = { viewModel.toggleFavorite(it) },
                         onRecipeClick = onRecipeClick,
-                        onDateSelectedFromPlan = { viewModel.selectDate(it, customPlan) },
-                        customPlan = customPlan
+                        onDateSelectedFromPlan = { viewModel.selectDate(it, visibleCustomPlan) },
+                        onReselectPlan = onReselectPlan,
+                        customPlan = visibleCustomPlan
                     )
                 }
 
@@ -223,6 +249,8 @@ fun HomeScreen(
                         onCheckAll = { productIds, checked ->
                             productListViewModel.toggleCheckAllProducts(productIds, checked)
                         },
+                        onReselectPlan = onReselectPlan,
+                        hasNoAvailableDays = productListViewModel.hasNoAvailableDays,
                         isLoading = productListViewModel.isLoading,
                         errorMessage = productListViewModel.errorMessage,
                         customPlan = customPlan
@@ -256,6 +284,7 @@ fun HomeContent(
     onToggleFavorite: (Int) -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
     onDateSelectedFromPlan: (Date) -> Unit,
+    onReselectPlan: () -> Unit,
     customPlan: CustomPlan?
 ) {
     val availableDates = remember(uiState.currentMenu?.items, uiState.allMenuItems, customPlan) {
@@ -267,6 +296,7 @@ fun HomeContent(
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
     val selectedDateId = uiState.selectedDate?.let { buildDateSelectorId(it) }
     val hasSingleAvailableDate = availableDates.size == 1
+    val hasAvailableDates = availableDates.isNotEmpty()
 
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp)) {
         SmartMealText(
@@ -290,29 +320,31 @@ fun HomeContent(
             )
         }
 
-        Box(modifier = Modifier.testTag("home_day_selector")) {
-            if (hasSingleAvailableDate) {
-                SmartMealText(
-                    text = formatSelectedDateLabel(availableDates.first()),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 14.dp)
-                        .testTag("home_selected_date_summary"),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            } else {
-                DateSelector(
-                    items = dateSelectorItems,
-                    selectedStartId = selectedDateId,
-                    onItemClick = { dateId ->
-                        availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
-                    }
-                )
+        // ТАБЛЕТКИ КАЛЕНДАРЯ (С БАГФИКСОМ ДЕНИСА)
+        if (hasAvailableDates) {
+            Box(modifier = Modifier.testTag("home_day_selector")) {
+                if (hasSingleAvailableDate) {
+                    SmartMealText(
+                        text = formatSelectedDateLabel(availableDates.first()),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 14.dp)
+                            .testTag("home_selected_date_summary"),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center
+                    )
+                } else {
+                    DateSelector(
+                        items = dateSelectorItems,
+                        selectedStartId = selectedDateId,
+                        onItemClick = { dateId ->
+                            availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
+                        }
+                    )
+                }
             }
         }
 
-        val isMultiDayPlan = customPlan != null && customPlan.startDate.time != customPlan.endDate.time
-        if (isMultiDayPlan) {
+        if (customPlan != null && hasAvailableDates) {
             MyPlanSection(
                 customPlan = customPlan,
                 selectedDate = uiState.selectedDate,
@@ -339,6 +371,34 @@ fun HomeContent(
                         elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp, pressedElevation = 2.dp)
                     ) {
                         SmartMealText("Сгенерировать меню")
+                    }
+                }
+            }
+        } else if (!hasAvailableDates) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.testTag("home_expired_state")
+                ) {
+                    SmartMealText(
+                        "Доступные дни закончились. Выберите план и дату заново",
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = onReselectPlan,
+                        modifier = Modifier.testTag("home_reselect_plan_button"),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 6.dp,
+                            pressedElevation = 2.dp
+                        )
+                    ) {
+                        SmartMealText("Выбрать план и дату")
                     }
                 }
             }
@@ -712,12 +772,20 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
 internal fun buildAvailableDates(
     menuItems: List<MenuItemDto>,
-    customPlan: CustomPlan?
+    customPlan: CustomPlan?,
+    today: Date = Date()
 ): List<Date> {
+    val normalizedToday = normalizeDateStatic(today)
     if (customPlan != null) {
         val dates = mutableListOf<Date>()
-        val cal = Calendar.getInstance().apply { time = normalizeDateStatic(customPlan.startDate) }
+        val cal = Calendar.getInstance().apply { 
+            time = maxOf(normalizeDateStatic(customPlan.startDate), normalizedToday)
+        }
         val end = normalizeDateStatic(customPlan.endDate)
+
+        if (cal.time.after(end)) {
+            return emptyList()
+        }
 
         var safetyCount = 0
         while (!cal.time.after(end) && safetyCount < 31) {
@@ -732,8 +800,24 @@ internal fun buildAvailableDates(
     return menuItems
         .mapNotNull { item -> try { formatter.parse(item.actual_date) } catch(e: Exception) { null } }
         .map(::normalizeDateStatic)
+        .filter { !it.before(normalizedToday) }
         .distinct()
         .sorted()
+}
+
+internal fun trimCustomPlanToToday(
+    customPlan: CustomPlan?,
+    today: Date = Date()
+): CustomPlan? {
+    if (customPlan == null) return null
+    val normalizedToday = normalizeDateStatic(today)
+    val normalizedStart = normalizeDateStatic(customPlan.startDate)
+    val normalizedEnd = normalizeDateStatic(customPlan.endDate)
+    if (normalizedEnd.before(normalizedToday)) {
+        return null
+    }
+    val visibleStart = maxOf(normalizedStart, normalizedToday)
+    return CustomPlan(visibleStart, normalizedEnd)
 }
 
 private fun resolveDayNameForDate(date: Date): String {
@@ -773,7 +857,15 @@ internal fun resolveGenerationStartDateString(
     fallbackDate: Date = Date()
 ): String = formatter.format(selectedPlanDate ?: fallbackDate)
 
-private class HomeViewModelFactory(private val preferences: SetupPreferences) : ViewModelProvider.Factory {
+internal fun resolveCustomDays(range: Pair<Long, Long>?): Int? {
+    if (range == null) return null
+    val diff = range.second - range.first
+    return (diff / (1000L * 60L * 60L * 24L)).toInt() + 1
+}
+
+private class HomeViewModelFactory(
+    private val preferences: SetupPreferences
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) return HomeViewModel(preferences) as T
         throw IllegalArgumentException("Unknown ViewModel class")

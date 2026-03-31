@@ -50,6 +50,7 @@ class RecipeDtoParsingTest {
               "total_proteins": 45.0,
               "total_fats": 30.0,
               "total_carbs": 150.0,
+              "total_weight": 1600.0,
               "per_serving_calories": 300.0,
               "per_serving_proteins": 11.25,
               "per_serving_fats": 7.5,
@@ -62,7 +63,7 @@ class RecipeDtoParsingTest {
                 }
               ],
               "steps": [
-                { "step_number": 1, "description": "Нарезать свёклу соломкой" }
+                { "step_number": 1, "description": "Нарезать свёклу соломкой", "timer": 1 }
               ]
             }
         """.trimIndent()
@@ -73,6 +74,7 @@ class RecipeDtoParsingTest {
         assertEquals("Борщ", recipe.title)
         assertEquals(60, recipe.cook_time)
         assertEquals(4, recipe.servings)
+        assertEquals(1600.0, recipe.total_weight ?: 0.0, 0.001)
         assertEquals(300.0, recipe.per_serving_calories, 0.001)
         assertNotNull(recipe.ingredients)
         assertEquals(1, recipe.ingredients.size)
@@ -80,5 +82,6 @@ class RecipeDtoParsingTest {
         assertEquals("г", recipe.ingredients.first().unit_name)
         assertEquals(1, recipe.steps.size)
         assertEquals(1, recipe.steps.first().step_number)
+        assertEquals(1, recipe.steps.first().timer)
     }
 }

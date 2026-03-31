@@ -1,4 +1,4 @@
-package com.example.smartmeal
+Ôªøpackage com.example.smartmeal
 
 import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
 import com.example.smartmeal.feature.home.data.menu.RecipeShortDto
@@ -17,7 +17,7 @@ class RecipeDtoTest {
             [
               {
                 "id": 1,
-                "title": "¡Ó˘",
+                "title": "–ë–æ—Ä—â",
                 "cook_time": 60,
                 "servings": 4,
                 "total_calories": 1200.0,
@@ -33,7 +33,7 @@ class RecipeDtoTest {
 
         assertEquals(1, result.size)
         assertEquals(1, result.first().id)
-        assertEquals("¡Ó˘", result.first().title)
+        assertEquals("–ë–æ—Ä—â", result.first().title)
         assertEquals(60, result.first().cook_time)
         assertEquals(4, result.first().servings)
         assertEquals(1200.0, result.first().total_calories, 0.001)
@@ -44,26 +44,27 @@ class RecipeDtoTest {
         val json = """
             {
               "id": 1,
-              "title": "¡Ó˘",
+              "title": "–ë–æ—Ä—â",
               "cook_time": 60,
               "servings": 4,
               "total_calories": 1200.0,
               "total_proteins": 45.0,
               "total_fats": 30.0,
               "total_carbs": 150.0,
+              "total_weight": 1600.0,
               "per_serving_calories": 300.0,
               "per_serving_proteins": 11.25,
               "per_serving_fats": 7.5,
               "per_serving_carbs": 37.5,
               "ingredients": [
                 {
-                  "ingredient_name": "—‚∏ÍÎ‡",
+                  "ingredient_name": "–°–≤—ë–∫–ª–∞",
                   "amount": 300.0,
-                  "unit_name": "„"
+                  "unit_name": "–≥"
                 }
               ],
               "steps": [
-                { "step_number": 1, "description": "Õ‡ÂÁ‡Ú¸ Ò‚∏ÍÎÛ ÒÓÎÓÏÍÓÈ" }
+                { "step_number": 1, "description": "–ù–∞—Ä–µ–∑–∞—Ç—å —Å–≤—ë–∫–ª—É —Å–æ–ª–æ–º–∫–æ–π", "timer": 1 }
               ]
             }
         """.trimIndent()
@@ -71,12 +72,14 @@ class RecipeDtoTest {
         val result: RecipeDetailDto = gson.fromJson(json, RecipeDetailDto::class.java)
 
         assertEquals(1, result.id)
-        assertEquals("¡Ó˘", result.title)
+        assertEquals("–ë–æ—Ä—â", result.title)
         assertEquals(60, result.cook_time)
         assertEquals(4, result.servings)
+        assertEquals(1600.0, result.total_weight ?: 0.0, 0.001)
         assertEquals(300.0, result.per_serving_calories, 0.001)
         assertNotNull(result.ingredients.firstOrNull())
-        assertEquals("—‚∏ÍÎ‡", result.ingredients.first().ingredient_name)
+        assertEquals("–°–≤—ë–∫–ª–∞", result.ingredients.first().ingredient_name)
         assertEquals(1, result.steps.first().step_number)
+        assertEquals(1, result.steps.first().timer)
     }
 }

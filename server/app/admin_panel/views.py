@@ -4,6 +4,7 @@ import uuid
 from django.contrib.auth import authenticate
 from django.conf import settings
 from django.db.models import Q
+from django.db.models import Prefetch
 
 from rest_framework import status, generics
 from rest_framework.generics import RetrieveAPIView
@@ -20,7 +21,7 @@ from app.recipes.models import (
     Recipe, RecipeIngredient, RecipeStep,
     Ingredient, IngredientCategory, Unit,
 )
-from app.menus.models import Menu
+from app.menus.models import Menu, MenuItem
 
 from .permissions import IsSuperuser
 from .serializers import (
@@ -547,7 +548,10 @@ class AdminMenuListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Menu.objects.select_related('user').prefetch_related(
-            'items__recipe'
+            Prefetch(
+                'items',
+                queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+            )
         )
 
 
@@ -558,7 +562,12 @@ class AdminMenuDetailView(generics.RetrieveDestroyAPIView):
     """
     permission_classes = [IsAuthenticated, IsSuperuser]
     serializer_class = AdminMenuSerializer
-    queryset = Menu.objects.select_related('user').prefetch_related('items__recipe')
+    queryset = Menu.objects.select_related('user').prefetch_related(
+        Prefetch(
+            'items',
+            queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+        )
+    )
 
 
 # ---------------------------------------------------------------------------

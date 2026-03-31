@@ -2,10 +2,6 @@ package com.example.smartmeal.feature.products.presentation
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -13,16 +9,12 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,8 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -39,7 +29,6 @@ import com.example.smartmeal.feature.home.presentation.CustomPlan
 import com.example.smartmeal.feature.home.presentation.MyPlanSection
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.selectors.DateSelector
-import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
 import com.example.smartmeal.ui.theme.LightGreenBg
@@ -74,7 +63,9 @@ fun ProductListScreen(
     onDateSelected: (String) -> Unit,
     onProductChecked: (Collection<String>, Boolean) -> Unit,
     onCheckAll: (Collection<String>, Boolean) -> Unit,
+    onReselectPlan: () -> Unit,
     modifier: Modifier = Modifier,
+    hasNoAvailableDays: Boolean = false,
     isLoading: Boolean = false,
     errorMessage: String? = null,
     customPlan: CustomPlan? = null
@@ -95,6 +86,7 @@ fun ProductListScreen(
         }
         
         filteredStrings.mapNotNull { parseApiDate(it) }
+            .filter { !it.before(normalizeProductDate(Date())) }
     }
     
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
@@ -130,6 +122,7 @@ fun ProductListScreen(
     
     val contentState: ProductContentState = when {
         isLoading -> ProductContentState.Loading
+        hasNoAvailableDays -> ProductContentState.Expired
         !errorMessage.isNullOrBlank() -> ProductContentState.Error
         aggregatedProducts.isEmpty() -> ProductContentState.Empty
         else -> ProductContentState.List
@@ -164,28 +157,30 @@ fun ProductListScreen(
             )
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("products_date_selector")
-        ) {
-            if (hasSingleAvailableDate) {
-                SmartMealText(
-                    text = formatSelectedDateLabel(availableDates.first()),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = TextBlack,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(top = 8.dp, bottom = 14.dp)
-                        .testTag("products_selected_date_summary")
-                )
-            } else {
-                DateSelector(
-                    items = dateSelectorItems,
-                    selectedStartId = selectedStartDateKey,
-                    selectedEndId = selectedEndDateKey,
-                    onItemClick = onDateSelected
-                )
+        if (availableDates.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("products_date_selector")
+            ) {
+                if (hasSingleAvailableDate) {
+                    SmartMealText(
+                        text = formatSelectedDateLabel(availableDates.first()),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = TextBlack,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(top = 8.dp, bottom = 14.dp)
+                            .testTag("products_selected_date_summary")
+                    )
+                } else {
+                    DateSelector(
+                        items = dateSelectorItems,
+                        selectedStartId = selectedStartDateKey,
+                        selectedEndId = selectedEndDateKey,
+                        onItemClick = onDateSelected
+                    )
+                }
             }
         }
 
@@ -206,26 +201,28 @@ fun ProductListScreen(
             )
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)
-                .padding(bottom = 8.dp)
-                .testTag("checkAllRow"),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
-        ) {
-            SmartMealText(
-                text = "Выбрать всё",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextBlack,
-                modifier = Modifier.padding(end = 8.dp)
-            )
-            Checkbox(
-                checked = allVisibleChecked,
-                onCheckedChange = { onCheckAll(allVisibleProductIds, !allVisibleChecked) },
-                modifier = Modifier.testTag("checkAllButton")
-            )
+        if (contentState == ProductContentState.List) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .padding(bottom = 8.dp)
+                    .testTag("checkAllRow"),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                SmartMealText(
+                    text = "Выбрать всё",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextBlack,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+                Checkbox(
+                    checked = allVisibleChecked,
+                    onCheckedChange = { onCheckAll(allVisibleProductIds, !allVisibleChecked) },
+                    modifier = Modifier.testTag("checkAllButton")
+                )
+            }
         }
 
         AnimatedContent<ProductContentState>(
@@ -256,6 +253,29 @@ fun ProductListScreen(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 32.dp)
                     )
+                }
+                ProductContentState.Expired -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 32.dp)
+                            .testTag("products_expired_state"),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        SmartMealText(
+                            text = "Доступные дни закончились. Выберите план и дату заново",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = TextBlack,
+                            modifier = Modifier.padding(horizontal = 24.dp)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = onReselectPlan,
+                            modifier = Modifier.testTag("products_reselect_plan_button")
+                        ) {
+                            SmartMealText("Выбрать план и дату")
+                        }
+                    }
                 }
                 ProductContentState.List -> {
                     ProductCategoryList(
@@ -374,10 +394,25 @@ private sealed interface ProductContentState {
     data object Loading : ProductContentState
     data object Empty : ProductContentState
     data object Error : ProductContentState
+    data object Expired : ProductContentState
     data object List : ProductContentState
 }
 
-internal fun filterProductsByDateRange(products: List<ProductUiModel>, startDateKey: String?, endDateKey: String?): List<ProductUiModel> {
+private fun normalizeProductDate(date: Date): Date {
+    return java.util.Calendar.getInstance().apply {
+        time = date
+        set(java.util.Calendar.HOUR_OF_DAY, 0)
+        set(java.util.Calendar.MINUTE, 0)
+        set(java.util.Calendar.SECOND, 0)
+        set(java.util.Calendar.MILLISECOND, 0)
+    }.time
+}
+
+internal fun filterProductsByDateRange(
+    products: List<ProductUiModel>,
+    startDateKey: String?,
+    endDateKey: String?
+): List<ProductUiModel> {
     val startKey = startDateKey ?: return products
     val endKey = endDateKey ?: startKey
     val lowerBound = minOf(startKey, endKey)

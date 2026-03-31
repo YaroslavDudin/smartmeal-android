@@ -1,6 +1,7 @@
 import random
 
 from django.db import transaction
+from django.db.models import Prefetch
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -37,7 +38,12 @@ class MenuViewSet(viewsets.ModelViewSet):
         return (
             Menu.objects
             .filter(user=self.request.user)
-            .prefetch_related('items__recipe')
+            .prefetch_related(
+                Prefetch(
+                    'items',
+                    queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+                )
+            )
         )
 
     def perform_create(self, serializer):
@@ -143,7 +149,12 @@ class MenuViewSet(viewsets.ModelViewSet):
         # Возвращаем полное меню с items (prefetch чтобы не делать N+1)
         created_menu = (
             Menu.objects
-            .prefetch_related('items__recipe')
+            .prefetch_related(
+                Prefetch(
+                    'items',
+                    queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+                )
+            )
             .get(id=menu.id)
         )
         serializer = self.get_serializer(created_menu)

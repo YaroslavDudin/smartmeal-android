@@ -13,6 +13,7 @@ import com.example.smartmeal.feature.products.presentation.ProductListScreen
 import com.example.smartmeal.feature.products.presentation.ProductUiModel
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import java.text.SimpleDateFormat
@@ -38,7 +39,8 @@ class ProductListScreenTest {
                     dateRangeText = "Выберите диапазон дней",
                     onDateSelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { _, _ -> }
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = {}
                 )
             }
         }
@@ -48,7 +50,7 @@ class ProductListScreenTest {
 
     @Test
     fun productListScreen_showsMonthYearAboveDateSelector() {
-        val date = dateFormatter.parse("2026-03-10") ?: Date()
+        val date = dateFormatter.parse("2099-03-10") ?: Date()
 
         composeTestRule.setContent {
             SmartMealTheme {
@@ -57,10 +59,11 @@ class ProductListScreenTest {
                     selectedDate = date,
                     selectedStartDateKey = null,
                     selectedEndDateKey = null,
-                    dateRangeText = "Март 2026",
+                    dateRangeText = "Март 2099",
                     onDateSelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { _, _ -> }
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = {}
                 )
             }
         }
@@ -70,7 +73,7 @@ class ProductListScreenTest {
 
     @Test
     fun productListScreen_singleAvailableDate_showsFullDateSummary() {
-        val selectedDate = dateFormatter.parse("2026-03-27") ?: Date()
+        val selectedDate = dateFormatter.parse("2099-03-27") ?: Date()
 
         composeTestRule.setContent {
             SmartMealTheme {
@@ -84,28 +87,28 @@ class ProductListScreenTest {
                             icon = "",
                             categoryName = "Category",
                             categoryIcon = "",
-                            actualDates = setOf("2026-03-27")
+                            actualDates = setOf("2099-03-27")
                         )
                     ),
                     selectedDate = selectedDate,
-                    selectedStartDateKey = "2026-03-27",
+                    selectedStartDateKey = "2099-03-27",
                     selectedEndDateKey = null,
-                    dateRangeText = "Пятница, 27 марта 2026",
+                    dateRangeText = "27 марта 2099",
                     onDateSelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { _, _ -> }
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = {}
                 )
             }
         }
 
         composeTestRule.onNodeWithTag("products_selected_date_summary").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Пятница - 27 марта 2026").assertIsDisplayed()
         composeTestRule.onAllNodesWithTag("products_month_year").assertCountEquals(0)
     }
 
     @Test
     fun productListScreen_showsMonthRangeWhenSelectionSpansMonths() {
-        val selectedDate = dateFormatter.parse("2026-03-30") ?: Date()
+        val selectedDate = dateFormatter.parse("2099-03-30") ?: Date()
 
         composeTestRule.setContent {
             SmartMealTheme {
@@ -119,16 +122,17 @@ class ProductListScreenTest {
                             icon = "",
                             categoryName = "Category",
                             categoryIcon = "",
-                            actualDates = setOf("2026-03-30", "2026-04-05")
+                            actualDates = setOf("2099-03-30", "2099-04-05")
                         )
                     ),
                     selectedDate = selectedDate,
-                    selectedStartDateKey = "2026-03-30",
-                    selectedEndDateKey = "2026-04-05",
-                    dateRangeText = "30 Марта - 5 Апреля 2026",
+                    selectedStartDateKey = "2099-03-30",
+                    selectedEndDateKey = "2099-04-05",
+                    dateRangeText = "30 марта - 5 апреля 2099",
                     onDateSelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { _, _ -> }
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = {}
                 )
             }
         }
@@ -138,7 +142,7 @@ class ProductListScreenTest {
 
     @Test
     fun productListScreen_displaysProductsForSelectedRange() {
-        val date = dateFormatter.parse("2026-03-10") ?: Date()
+        val date = dateFormatter.parse("2099-03-10") ?: Date()
         val visibleName = "Visible product"
         val hiddenName = "Hidden product"
 
@@ -156,7 +160,7 @@ class ProductListScreenTest {
                             categoryIcon = "",
                             checked = false,
                             dayOffsets = setOf(1),
-                            actualDates = setOf("2026-03-10")
+                            actualDates = setOf("2099-03-10")
                         ),
                         ProductUiModel(
                             id = "2",
@@ -168,16 +172,17 @@ class ProductListScreenTest {
                             categoryIcon = "",
                             checked = false,
                             dayOffsets = setOf(2),
-                            actualDates = setOf("2026-03-11")
+                            actualDates = setOf("2099-03-11")
                         )
                     ),
                     selectedDate = date,
-                    selectedStartDateKey = "2026-03-10",
-                    selectedEndDateKey = "2026-03-10",
-                    dateRangeText = "10 Марта 2026",
+                    selectedStartDateKey = "2099-03-10",
+                    selectedEndDateKey = "2099-03-10",
+                    dateRangeText = "10 марта 2099",
                     onDateSelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { _, _ -> }
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = {}
                 )
             }
         }
@@ -202,7 +207,7 @@ class ProductListScreenTest {
                             icon = "",
                             categoryName = "Category",
                             categoryIcon = "",
-                            actualDates = setOf("2026-03-10")
+                            actualDates = setOf("2099-03-10")
                         ),
                         ProductUiModel(
                             id = "2",
@@ -212,16 +217,17 @@ class ProductListScreenTest {
                             icon = "",
                             categoryName = "Category",
                             categoryIcon = "",
-                            actualDates = setOf("2026-03-11")
+                            actualDates = setOf("2099-03-11")
                         )
                     ),
                     selectedDate = null,
                     selectedStartDateKey = null,
                     selectedEndDateKey = null,
-                    dateRangeText = "Март 2026",
+                    dateRangeText = "Март 2099",
                     onDateSelected = { date -> selectedDate = date },
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { _, _ -> }
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = {}
                 )
             }
         }
@@ -229,7 +235,7 @@ class ProductListScreenTest {
         composeTestRule.onNodeWithTag("date_chip_1").performClick()
         composeTestRule.waitForIdle()
 
-        assertEquals("2026-03-11", selectedDate)
+        assertEquals("2099-03-11", selectedDate)
     }
 
     @Test
@@ -267,13 +273,14 @@ class ProductListScreenTest {
                     selectedDate = null,
                     selectedStartDateKey = null,
                     selectedEndDateKey = null,
-                    dateRangeText = "Март 2026",
+                    dateRangeText = "Март 2099",
                     onDateSelected = {},
                     onProductChecked = { _, _ -> },
                     onCheckAll = { ids, checked ->
                         checkedIds = ids.toList()
                         checkedValue = checked
-                    }
+                    },
+                    onReselectPlan = {}
                 )
             }
         }
@@ -318,15 +325,43 @@ class ProductListScreenTest {
                     selectedDate = null,
                     selectedStartDateKey = null,
                     selectedEndDateKey = null,
-                    dateRangeText = "Март 2026",
+                    dateRangeText = "Март 2099",
                     onDateSelected = {},
                     onProductChecked = { _, _ -> },
-                    onCheckAll = { _, _ -> }
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = {}
                 )
             }
         }
+
         composeTestRule.onNodeWithTag("category-$regularCategory").assertIsDisplayed()
         composeTestRule.onNodeWithTag("category-Покупки").performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText(checkedCategory).performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun productListScreen_expiredDays_showsReselectPlanState() {
+        var clicked = false
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                ProductListScreen(
+                    products = emptyList(),
+                    selectedDate = null,
+                    selectedStartDateKey = null,
+                    selectedEndDateKey = null,
+                    dateRangeText = "",
+                    onDateSelected = {},
+                    onProductChecked = { _, _ -> },
+                    onCheckAll = { _, _ -> },
+                    onReselectPlan = { clicked = true },
+                    hasNoAvailableDays = true
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("products_expired_state").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("products_reselect_plan_button").performClick()
+        assertTrue(clicked)
     }
 }

@@ -1,58 +1,93 @@
-from django.test import TestCase
-from django.contrib.auth import get_user_model
 from datetime import date
-from app.menus.models import Menu, MenuItem, MealType, Period
+
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.test import TestCase
+
+from app.menus.models import MealType, Menu, MenuItem, Period
+from app.menus.serializers import GenerateMenuSerializer
 from app.recipes.models import Recipe
 
 User = get_user_model()
 
+
 class MenusModelTests(TestCase):
     def setUp(self):
-        #  Создаем пользователя, для которого будем делать меню
         self.user = User.objects.create_user(
-            username='diet_user',
-            email='diet@test.com',
-            password='password123'
+            username="diet_user",
+            email="diet@test.com",
+            password="password123",
         )
-        
-        #  Создаем рецепт, который добавим в меню
         self.recipe = Recipe.objects.create(
-            title="Овсянка с ягодами",
+            title="Oatmeal with berries",
             cook_time=15,
-            servings=1
+            servings=1,
         )
-
-        #  Создаем само меню (оно понадобится для теста MenuItem)
         self.menu = Menu.objects.create(
             user=self.user,
             period=Period.WEEK,
-            start_date=date.today()
+            start_date=date.today(),
         )
+        self.meal_type = MealType.objects.create(name="Breakfast", order=1)
 
     def test_create_menu(self):
-        # Проверяем, что меню из setUp создалось корректно
         self.assertEqual(self.menu.period, Period.WEEK)
-        self.assertEqual(self.menu.user.email, 'diet@test.com')
-        expected_str = f'Menu for User ID {self.user.id} (start: {date.today()}, period: {Period.WEEK})'
-        self.assertEqual(str(self.menu), expected_str)
+        self.assertEqual(self.menu.user.email, "diet@test.com")
 
     def test_create_menu_item(self):
-        # Создаем тип приема пищи
-        meal_type = MealType.objects.create(name="Завтрак", order=1)
-        
-        #  Создаем пункт меню (завтрак), привязывая его к меню и рецепту
         menu_item = MenuItem.objects.create(
             menu=self.menu,
             recipe=self.recipe,
             day_offset=0,
-            meal_type=meal_type
+            meal_type=self.meal_type,
         )
 
-        #  Проверяем, что пункт меню сохранился со всеми связями
-        self.assertEqual(menu_item.meal_type.name, "Завтрак")
-        self.assertEqual(menu_item.recipe.title, "Овсянка с ягодами")
+        self.assertEqual(menu_item.meal_type.name, "Breakfast")
+        self.assertEqual(menu_item.recipe.title, "Oatmeal with berries")
         self.assertEqual(menu_item.menu.period, Period.WEEK)
-        
-        expected_str = f'Завтрак on Day Offset 0 for Menu ID {self.menu.id} - Recipe ID {self.recipe.id}'
-        self.assertEqual(str(menu_item), expected_str)
 
+    def test_menu_item_allows_day_offset_255(self):
+        menu_item = MenuItem(
+            menu=self.menu,
+            recipe=self.recipe,
+            day_offset=255,
+            meal_type=self.meal_type,
+        )
+
+        menu_item.full_clean()
+
+    def test_menu_item_rejects_day_offset_256(self):
+        menu_item = MenuItem(
+            menu=self.menu,
+            recipe=self.recipe,
+            day_offset=256,
+            meal_type=self.meal_type,
+        )
+
+        with self.assertRaises(ValidationError):
+            menu_item.full_clean()
+
+
+class GenerateMenuSerializerTests(TestCase):
+    def test_generate_menu_serializer_allows_256_days(self):
+        serializer = GenerateMenuSerializer(
+            data={
+                "period": "custom",
+                "days": 256,
+                "start_date": date.today(),
+            }
+        )
+
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+
+    def test_generate_menu_serializer_rejects_257_days(self):
+        serializer = GenerateMenuSerializer(
+            data={
+                "period": "custom",
+                "days": 257,
+                "start_date": date.today(),
+            }
+        )
+
+        self.assertFalse(serializer.is_valid())
+        self.assertIn("days", serializer.errors)

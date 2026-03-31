@@ -54,6 +54,7 @@ class HomeDateSelectionTest {
 
     @Test
     fun buildAvailableDates_returnsSequentialDatesAcrossMonthBoundary() {
+        val today = formatter.parse("2026-03-24")!!
         val dates = buildAvailableDates(
             menuItems = listOf(
                 item("2026-03-25"),
@@ -61,13 +62,47 @@ class HomeDateSelectionTest {
                 item("2026-04-01"),
                 item("2026-03-25")
             ),
-            customPlan = null
+            customPlan = null,
+            today = today
         )
 
         assertEquals(
             listOf("2026-03-25", "2026-03-30", "2026-04-01"),
             dates.map(formatter::format)
         )
+    }
+
+    @Test
+    fun buildAvailableDates_filtersPastDatesBeforeToday() {
+        val today = formatter.parse("2026-03-29")!!
+
+        val dates = buildAvailableDates(
+            menuItems = listOf(
+                item("2026-03-27"),
+                item("2026-03-29"),
+                item("2026-03-30")
+            ),
+            customPlan = null,
+            today = today
+        )
+
+        assertEquals(
+            listOf("2026-03-29", "2026-03-30"),
+            dates.map(formatter::format)
+        )
+    }
+
+    @Test
+    fun trimCustomPlanToToday_movesStartForwardToToday() {
+        val plan = CustomPlan(
+            startDate = formatter.parse("2026-03-25")!!,
+            endDate = formatter.parse("2026-03-31")!!
+        )
+
+        val trimmed = trimCustomPlanToToday(plan, formatter.parse("2026-03-29")!!)
+
+        assertEquals("2026-03-29", formatter.format(trimmed!!.startDate))
+        assertEquals("2026-03-31", formatter.format(trimmed.endDate))
     }
 
     private fun item(actualDate: String) = MenuItemDto(

@@ -48,6 +48,9 @@ class ProductListViewModel(
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
+    var hasNoAvailableDays by mutableStateOf(false)
+        private set
+
     private val checkedMap: SnapshotStateMap<String, Boolean> = mutableStateMapOf()
 
     private val categoryNormalizeMap = mapOf(
@@ -102,6 +105,7 @@ class ProductListViewModel(
         availableDateKeys = emptyList()
         dateRangeText = "Выберите диапазон дней"
         errorMessage = null
+        hasNoAvailableDays = false
         recipeCache.clear() // При смене меню чистим кэш
     }
 
@@ -161,22 +165,27 @@ class ProductListViewModel(
 
     fun generateProductsFromMenuItems(menuItems: List<MenuItemDto>) {
         viewModelScope.launch {
-             if (isLoading) return@launch
+            if (isLoading) return@launch
             isLoading = true
             errorMessage = null
             try {
-                // ИДЕАЛЬНАЯ ЛОГИКА: Берем количество порций из настроек пользователя (SetupStep1)
-                val globalPortionSize = preferences.getPortionSize()
+                val todayKey = currentApiDateKey()
+                val upcomingMenuItems = menuItems.filter { it.actual_date >= todayKey }
+                hasNoAvailableDays = menuItems.isNotEmpty() && upcomingMenuItems.isEmpty()
 
-                // 1. Сначала загружаем все недостающие рецепты в кэш с учетом порций
-                val uniqueRecipeIds = menuItems.map { it.recipe }.distinct()
+                if (upcomingMenuItems.isEmpty()) {
+                    products = emptyList()
+                    initializeRangeFromProducts(emptyList())
+                    return@launch
+                }
+
+                val globalPortionSize = preferences.getPortionSize()
+                val uniqueRecipeIds = upcomingMenuItems.map { it.recipe }.distinct()
                 val missingIds = uniqueRecipeIds.filter { it !in recipeCache }
 
                 if (missingIds.isNotEmpty()) {
                     val deferred = missingIds.map { id ->
                         async {
-                            // Запрашиваем рецепт с сервера, ПРИНУДИТЕЛЬНО указав servings
-                            // Так бэкенд вернет веса ингредиентов, уже умноженные на кол-во персон
                             val response = menuApi.getRecipe(id, servings = globalPortionSize)
                             if (response.isSuccessful && response.body() != null) {
                                 id to response.body()!!
@@ -190,31 +199,27 @@ class ProductListViewModel(
                     }
                 }
 
-                // 2. Теперь строим список продуктов из ВСЕХ элементов меню
                 val rawProducts = mutableListOf<ProductUiModel>()
-                val orderedDateKeys = menuItems
+                val orderedDateKeys = upcomingMenuItems
                     .map { it.actual_date }
                     .distinct()
                     .sorted()
 
                 val dateIndexMap = orderedDateKeys.withIndex().associate { it.value to it.index }
 
-                for (menuItem in menuItems) {
+                for (menuItem in upcomingMenuItems) {
                     val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
-
-                    // ИДЕАЛЬНАЯ ЛОГИКА: Сначала проверяем, не менял ли пользователь порции для ЭТОГО конкретного дня/блюда
+                    
+                    // ТВОЯ ЛОГИКА ПОРЦИЙ (СОХРАНЕНА)
                     val overrideServings = preferences.getMenuItemServings(menuItem.id)
                     val effectiveServings = if (overrideServings > 0) overrideServings else globalPortionSize
 
-                    // Если рецепта нет в кэше или он был загружен с ДРУГИМ количеством порций - загружаем заново
-                    // (Для простоты здесь мы просто перезагружаем, если порции отличаются от глобальных)
                     val recipe = if (overrideServings > 0) {
                         val resp = menuApi.getRecipe(menuItem.recipe, servings = effectiveServings)
                         if (resp.isSuccessful) resp.body() else recipeCache[menuItem.recipe]
                     } else {
                         recipeCache[menuItem.recipe]
                     } ?: continue
-
 
                     (recipe.ingredients ?: emptyList()).forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {
@@ -225,7 +230,6 @@ class ProductListViewModel(
                         val normalizedCategory = categoryNormalizeMap[rawCategory] ?: rawCategory
                         val icon = categoryIconMap[normalizedCategory] ?: "🛒"
 
-                        // Так как бэкенд уже вернул веса с учетом servings, мы просто форматируем их
                         val normalizedAmountInGrams = resolveAmountInGrams(
                             amountInGrams = ingredient.amount_in_base_units,
                             fallbackAmount = ingredient.amount,
@@ -262,17 +266,18 @@ class ProductListViewModel(
                         .thenBy { it.name.lowercase(Locale("ru")) }
                 )
 
-                initializeRangeFromProducts(products, orderedDateKeys)
+                initializeRangeFromProducts(orderedDateKeys)
             } catch (e: Exception) {
                 e.printStackTrace()
                 errorMessage = e.localizedMessage ?: "Не удалось загрузить продукты"
+                hasNoAvailableDays = false
             } finally {
                 isLoading = false
             }
         }
     }
 
-    private fun initializeRangeFromProducts(products: List<ProductUiModel>, orderedDateKeys: List<String>) {
+    private fun initializeRangeFromProducts(orderedDateKeys: List<String>) {
         availableDateKeys = orderedDateKeys
 
         if (orderedDateKeys.isEmpty()) {
@@ -401,4 +406,9 @@ internal fun parseWeightToGrams(amount: String): Double {
         "кг" -> value * 1000
         else -> value
     }
+}
+
+
+internal fun currentApiDateKey(today: Date = Date()): String {
+    return SimpleDateFormat("yyyy-MM-dd", Locale.US).format(today)
 }

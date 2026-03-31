@@ -57,6 +57,7 @@ data class RecipeIngredientDto(
     val ingredient_name: String,
     val amount: Double,
     val amount_in_base_units: Double? = null,
+    val base_unit_name: String? = null,
     val unit_name: String,
     val category_name: String? = null
 )
@@ -65,7 +66,7 @@ data class RecipeStepDto(
     val step_number: Int,
     val description: String,
     val image_url: String? = null,
-    val timer: Int? = null
+    val timer: Int? = null,
 )
 
 data class CartItemDto(

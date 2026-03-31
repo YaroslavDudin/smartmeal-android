@@ -51,8 +51,10 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.QuantityStepper
 import com.example.smartmeal.ui.theme.Padding
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
-// Цвета для дизайна
 val LightCream = Color(0xFFFAFAFA)
 val NutritionBgColor = Color(0xFFFBE9A6)
 val IngredientRowDark = Color(0xFFE8D385)
@@ -103,6 +105,8 @@ fun RecipeDetailScreen(
                 )
             } else {
                 state.recipe?.let { recipe ->
+                    val totalWeight = recipe.total_weight ?: 0.0
+
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -124,7 +128,6 @@ fun RecipeDetailScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Заголовок и вес
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
@@ -136,9 +139,8 @@ fun RecipeDetailScreen(
                                 color = Color.Black,
                                 modifier = Modifier.weight(1f)
                             )
-                            val totalWeightStr = recipe.total_weight?.let { "${it.toInt()} г" } ?: ""
                             SmartMealText(
-                                text = totalWeightStr,
+                                text = formatWeightLabel(totalWeight),
                                 fontSize = 20.sp,
                                 color = TextGreen
                             )
@@ -146,19 +148,19 @@ fun RecipeDetailScreen(
 
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        // Чипсы с временем и калориями
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             InfoChip(label = "${recipe.cook_time} мин")
                             Spacer(modifier = Modifier.width(8.dp))
-                            InfoChip(label = "${recipe.per_serving_calories.toInt()} ккал/порция")
+                            InfoChip(
+                                label = "${calculatePer100(recipe.total_calories, totalWeight).toInt()} ккал/100 г"
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Ингредиенты с динамическим количеством порций
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -194,17 +196,15 @@ fun RecipeDetailScreen(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Карточка КБЖУ
                         NutritionCard(
-                            calories = recipe.total_calories.toInt().toString(),
-                            proteins = recipe.total_proteins.toString(),
-                            fats = recipe.total_fats.toString(),
-                            carbs = recipe.total_carbs.toString()
+                            calories = formatNutritionValue(calculatePer100(recipe.total_calories, totalWeight)),
+                            proteins = formatNutritionValue(calculatePer100(recipe.total_proteins, totalWeight)),
+                            fats = formatNutritionValue(calculatePer100(recipe.total_fats, totalWeight)),
+                            carbs = formatNutritionValue(calculatePer100(recipe.total_carbs, totalWeight))
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Заголовок шагов
                         SmartMealText(
                             text = "Пошаговый фото рецепт",
                             fontSize = 24.sp,
@@ -220,7 +220,7 @@ fun RecipeDetailScreen(
                                 number = step.step_number,
                                 description = step.description,
                                 imageUrl = step.image_url,
-                                time = step.timer
+                                timeMinutes = step.timer
                             )
                             Spacer(modifier = Modifier.height(24.dp))
                         }
@@ -253,7 +253,7 @@ fun CustomRecipeTopBar(
             )
         }
         Row {
-            IconButton(onClick = { /* TODO */ }) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Добавить",
@@ -280,17 +280,29 @@ fun NutritionCard(calories: String, proteins: String, fats: String, carbs: Strin
         shadowElevation = 2.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+                .padding(vertical = 16.dp, horizontal = 8.dp)
         ) {
-            NutritionItem(value = calories, label = "ккал")
-            NutritionItem(value = proteins, label = "белки")
-            NutritionItem(value = fats, label = "жиры")
-            NutritionItem(value = carbs, label = "углеводы")
+            SmartMealText(
+                text = "на 100 г",
+                fontSize = 14.sp,
+                color = TextGray,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 8.dp)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                NutritionItem(value = calories, label = "ккал")
+                NutritionItem(value = proteins, label = "белки")
+                NutritionItem(value = fats, label = "жиры")
+                NutritionItem(value = carbs, label = "углеводы")
+            }
         }
     }
 }
@@ -323,7 +335,6 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
         Column(modifier = Modifier.fillMaxWidth()) {
             ingredients.forEachIndexed { index, ingredient ->
                 val backgroundColor = if (index % 2 == 0) IngredientRowDark else IngredientRowLight
-
                 val formattedAmount = if (ingredient.amount % 1.0 == 0.0) {
                     ingredient.amount.toInt().toString()
                 } else {
@@ -356,7 +367,7 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 }
 
 @Composable
-fun StepItem(number: Int, description: String, imageUrl: String?, time: Int?) {
+fun StepItem(number: Int, description: String, imageUrl: String?, timeMinutes: Int?) {
     Column(modifier = Modifier.fillMaxWidth()) {
         SmartMealText(
             text = buildAnnotatedString {
@@ -369,9 +380,8 @@ fun StepItem(number: Int, description: String, imageUrl: String?, time: Int?) {
             }
         )
 
-        if (time != null && time > 0) {
+        formatStepTimerLabel(timeMinutes)?.let { timerLabel ->
             Spacer(modifier = Modifier.height(8.dp))
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
@@ -381,14 +391,13 @@ fun StepItem(number: Int, description: String, imageUrl: String?, time: Int?) {
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 SmartMealText(
-                    text = "$time мин",
+                    text = timerLabel,
                     fontSize = 14.sp,
                     color = TextGray
                 )
             }
+            Spacer(modifier = Modifier.height(12.dp))
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -432,4 +441,30 @@ fun IngredientItem(name: String, amount: String) {
         SmartMealText(text = name, fontSize = 16.sp, color = Color.Black)
         SmartMealText(text = amount, fontSize = 16.sp, color = Color.Gray)
     }
+}
+
+internal fun calculatePer100(totalValue: Double, totalWeightG: Double): Double {
+    if (totalWeightG <= 0.0) return 0.0
+    return (totalValue / totalWeightG) * 100.0
+}
+
+internal fun formatNutritionValue(value: Double): String {
+    val formatter = DecimalFormat("0.#", DecimalFormatSymbols(Locale.US))
+    return formatter.format(value)
+}
+
+internal fun formatWeightLabel(totalWeightG: Double): String {
+    if (totalWeightG <= 0.0) return "—"
+    val normalized = if (totalWeightG % 1.0 == 0.0) {
+        totalWeightG.toInt().toString()
+    } else {
+        formatNutritionValue(totalWeightG)
+    }
+    return "$normalized г"
+}
+
+internal fun formatStepTimerLabel(timerMinutes: Int?): String? {
+    val minutes = timerMinutes ?: return null
+    if (minutes <= 0) return null
+    return "$minutes мин"
 }
