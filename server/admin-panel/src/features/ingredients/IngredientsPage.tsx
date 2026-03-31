@@ -151,7 +151,7 @@ export function IngredientsPage() {
                     <td className="table-cell text-center hidden md:table-cell">
                       {ingredient.nutrition ? (
                         <span className="text-xs text-[var(--text-secondary)]">
-                          Б{ingredient.nutrition.protein} / Ж{ingredient.nutrition.fat} / У{ingredient.nutrition.carbs}
+                          {ingredient.nutrition.protein} / {ingredient.nutrition.fat} / {ingredient.nutrition.carbs}
                         </span>
                       ) : (
                         <span className="text-[var(--text-muted)]">—</span>

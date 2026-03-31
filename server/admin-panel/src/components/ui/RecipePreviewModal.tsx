@@ -78,10 +78,10 @@ export function RecipePhonePreview({ data }: { data: PreviewData }) {
               style={{ background: '#FFF3D0' }}
             >
               {[
-                { label: 'ккал', value: Math.round(Number(data.total_calories) || 0) },
-                { label: 'белки', value: Number(data.total_proteins || 0).toFixed(1) },
-                { label: 'жиры', value: Number(data.total_fats || 0).toFixed(1) },
-                { label: 'углев.', value: Number(data.total_carbs || 0).toFixed(1) },
+                { label: 'ккал', value: Math.round(Number(data.total_calories)) },
+                { label: 'белки', value: Number(data.total_proteins).toFixed(1) },
+                { label: 'жиры', value: Number(data.total_fats).toFixed(1) },
+                { label: 'углев.', value: Number(data.total_carbs).toFixed(1) },
               ].map(({ label, value }, i, arr) => (
                 <div
                   key={label}
@@ -147,7 +147,7 @@ export function RecipePhonePreview({ data }: { data: PreviewData }) {
                         {step.timer && (
                           <p className="text-[9px] text-gray-400 mt-0.5 flex items-center gap-0.5">
                             <Timer className="w-2 h-2" />
-                            {step.timer} сек
+                            {step.timer} минут
                           </p>
                         )}
                       </div>

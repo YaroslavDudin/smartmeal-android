@@ -44,12 +44,12 @@ class Unit(models.Model):
 class UnitConversion(models.Model):
     '''Конвертация нестандартной единицы измерения в граммы для конкретного ингредиента.'''
     ingredient = models.ForeignKey('Ingredient', on_delete=models.CASCADE, related_name='unit_conversions')
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='in_other_units')
-    base_unit = models.ForeignKey( # базовая единица, в которую конвертируется
-        Unit, on_delete=models.RESTRICT, related_name='conversions_to',
+    from_unit = models.ForeignKey(Unit, on_delete=models.CASCADE, related_name='conversions_from')
+    to_unit = models.ForeignKey( # единица измерения, в которую конвертируется
+        Unit, on_delete=models.CASCADE, related_name='conversions_to',
         help_text='Единица, в которую конвертируется'
     )
-    amount_per_unit = models.DecimalField( # базовой единицой измерения может быть не только грамм (тот же мл)
+    amount_per_unit = models.DecimalField(
         max_digits=8, decimal_places=2,
         help_text='Количество в базовой единице'
     )
@@ -60,11 +60,11 @@ class UnitConversion(models.Model):
         verbose_name_plural = 'Конвертации единиц измерения'
         ordering = ['ingredient__name', 'amount_per_unit']
         constraints = [
-            models.UniqueConstraint(fields=['ingredient', 'unit', 'base_unit'], name='unique_ingredient_unit_conversion')
+            models.UniqueConstraint(fields=['ingredient', 'from_unit', 'to_unit'], name='unique_ingredient_unit_conversion')
         ]
 
     def __str__(self):
-        return f'Вес ингредиента {self.ingredient} на 1 {self.unit} в {self.base_unit} равен {self.amount_per_unit}'
+        return f'Вес ингредиента {self.ingredient} на 1 {self.from_unit} в {self.to_unit} равен {self.amount_per_unit}'
 
 
 class Ingredient(models.Model):
@@ -126,8 +126,9 @@ class RecipeQuerySet(models.QuerySet):
     def with_prefetched_ingredients(self):
         '''Prefetch всех связанных данных для расчёта КБЖУ без N+1.'''
         return self.prefetch_related(
-            'recipe_ingredients__ingredient__ingredient_nutrition',
-            'recipe_ingredients__ingredient__unit_conversions',
+            'recipe_ingredients__ingredient__ingredient_nutrition__base_unit',
+            'recipe_ingredients__ingredient__unit_conversions__from_unit',
+            'recipe_ingredients__ingredient__unit_conversions__to_unit',
             'recipe_ingredients__ingredient__allergies', # аллергии указанные для ингредиентов
             'recipe_ingredients__unit',
         )
@@ -167,24 +168,18 @@ class Recipe(models.Model):
         Для списков рецептов предпочтительнее использовать with_prefetched_ingredients().
         '''
         if not hasattr(self, '_nutrition_cache'):
-            protein = Decimal(0)
-            fat = Decimal(0)
-            carbs = Decimal(0)
+            protein = fat = carbs = Decimal(0)
             for ri in self.recipe_ingredients.all():
-                protein += ri.protein
-                fat += ri.fat
-                carbs += ri.carbs
+                p, f, c = ri._get_macros()
+                protein += p
+                fat += f
+                carbs += c
             calories = (
                 protein * CALORIES_PER_GRAM['protein']
                 + carbs * CALORIES_PER_GRAM['carbs']
                 + fat * CALORIES_PER_GRAM['fat']
             )
-            self._nutrition_cache = {
-                'protein': protein,
-                'fat': fat,
-                'carbs': carbs,
-                'calories': calories,
-            }
+            self._nutrition_cache = {'protein': protein, 'fat': fat, 'carbs': carbs, 'calories': calories}
         return self._nutrition_cache
 
     @property
@@ -209,19 +204,19 @@ class Recipe(models.Model):
 
     @property
     def per_serving_proteins(self):
-        return self.total_proteins / self.servings if self.servings else Decimal(0)
+        return self.total_proteins / self.servings
 
     @property
     def per_serving_fats(self):
-        return self.total_fats / self.servings if self.servings else Decimal(0)
+        return self.total_fats / self.servings
 
     @property
     def per_serving_carbs(self):
-        return self.total_carbs / self.servings if self.servings else Decimal(0)
+        return self.total_carbs / self.servings
 
     @property
     def per_serving_calories(self):
-        return self.total_calories / self.servings if self.servings else Decimal(0)
+        return self.total_calories / self.servings
 
     def __str__(self):
         return self.title
@@ -243,67 +238,69 @@ class RecipeIngredient(models.Model):
             models.UniqueConstraint(fields=['recipe', 'ingredient'], name='unique_recipe_ingredient')
         ]
     
-    def _find_conversion(self, target_unit):
-        conversions = self.ingredient.unit_conversions.filter(unit=self.unit)
+    def clean(self):
+        if not self.ingredient_id or not self.unit_id:
+            return
+
+        try:
+            # Проверяем одновременно наличие пищевой ценности и конвертации в единицы измерения пищевой ценности
+            self.get_amount_in_target_units(self.nutrition.base_unit)
+        except ValueError as e:
+            raise ValidationError(str(e))
         
-        # Прямая: self.unit → target_unit
-        direct = conversions.filter(base_unit=target_unit).first()
-        if direct:
-            return self.amount * direct.amount_per_unit, target_unit
+    def _convert_to(self, target_unit):
+        if target_unit.pk == self.unit.pk:
+            return self.amount
+
+        conversions = self.ingredient.unit_conversions.all()
         
-        # Обратная: target_unit → self.unit
-        reverse = self.ingredient.unit_conversions.filter(
-            unit=target_unit, base_unit=self.unit
-        ).first()
-        if reverse:
-            return self.amount / reverse.amount_per_unit, target_unit
+        for conv in conversions:  # из prefetch-кеша
+            # Прямая: self.unit → target_unit
+            if conv.from_unit_id == self.unit_id and conv.to_unit_id == target_unit.pk:
+                return self.amount * conv.amount_per_unit
+            # Обратная: target_unit → self.unit
+            if conv.from_unit_id == target_unit.pk and conv.to_unit_id == self.unit_id:
+                return self.amount / conv.amount_per_unit
         
         return None
 
-    def _get_in_base_units(self):
-        if hasattr(self, '_in_base_units_cache'):
-            return self._in_base_units_cache
-        
-        target_units = []
+    def get_amount_in_target_units(self, target_unit):
+        '''Метод, чтобы получить количества ингредиента в указанной единице измерения
 
-        try:
-            nutrition = self.nutrition
-            # Если есть пищевая ценность — проверяем совпадение
-            if self.unit.pk == nutrition.base_unit.pk:
-                self._in_base_units_cache = (self.amount, self.unit)
-                return self._in_base_units_cache
-            # если не совпадает кладем в target_units
-            target_units.append(nutrition.base_unit)
-        except ValueError:
-            # Единица уже базовая и конверсия не нужна
-            if self.unit.is_base:
-                self._in_base_units_cache = (self.amount, self.unit)
-                return self._in_base_units_cache
+        Args:
+            target_unit (Unit): Экземпляр класса Unit
 
-        # Добавляем базовые единицы как запасные варианты
-        base_units = list(Unit.objects.filter(is_base=True) \
-            .exclude(pk=target_units[0].pk if target_units else None)) # исключаем единицу nutrition если есть
-        target_units.extend(base_units)
+        Raises:
+            ValueError: Ошибка, возникающая, если нет доступных конвертаций в переданную единицу измерения
 
-        for target_unit in target_units:
-            result = self._find_conversion(target_unit)
-            if result:
-                self._in_base_units_cache = result
-                return self._in_base_units_cache
+        Returns:
+            Decimal: Количество ингредиента в переданных единицах измерения
+        '''     
+        if not hasattr(self, '_in_base_units_cache'):
+            self._in_base_units_cache = {}
 
-        # Конверсия не найдена — возвращаем 0
-        self._in_base_units_cache = (Decimal(0), self.unit)
-        return self._in_base_units_cache
+        if target_unit.pk in self._in_base_units_cache:
+            return self._in_base_units_cache[target_unit.pk]
+
+        amount = self._convert_to(target_unit)
+        if amount is None:
+            raise ValueError(
+                f'Нет конвертации из "{self.unit}" в "{target_unit}" '
+                f'для ингредиента "{self.ingredient}"'
+            )
+
+        self._in_base_units_cache[target_unit.pk] = amount
+        return self._in_base_units_cache[target_unit.pk]
 
     @property
     def base_unit(self):
-        _, base_unit = self._get_in_base_units()
-        return base_unit
-
+        # Берется базовая единица измерения пищевой ценности
+        return self.nutrition.base_unit
+    
     @property
     def amount_in_base_units(self):
-        amount, _ = self._get_in_base_units()
-        return amount
+        # Переводим в те же базовые единицы, что в пищевой ценности ингредиента
+        return self.get_amount_in_target_units(self.nutrition.base_unit)
 
     @property
     def nutrition(self):
@@ -313,33 +310,31 @@ class RecipeIngredient(models.Model):
             except IngredientNutrition.DoesNotExist:
                 raise ValueError(f'Отсутствует пищевая ценность для ингредиента "{self.ingredient}"')
         return self._nutrition_cache
+    
+    def _get_macros(self):
+        # Возвращает (protein, fat, carbs) за один проход
+        if not hasattr(self, '_macros_cache'):
+            amount = self.get_amount_in_target_units(self.nutrition.base_unit)
+            nutrition = self.nutrition
+            scale = amount / Decimal(nutrition.base_weight)
+            self._macros_cache = (
+                scale * nutrition.protein,
+                scale * nutrition.fat,
+                scale * nutrition.carbs
+            )
+        return self._macros_cache
 
     @property
     def protein(self):
-        amount = self.amount_in_base_units
-        try:
-            nutrition = self.nutrition
-        except ValueError:
-            return Decimal(0)
-        return (amount / Decimal(nutrition.base_weight)) * nutrition.protein
+        return self.get_macros()[0]
 
     @property
     def fat(self):
-        amount = self.amount_in_base_units
-        try:
-            nutrition = self.nutrition
-        except ValueError:
-            return Decimal(0)
-        return (amount / Decimal(nutrition.base_weight)) * nutrition.fat
+        return self.get_macros()[1]
 
     @property
     def carbs(self):
-        amount = self.amount_in_base_units
-        try:
-            nutrition = self.nutrition
-        except ValueError:
-            return Decimal(0)
-        return (amount / Decimal(nutrition.base_weight)) * nutrition.carbs
+        return self.get_macros()[2]
 
     @property
     def calories(self):

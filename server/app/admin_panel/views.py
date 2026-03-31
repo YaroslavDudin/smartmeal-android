@@ -348,7 +348,7 @@ class AdminIngredientListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         qs = Ingredient.objects.select_related(
             'category', 'ingredient_nutrition'
-        ).prefetch_related('unit_conversions__unit')
+        ).prefetch_related('unit_conversions__to_unit', 'unit_conversions__from_unit')
         search = self.request.query_params.get('search')
         category = self.request.query_params.get('category')
         if search:
@@ -381,7 +381,7 @@ class AdminIngredientDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsSuperuser]
     queryset = Ingredient.objects.select_related(
         'category', 'ingredient_nutrition'
-    ).prefetch_related('unit_conversions__unit')
+    ).prefetch_related('unit_conversions__to_unit', 'unit_conversions__from_unit')
 
     def get_serializer_class(self):
         if self.request.method in ('PATCH', 'PUT'):

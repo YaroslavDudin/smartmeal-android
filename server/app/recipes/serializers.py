@@ -52,20 +52,20 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
         fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'amount_in_base_units', 'base_unit_name', 'unit', 'unit_name', 'category_name')
-
+    
     # отношение количества персон к количеству порций в рецепте
     def _get_scale(self, obj):
         cache_key = f'_scale_{obj.pk}'
         if not hasattr(self, cache_key):
             target_servings = self.context.get('target_servings')
-            recipe_servings = self.context.get('recipe_servings') or obj.recipe.servings
+            recipe_servings = self.context.get('recipe_servings')
             if not target_servings or not recipe_servings:
                 scale = Decimal(1)
             else:
                 scale = Decimal(target_servings) / Decimal(recipe_servings)
             setattr(self, cache_key, scale)
         return getattr(self, cache_key)
-
+    
     # перерасчет количества под указанное количество персон
     # если нету в контексте передается как есть в рецепте
     def get_amount(self, obj):
@@ -76,17 +76,18 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
             obj.id,
             obj.ingredient_id,
             self.context.get('target_servings'),
-            obj.recipe.servings,
+            self.context.get('recipe_servings'),
             obj.amount,
             scaled_amount,
         )
         return scaled_amount
-
+    
     # перерасчет количества под указанное количество персон в базовых единицах
     def get_amount_in_base_units(self, obj):
         scale = self._get_scale(obj)
         scaled_amount = round(obj.amount_in_base_units * scale, 2)
         return scaled_amount
+
 
 class RecipeStepSerializer(serializers.ModelSerializer):
     class Meta:
@@ -128,6 +129,13 @@ class RecipeSerializer(serializers.ModelSerializer):
             return obj.favorited_by.filter(user=user).exists()
         return False
         
+    # указать target servings как указанное в рецепте количество порций, если неопределено
+    def to_representation(self, instance):
+        if not self.context.get('target_servings'):
+            self.context['target_servings'] = instance.servings
+        self.context['recipe_servings'] = instance.servings
+        return super().to_representation(instance)
+
     # отношение количества персон к количеству порций в рецепте
     def _get_scale(self, obj):
         cache_key = f'_scale_{obj.pk}'
