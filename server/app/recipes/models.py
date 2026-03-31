@@ -1,5 +1,6 @@
 from decimal import Decimal
 from django.db import models
+from django.db.models import Max
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 
@@ -104,6 +105,10 @@ class IngredientNutrition(models.Model):
                 'base_unit': f'Единица измерения "{self.base_unit}" не является базовой (is_base=False). '
                     f'Для пищевой ценности можно использовать только базовые единицы'
             })
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()  # вызывает clean() и валидацию полей
+        super().save(*args, **kwargs)
 
     @property
     def calories(self):
@@ -247,6 +252,10 @@ class RecipeIngredient(models.Model):
             self.get_amount_in_target_units(self.nutrition.base_unit)
         except ValueError as e:
             raise ValidationError(str(e))
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()  # вызывает clean() и валидацию полей
+        super().save(*args, **kwargs)
         
     def _convert_to(self, target_unit):
         if target_unit.pk == self.unit.pk:
@@ -300,7 +309,7 @@ class RecipeIngredient(models.Model):
     @property
     def amount_in_base_units(self):
         # Переводим в те же базовые единицы, что в пищевой ценности ингредиента
-        return self._amount_in_nutrition_units
+        return self.get_amount_in_target_units(self.nutrition.base_unit)
 
     @property
     def nutrition(self):
@@ -311,7 +320,7 @@ class RecipeIngredient(models.Model):
                 raise ValueError(f'Отсутствует пищевая ценность для ингредиента "{self.ingredient}"')
         return self._nutrition_cache
     
-    def _get_macros(self):
+    def get_macros(self):
         # Возвращает (protein, fat, carbs) за один проход
         if not hasattr(self, '_macros_cache'):
             amount = self.get_amount_in_target_units(self.nutrition.base_unit)
@@ -370,6 +379,21 @@ class RecipeStep(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['recipe', 'step_number'], name='unique_recipe_step_number')
         ]
+    
+    def save(self, *args, **kwargs):
+        if not self.step_number:
+            # Автоматически присваиваем следующий номер
+            max_number = RecipeStep.objects.filter(recipe=self.recipe).aggregate(Max('step_number'))['step_number__max']
+            self.step_number = (max_number or 0) + 1
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        # Запоминаем номер удаляемого шага
+        deleted_number = self.step_number
+        recipe = self.recipe
+        super().delete(*args, **kwargs)
+        # Сдвигаем номера всех последующих шагов
+        RecipeStep.objects.filter(recipe=recipe, step_number__gt=deleted_number).update(step_number=models.F('step_number') - 1)
 
     def __str__(self):
         return f'Step №{self.step_number} for Recipe ID {self.recipe_id}'

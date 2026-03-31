@@ -1,5 +1,10 @@
 import api from '@/lib/axios'
-import type { Menu, PaginatedResponse } from '@/types'
+import type { MealType, Menu, PaginatedResponse } from '@/types'
+
+export async function getMealTypes() {
+  const response = await api.get<MealType[]>('/meal-types/')
+  return response.data
+}
 
 export async function getMenus(params: { page?: number } = {}) {
   const query = new URLSearchParams()

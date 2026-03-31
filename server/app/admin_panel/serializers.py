@@ -6,7 +6,7 @@ from app.recipes.models import (
     Ingredient, IngredientNutrition, IngredientCategory,
     Unit, UnitConversion,
 )
-from app.menus.models import Menu, MenuItem
+from app.menus.models import MealType, Menu, MenuItem
 
 
 # ---------------------------------------------------------------------------
@@ -120,7 +120,7 @@ class AdminRecipeStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeStep
         fields = ['id', 'recipe', 'step_number', 'description', 'image_url', 'timer']
-        read_only_fields = ['id', 'recipe']
+        read_only_fields = ['id', 'recipe', 'step_number']
 
 
 class AdminRecipeShortSerializer(serializers.ModelSerializer):
@@ -141,6 +141,8 @@ class AdminRecipeShortSerializer(serializers.ModelSerializer):
 class AdminRecipeSerializer(serializers.ModelSerializer):
     diet_types = serializers.SerializerMethodField()
     diet_type_names = serializers.SerializerMethodField()
+    meal_types = serializers.SerializerMethodField()
+    meal_type_names = serializers.SerializerMethodField()
     ingredients = AdminRecipeIngredientSerializer(source='recipe_ingredients', many=True, read_only=True)
     steps = AdminRecipeStepSerializer(many=True, read_only=True)
     total_calories = serializers.SerializerMethodField()
@@ -152,7 +154,7 @@ class AdminRecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = [
             'id', 'title', 'image_url', 'cook_time', 'servings',
-            'diet_types', 'diet_type_names', 'ingredients', 'steps',
+            'diet_types', 'diet_type_names', 'meal_types', 'meal_type_names', 'ingredients', 'steps',
             'total_calories', 'total_proteins', 'total_fats', 'total_carbs',
         ]
 
@@ -161,18 +163,24 @@ class AdminRecipeSerializer(serializers.ModelSerializer):
 
     def get_diet_type_names(self, obj):
         return list(obj.diet_types.values_list('name', flat=True))
+    
+    def get_meal_types(self, obj):
+        return list(obj.meal_types.values_list('id', flat=True))
+
+    def get_meal_type_names(self, obj):
+        return list(obj.meal_types.values_list('name', flat=True))
 
     def get_total_calories(self, obj):
-        float(obj.total_calories)
+        return float(obj.total_calories)
 
     def get_total_proteins(self, obj):
-        float(obj.total_proteins)
+        return float(obj.total_proteins)
 
     def get_total_fats(self, obj):
-        float(obj.total_fats)
+        return float(obj.total_fats)
 
     def get_total_carbs(self, obj):
-        float(obj.total_carbs)
+        return float(obj.total_carbs)
 
 
 class AdminRecipeWriteSerializer(serializers.ModelSerializer):
@@ -181,30 +189,46 @@ class AdminRecipeWriteSerializer(serializers.ModelSerializer):
         many=True,
         required=False,
     )
+    meal_types = serializers.PrimaryKeyRelatedField(
+        queryset=MealType.objects.all(),
+        many=True,
+        required=False,
+    )
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'image_url', 'cook_time', 'servings', 'diet_types']
+        fields = ['id', 'title', 'image_url', 'cook_time', 'servings', 'diet_types', 'meal_types']
 
     def create(self, validated_data):
         diet_types = validated_data.pop('diet_types', [])
+        meal_types = validated_data.pop('meal_types', [])
         recipe = Recipe.objects.create(**validated_data)
         recipe.diet_types.set(diet_types)
+        recipe.meal_types.set(meal_types)
         return recipe
 
     def update(self, instance, validated_data):
         diet_types = validated_data.pop('diet_types', None)
+        meal_types = validated_data.pop('meal_types', None)
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
         if diet_types is not None:
             instance.diet_types.set(diet_types)
+        if meal_types is not None:
+            instance.meal_types.set(meal_types)
         return instance
 
 
 # ---------------------------------------------------------------------------
 # Menus
 # ---------------------------------------------------------------------------
+
+class AdminMealTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MealType
+        fields = ['id', 'name']
+
 
 class AdminMenuItemSerializer(serializers.ModelSerializer):
     recipe_title = serializers.CharField(source='recipe.title', read_only=True)

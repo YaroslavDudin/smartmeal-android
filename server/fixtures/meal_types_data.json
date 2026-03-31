@@ -3,7 +3,7 @@
     "model": "menus.mealtype",
     "pk": 1,
     "fields": {
-        "name": "breakfast",
+        "name": "Завтрак",
         "order": 10
     }
 },
@@ -11,7 +11,7 @@
     "model": "menus.mealtype",
     "pk": 2,
     "fields": {
-        "name": "lunch",
+        "name": "Обед",
         "order": 20
     }
 },
@@ -19,7 +19,7 @@
     "model": "menus.mealtype",
     "pk": 3,
     "fields": {
-        "name": "dinner",
+        "name": "Ужин",
         "order": 30
     }
 }

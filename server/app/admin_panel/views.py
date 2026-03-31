@@ -20,7 +20,7 @@ from app.recipes.models import (
     Recipe, RecipeIngredient, RecipeStep,
     Ingredient, IngredientCategory, Unit,
 )
-from app.menus.models import Menu
+from app.menus.models import MealType, Menu
 
 from .permissions import IsSuperuser
 from .serializers import (
@@ -36,6 +36,7 @@ from .serializers import (
     AdminUnitSerializer,
     AdminDietTypeSerializer,
     AdminAllergySerializer,
+    AdminMealTypeSerializer,
     AdminMenuSerializer,
     StatsSerializer,
 )
@@ -536,6 +537,15 @@ class AdminAllergyDetailView(generics.RetrieveUpdateDestroyAPIView):
 # ---------------------------------------------------------------------------
 # Menu views
 # ---------------------------------------------------------------------------
+
+class AdminMealTypeListView(generics.ListAPIView):
+    """
+    GET /api/admin/meal-types/  – paginated
+    """
+    permission_classes = [IsAuthenticated, IsSuperuser]
+    queryset = MealType.objects.all()
+    serializer_class = AdminMealTypeSerializer
+
 
 class AdminMenuListView(generics.ListAPIView):
     """

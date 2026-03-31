@@ -67,7 +67,7 @@ export interface RecipeIngredient {
   id: number
   ingredient: number
   ingredient_name: string
-  amount: string
+  amount: number
   unit: number
   unit_name: string
 }
@@ -83,11 +83,13 @@ export interface RecipeStep {
 export interface Recipe {
   id: number
   title: string
-  image_url: string
+  image_url: string | undefined
   cook_time: number
   servings: number
   diet_types: number[]
   diet_type_names: string[]
+  meal_types: number[]
+  meal_type_names: string[]
   ingredients: RecipeIngredient[]
   steps: RecipeStep[]
   total_calories: number
@@ -104,6 +106,11 @@ export interface RecipeShort {
   servings: number
   diet_type_names: string[]
   total_calories: number
+}
+
+export interface MealType {
+  id: number
+  name: string
 }
 
 export interface Menu {

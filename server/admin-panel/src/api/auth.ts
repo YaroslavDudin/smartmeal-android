@@ -52,11 +52,11 @@ export async function searchImages(query: string, max = 12): Promise<ImageSearch
   }
 }
 
-export async function uploadImage(file: File): Promise<{ url: string }> {
-  const formData = new FormData()
-  formData.append('image', file)
-  const response = await api.post<{ url: string }>('/upload/image/', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  })
-  return response.data
-}
+// export async function uploadImage(file: File): Promise<{ url: string }> {
+//   const formData = new FormData()
+//   formData.append('image', file)
+//   const response = await api.post<{ url: string }>('/upload/image/', formData, {
+//     headers: { 'Content-Type': 'multipart/form-data' },
+//   })
+//   return response.data
+// }

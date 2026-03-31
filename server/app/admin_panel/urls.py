@@ -36,6 +36,7 @@ from .views import (
     AdminAllergyListCreateView,
     AdminAllergyDetailView,
     # Menus
+    AdminMealTypeListView,
     AdminMenuListView,
     AdminMenuDetailView,
 )
@@ -84,6 +85,10 @@ urlpatterns = [
     # Allergies
     path('allergies/', AdminAllergyListCreateView.as_view(), name='admin-allergy-list'),
     path('allergies/<int:pk>/', AdminAllergyDetailView.as_view(), name='admin-allergy-detail'),
+
+    # Meal types
+    path('meal-types/', AdminMealTypeListView.as_view(), name='admin-meal-type-list'),
+    # path('meal-types/<int:pk>/', AdminMealTypeDetailView.as_view(), name='admin-diet-type-detail'),
 
     # Menus
     path('menus/', AdminMenuListView.as_view(), name='admin-menu-list'),
