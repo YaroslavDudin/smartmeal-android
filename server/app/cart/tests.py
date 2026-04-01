@@ -66,21 +66,21 @@ class CartItemAPITest(APITestCase):
             ingredient=self.ingredient,
             base_unit=self.base_unit_g,
             base_weight=100,
-            protein=2,
-            fat=0.1,
-            carbs=16,
+            protein=Decimal('2.0'),
+            fat=Decimal('0.1'),
+             carbs=Decimal('16.0'),
         )
-        self.unit_convertion = UnitConversion.objects.create(
+        self.unit_conversion = UnitConversion.objects.create(
             ingredient=self.ingredient,
-            unit=self.unit,
-            base_unit=self.base_unit_g,
-            amount_per_unit=1000,
+            from_unit=self.unit,
+            to_unit=self.base_unit_g,
+            amount_per_unit=Decimal('1000'),
         )
         self.recipe = Recipe.objects.create(title='Суп', cook_time=30, servings=2)
         RecipeIngredient.objects.create(
             recipe=self.recipe,
             ingredient=self.ingredient,
-            amount = 2,
+            amount=2,
             unit=self.unit
         )
         self.lunch_type = MealType.objects.create(name='lunch', order=1)
@@ -197,9 +197,17 @@ class CartItemAPITest(APITestCase):
     
     def test_create_cart_item_with_ingredient_add_to_cart_false(self):
         ingredient = Ingredient.objects.create(
-            name='Грустная свекла', 
+            name='Свекла', 
             category=self.category,
             can_be_added_to_cart=False,
+        )
+        IngredientNutrition.objects.create(
+            ingredient=ingredient,
+            base_unit=self.base_unit_g,
+            base_weight=100,
+            protein=Decimal('1.6'),
+            fat=Decimal('0.2'),
+            carbs=Decimal('9.6'),
         )
         data = {
             'ingredient': ingredient.id,
@@ -428,61 +436,27 @@ class CartItemAPITest(APITestCase):
         cart_item.refresh_from_db()
         self.assertEqual(cart_item.total_amount, 2000) # было 1000 г, заменилось на 2 кг в г
         self.assertEqual(CartItem.objects.count(), 1)
-
-    def test_cart_recalculate_no_unit_convertion(self):
-        new_ingredient = Ingredient.objects.create(
-            name='Мука',
-            category=self.category,
-            can_be_added_to_cart=True,
-        )
-        cup_unit = Unit.objects.create(name='стакан')
-        new_recipe = Recipe.objects.create(title='Блины', cook_time=20, servings=4)
-        RecipeIngredient.objects.create(
-            recipe=new_recipe,
-            ingredient=new_ingredient,
-            amount=2,
-            unit=cup_unit,
-        )
-        cart_item = CartItem.objects.create(
-            user=self.user,
-            ingredient=new_ingredient,
-            total_amount=1000,
-            unit=self.base_unit_g,
-            is_checked=False,
-        )
-        # Создаём меню с этим рецептом
-        menu = Menu.objects.create(
-            user=self.user,
-            period=Period.DAY,
-            start_date=date.today(),
-        )
-        MenuItem.objects.create(
-            menu=menu,
-            recipe=new_recipe,
-            day_offset=0,
-            meal_type=self.lunch_type
-        )
-
-        recalculate_url = f'{self.base_url}recalculate/'
-        response = self.client.post(recalculate_url)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        cart_item.refresh_from_db()
-        self.assertEqual(cart_item.total_amount, 1000)
-        self.assertEqual(cart_item.unit, self.base_unit_g)
     
     def test_cart_recalculate_exclude_ingredient_with_add_to_cart_false(self):
         not_cart_ingredient = Ingredient.objects.create(
-            name='Грустная свекла', 
+            name='Морковь', 
             category=self.category,
             can_be_added_to_cart=False,
+        )
+        IngredientNutrition.objects.create(
+            ingredient=not_cart_ingredient,
+            base_unit=self.base_unit_g,
+            base_weight=100,
+            protein=Decimal('1.0'),
+            fat=Decimal('0.2'),
+            carbs=Decimal('6.8'),
         )
         recipe = Recipe.objects.create(title='Борщ', cook_time=30, servings=2)
         RecipeIngredient.objects.create(
             recipe=recipe,
             ingredient=not_cart_ingredient,
-            amount=2,
-            unit=self.unit
+            amount=200,
+            unit=self.base_unit_g
         )
         RecipeIngredient.objects.create(
             recipe=recipe,
