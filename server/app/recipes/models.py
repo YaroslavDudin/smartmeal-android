@@ -253,10 +253,23 @@ class RecipeIngredient(models.Model):
         except ValueError as e:
             raise ValidationError(str(e))
     
+    def __setattr__(self, name, value):
+        if name in ('amount', 'unit', 'unit_id'):
+            for attr in ('_macros_cache', '_in_base_units_cache'):
+                self.__dict__.pop(attr, None)
+        elif name in ('ingredient', 'ingredient_id'):
+            # При смене ингредиента сбрасываем всё включая nutrition
+            for attr in ('_macros_cache', '_nutrition_cache', '_in_base_units_cache'):
+                self.__dict__.pop(attr, None)
+        super().__setattr__(name, value)
+    
     def save(self, *args, **kwargs):
         self.full_clean()  # вызывает clean() и валидацию полей
         super().save(*args, **kwargs)
-        
+        # Сбрасываем кэш рецепта если он уже загружен в память
+        if hasattr(self, 'recipe') and hasattr(self.recipe, '_nutrition_cache'):
+            del self.recipe._nutrition_cache
+
     def _convert_to(self, target_unit):
         if target_unit.pk == self.unit.pk:
             return self.amount

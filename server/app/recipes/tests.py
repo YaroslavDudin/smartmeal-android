@@ -234,3 +234,84 @@ class RecipesModelTests(TestCase):
         self.assertEqual(step3.step_number, 2)
         step4 = RecipeStep.objects.create(recipe=recipe, description='Четвертый шаг')
         self.assertEqual(step4.step_number, 3)
+    
+    def test_recipe_ingredient_macros_caching(self):
+        ri = RecipeIngredient.objects.create(
+            recipe=self.recipe,
+            ingredient=self.ingredient,
+            amount=Decimal('1.0'),
+            unit=self.unit_kg
+        )
+
+        macros1 = ri.get_macros()
+        macros2 = ri.get_macros()
+        self.assertEqual(macros1, macros2)
+
+        ri.amount = Decimal('2.0')
+        macros3 = ri.get_macros()
+        self.assertNotEqual(macros1, macros3)
+
+        ri.unit = self.unit_cup
+        macros4 = ri.get_macros()
+        self.assertNotEqual(macros3, macros4)
+
+    def test_recipe_ingredient_nutrition_caching(self):
+        ri = RecipeIngredient.objects.create(
+            recipe=self.recipe,
+            ingredient=self.ingredient,
+            amount=Decimal('1.0'),
+            unit=self.unit_kg
+        )
+        nutr1 = ri.nutrition
+        nutr2 = ri.nutrition
+        self.assertEqual(nutr1, nutr2)
+
+        new_ingredient = Ingredient.objects.create(
+            name='Морковь',
+            category=self.category,
+            can_be_added_to_cart=True,
+        )
+        IngredientNutrition.objects.create(
+            ingredient=new_ingredient,
+            base_unit=self.base_unit_g,
+            base_weight=100,
+            protein=Decimal('1.0'),
+            fat=Decimal('0.2'),
+            carbs=Decimal('8.0'),
+        )
+
+        ri.ingredient = new_ingredient
+        nutr3 = ri.nutrition
+        self.assertNotEqual(nutr1, nutr3)
+
+    def test_recipe_ingredient_cache_after_save(self):
+        recipe = Recipe.objects.create(title='Тест рецепта', cook_time=10, servings=2)
+        ri = RecipeIngredient.objects.create(
+            recipe=recipe,
+            ingredient=self.ingredient,
+            amount=Decimal('1.0'),
+            unit=self.unit_kg
+        )
+        # Вычисляем белок, кэш сохраняется
+        total1 = recipe.total_proteins
+        ri.amount = Decimal('2.0')
+        ri.save()
+        total2 = recipe.total_proteins
+
+        self.assertNotEqual(total1, total2)
+
+    def test_recipe_ingredient_cache_on_refresh_from_db(self):
+        ri = RecipeIngredient.objects.create(
+            recipe=self.recipe,
+            ingredient=self.ingredient,
+            amount=Decimal('1.0'),
+            unit=self.unit_kg
+        )
+        macros1 = ri.get_macros()
+
+        # Изменяем запись напрямую в БД
+        RecipeIngredient.objects.filter(pk=ri.pk).update(amount=Decimal('2.0'))
+        ri.refresh_from_db()
+
+        macros2 = ri.get_macros()
+        self.assertNotEqual(macros1, macros2)
