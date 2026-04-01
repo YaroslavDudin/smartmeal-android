@@ -148,8 +148,14 @@ class CartViewSet(viewsets.ModelViewSet):
             ingredient = ri.ingredient
             # базовая единица измерения (г или мл или любая c is_base=true)
             unit = ri.base_unit
-            # могут быть не только граммы, но и мл (и любым другим unit c is_base=true)
-            amount_to_add = ri.amount_in_base_units
+            try:
+              # могут быть не только граммы, но и мл (и любым другим unit c is_base=true)
+              amount_to_add = ri.amount_in_base_units
+            except ValueError as e:
+                return Response(
+                    {'detail': str(e)},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             existing_item = existing_cart_items.get(ingredient.pk)
             # Если ингредиент уже добавлен / обновлен в предыдущих итерациях цикла
             in_progress = items_to_create.get(ingredient.pk) or items_to_update.get(ingredient.pk)

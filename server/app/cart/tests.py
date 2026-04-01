@@ -72,8 +72,8 @@ class CartItemAPITest(APITestCase):
         )
         self.unit_convertion = UnitConversion.objects.create(
             ingredient=self.ingredient,
-            unit=self.unit,
-            base_unit=self.base_unit_g,
+            from_unit=self.unit,
+            to_unit=self.base_unit_g,
             amount_per_unit=1000,
         )
         self.recipe = Recipe.objects.create(title='Суп', cook_time=30, servings=2)
@@ -435,6 +435,16 @@ class CartItemAPITest(APITestCase):
             category=self.category,
             can_be_added_to_cart=True,
         )
+
+        IngredientNutrition.objects.create(
+            ingredient=new_ingredient,
+            base_unit=self.base_unit_g,
+            base_weight=100,
+            protein=10,
+            fat=1,
+            carbs=70
+        )
+
         cup_unit = Unit.objects.create(name='стакан')
         new_recipe = Recipe.objects.create(title='Блины', cook_time=20, servings=4)
         RecipeIngredient.objects.create(
