@@ -1,6 +1,7 @@
 from decimal import Decimal
-from django.test import TestCase
-from app.recipes.models import Ingredient, IngredientCategory, Recipe, RecipeIngredient, Unit
+from django.test import TestCase, RequestFactory
+from django.contrib.auth.models import AnonymousUser
+from app.recipes.models import Ingredient, IngredientCategory, Recipe, RecipeIngredient, Unit, IngredientNutrition
 from app.recipes.serializers import RecipeSerializer
 
 
@@ -20,6 +21,16 @@ class RecipesModelTests(TestCase):
         category = IngredientCategory.objects.create(name="Овощи")
         unit = Unit.objects.create(name="г", is_base=True)
         ingredient = Ingredient.objects.create(name="Картофель", category=category)
+
+        IngredientNutrition.objects.create(
+            ingredient=ingredient,
+            base_weight=100,
+            base_unit=unit,
+            protein=2.0,
+            fat=0.4,
+            carbs=16.3
+        )
+
         recipe = Recipe.objects.create(
             title="Картофельное пюре",
             cook_time=30,
@@ -32,7 +43,10 @@ class RecipesModelTests(TestCase):
             unit=unit
         )
 
-        serializer = RecipeSerializer(recipe, context={"target_servings": 4})
+        request = RequestFactory().get('/')
+        request.user = AnonymousUser()
+
+        serializer = RecipeSerializer(recipe, context={"target_servings": 4, "request": request})
         ingredient_data = serializer.data["ingredients"][0]
 
         self.assertEqual(Decimal(str(ingredient_data["amount"])), Decimal("200.00"))
