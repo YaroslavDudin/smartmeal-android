@@ -38,6 +38,21 @@ data class StatisticsUiState(
     val selectedIndex: Int = 0
 )
 
+internal fun sortMealsForStatistics(items: List<MenuItemDto>): List<MenuItemDto> {
+    fun mealOrder(mealType: String): Int = when (mealType) {
+        "breakfast" -> 0
+        "lunch" -> 1
+        "dinner" -> 2
+        else -> 3
+    }
+
+    return items.sortedWith(
+        compareBy<MenuItemDto> { mealOrder(it.meal_type) }
+            .thenBy { it.meal_type }
+            .thenBy { it.recipe_title.lowercase(Locale("ru")) }
+    )
+}
+
 class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private val _uiState = MutableStateFlow(StatisticsUiState())
     val uiState: StateFlow<StatisticsUiState> = _uiState.asStateFlow()
@@ -175,7 +190,7 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                             totalProteins = dayProteins,
                             totalFats = dayFats,
                             totalCarbs = dayCarbs,
-                            meals = itemsForDay
+                            meals = sortMealsForStatistics(itemsForDay)
                         )
                     )
                     currentCal.add(Calendar.DATE, 1)

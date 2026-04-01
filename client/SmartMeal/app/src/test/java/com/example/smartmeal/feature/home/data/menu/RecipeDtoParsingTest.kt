@@ -77,11 +77,12 @@ class RecipeDtoParsingTest {
         assertEquals(1600.0, recipe.total_weight ?: 0.0, 0.001)
         assertEquals(300.0, recipe.per_serving_calories, 0.001)
         assertNotNull(recipe.ingredients)
-        assertEquals(1, recipe.ingredients.size)
-        assertEquals("Свёкла", recipe.ingredients.first().ingredient_name)
-        assertEquals("г", recipe.ingredients.first().unit_name)
-        assertEquals(1, recipe.steps.size)
-        assertEquals(1, recipe.steps.first().step_number)
-        assertEquals(1, recipe.steps.first().timer)
+        assertEquals(1, recipe.ingredients?.size)
+        assertEquals("Свёкла", recipe.ingredients?.first()?.ingredient_name)
+        assertEquals("г", recipe.ingredients?.first()?.unit_name)
+        assertNotNull(recipe.steps)
+        assertEquals(1, recipe.steps?.size)
+        assertEquals(1, recipe.steps?.first()?.step_number)
+        assertEquals(1, recipe.steps?.first()?.timer)
     }
 }

@@ -230,7 +230,7 @@ fun DailyStatsContent(stats: DailyStats) {
             )
         }
 
-        items(stats.meals) { meal ->
+        items(stats.meals, key = { it.id }) { meal ->
             MealNutritionRow(meal = meal)
         }
     }

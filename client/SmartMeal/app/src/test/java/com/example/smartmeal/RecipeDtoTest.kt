@@ -77,9 +77,11 @@ class RecipeDtoTest {
         assertEquals(4, result.servings)
         assertEquals(1600.0, result.total_weight ?: 0.0, 0.001)
         assertEquals(300.0, result.per_serving_calories, 0.001)
-        assertNotNull(result.ingredients.firstOrNull())
-        assertEquals("Свёкла", result.ingredients.first().ingredient_name)
-        assertEquals(1, result.steps.first().step_number)
-        assertEquals(1, result.steps.first().timer)
+        assertNotNull(result.ingredients)
+        assertNotNull(result.ingredients?.firstOrNull())
+        assertEquals("Свёкла", result.ingredients?.first()?.ingredient_name)
+        assertNotNull(result.steps)
+        assertEquals(1, result.steps?.first()?.step_number)
+        assertEquals(1, result.steps?.first()?.timer)
     }
 }

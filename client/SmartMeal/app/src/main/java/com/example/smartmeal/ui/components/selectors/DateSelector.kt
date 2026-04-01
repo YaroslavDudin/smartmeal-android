@@ -1,6 +1,7 @@
 package com.example.smartmeal.ui.components.selectors
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -98,18 +99,24 @@ private fun DateChip(
     val backgroundColor = when {
         isRangeInterior -> PrimaryGreen.copy(alpha = 0.2f)
         isSelected -> PrimaryGreen
-        else -> Color.Transparent
+        else -> LightGreenBg.copy(alpha = 0.45f)
     }
     val contentColor = when {
         isRangeInterior -> PrimaryGreenDark
         isSelected -> Color.White
         else -> TextBlack
     }
+    val borderColor = when {
+        isSelected -> PrimaryGreenDark
+        isRangeInterior -> PrimaryGreen.copy(alpha = 0.55f)
+        else -> PrimaryGreen.copy(alpha = 0.28f)
+    }
 
     Column(
         modifier = modifier
             .clip(chipShape)
             .background(backgroundColor)
+            .border(width = 1.dp, color = borderColor, shape = chipShape)
             .clickable(onClick = onClick)
             .padding(horizontal = 14.dp, vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

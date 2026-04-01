@@ -449,6 +449,11 @@ private fun formatMonthYearForSelector(date: Date): String = SimpleDateFormat("L
 internal fun formatMonthYearRangeForSelector(startDate: Date, endDate: Date): String {
     val startMonth = SimpleDateFormat("LLLL", Locale("ru")).format(startDate).replaceFirstChar { it.titlecase(Locale("ru")) }
     val endMonth = SimpleDateFormat("LLLL", Locale("ru")).format(endDate).replaceFirstChar { it.titlecase(Locale("ru")) }
-    val year = SimpleDateFormat("yyyy", Locale.US).format(startDate)
-    return if (startMonth == endMonth) "$startMonth $year" else "$startMonth - $endMonth $year"
+    val startYear = SimpleDateFormat("yyyy", Locale.US).format(startDate)
+    val endYear = SimpleDateFormat("yyyy", Locale.US).format(endDate)
+    return when {
+        startMonth == endMonth && startYear == endYear -> "$startMonth $startYear"
+        startYear == endYear -> "$startMonth - $endMonth $startYear"
+        else -> "$startMonth $startYear - $endMonth $endYear"
+    }
 }

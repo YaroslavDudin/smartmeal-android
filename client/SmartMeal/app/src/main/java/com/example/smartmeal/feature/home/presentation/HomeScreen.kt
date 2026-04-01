@@ -813,11 +813,11 @@ internal fun buildAvailableDates(
             return emptyList()
         }
 
-        var safetyCount = 0
-        while (!cal.time.after(end) && safetyCount < 31) {
+        val totalDays = (((end.time - cal.time.time) / (1000L * 60L * 60L * 24L)).toInt() + 1)
+            .coerceAtLeast(0)
+        repeat(totalDays) {
             dates.add(cal.time)
             cal.add(Calendar.DATE, 1)
-            safetyCount++
         }
         if (dates.isNotEmpty()) return dates
     }

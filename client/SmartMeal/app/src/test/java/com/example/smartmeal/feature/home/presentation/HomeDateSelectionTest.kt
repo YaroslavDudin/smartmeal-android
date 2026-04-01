@@ -1,42 +1,14 @@
-package com.example.smartmeal.feature.home.presentation
+﻿package com.example.smartmeal.feature.home.presentation
 
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import java.text.SimpleDateFormat
 import java.util.Locale
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Test
 
 class HomeDateSelectionTest {
 
     private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-
-    @Test
-    fun resolveDateForSelectedDay_customPlanAcrossMonth_returnsNextMonthDate() {
-        val baseDate = formatter.parse("2026-03-30")!!
-
-        val result = resolveDateForSelectedDay(baseDate, "Вс")
-
-        assertEquals("2026-04-05", formatter.format(result!!))
-    }
-
-    @Test
-    fun resolveDateForSelectedDay_sameWeekday_returnsSameDate() {
-        val baseDate = formatter.parse("2026-03-30")!!
-
-        val result = resolveDateForSelectedDay(baseDate, "Пн")
-
-        assertEquals("2026-03-30", formatter.format(result!!))
-    }
-
-    @Test
-    fun resolveDateForSelectedDay_unknownDay_returnsNull() {
-        val baseDate = formatter.parse("2026-03-30")!!
-
-        val result = resolveDateForSelectedDay(baseDate, "???")
-
-        assertNull(result)
-    }
 
     @Test
     fun resolveGenerationStartDateString_usesSelectedPlanDate() {
@@ -93,6 +65,24 @@ class HomeDateSelectionTest {
     }
 
     @Test
+    fun buildAvailableDates_customPlan_canSpanMoreThanSingleMonth() {
+        val plan = CustomPlan(
+            startDate = formatter.parse("2026-04-01")!!,
+            endDate = formatter.parse("2026-05-10")!!
+        )
+
+        val dates = buildAvailableDates(
+            menuItems = emptyList(),
+            customPlan = plan,
+            today = formatter.parse("2026-04-01")!!
+        )
+
+        assertEquals(40, dates.size)
+        assertEquals("2026-04-01", formatter.format(dates.first()))
+        assertEquals("2026-05-10", formatter.format(dates.last()))
+    }
+
+    @Test
     fun trimCustomPlanToToday_movesStartForwardToToday() {
         val plan = CustomPlan(
             startDate = formatter.parse("2026-03-25")!!,
@@ -103,6 +93,15 @@ class HomeDateSelectionTest {
 
         assertEquals("2026-03-29", formatter.format(trimmed!!.startDate))
         assertEquals("2026-03-31", formatter.format(trimmed.endDate))
+    }
+
+    @Test
+    fun resolveCustomDays_countsInclusiveRange() {
+        val range = formatter.parse("2026-03-29")!!.time to formatter.parse("2026-04-02")!!.time
+
+        val days = resolveCustomDays(range)
+
+        assertEquals(5, days)
     }
 
     private fun item(actualDate: String) = MenuItemDto(

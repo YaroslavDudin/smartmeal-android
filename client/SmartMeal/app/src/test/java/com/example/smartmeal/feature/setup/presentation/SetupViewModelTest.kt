@@ -5,10 +5,14 @@ import com.example.smartmeal.feature.setup.data.models.AllergyDto
 import com.example.smartmeal.feature.setup.data.models.DietTypeDto
 import com.example.smartmeal.feature.setup.data.models.UpdateProfileRequest
 import com.example.smartmeal.feature.setup.data.models.UserProfileDto
+import com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest
+import com.example.smartmeal.feature.home.data.api.ToggleFavoriteResponse
+import com.example.smartmeal.feature.home.data.api.UserFavoriteDto
 import java.util.Calendar
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
+import retrofit2.Response
 
 class SetupViewModelTest {
 
@@ -43,19 +47,27 @@ class SetupViewModelTest {
 }
 
 private class FakeSetupApi : SetupApi {
-    override suspend fun getCurrentUser(): retrofit2.Response<UserProfileDto> {
+    override suspend fun getCurrentUser(): Response<UserProfileDto> {
         throw UnsupportedOperationException()
     }
 
-    override suspend fun updateProfile(request: UpdateProfileRequest): retrofit2.Response<UserProfileDto> {
+    override suspend fun updateProfile(request: UpdateProfileRequest): Response<UserProfileDto> {
         throw UnsupportedOperationException()
     }
 
-    override suspend fun getDietTypes(): retrofit2.Response<List<DietTypeDto>> {
+    override suspend fun getDietTypes(): Response<List<DietTypeDto>> {
         throw UnsupportedOperationException()
     }
 
-    override suspend fun getAllergies(): retrofit2.Response<List<AllergyDto>> {
+    override suspend fun getAllergies(): Response<List<AllergyDto>> {
+        throw UnsupportedOperationException()
+    }
+
+    override suspend fun getFavorites(): Response<List<UserFavoriteDto>> {
+        throw UnsupportedOperationException()
+    }
+
+    override suspend fun toggleFavorite(request: ToggleFavoriteRequest): Response<ToggleFavoriteResponse> {
         throw UnsupportedOperationException()
     }
 }
