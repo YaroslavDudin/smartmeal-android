@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -44,7 +44,7 @@ fun CircleIconButton(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     backgroundColor: Color = Color.White,
-    contentColor: Color = PrimaryGreen,
+    contentColor: Color? = null,
     size: Int = 48
 ) {
     // Состояние для анимации нажатия
@@ -60,11 +60,17 @@ fun CircleIconButton(
     // Выбираем иконку
     val icon = when (iconType) {
         CircleIconType.FAVORITE -> {
-            if (isSelected) Icons.Filled.Favorite
-            else Icons.Outlined.FavoriteBorder
+            if (isSelected) Icons.Filled.Star
+            else Icons.Outlined.StarBorder
         }
         CircleIconType.REPLACE -> Icons.Filled.Refresh
         CircleIconType.BACK -> Icons.AutoMirrored.Filled.ArrowBack
+    }
+
+    // Определяем цвет иконки
+    val resolvedContentColor = contentColor ?: when (iconType) {
+        CircleIconType.FAVORITE -> if (isSelected) Color(0xFFFFD700) else Color.Black
+        else -> PrimaryGreen
     }
 
     // Описание для accessibility
@@ -94,7 +100,7 @@ fun CircleIconButton(
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
-            contentColor = contentColor
+            contentColor = resolvedContentColor
         ),
         interactionSource = interactionSource ,
         contentPadding = PaddingValues(0.dp)

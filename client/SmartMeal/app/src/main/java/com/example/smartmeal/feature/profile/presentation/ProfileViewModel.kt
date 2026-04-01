@@ -55,6 +55,11 @@ class ProfileViewModel(
     init {
         loadProfile()
         loadFavorites()
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.FavoritesManager.favoriteUpdates.collect {
+                loadFavorites()
+            }
+        }
     }
 
     // ─── Загрузка профиля + справочников ─────────────────────────────────────
@@ -120,7 +125,10 @@ class ProfileViewModel(
             try {
                 val response = api.toggleFavorite(com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest(recipeId))
                 if (response.isSuccessful) {
+                    val isFavorite = response.body()?.is_favorite ?: false
                     loadFavorites()
+                    // Уведомляем другие экраны
+                    com.example.smartmeal.data.manager.FavoritesManager.notifyFavoriteChanged(recipeId, isFavorite)
                 }
             } catch (e: Exception) {
                 // Ошибку избранного можно не показывать как критическую

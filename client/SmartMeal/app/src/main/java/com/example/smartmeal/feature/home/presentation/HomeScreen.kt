@@ -502,7 +502,32 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private val dayNames = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
     private val apiDateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
-    init { loadCurrentMenu() }
+    init { 
+        loadCurrentMenu()
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.FavoritesManager.favoriteUpdates.collect { update ->
+                updateFavoriteInState(update.recipeId, update.isFavorite)
+            }
+        }
+    }
+
+    private fun updateFavoriteInState(recipeId: Int, isFavorite: Boolean) {
+        _uiState.update { currentState ->
+            val updatedCurrentMenu = currentState.currentMenu?.copy(
+                items = currentState.currentMenu.items?.map { 
+                    if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it 
+                }
+            )
+            val updatedAllMenuItems = currentState.allMenuItems.map { 
+                if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it 
+            }
+            currentState.copy(
+                currentMenu = updatedCurrentMenu,
+                allMenuItems = updatedAllMenuItems
+            )
+        }
+        updateMealSections()
+    }
 
     private fun loadCurrentMenu() {
         viewModelScope.launch { refreshMenu() }
@@ -689,21 +714,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     val isFavorite = response.body()?.is_favorite ?: false
                     
                     // Обновляем состояние локально
-                    _uiState.update { currentState ->
-                        val updatedCurrentMenu = currentState.currentMenu?.copy(
-                            items = currentState.currentMenu.items?.map { 
-                                if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it 
-                            }
-                        )
-                        val updatedAllMenuItems = currentState.allMenuItems.map { 
-                            if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it 
-                        }
-                        currentState.copy(
-                            currentMenu = updatedCurrentMenu,
-                            allMenuItems = updatedAllMenuItems
-                        )
-                    }
-                    updateMealSections()
+                    updateFavoriteInState(recipeId, isFavorite)
+                    
+                    // Уведомляем другие экраны
+                    com.example.smartmeal.data.manager.FavoritesManager.notifyFavoriteChanged(recipeId, isFavorite)
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = "Ошибка при изменении избранного: ${e.localizedMessage}") }

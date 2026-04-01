@@ -29,6 +29,18 @@ class RecipeDetailViewModel(
     private var currentRecipeId: Int = -1
     private var currentMenuItemId: Int? = null
 
+    init {
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.FavoritesManager.favoriteUpdates.collect { update ->
+                if (update.recipeId == currentRecipeId) {
+                    _state.update { it.copy(
+                        recipe = it.recipe?.copy(is_favorite = update.isFavorite)
+                    )}
+                }
+            }
+        }
+    }
+
     fun loadRecipe(recipeId: Int, menuItemId: Int?, servings: Int? = null) {
         currentRecipeId = recipeId
         currentMenuItemId = menuItemId
@@ -78,6 +90,8 @@ class RecipeDetailViewModel(
                     _state.update { it.copy(
                         recipe = it.recipe?.copy(is_favorite = isFavorite)
                     )}
+                    // Уведомляем другие экраны
+                    com.example.smartmeal.data.manager.FavoritesManager.notifyFavoriteChanged(recipe.id, isFavorite)
                 }
             } catch (e: Exception) {
                 _state.update { it.copy(error = "Ошибка: ${e.localizedMessage}") }
