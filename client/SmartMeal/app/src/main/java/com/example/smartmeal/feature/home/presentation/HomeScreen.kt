@@ -509,6 +509,14 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 updateFavoriteInState(update.recipeId, update.isFavorite)
             }
         }
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.DateManager.dateUpdates.collect { date ->
+                if (_uiState.value.selectedDate?.time != date.time) {
+                    val customPlan = _uiState.value.customPlan
+                    selectDate(date, customPlan, notifyManager = false)
+                }
+            }
+        }
     }
 
     private fun updateFavoriteInState(recipeId: Int, isFavorite: Boolean) {
@@ -725,7 +733,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         }
     }
 
-    fun selectDate(date: Date, customPlan: CustomPlan?) {
+    fun selectDate(date: Date, customPlan: CustomPlan?, notifyManager: Boolean = true) {
         val normalized = normalizeDate(date)
         if (customPlan != null) {
             val start = normalizeDate(customPlan.startDate)
@@ -740,6 +748,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         }
         _uiState.update { it.copy(selectedDay = dayNames[dayIndex], selectedDate = normalized, selectedDateFromPlan = customPlan != null) }
         updateMealSections()
+        
+        if (notifyManager) {
+            com.example.smartmeal.data.manager.DateManager.notifyDateSelected(normalized)
+        }
     }
 
     fun clearPlanSelection() {

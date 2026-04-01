@@ -24,6 +24,19 @@ class ProductListViewModel(
     private val preferences: SetupPreferences
 ) : ViewModel() {
 
+    init {
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.DateManager.dateUpdates.collect { date ->
+                val dateKey = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date)
+                if (dateKey in availableDateKeys && selectedStartDateKey != dateKey) {
+                    selectedStartDateKey = dateKey
+                    selectedEndDateKey = null
+                    updateDateRangeText()
+                }
+            }
+        }
+    }
+
     // Кэш рецептов: ID рецепта -> Полные данные рецепта
     private val recipeCache = mutableMapOf<Int, RecipeDetailDto>()
 
@@ -133,6 +146,13 @@ class ProductListViewModel(
         }
 
         updateDateRangeText()
+        
+        // Уведомляем другие экраны о выбранной начальной дате
+        selectedStartDateKey?.let { key ->
+            parseApiDate(key)?.let { date ->
+                com.example.smartmeal.data.manager.DateManager.notifyDateSelected(date)
+            }
+        }
     }
 
     fun toggleCheckAllProducts(productIds: Collection<String>, checked: Boolean) {

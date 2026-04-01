@@ -53,6 +53,21 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
 
     init {
         loadStatistics()
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.DateManager.dateUpdates.collect { date ->
+                updateSelectedIndexForDate(date)
+            }
+        }
+    }
+
+    private fun updateSelectedIndexForDate(date: Date) {
+        val targetTime = normalizeDate(date).time
+        val index = _uiState.value.dailyStats.indexOfFirst {
+            normalizeDate(it.date).time == targetTime
+        }
+        if (index != -1 && index != _uiState.value.selectedIndex) {
+            _uiState.update { it.copy(selectedIndex = index) }
+        }
     }
 
     fun refresh() {
@@ -166,20 +181,26 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                     currentCal.add(Calendar.DATE, 1)
                 }
 
-                // 4. Находим индекс сегодняшнего дня или наиболее близкого
-                var todayIndex = statsList.indexOfFirst { 
-                    normalizeDate(it.date).time == today.time 
+                // 4. Находим индекс выбранного дня, сегодняшнего дня или наиболее близкого
+                val lastSelected = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()
+                val targetDate = lastSelected ?: today
+
+                var targetIndex = statsList.indexOfFirst { 
+                    normalizeDate(it.date).time == normalizeDate(targetDate).time 
                 }
                 
-                if (todayIndex == -1) {
-                    // Если сегодня не в диапазоне, выбираем ближайший или 0
-                    todayIndex = if (today.before(startDate)) 0 else statsList.size - 1
+                if (targetIndex == -1) {
+                    // Если не в диапазоне, выбираем ближайший к today или 0
+                    targetIndex = statsList.indexOfFirst { normalizeDate(it.date).time == today.time }
+                    if (targetIndex == -1) {
+                        targetIndex = if (today.before(startDate)) 0 else statsList.size - 1
+                    }
                 }
 
                 _uiState.update { it.copy(
                     isLoading = false,
                     dailyStats = statsList,
-                    selectedIndex = todayIndex.coerceIn(0, maxOf(0, statsList.size - 1))
+                    selectedIndex = targetIndex.coerceIn(0, maxOf(0, statsList.size - 1))
                 ) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = "Ошибка: ${e.localizedMessage}") }
@@ -200,6 +221,9 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
     fun setSelectedIndex(index: Int) {
         if (index in 0 until _uiState.value.dailyStats.size) {
             _uiState.update { it.copy(selectedIndex = index) }
+            // Уведомляем другие экраны о смене даты
+            val selectedDate = _uiState.value.dailyStats[index].date
+            com.example.smartmeal.data.manager.DateManager.notifyDateSelected(selectedDate)
         }
     }
 }
