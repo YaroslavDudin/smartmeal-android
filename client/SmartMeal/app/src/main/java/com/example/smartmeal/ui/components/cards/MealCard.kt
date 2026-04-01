@@ -103,7 +103,7 @@ fun MealCard(
                 iconType = CircleIconType.FAVORITE,
                 isSelected = isFavorite,
                 onClick = onFavoriteClick,
-                backgroundColor = Color.LightGray,
+                backgroundColor = Color.Transparent,
                 modifier = Modifier
                     .padding(end = 12.dp)
                     .size(40.dp)

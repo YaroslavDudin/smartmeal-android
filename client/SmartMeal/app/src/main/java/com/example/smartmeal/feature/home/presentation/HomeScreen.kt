@@ -80,7 +80,9 @@ import java.util.Locale
 
 private val ReplaceDialogYellow = Color(0xFFFFF4C2)
 private val ReplaceDialogRed = Color(0xFFE53935)
-
+private val ModalBackground = Color(0xFFEAD284) // Песочный цвет фона
+private val ModalBorderColor = Color(0xFF4CA3FF) // Голубая рамка
+private val ButtonBackgroundColor = Color(0xFFE4C871) // Чуть более плотный цвет для кнопок
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -491,6 +493,7 @@ fun MealSection(
                 (fadeIn(animationSpec = tween(400)) + scaleIn(initialScale = 0.95f)) togetherWith
                         (fadeOut(animationSpec = tween(400)) + scaleOut(targetScale = 0.95f))
             },
+            contentKey = { it.recipe },
             label = "MealReplacementAnimation"
         ) { item ->
             Box(
@@ -519,57 +522,87 @@ private fun ReplaceMealConfirmDialog(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 16.dp)
                 .testTag("home_replace_confirm_dialog"),
             shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
-            color = ReplaceDialogYellow,
-            shadowElevation = 12.dp
+            color = ModalBackground,
+            border = androidx.compose.foundation.BorderStroke(2.dp, ModalBorderColor), // Голубая рамка из дизайна
+            shadowElevation = 8.dp
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
+                horizontalAlignment = Alignment.Start // Выравнивание по левому краю
             ) {
                 SmartMealText(
-                    text = "Заменить \"$mealTitle\"?",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center
+                    text = "Заменить \"$mealTitle\"",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
                 SmartMealText(
-                    text = "Вы уверены, что хотите заменить это блюдо на что-нибудь другое?\nЕсли блюдо добавлено в избранное, оно останется в избранном",
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = "Вы уверены что хотите заменить\nэто блюдо на что-нибудь другое?\nЕсли блюдо добавлено в\nизбранное, оно останется в\nизбранном",
+                    fontSize = 16.sp,
+                    color = Color.Black,
+                    lineHeight = 22.sp
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                
+                Spacer(modifier = Modifier.height(28.dp))
+
+                // Кнопка "Заменить блюдо"
                 Button(
                     onClick = onConfirm,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(54.dp)
                         .testTag("home_replace_confirm_button"),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ButtonBackgroundColor,
+                        contentColor = Color.Red
+                    ),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color.White), // Белый контур для объема
                     elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 6.dp,
-                        pressedElevation = 2.dp
+                        defaultElevation = 4.dp,
+                        pressedElevation = 0.dp
                     )
                 ) {
-                    SmartMealText("Заменить блюдо", color = ReplaceDialogRed)
+                    SmartMealText(
+                        text = "Заменить блюдо", 
+                        color = Color.Red, 
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Кнопка "Отменить"
                 Button(
                     onClick = onDismiss,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(54.dp)
                         .testTag("home_replace_cancel_button"),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = MaterialTheme.colorScheme.onSurface
+                        containerColor = ButtonBackgroundColor,
+                        contentColor = Color.Black
                     ),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color.White),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 4.dp,
-                        pressedElevation = 1.dp
+                        pressedElevation = 0.dp
                     )
                 ) {
-                    SmartMealText("Отменить")
+                    SmartMealText(
+                        text = "Отменить", 
+                        color = Color.Black, 
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
             }
         }

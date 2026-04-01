@@ -1,6 +1,11 @@
 package com.example.smartmeal.feature.recipes.presentation
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +23,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,10 +34,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -191,7 +196,6 @@ fun RecipeDetailScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Полосатый блок ингредиентов
                         IngredientsCard(ingredients = recipe.ingredients ?: emptyList())
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -214,7 +218,6 @@ fun RecipeDetailScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Шаги
                         (recipe.steps ?: emptyList()).forEach { step ->
                             StepItem(
                                 number = step.step_number,
@@ -252,7 +255,7 @@ fun CustomRecipeTopBar(
                 modifier = Modifier.size(28.dp)
             )
         }
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -260,13 +263,47 @@ fun CustomRecipeTopBar(
                     modifier = Modifier.size(32.dp)
                 )
             }
-            IconButton(onClick = onFavoriteClick) {
-                Icon(
-                    imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarBorder,
-                    contentDescription = if (isFavorite) "Убрать из избранного" else "В избранное",
-                    modifier = Modifier.size(32.dp),
-                    tint = if (isFavorite) Color(0xFFFFD700) else Color.Black
+            // Используем Box + clickable(indication = null), чтобы убрать ripple эффект (серый круг)
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clickable(
+                        onClick = onFavoriteClick,
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                val scale by animateFloatAsState(
+                    targetValue = if (isFavorite) 1.2f else 1f,
+                    animationSpec = tween(durationMillis = 300),
+                    label = "star_scale"
                 )
+
+                val rotation by animateFloatAsState(
+                    targetValue = if (isFavorite) 360f else 0f,
+                    animationSpec = tween(durationMillis = 400),
+                    label = "star_rotation"
+                )
+
+                Crossfade(
+                    targetState = isFavorite,
+                    animationSpec = tween(durationMillis = 300),
+                    label = "star_fade"
+                ) { favorite ->
+                    Icon(
+                        painter = painterResource(id = if (favorite) com.example.smartmeal.R.drawable.star else com.example.smartmeal.R.drawable.badstar),
+                        contentDescription = if (favorite) "Убрать из избранного" else "В избранное",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .graphicsLayer(
+                                scaleX = scale,
+                                scaleY = scale,
+                                rotationZ = rotation
+                            ),
+                        tint = Color.Unspecified
+                    )
+                }
             }
         }
     }
