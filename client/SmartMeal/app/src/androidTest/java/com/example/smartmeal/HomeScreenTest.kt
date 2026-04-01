@@ -1,4 +1,4 @@
-package com.example.smartmeal
+﻿package com.example.smartmeal
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertCountEquals
@@ -176,6 +176,16 @@ class HomeScreenTest {
         composeTestRule.waitForIdle()
 
         composeTestRule
+            .onNodeWithTag("home_replace_confirm_dialog")
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithTag("home_replace_confirm_button")
+            .performClick()
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule
             .onNodeWithText("Обновлено")
             .assertIsDisplayed()
     }
@@ -327,3 +337,4 @@ class HomeScreenTest {
         )
     }
 }
+

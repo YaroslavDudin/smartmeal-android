@@ -16,21 +16,28 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModel
@@ -70,6 +77,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+
+private val ReplaceDialogYellow = Color(0xFFFFF4C2)
+private val ReplaceDialogRed = Color(0xFFE53935)
 
 @Composable
 fun HomeScreen(
@@ -297,6 +307,7 @@ fun HomeContent(
     val selectedDateId = uiState.selectedDate?.let { buildDateSelectorId(it) }
     val hasSingleAvailableDate = availableDates.size == 1
     val hasAvailableDates = availableDates.isNotEmpty()
+    var pendingReplacement by remember(uiState.mealSections) { mutableStateOf<MealSection?>(null) }
 
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp)) {
         SmartMealText(
@@ -413,7 +424,7 @@ fun HomeContent(
                         sectionId = section.id,
                         title = section.title,
                         meal = section.meal,
-                        onReplaceClick = { onReplaceMeal(section.id) },
+                        onReplaceClick = { pendingReplacement = section },
                         onFavoriteClick = { onToggleFavorite(section.meal.id) },
                         onRecipeClick = onRecipeClick
                     )
@@ -426,6 +437,18 @@ fun HomeContent(
                 text = uiState.error ?: "",
                 color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.padding(8.dp)
+            )
+        }
+
+        pendingReplacement?.let { section ->
+            ReplaceMealConfirmDialog(
+                mealTitle = section.meal.recipe_title,
+                onConfirm = {
+                    val sectionId = section.id
+                    pendingReplacement = null
+                    onReplaceMeal(sectionId)
+                },
+                onDismiss = { pendingReplacement = null }
             )
         }
     }
@@ -442,8 +465,16 @@ fun MealSection(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 4.dp)) {
-            SmartMealText(text = title)
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SmartMealText(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
             Spacer(modifier = Modifier.width(8.dp))
             CircleIconButton(
                 iconType = CircleIconType.REPLACE,
@@ -473,6 +504,73 @@ fun MealSection(
                     isFavorite = item.is_favorite,
                     onFavoriteClick = onFavoriteClick
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReplaceMealConfirmDialog(
+    mealTitle: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .testTag("home_replace_confirm_dialog"),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+            color = ReplaceDialogYellow,
+            shadowElevation = 12.dp
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SmartMealText(
+                    text = "Заменить \"$mealTitle\"?",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                SmartMealText(
+                    text = "Вы уверены, что хотите заменить это блюдо на что-нибудь другое?\nЕсли блюдо добавлено в избранное, оно останется в избранном",
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = onConfirm,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("home_replace_confirm_button"),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 6.dp,
+                        pressedElevation = 2.dp
+                    )
+                ) {
+                    SmartMealText("Заменить блюдо", color = ReplaceDialogRed)
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("home_replace_cancel_button"),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 4.dp,
+                        pressedElevation = 1.dp
+                    )
+                ) {
+                    SmartMealText("Отменить")
+                }
             }
         }
     }

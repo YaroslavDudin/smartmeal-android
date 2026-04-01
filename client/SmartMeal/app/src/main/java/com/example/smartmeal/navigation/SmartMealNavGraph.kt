@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -23,11 +23,11 @@ import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.presentation.AuthViewModel
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterForm
 import com.example.smartmeal.feature.auth.presentation.WelcomeScreen
-import com.example.smartmeal.feature.sandbox.TestScreen
 import com.example.smartmeal.feature.home.presentation.HomeScreen
 import com.example.smartmeal.feature.recipes.data.api.RecipeApi
 import com.example.smartmeal.feature.recipes.presentation.RecipeDetailScreen
 import com.example.smartmeal.feature.recipes.presentation.RecipeDetailViewModel
+import com.example.smartmeal.feature.sandbox.TestScreen
 import com.example.smartmeal.feature.setup.data.api.SetupApi
 import com.example.smartmeal.feature.setup.presentation.SetupIntroScreen
 import com.example.smartmeal.feature.setup.presentation.SetupStep1Screen
@@ -36,13 +36,11 @@ import com.example.smartmeal.feature.setup.presentation.SetupStep3Screen
 import com.example.smartmeal.feature.setup.presentation.SetupViewModel
 
 /**
- * Граф навигации приложения.
- * Принимает [navController], который создаётся в MainActivity.
+ * Главный граф навигации приложения.
+ * Принимает [navController], который создается в MainActivity.
  */
 @Composable
 fun SmartMealNavGraph(navController: NavHostController) {
-
-    // В реальном приложении лучше использовать DI (Hilt/Koin)
     val context = androidx.compose.ui.platform.LocalContext.current
     val tokenManager = remember { com.example.smartmeal.data.local.TokenManager(context) }
 
@@ -69,7 +67,6 @@ fun SmartMealNavGraph(navController: NavHostController) {
         }
     })
 
-    // Стартовый экран: если токен есть — SetupIntro проверит профиль и решит куда идти
     val startDestination = if (tokenManager.getAccessToken() != null) {
         Screen.SetupIntro.route
     } else {
@@ -81,8 +78,14 @@ fun SmartMealNavGraph(navController: NavHostController) {
         startDestination = startDestination,
     ) {
 
-        // --- Зона авторизации ---
+        fun navigateToHomeClearingOnboardingStack() {
+            navController.navigate(Screen.Home.route) {
+                popUpTo(0) { inclusive = true }
+                launchSingleTop = true
+            }
+        }
 
+        // Зона авторизации
         composable(route = Screen.Welcome.route) {
             WelcomeScreen(
                 onNavigateNext = { navController.navigate(Screen.AuthForm.route) }
@@ -98,7 +101,8 @@ fun SmartMealNavGraph(navController: NavHostController) {
                 viewModel = authViewModel,
                 onAuthSuccess = {
                     navController.navigate(Screen.SetupIntro.route) {
-                        popUpTo(Screen.AuthForm.route) { inclusive = true }
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
                     }
                 },
                 onNavigateToSandbox = {
@@ -107,17 +111,12 @@ fun SmartMealNavGraph(navController: NavHostController) {
             )
         }
 
-        // --- Зона настройки профиля (онбординг) ---
-
+        // Зона настройки профиля
         composable(route = Screen.SetupIntro.route) {
             SetupIntroScreen(
                 viewModel = setupViewModel,
                 onStartSetup = { navController.navigate(Screen.SetupStep1.route) },
-                onAlreadyConfigured = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.SetupIntro.route) { inclusive = true }
-                    }
-                }
+                onAlreadyConfigured = { navigateToHomeClearingOnboardingStack() }
             )
         }
 
@@ -158,16 +157,11 @@ fun SmartMealNavGraph(navController: NavHostController) {
             SetupStep3Screen(
                 viewModel = setupViewModel,
                 onBack = { navController.popBackStack() },
-                onComplete = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.SetupIntro.route) { inclusive = true }
-                    }
-                },
+                onComplete = { navigateToHomeClearingOnboardingStack() },
             )
         }
 
-        // --- Зона основного приложения ---
-
+        // Зона основного приложения
         composable(route = Screen.Home.route) {
             HomeScreen(
                 onLogout = {
@@ -183,8 +177,8 @@ fun SmartMealNavGraph(navController: NavHostController) {
                     navController.navigate(Screen.SetupStep2.createRoute(reselect = true))
                 },
                 onRecipeClick = { recipeId, menuItemId ->
-                    val portionSize = setupViewModel.state.value.portionSize // количество порций указанное в профиле
-                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize, menuItemId)) // передаем в рецепт
+                    val portionSize = setupViewModel.state.value.portionSize
+                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize, menuItemId))
                 }
             )
         }
@@ -194,9 +188,9 @@ fun SmartMealNavGraph(navController: NavHostController) {
             arguments = listOf(
                 navArgument("recipeId") { type = NavType.IntType },
                 navArgument("portionSize") { type = NavType.IntType },
-                navArgument("menuItemId") { 
+                navArgument("menuItemId") {
                     type = NavType.IntType
-                    defaultValue = -1 
+                    defaultValue = -1
                 }
             )
         ) { backStackEntry ->
@@ -211,6 +205,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
                     return RecipeDetailViewModel(recipeApi, setupPreferences) as T
                 }
             })
+
             RecipeDetailScreen(
                 recipeId = recipeId,
                 menuItemId = menuItemId,
