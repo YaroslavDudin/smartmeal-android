@@ -61,6 +61,7 @@ export interface Ingredient {
   category_name: string | null
   nutrition: IngredientNutrition | null
   unit_conversions: UnitConversion[]
+  can_be_added_to_cart: boolean
 }
 
 export interface RecipeIngredient {

@@ -93,7 +93,7 @@ class AdminIngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'category', 'category_name', 'nutrition', 'unit_conversions']
+        fields = ['id', 'name', 'category', 'category_name', 'nutrition', 'unit_conversions', 'can_be_added_to_cart']
 
 
 class AdminIngredientWriteSerializer(serializers.ModelSerializer):

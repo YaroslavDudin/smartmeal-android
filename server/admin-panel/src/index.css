@@ -106,4 +106,8 @@
   .badge-gray {
     @apply badge bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400;
   }
+
+  .checkbox {
+    @apply h-4 w-4 rounded border-[var(--border-color)] text-primary-600 focus:ring-primary-500;
+  }
 }
