@@ -3,6 +3,8 @@ from datetime import date
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from rest_framework.test import APITestCase
+from rest_framework import status
 
 from app.menus.models import MealType, Menu, MenuItem, Period
 from app.menus.serializers import GenerateMenuSerializer
@@ -91,3 +93,87 @@ class GenerateMenuSerializerTests(TestCase):
 
         self.assertFalse(serializer.is_valid())
         self.assertIn("days", serializer.errors)
+
+    def test_generate_menu_serializer_allows_cook_times_dict(self):
+        serializer = GenerateMenuSerializer(
+            data={
+                "period": "custom",
+                "days": 1,
+                "start_date": date.today(),
+                "cook_times": {
+                    "breakfast": "short",
+                    "lunch": "medium",
+                    "dinner": "long"
+                }
+            }
+        )
+        self.assertTrue(serializer.is_valid(), serializer.errors) 
+        self.assertEqual(serializer.validated_data["cook_times"]["breakfast"], "short") 
+
+
+class MenuGenerationAPITests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="test@test.com",
+            password="password123"
+        )
+        self.client.force_authenticate(user=self.user)
+
+        self.mt_breakfast = MealType.objects.create(name="breakfast", order=1)
+        self.mt_lunch = MealType.objects.create(name="lunch", order=2)
+        self.mt_dinner = MealType.objects.create(name="dinner", order=3)
+
+        self.recipe_short = Recipe.objects.create(title="Short Recipe", cook_time=15, servings=1)
+        self.recipe_medium = Recipe.objects.create(title="Medium Recipe", cook_time=45, servings=1)
+        self.recipe_long = Recipe.objects.create(title="Long Recipe", cook_time=90, servings=1)
+
+        for recipe in [self.recipe_short, self.recipe_medium, self.recipe_long]:
+            recipe.meal_types.add(self.mt_breakfast, self.mt_lunch, self.mt_dinner)
+
+        self.url = '/api/menus/generate/'
+
+    def test_generate_menu_with_detailed_cook_times(self):
+        data = {
+            "period": "custom",
+            "days": 1,
+            "start_date": date.today(),
+            "cook_times": {
+                "breakfast": "short",
+                "lunch": "medium",
+                "dinner": "long"
+            }
+        }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        menu_id = response.data['id']
+        items = MenuItem.objects.filter(menu_id=menu_id)
+
+        breakfast_item = items.get(meal_type=self.mt_breakfast)
+        self.assertEqual(breakfast_item.recipe, self.recipe_short)
+        self.assertEqual(breakfast_item.requested_cook_time, "short")
+
+        lunch_item = items.get(meal_type=self.mt_lunch)
+        self.assertEqual(lunch_item.recipe, self.recipe_medium)
+        self.assertEqual(lunch_item.requested_cook_time, "medium")
+
+        dinner_item = items.get(meal_type=self.mt_dinner)
+        self.assertEqual(dinner_item.recipe, self.recipe_long)
+        self.assertEqual(dinner_item.requested_cook_time, "long")
+
+    def test_generate_menu_fallback_to_global_cook_time(self):
+        data = {
+            "period": "custom",
+            "days": 1,
+            "start_date": date.today(),
+            "cook_time_range": "short"
+        }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        menu_id = response.data['id']
+        items = MenuItem.objects.filter(menu_id=menu_id)
+        
+        for item in items:
+            self.assertEqual(item.recipe, self.recipe_short)

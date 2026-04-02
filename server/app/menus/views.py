@@ -68,6 +68,7 @@ class MenuViewSet(viewsets.ModelViewSet):
         
         # cook_time_range: берем строго из запроса или профиля
         cook_time_range = data.get('cook_time_range') or request.user.preferred_cook_time
+        cook_times_dict = data.get('cook_times') or {}
         max_cook_time = data.get('max_cook_time')
 
         meal_types = list(MealType.objects.all().order_by('order'))
@@ -80,15 +81,7 @@ class MenuViewSet(viewsets.ModelViewSet):
         qs = Recipe.objects.all().order_by('id')
         if diet_type_id:
             qs = qs.filter(diet_types__id=diet_type_id)
-        
-        # Применяем фильтр по времени строго
-        if max_cook_time:
-            qs = qs.filter(cook_time__lte=max_cook_time)
-        
-        # Если есть cook_time_range, применяем его дополнительно или вместо max_cook_time
-        if cook_time_range and cook_time_range != 'any':
-            qs = filter_recipes_by_cook_time(qs, cook_time_range)
-
+   
         if allergy_ids:
             qs = qs.exclude(
                 recipe_ingredients__ingredient__allergies__id__in=allergy_ids
@@ -97,8 +90,19 @@ class MenuViewSet(viewsets.ModelViewSet):
         # Проверка пула для КАЖДОГО приема пищи
         pools = {}
         used_per_day = {day: set() for day in range(days)}
+        mt_cook_times = {}
         for mt in meal_types:
-            valid_recipes = list(qs.filter(meal_types=mt).values_list('id', flat=True))
+            mt_qs = qs.filter(meal_types=mt)
+            current_mt_cook_time = cook_times_dict.get(mt.name) or cook_time_range
+            mt_cook_times[mt.id] = current_mt_cook_time
+            # Применяем фильтр по времени строго
+            if max_cook_time:
+                qs = qs.filter(cook_time__lte=max_cook_time)
+
+            if current_mt_cook_time and current_mt_cook_time != 'any':
+                mt_qs = filter_recipes_by_cook_time(mt_qs, current_mt_cook_time)
+
+            valid_recipes = list(mt_qs.values_list('id', flat=True))
             if not valid_recipes:
                 return Response(
                     {'detail': f'Для приема пищи "{mt.name}" нет рецептов, подходящих под ваши фильтры времени или диеты.'},
@@ -143,6 +147,7 @@ class MenuViewSet(viewsets.ModelViewSet):
                         recipe_id=recipe_id,
                         day_offset=day_offset,
                         meal_type=mt,
+                        requested_cook_time=mt_cook_times[mt.id]
                     ))
             MenuItem.objects.bulk_create(items)
                 
@@ -204,9 +209,10 @@ class MenuItemViewSet(viewsets.ModelViewSet):
                 return Response({'detail': 'Невозможно обновить блюдо, так как нет рецептов, подходящих под ваши ограничения по аллергии.'}, status=status.HTTP_404_NOT_FOUND)
 
         # 3. Фильтр по времени готовки
-        if user.preferred_cook_time and user.preferred_cook_time != 'any':
+        target_cook_time = menu_item.requested_cook_time or user.preferred_cook_time
+        if target_cook_time and target_cook_time != 'any':
             qs_before_time = qs
-            qs = filter_recipes_by_cook_time(qs, user.preferred_cook_time)
+            qs = filter_recipes_by_cook_time(qs, target_cook_time)
             if not qs.exists():
                 return Response({'detail': f'Невозможно обновить блюдо, так как нет рецептов, подходящих под ваше время приготовления ({user.get_preferred_cook_time_display()}).'}, status=status.HTTP_404_NOT_FOUND)
         
