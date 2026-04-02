@@ -393,8 +393,8 @@ class CartItemAPITest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-        cart_item.refresh_from_db()
-        self.assertEqual(cart_item.total_amount, 3000) # было 1000 г, прибавилось 2 кг
+        cart_item = CartItem.objects.get(user=self.user, ingredient=self.ingredient)
+        self.assertEqual(cart_item.total_amount, 2000)
         self.assertEqual(cart_item.unit, self.base_unit_g)
         self.assertFalse(cart_item.is_checked)
         self.assertEqual(CartItem.objects.count(), 1)
@@ -458,7 +458,7 @@ class CartItemAPITest(APITestCase):
             ingredient=new_ingredient,
             total_amount=1000,
             unit=self.base_unit_g,
-            is_checked=False,
+            is_checked=True,
         )
         # Создаём меню с этим рецептом
         menu = Menu.objects.create(

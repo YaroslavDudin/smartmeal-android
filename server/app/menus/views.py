@@ -164,7 +164,83 @@ class MenuViewSet(viewsets.ModelViewSet):
         )
         serializer = self.get_serializer(created_menu)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    @action(detail=True, methods=['post'], url_path='adjust') 
+    def adjust(self, request, pk=None):
+        menu = self.get_object()
+        user = request.user
+        data = request.data
+        
+        cook_times_dict = data.get('cook_times') or {}
+        global_cook_time = data.get('cook_time_range')
+        
+        if not cook_times_dict and not global_cook_time:
+            return Response(
+                {"detail": "Не переданы настройки времени."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        base_qs = Recipe.objects.all()
+        if user.diet_type_id:
+            base_qs = base_qs.filter(diet_types__id=user.diet_type_id)
+            
+        allergy_ids = set(user.allergies.values_list('id', flat=True))
+        if allergy_ids:
+            base_qs = base_qs.exclude(
+                recipe_ingredients__ingredient__allergies__id__in=allergy_ids
+            ).distinct()
 
+        menu_items = menu.items.select_related('recipe', 'meal_type').all()
+        
+        with transaction.atomic():
+            for item in menu_items:
+                mt_name = item.meal_type.name
+                
+                target_time = cook_times_dict.get(mt_name) or global_cook_time
+                
+                if not target_time or target_time == 'any':
+                    continue
+                    
+                item.requested_cook_time = target_time
+                is_valid = False
+                cook_time = item.recipe.cook_time
+                
+                if target_time == 'short' and cook_time <= 30:
+                    is_valid = True
+                elif target_time == 'medium' and 30 < cook_time < 60:
+                    is_valid = True
+                elif target_time == 'long' and cook_time >= 60:
+                    is_valid = True
+
+                # Если рецепт больше не подходит — ищем ему замену
+                if not is_valid:
+                    qs = base_qs.filter(meal_types=item.meal_type)
+                    qs = filter_recipes_by_cook_time(qs, target_time)
+
+                    # Исключаем рецепты, которые уже стоят в этот же день
+                    other_today_recipes_ids = (
+                        MenuItem.objects.filter(menu=menu, day_offset=item.day_offset)
+                        .exclude(id=item.id)
+                        .values_list('recipe_id', flat=True)
+                    )
+                    qs = qs.exclude(id__in=other_today_recipes_ids)
+                    new_recipe = qs.order_by('?').first()
+                    if new_recipe:
+                        item.recipe = new_recipe
+
+                item.save()
+
+        updated_menu = (
+            Menu.objects
+            .prefetch_related(
+                Prefetch(
+                    'items',
+                    queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+                )
+            )
+            .get(id=menu.id)
+        )       
+        serializer = self.get_serializer(updated_menu)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class MenuItemViewSet(viewsets.ModelViewSet):
     serializer_class = MenuItemSerializer

@@ -162,6 +162,38 @@ class MenuGenerationAPITests(APITestCase):
         self.assertEqual(dinner_item.recipe, self.recipe_long)
         self.assertEqual(dinner_item.requested_cook_time, "long")
 
+    def test_generate_weekly_menu_with_detailed_cook_times(self):
+        data = {
+            "period": "week",
+            "start_date": date.today(),
+            "cook_times": {
+                "breakfast": "short",
+                "lunch": "medium",
+                "dinner": "long"
+            }
+        }
+        
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        menu_id = response.data['id']
+        items = MenuItem.objects.filter(menu_id=menu_id)
+        
+        self.assertEqual(items.count(), 21)
+
+        for item in items:
+            if item.meal_type == self.mt_breakfast:
+                self.assertEqual(item.requested_cook_time, "short")
+                self.assertTrue(item.recipe.cook_time <= 30, f"Завтрак слишком долгий: {item.recipe.cook_time} мин")
+            
+            elif item.meal_type == self.mt_lunch:
+                self.assertEqual(item.requested_cook_time, "medium")
+                self.assertTrue(30 < item.recipe.cook_time < 60, f"Обед не вписывается в medium: {item.recipe.cook_time} мин")
+            
+            elif item.meal_type == self.mt_dinner:
+                self.assertEqual(item.requested_cook_time, "long")
+                self.assertTrue(item.recipe.cook_time >= 60, f"Ужин слишком быстрый: {item.recipe.cook_time} мин")
+
     def test_generate_menu_fallback_to_global_cook_time(self):
         data = {
             "period": "custom",
@@ -177,3 +209,35 @@ class MenuGenerationAPITests(APITestCase):
         
         for item in items:
             self.assertEqual(item.recipe, self.recipe_short)
+
+    def test_adjust_existing_menu_cook_times(self):
+        menu = Menu.objects.create(user=self.user, period="custom", start_date=date.today())
+        
+        item_breakfast = MenuItem.objects.create(
+            menu=menu, recipe=self.recipe_long, meal_type=self.mt_breakfast, day_offset=0, requested_cook_time="any"
+        )
+        item_lunch = MenuItem.objects.create(
+            menu=menu, recipe=self.recipe_short, meal_type=self.mt_lunch, day_offset=1, requested_cook_time="any"
+        )
+
+        data = {
+            "cook_times": {
+                "breakfast": "short",
+                "lunch": "short"
+            }
+        }
+        
+        url = f'/api/menus/{menu.id}/adjust/'
+        response = self.client.post(url, data, format='json')
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+        item_breakfast.refresh_from_db()
+        item_lunch.refresh_from_db()
+
+        self.assertEqual(item_breakfast.requested_cook_time, "short")
+        self.assertEqual(item_breakfast.recipe, self.recipe_short)
+
+        self.assertEqual(item_lunch.requested_cook_time, "short")
+        self.assertEqual(item_lunch.recipe, self.recipe_short)

@@ -44,7 +44,6 @@ class CartViewSet(viewsets.ModelViewSet):
 
         return Response(grouped_data, status=status.HTTP_200_OK)
     
-    # Текущая реализация не удаляет из корзины уже существующие там продукты, а суммирует с ними
     @action(detail=False, methods=['post'], url_path='recalculate')
     def recalculate(self, request):
         input_serializer = RecalculateCartSerializer(data=request.data)
@@ -52,6 +51,9 @@ class CartViewSet(viewsets.ModelViewSet):
         data = input_serializer.validated_data
 
         user = request.user
+
+        CartItem.objects.filter(user=user, is_checked=False).delete()
+
         user_menus = Menu.objects.filter(user=user)
         menu_id = data.get('menu_id')
         today = date.today()
