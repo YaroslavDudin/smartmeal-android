@@ -120,8 +120,10 @@ fun HomeScreen(
     val planType = setupPreferences.getPlanType()
     val planRange = setupPreferences.getCustomPlanRange()
     val selectedPlanDateMillis = setupPreferences.getSelectedPlanDate()
+    // "Мой план" нужен только для пользовательского диапазона.
+    // Для daily/weekly даты уже и так очевидны из самого плана, поэтому секцию скрываем.
+    val showMyPlanSection = planType == SetupPreferences.PLAN_TYPE_CUSTOM
     
-    // ТВОЯ ЛОГИКА ПЛАНОВ (СОХРАНЕНА)
     val customPlan = remember(planType, planRange, selectedPlanDateMillis) {
         when (planType) {
             SetupPreferences.PLAN_TYPE_CUSTOM -> {
@@ -242,7 +244,8 @@ fun HomeScreen(
                         onRecipeClick = onRecipeClick,
                         onDateSelectedFromPlan = { viewModel.selectDate(it, visibleCustomPlan) },
                         onReselectPlan = onReselectPlan,
-                        customPlan = visibleCustomPlan
+                        customPlan = visibleCustomPlan,
+                        showMyPlanSection = showMyPlanSection
                     )
                 }
 
@@ -265,7 +268,7 @@ fun HomeScreen(
                         hasNoAvailableDays = productListViewModel.hasNoAvailableDays,
                         isLoading = productListViewModel.isLoading,
                         errorMessage = productListViewModel.errorMessage,
-                        customPlan = customPlan
+                        customPlan = if (showMyPlanSection) customPlan else null
                     )
                 }
 
@@ -297,7 +300,8 @@ fun HomeContent(
     onRecipeClick: (Int, Int?) -> Unit,
     onDateSelectedFromPlan: (Date) -> Unit,
     onReselectPlan: () -> Unit,
-    customPlan: CustomPlan?
+    customPlan: CustomPlan?,
+    showMyPlanSection: Boolean = false
 ) {
     val availableDates = remember(uiState.currentMenu?.items, uiState.allMenuItems, customPlan) {
         val sourceItems = if (customPlan != null) uiState.allMenuItems
@@ -357,7 +361,7 @@ fun HomeContent(
             }
         }
 
-        if (customPlan != null && hasAvailableDates) {
+        if (showMyPlanSection && customPlan != null && hasAvailableDates) {
             MyPlanSection(
                 customPlan = customPlan,
                 selectedDate = uiState.selectedDate,
