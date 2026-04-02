@@ -1,4 +1,4 @@
-package com.example.smartmeal.feature.products.presentation
+﻿package com.example.smartmeal.feature.products.presentation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -24,6 +24,11 @@ class ProductListViewModel(
     private val preferences: SetupPreferences
 ) : ViewModel() {
 
+    private data class RecipeCacheKey(
+        val recipeId: Int,
+        val servings: Int,
+    )
+
     init {
         viewModelScope.launch {
             com.example.smartmeal.data.manager.DateManager.dateUpdates.collect { date ->
@@ -35,10 +40,25 @@ class ProductListViewModel(
                 }
             }
         }
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.ProfileManager.profileUpdates.collect {
+                recipeCache.clear()
+                if (lastMenuItems.isNotEmpty()) {
+                    if (isLoading) {
+                        pendingProductsRefresh = true
+                    } else {
+                        generateProductsFromMenuItems(lastMenuItems)
+                    }
+                }
+            }
+        }
     }
 
-    // Кэш рецептов: ID рецепта -> Полные данные рецепта
-    private val recipeCache = mutableMapOf<Int, RecipeDetailDto>()
+    // Recipe cache: (recipeId, servings) -> full recipe details
+    private val recipeCache = mutableMapOf<RecipeCacheKey, RecipeDetailDto>()
+    private var lastMenuItems: List<MenuItemDto> = emptyList()
+    private var lastMenuSignature: String? = null
+    private var pendingProductsRefresh = false
 
     var products by mutableStateOf<List<ProductUiModel>>(emptyList())
         private set
@@ -119,7 +139,10 @@ class ProductListViewModel(
         dateRangeText = "Выберите диапазон дней"
         errorMessage = null
         hasNoAvailableDays = false
-        recipeCache.clear() // При смене меню чистим кэш
+        lastMenuItems = emptyList()
+        lastMenuSignature = null
+        pendingProductsRefresh = false
+        recipeCache.clear() // Clear the cache when the menu changes.
     }
 
     fun selectDateRange(dateKey: String) {
@@ -147,7 +170,7 @@ class ProductListViewModel(
 
         updateDateRangeText()
         
-        // Уведомляем другие экраны о выбранной начальной дате
+        // Notify other screens about the selected start date.
         selectedStartDateKey?.let { key ->
             parseApiDate(key)?.let { date ->
                 com.example.smartmeal.data.manager.DateManager.notifyDateSelected(date)
@@ -188,7 +211,14 @@ class ProductListViewModel(
             if (isLoading) return@launch
             isLoading = true
             errorMessage = null
+            lastMenuItems = menuItems
             try {
+                val menuSignature = buildMenuSignature(menuItems)
+                if (menuSignature != lastMenuSignature) {
+                    recipeCache.clear()
+                    lastMenuSignature = menuSignature
+                }
+
                 val todayKey = currentApiDateKey()
                 val upcomingMenuItems = menuItems.filter { it.actual_date >= todayKey }
                 hasNoAvailableDays = menuItems.isNotEmpty() && upcomingMenuItems.isEmpty()
@@ -200,22 +230,28 @@ class ProductListViewModel(
                 }
 
                 val globalPortionSize = preferences.getPortionSize()
-                val uniqueRecipeIds = upcomingMenuItems.map { it.recipe }.distinct()
-                val missingIds = uniqueRecipeIds.filter { it !in recipeCache }
+                val requiredKeys = upcomingMenuItems
+                    .map { menuItem ->
+                        val overrideServings = preferences.getMenuItemServings(menuItem.id)
+                        val effectiveServings = if (overrideServings > 0) overrideServings else globalPortionSize
+                        RecipeCacheKey(menuItem.recipe, effectiveServings)
+                    }
+                    .distinct()
+                val missingKeys = requiredKeys.filter { it !in recipeCache }
 
-                if (missingIds.isNotEmpty()) {
-                    val deferred = missingIds.map { id ->
+                if (missingKeys.isNotEmpty()) {
+                    val deferred = missingKeys.map { cacheKey ->
                         async {
-                            val response = menuApi.getRecipe(id, servings = globalPortionSize)
+                            val response = menuApi.getRecipe(cacheKey.recipeId, servings = cacheKey.servings)
                             if (response.isSuccessful && response.body() != null) {
-                                id to response.body()!!
+                                cacheKey to response.body()!!
                             } else {
                                 null
                             }
                         }
                     }
-                    deferred.awaitAll().filterNotNull().forEach { (id, recipe) ->
-                        recipeCache[id] = recipe
+                    deferred.awaitAll().filterNotNull().forEach { (cacheKey, recipe) ->
+                        recipeCache[cacheKey] = recipe
                     }
                 }
 
@@ -230,16 +266,11 @@ class ProductListViewModel(
                 for (menuItem in upcomingMenuItems) {
                     val dateIndex = dateIndexMap[menuItem.actual_date] ?: 0
                     
-                    // ТВОЯ ЛОГИКА ПОРЦИЙ (СОХРАНЕНА)
+                    // Per-meal custom servings still have priority over the global value.
                     val overrideServings = preferences.getMenuItemServings(menuItem.id)
                     val effectiveServings = if (overrideServings > 0) overrideServings else globalPortionSize
 
-                    val recipe = if (overrideServings > 0) {
-                        val resp = menuApi.getRecipe(menuItem.recipe, servings = effectiveServings)
-                        if (resp.isSuccessful) resp.body() else recipeCache[menuItem.recipe]
-                    } else {
-                        recipeCache[menuItem.recipe]
-                    } ?: continue
+                    val recipe = recipeCache[RecipeCacheKey(menuItem.recipe, effectiveServings)] ?: continue
 
                     (recipe.ingredients ?: emptyList()).forEachIndexed { ingredientIndex, ingredient ->
                         if (isExcludedIngredient(ingredient.ingredient_name)) {
@@ -293,6 +324,10 @@ class ProductListViewModel(
                 hasNoAvailableDays = false
             } finally {
                 isLoading = false
+                if (pendingProductsRefresh) {
+                    pendingProductsRefresh = false
+                    generateProductsFromMenuItems(lastMenuItems)
+                }
             }
         }
     }
@@ -356,6 +391,12 @@ class ProductListViewModel(
     }
 }
 
+internal fun buildMenuSignature(menuItems: List<MenuItemDto>): String {
+    return menuItems.joinToString("|") { item ->
+        "${item.id}:${item.recipe}:${item.actual_date}:${item.meal_type}"
+    }
+}
+
 internal fun parseApiDate(value: String): Date? {
     return try {
         SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(value)
@@ -376,7 +417,8 @@ internal fun buildOccurrenceId(
 
 internal fun isExcludedIngredient(name: String): Boolean {
     val normalized = name.trim().lowercase(Locale("ru"))
-    return normalized.contains("вода") || normalized.contains("water")
+    return normalized.contains("\u0432\u043e\u0434\u0430") ||
+        normalized.contains("water")
 }
 
 internal fun resolveAmountInGrams(
@@ -432,3 +474,4 @@ internal fun parseWeightToGrams(amount: String): Double {
 internal fun currentApiDateKey(today: Date = Date()): String {
     return SimpleDateFormat("yyyy-MM-dd", Locale.US).format(today)
 }
+
