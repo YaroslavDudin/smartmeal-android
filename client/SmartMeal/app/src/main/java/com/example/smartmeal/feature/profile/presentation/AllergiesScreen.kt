@@ -48,7 +48,6 @@ fun AllergiesScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    // Автозакрытие после успешного сохранения
     LaunchedEffect(state.savedSuccess) {
         if (state.savedSuccess) {
             viewModel.clearSavedSuccess()
@@ -57,15 +56,18 @@ fun AllergiesScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize().background(BgLightGray)) {
-
-        // --- Шапка ---
         Box(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Назад",
-                modifier = Modifier.align(Alignment.CenterStart).size(24.dp).clickable { onBack() },
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .size(24.dp)
+                    .clickable { onBack() },
                 tint = Color.Black
             )
             SmartMealText(
@@ -83,38 +85,46 @@ fun AllergiesScreen(
                 .padding(horizontal = 20.dp)
         ) {
             if (state.isLoading) {
-                Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
                     CircularProgressIndicator(color = PrimaryGreen)
                 }
             } else {
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // ── Текущие аллергии пользователя (уже выбраны) ──
                 SmartMealText(
-                    text = "У меня аллергия на :",
+                    text = "Мои аллергии:",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                if (state.currentAllergyIds.isEmpty()) {
+                SmartMealText(
+                    text = "Нажмите по аллергену, чтобы добавить его или убрать из списка.",
+                    fontSize = 13.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                if (state.allAllergies.isEmpty()) {
                     SmartMealText(
-                        text = "Не указано",
+                        text = "Список аллергенов пока недоступен",
                         fontSize = 14.sp,
                         color = Color.Gray,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                 } else {
-                    state.allAllergies
-                        .filter { it.id in state.currentAllergyIds }
-                        .forEach { allergy ->
-                            AllergyRow(
-                                allergy = allergy,
-                                isChecked = true,
-                                // У текущих — галочка всегда зелёная, клик не меняет
-                                onClick = null
-                            )
-                        }
+                    state.allAllergies.forEach { allergy ->
+                        AllergyRow(
+                            allergy = allergy,
+                            isChecked = allergy.id in state.pendingAllergyIds,
+                            onClick = { viewModel.togglePendingAllergy(allergy.id) }
+                        )
+                    }
                 }
 
                 HorizontalDivider(
@@ -123,31 +133,20 @@ fun AllergiesScreen(
                     modifier = Modifier.padding(vertical = 12.dp)
                 )
 
-                // ── Остальные аллергии — можно выбрать ──
+                val selectedAllergyNames = state.allAllergies
+                    .filter { it.id in state.pendingAllergyIds }
+                    .joinToString(", ") { it.name }
+
                 SmartMealText(
-                    text = "Выберите аллергию:",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    text = if (selectedAllergyNames.isBlank()) {
+                        "Сейчас аллергии не выбраны"
+                    } else {
+                        "Текущий выбор: $selectedAllergyNames"
+                    },
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
-
-                val available = state.allAllergies.filter { it.id !in state.currentAllergyIds }
-
-                if (available.isEmpty()) {
-                    SmartMealText(
-                        text = "Все аллергии уже выбраны",
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
-                } else {
-                    available.forEach { allergy ->
-                        AllergyRow(
-                            allergy = allergy,
-                            isChecked = allergy.id in state.pendingAllergyIds,
-                            onClick = { viewModel.togglePendingAllergy(allergy.id) }
-                        )
-                    }
-                }
 
                 if (state.error != null) {
                     SmartMealText(
@@ -162,7 +161,6 @@ fun AllergiesScreen(
             }
         }
 
-        // --- Кнопка Подтвердить ---
         SmartMealButton(
             text = if (state.isSaving) "Сохраняем..." else "Подтвердить",
             onClick = { viewModel.saveAllergies() },
