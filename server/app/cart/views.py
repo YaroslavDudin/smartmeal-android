@@ -2,11 +2,12 @@ from datetime import date, timedelta
 from decimal import Decimal
 from django.db import transaction
 from django.db.models import Max
+from django.http import HttpResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from app.cart.models import CartItem
-from app.cart.serializers import CartItemSerializer, RecalculateCartSerializer
+from app.cart.serializers import CartItemSerializer, RecalculateCartSerializer, ExportCartSerializer
 from app.menus.models import Menu, MenuItem
 from app.recipes.models import UnitConversion
 
@@ -28,8 +29,8 @@ class CartViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
 
-        show_checked = request.query_params.get('show_checked')
-        if show_checked != 'true':
+        show_checked = request.query_params.get('show_checked', 'false')
+        if show_checked.lower() != 'true':
             queryset = queryset.filter(is_checked=False)
 
         serializer = self.get_serializer(queryset, many=True)
@@ -56,6 +57,7 @@ class CartViewSet(viewsets.ModelViewSet):
 
         user_menus = Menu.objects.filter(user=user)
         menu_id = data.get('menu_id')
+        day_offset = data.get('day_offset')
         today = date.today()
         
         if menu_id is not None:
@@ -67,9 +69,9 @@ class CartViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_404_NOT_FOUND,
                 )
         else:
+            # Ищем меню среди начавшихся раньше или сегодня
             menu = None
 
-            # Ищем меню среди начавшихся раньше или сегодня
             candidate = (
                 user_menus
                 # сохраняем значение максимального day_offset у соответствующих menu items
@@ -87,24 +89,29 @@ class CartViewSet(viewsets.ModelViewSet):
                     menu = candidate
 
             if menu is None:
-                # Иначе ищем любое ближайшее будущее меню
-                menu = user_menus.filter(start_date__gt=today).order_by('start_date').first()
-
-            if menu is None:
-                # Если все меню в прошлом или их вообще нет
+                # У пользователя нет меню, в которое входит текущая дата
                 return Response(
                     {'detail': f'У пользователя {user} нет активного меню'},
                     status=status.HTTP_404_NOT_FOUND,
                 )
 
-        # Если меню начинается раньше текущей даты, разница между датами положительная, иначе отрицательная и берем 0
-        day_offset = max((today - menu.start_date).days, 0)
-        # Ищем элементы меню только для сегодня и далее, не берем элементы для прошедших дней
-        menu_items = MenuItem.objects.filter(menu=menu, day_offset__gte=day_offset) \
+        # Берем все элементы меню
+        menu_items = MenuItem.objects.filter(menu=menu) \
             .select_related('recipe').prefetch_related(
                 'recipe__recipe_ingredients__ingredient__unit_conversions',
                 'recipe__recipe_ingredients__unit',
             )
+        
+        # Если передан day_offset берем menu items только для этого дня
+        if day_offset is not None:
+            menu_items_for_day = menu_items.filter(day_offset=day_offset)
+            if not menu_items_for_day.exists():
+                return Response(
+                    {'detail': f'В меню ID {menu.pk} не существует дня с day_offset={day_offset}'},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            menu_items = menu_items_for_day
+
         # Получаем все ингредиенты из рецептов
         recipe_ingredients = [
             ri
@@ -220,4 +227,59 @@ class CartViewSet(viewsets.ModelViewSet):
                     fields=['total_amount', 'unit', 'is_checked'],
                 )
 
-        return Response({'detail': 'Корзина обновлена'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=False, methods=['post'], url_path='export')
+    def export(self, request):
+        input_serializer = ExportCartSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+        data = input_serializer.validated_data
+
+        cart_items_ids = data.get('cart_items_ids') or []
+
+        show_checked = request.query_params.get('show_checked', 'false').lower() == 'true'
+        export_all = request.query_params.get('all', 'false').lower() == 'true'
+        
+        # Должен быть либо запрос на api/cart/export/?all=true, либо передан непустой список ID
+        if not export_all and not cart_items_ids:
+            return Response(
+                {'detail': 'Не выбрано ни одного товара для экспорта. Укажите cart_items_ids или добавьте параметр ?all=true'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        queryset = self.get_queryset()
+        if not export_all:
+            queryset = queryset.filter(id__in=cart_items_ids)
+
+            # Если не все указанные id нашлись
+            found_ids = set(queryset.values_list('id', flat=True))
+            missing_ids = set(cart_items_ids) - found_ids
+            if missing_ids:
+                return Response(
+                    {'detail': f'Указанные ID продуктов корзины ({", ".join(map(str, missing_ids))}) не принадлежит текущему пользователю'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        if not show_checked:
+            queryset = queryset.filter(is_checked=False)
+
+        # Группировка по категориям
+        grouped = {}
+        for item in queryset.select_related('ingredient__category', 'unit'):
+            category_name = item.ingredient.category.name
+            grouped.setdefault(category_name, []).append(item)
+
+        # Формирование текстового представления
+        lines = []
+        for category, items in grouped.items():
+            lines.append(f'{category}:')
+            for item in items:
+                lines.append(f'\t- {item.ingredient.name}: {item.total_amount} {item.unit.name}')
+            lines.append('')  # пустая строка между категориями
+
+        text_output = '\n'.join(lines).strip()
+        return HttpResponse(
+            text_output,
+            content_type='text/plain',
+            status=status.HTTP_200_OK,
+            headers={'Content-Disposition': 'attachment; filename="shopping_list.txt"'} # для скачивания как файла .txt
+        )
