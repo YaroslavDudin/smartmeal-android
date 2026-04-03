@@ -1,9 +1,11 @@
 ﻿package com.example.smartmeal.feature.home.presentation
 
+import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import java.text.SimpleDateFormat
 import java.util.Locale
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class HomeDateSelectionTest {
@@ -102,6 +104,34 @@ class HomeDateSelectionTest {
         val days = resolveCustomDays(range)
 
         assertEquals(5, days)
+    }
+
+    @Test
+    fun resolveStoredPlanGeneration_customPlan_usesRangeStartAndDays() {
+        val range = formatter.parse("2026-03-29")!!.time to formatter.parse("2026-04-02")!!.time
+
+        val result = resolveStoredPlanGeneration(
+            planType = SetupPreferences.PLAN_TYPE_CUSTOM,
+            selectedPlanDateMillis = null,
+            customRange = range
+        )
+
+        assertEquals(SetupPreferences.PLAN_TYPE_CUSTOM, result.planType)
+        assertEquals("2026-03-29", formatter.format(result.startDate!!))
+        assertEquals(5, result.customDays)
+    }
+
+    @Test
+    fun resolveStoredPlanGeneration_weeklyPlan_usesSelectedDateWithoutCustomDays() {
+        val result = resolveStoredPlanGeneration(
+            planType = SetupPreferences.PLAN_TYPE_WEEKLY,
+            selectedPlanDateMillis = formatter.parse("2026-03-30")!!.time,
+            customRange = formatter.parse("2026-03-29")!!.time to formatter.parse("2026-04-02")!!.time
+        )
+
+        assertEquals(SetupPreferences.PLAN_TYPE_WEEKLY, result.planType)
+        assertEquals("2026-03-30", formatter.format(result.startDate!!))
+        assertNull(result.customDays)
     }
 
     private fun item(actualDate: String) = MenuItemDto(
