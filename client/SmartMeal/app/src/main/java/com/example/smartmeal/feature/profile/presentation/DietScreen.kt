@@ -48,7 +48,6 @@ fun DietScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    // Автозакрытие после успешного сохранения
     LaunchedEffect(state.savedSuccess) {
         if (state.savedSuccess) {
             viewModel.clearSavedSuccess()
@@ -57,15 +56,18 @@ fun DietScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize().background(BgLightGray)) {
-
-        // --- Шапка ---
         Box(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Назад",
-                modifier = Modifier.align(Alignment.CenterStart).size(24.dp).clickable { onBack() },
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .size(24.dp)
+                    .clickable { onBack() },
                 tint = Color.Black
             )
             SmartMealText(
@@ -83,13 +85,17 @@ fun DietScreen(
                 .padding(horizontal = 20.dp)
         ) {
             if (state.isLoading) {
-                Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
                     CircularProgressIndicator(color = PrimaryGreen)
                 }
             } else {
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // ── Текущий рацион ──
                 SmartMealText(
                     text = "Мой рацион:",
                     fontSize = 15.sp,
@@ -97,16 +103,28 @@ fun DietScreen(
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                val currentDiet = state.allDietTypes.firstOrNull { it.id == state.currentDietTypeId }
-                if (currentDiet != null) {
-                    DietRow(diet = currentDiet, isChecked = true, onClick = null)
-                } else {
+                SmartMealText(
+                    text = "Нажмите по рациону, чтобы выбрать его или снять выбор.",
+                    fontSize = 13.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                if (state.allDietTypes.isEmpty()) {
                     SmartMealText(
-                        text = "Не указан",
+                        text = "Список рационов пока недоступен",
                         fontSize = 14.sp,
                         color = Color.Gray,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
+                } else {
+                    state.allDietTypes.forEach { diet ->
+                        DietRow(
+                            diet = diet,
+                            isChecked = state.pendingDietTypeId == diet.id,
+                            onClick = { viewModel.selectPendingDiet(diet.id) }
+                        )
+                    }
                 }
 
                 HorizontalDivider(
@@ -115,22 +133,20 @@ fun DietScreen(
                     modifier = Modifier.padding(vertical = 12.dp)
                 )
 
-                // ── Выбрать другой рацион ──
-                SmartMealText(
-                    text = "Выбрать другой рацион:",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                val selectedDietName = state.allDietTypes
+                    .firstOrNull { it.id == state.pendingDietTypeId }
+                    ?.name
 
-                val others = state.allDietTypes.filter { it.id != state.currentDietTypeId }
-                others.forEach { diet ->
-                    DietRow(
-                        diet = diet,
-                        isChecked = state.pendingDietTypeId == diet.id,
-                        onClick = { viewModel.selectPendingDiet(diet.id) }
-                    )
-                }
+                SmartMealText(
+                    text = if (selectedDietName == null) {
+                        "Сейчас рацион не выбран"
+                    } else {
+                        "Текущий выбор: $selectedDietName"
+                    },
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
 
                 if (state.error != null) {
                     SmartMealText(
@@ -145,7 +161,6 @@ fun DietScreen(
             }
         }
 
-        // --- Кнопка Подтвердить ---
         SmartMealButton(
             text = if (state.isSaving) "Сохраняем..." else "Подтвердить",
             onClick = { viewModel.saveDiet() },

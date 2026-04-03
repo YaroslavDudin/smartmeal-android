@@ -177,7 +177,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
                     navController.navigate(Screen.SetupStep2.createRoute(reselect = true))
                 },
                 onRecipeClick = { recipeId, menuItemId ->
-                    val portionSize = setupViewModel.state.value.portionSize
+                    val portionSize = setupPreferences.getPortionSize()
                     navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize, menuItemId))
                 }
             )

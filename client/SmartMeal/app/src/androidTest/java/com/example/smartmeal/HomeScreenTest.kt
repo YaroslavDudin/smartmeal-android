@@ -304,6 +304,70 @@ class HomeScreenTest {
         assertTrue(clicked)
     }
 
+    @Test
+    fun home_hidesMyPlanSection_whenPlanIsNotCustom() {
+        val state = HomeUiState(
+            hasMenu = true,
+            currentMenu = menuWithDates("2099-03-10", "2099-03-11"),
+            allMenuItems = menuWithDates("2099-03-10", "2099-03-11").items ?: emptyList(),
+            selectedDate = dateFormatter.parse("2099-03-10")
+        )
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                HomeContent(
+                    uiState = state,
+                    onDateSelected = {},
+                    onGenerateMenu = {},
+                    onReplaceMeal = {},
+                    onToggleFavorite = {},
+                    onRecipeClick = { _, _ -> },
+                    onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
+                    customPlan = com.example.smartmeal.feature.home.presentation.CustomPlan(
+                        startDate = dateFormatter.parse("2099-03-10")!!,
+                        endDate = dateFormatter.parse("2099-03-11")!!
+                    ),
+                    showMyPlanSection = false
+                )
+            }
+        }
+
+        composeTestRule.onAllNodesWithTag("home_my_plan").assertCountEquals(0)
+    }
+
+    @Test
+    fun home_showsMyPlanSection_whenPlanIsCustom() {
+        val state = HomeUiState(
+            hasMenu = true,
+            currentMenu = menuWithDates("2099-03-10", "2099-03-11"),
+            allMenuItems = menuWithDates("2099-03-10", "2099-03-11").items ?: emptyList(),
+            selectedDate = dateFormatter.parse("2099-03-10")
+        )
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                HomeContent(
+                    uiState = state,
+                    onDateSelected = {},
+                    onGenerateMenu = {},
+                    onReplaceMeal = {},
+                    onToggleFavorite = {},
+                    onRecipeClick = { _, _ -> },
+                    onDateSelectedFromPlan = {},
+                    onReselectPlan = {},
+                    customPlan = com.example.smartmeal.feature.home.presentation.CustomPlan(
+                        startDate = dateFormatter.parse("2099-03-10")!!,
+                        endDate = dateFormatter.parse("2099-03-11")!!
+                    ),
+                    showMyPlanSection = true
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("home_my_plan").assertIsDisplayed()
+    }
+
     private fun fakeMeal(
         title: String,
         type: String
