@@ -45,6 +45,7 @@ class CartViewSet(viewsets.ModelViewSet):
 
         return Response(grouped_data, status=status.HTTP_200_OK)
     
+    # удаляет корзину пользователя и наполняет заново на основе меню
     @action(detail=False, methods=['post'], url_path='recalculate')
     def recalculate(self, request):
         input_serializer = RecalculateCartSerializer(data=request.data)
@@ -53,11 +54,8 @@ class CartViewSet(viewsets.ModelViewSet):
 
         user = request.user
 
-        CartItem.objects.filter(user=user, is_checked=False).delete()
-
         user_menus = Menu.objects.filter(user=user)
         menu_id = data.get('menu_id')
-        day_offset = data.get('day_offset')
         today = date.today()
         
         if menu_id is not None:
@@ -95,22 +93,14 @@ class CartViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_404_NOT_FOUND,
                 )
 
+        self.get_queryset().delete()
+
         # Берем все элементы меню
         menu_items = MenuItem.objects.filter(menu=menu) \
             .select_related('recipe').prefetch_related(
                 'recipe__recipe_ingredients__ingredient__unit_conversions',
                 'recipe__recipe_ingredients__unit',
             )
-        
-        # Если передан day_offset берем menu items только для этого дня
-        if day_offset is not None:
-            menu_items_for_day = menu_items.filter(day_offset=day_offset)
-            if not menu_items_for_day.exists():
-                return Response(
-                    {'detail': f'В меню ID {menu.pk} не существует дня с day_offset={day_offset}'},
-                    status=status.HTTP_404_NOT_FOUND,
-                )
-            menu_items = menu_items_for_day
 
         # Получаем все ингредиенты из рецептов
         recipe_ingredients = [
@@ -119,39 +109,8 @@ class CartViewSet(viewsets.ModelViewSet):
             for ri in menu_item.recipe.recipe_ingredients.all()
             if ri.ingredient.can_be_added_to_cart # берем только те, которые отмечены для добавления в корзину
         ]
-        ingredient_ids = [ri.ingredient.pk for ri in recipe_ingredients]
-        # Получаем продукты из корзины, которые будем обновлять и кладем в объект ID ингредиента: CartItem
-        existing_cart_items = {
-            cart_item.ingredient.pk: cart_item
-            for cart_item in CartItem.objects.filter(
-                user=user,
-                ingredient_id__in=ingredient_ids,
-            ).select_related('unit')
-        }
-        # Делаем сет с парами (ID единицы измерения добавляемого ингредиента, ID единицы измерения из корзины)
-        unit_pairs = set()
-        for ri in recipe_ingredients:
-            ingredient_id = ri.ingredient.pk
-            existing_item = existing_cart_items.get(ingredient_id)
-            # Добавляем пару только если единицы измерения не совпадают и существующий ингредиент не отмечен
-            if existing_item and not existing_item.is_checked and existing_item.unit.pk != ri.base_unit.pk:
-                unit_pairs.add((ri.base_unit.pk, existing_item.unit.pk))
-        
-        # Создаем объект с конвертациями (unit_id, base_unit_id): UnitConversion
-        unit_conversion_map = {}
-        if unit_pairs:
-            # Получаем все уникальные IDs единиц измерения, которые есть в парах
-            all_unit_ids = {unit_id for pair in unit_pairs for unit_id in pair}
-            # Ищем все конвертации для этих единиц измерения
-            conversions = UnitConversion.objects.filter(
-                unit_id__in=all_unit_ids,
-                base_unit_id__in=all_unit_ids,
-            )
-            for conversion in conversions:
-                unit_conversion_map[(conversion.unit.pk, conversion.base_unit.pk)] = conversion
-        
+
         items_to_create = {}
-        items_to_update = {}
         
         for ri in recipe_ingredients:
             ingredient = ri.ingredient
@@ -165,12 +124,11 @@ class CartViewSet(viewsets.ModelViewSet):
                     {'detail': str(e)},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            existing_item = existing_cart_items.get(ingredient.pk)
+
             # Если ингредиент уже добавлен / обновлен в предыдущих итерациях цикла
-            in_progress = items_to_create.get(ingredient.pk) or items_to_update.get(ingredient.pk)
-            
-            # Не существует в корзине и не был в предыдущих итерациях цикла
-            if existing_item is None and in_progress is None:
+            in_progress = items_to_create.get(ingredient.pk)
+            # не был в предыдущих итерациях цикла
+            if in_progress is None:
                 # Добавляем в объект для создания
                 items_to_create[ingredient.pk] = CartItem(
                     user=user,
@@ -180,52 +138,13 @@ class CartViewSet(viewsets.ModelViewSet):
                     is_checked=False,
                 )
             else:
-                cart_item = in_progress or existing_item
-
-                # Ингредиент есть в корзине, но пользователь когда-то отмечал, что у него есть дома
-                # Обновляем запись с новыми данными и снимаем отметку
-                if cart_item.is_checked:
-                    # Обнуляем количество, позже прибавим из добавляемого ингредиента
-                    cart_item.total_amount = Decimal(0)
-                    cart_item.unit = unit
-                    cart_item.is_checked = False
-                # если ингредиента нет дома, но единицы измерения в корзине и в добавляемом не совпадают
-                elif cart_item.unit.pk != unit.pk:
-                    # Ищем конвертацию в ранее сделанном unit_conversion_map
-                    unit_convertion = (
-                        unit_conversion_map.get((unit.pk, cart_item.unit.pk))
-                        or unit_conversion_map.get((cart_item.unit.pk, unit.pk))
-                    )
-                    if not unit_convertion:
-                        # если конвертации нет, невозможно добавить сложить количества ингредиентов, возвращаем ответ
-                        return Response(
-                            {'detail': f'Невозможно увеличить количество существующего ингредиента ID {cart_item.pk},'
-                                f'разные единицы измерения: в корзине {cart_item.unit}, у ингредиента {unit}'},
-                            status=status.HTTP_400_BAD_REQUEST,
-                        )
-                    if unit_convertion.base_unit.pk == unit.pk:
-                        # пересчитываем существующее количество в новых единицах измерения unit
-                        cart_item.total_amount = cart_item.total_amount * unit_convertion.amount_per_unit
-                        cart_item.unit = unit
-                    else:
-                        # пересчитываем добавляемое количество в существующих единицах измерения cart_item.unit
-                        amount_to_add = amount_to_add * unit_convertion.amount_per_unit
-
+                cart_item = in_progress
                 cart_item.total_amount += amount_to_add
 
-                # Добавляем в объект только если не обрабатывали до этого такой ингредиент
-                if existing_item and in_progress is None:
-                    items_to_update[ingredient.pk] = cart_item
-        
         # Создаем и обновляем все одной транзакцией
         with transaction.atomic():
             if items_to_create:
                 CartItem.objects.bulk_create(items_to_create.values())
-            if items_to_update:
-                CartItem.objects.bulk_update(
-                    items_to_update.values(),
-                    fields=['total_amount', 'unit', 'is_checked'],
-                )
 
         return Response(status=status.HTTP_204_NO_CONTENT)
     

@@ -28,9 +28,6 @@ class RecalculateCartSerializer(serializers.Serializer):
     # ID меню, ингредиенты которого перенести в корзину
     # Если не указано, ищется активное меню (в период которого входит текущая дата)
     menu_id = serializers.IntegerField(required=False, allow_null=True)
-    # ID дня, ингредиенты которого перенести в корзину
-    # Если не указано берутся все дни меню
-    day_offset = serializers.IntegerField(required=False, allow_null=True)
 
 
 class ExportCartSerializer(serializers.Serializer):
