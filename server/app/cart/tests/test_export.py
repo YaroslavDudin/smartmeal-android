@@ -9,13 +9,12 @@ from .setup import Setup
 class TestExport(APITestCase, Setup):
     url = '/api/cart/export/'
 
-    def make_cart_item(self, user, ingredient, unit, amount, is_checked=False):
+    def make_cart_item(self, user, ingredient, unit, amount):
         return CartItem.objects.create(
             user=user,
             ingredient=ingredient,
             unit=unit,
             total_amount=Decimal(str(amount)),
-            is_checked=is_checked,
         )
 
     def test_export_requires_auth(self):
@@ -50,24 +49,6 @@ class TestExport(APITestCase, Setup):
         self.assertIn('500', text)
         self.assertIn(self.unit_g.name, text)
 
-    def test_export_all_excludes_checked_by_default(self):
-        self.make_cart_item(self.user, self.potato, self.unit_g, 300, is_checked=False)
-        self.make_cart_item(self.user, self.carrot, self.unit_g, 150, is_checked=True)
-
-        response = self.auth_client.post(f'{self.url}?all=true', {}, format='json')
-        text = response.content.decode()
-        self.assertIn(self.potato.name, text)
-        self.assertNotIn(self.carrot.name, text)
-
-    def test_export_all_includes_checked_when_param_true(self):
-        self.make_cart_item(self.user, self.potato, self.unit_g, 300, is_checked=False)
-        self.make_cart_item(self.user, self.carrot, self.unit_g, 150, is_checked=True)
-
-        response = self.auth_client.post(f'{self.url}?all=true&show_checked=true', {}, format='json')
-        text = response.content.decode()
-        self.assertIn(self.potato.name, text)
-        self.assertIn(self.carrot.name, text)
-
     def test_export_by_ids_only_exports_selected(self):
         potato_item = self.make_cart_item(self.user, self.potato, self.unit_g, 300)
         self.make_cart_item(self.user, self.carrot, self.unit_g, 150)
@@ -101,7 +82,6 @@ class TestExport(APITestCase, Setup):
 
         response = self.auth_client.post(f'{self.url}?all=true', {}, format='json')
         text = response.content.decode()
-        # Категория Овощи должна встречаться ровно один раз
         self.assertEqual(text.count(f'{self.cat_vegetables.name}:'), 1)
         self.assertIn(self.potato.name, text)
         self.assertIn(self.carrot.name, text)

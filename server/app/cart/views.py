@@ -6,10 +6,10 @@ from django.http import HttpResponse
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from app.accounts.models import UserStock
 from app.cart.models import CartItem
 from app.cart.serializers import CartItemSerializer, RecalculateCartSerializer, ExportCartSerializer
 from app.menus.models import Menu, MenuItem
-from app.recipes.models import UnitConversion
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -26,12 +26,8 @@ class CartViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    def list(self, request, *args, **kwargs):
+    def list(self, *args, **kwargs):
         queryset = self.get_queryset()
-
-        show_checked = request.query_params.get('show_checked', 'false')
-        if show_checked.lower() != 'true':
-            queryset = queryset.filter(is_checked=False)
 
         serializer = self.get_serializer(queryset, many=True)
         flat_data = serializer.data
@@ -54,6 +50,17 @@ class CartViewSet(viewsets.ModelViewSet):
 
         user = request.user
 
+        # Остатки от прошлых покупок или пользователь указал, что у него есть дома
+        user_stock = {
+            stock.ingredient_id: stock
+            for stock in user.ingredients_in_stock.select_related('unit', 'ingredient__ingredient_nutrition')
+            .prefetch_related(
+                'ingredient__unit_conversions__from_unit',
+                'ingredient__unit_conversions__to_unit',
+                'ingredient__ingredient_nutrition__base_unit'
+            )
+            .all()
+        }
         user_menus = Menu.objects.filter(user=user)
         menu_id = data.get('menu_id')
         today = date.today()
@@ -93,13 +100,12 @@ class CartViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_404_NOT_FOUND,
                 )
 
-        self.get_queryset().delete()
-
         # Берем все элементы меню
         menu_items = MenuItem.objects.filter(menu=menu) \
             .select_related('recipe').prefetch_related(
                 'recipe__recipe_ingredients__ingredient__unit_conversions',
                 'recipe__recipe_ingredients__unit',
+                'recipe__recipe_ingredients__ingredient__ingredient_nutrition__base_unit',
             )
 
         # Получаем все ингредиенты из рецептов
@@ -117,8 +123,9 @@ class CartViewSet(viewsets.ModelViewSet):
             # базовая единица измерения (г или мл или любая c is_base=true)
             unit = ri.base_unit
             try:
-              # могут быть не только граммы, но и мл (и любым другим unit c is_base=true)
-              amount_to_add = ri.amount_in_base_units
+                # могут быть не только граммы, но и мл (и любым другим unit c is_base=true)
+                amount_to_add = ri.amount_in_base_units
+            
             except ValueError as e:
                 return Response(
                     {'detail': str(e)},
@@ -135,14 +142,24 @@ class CartViewSet(viewsets.ModelViewSet):
                     ingredient=ingredient,
                     total_amount=amount_to_add,
                     unit=unit,
-                    is_checked=False,
                 )
             else:
                 cart_item = in_progress
                 cart_item.total_amount += amount_to_add
+        
+        for ingredient_id in list(items_to_create.keys()):
+            item = items_to_create[ingredient_id]
+            stock = user_stock.get(ingredient_id, None)
+            if stock is not None:
+                new_amount = item.total_amount - stock.amount_in_base_units
+                if new_amount <= 0:
+                    del items_to_create[ingredient_id]
+                else:
+                    item.total_amount = new_amount
 
         # Создаем и обновляем все одной транзакцией
         with transaction.atomic():
+            self.get_queryset().delete()
             if items_to_create:
                 CartItem.objects.bulk_create(items_to_create.values())
 
@@ -155,8 +172,6 @@ class CartViewSet(viewsets.ModelViewSet):
         data = input_serializer.validated_data
 
         cart_items_ids = data.get('cart_items_ids') or []
-
-        show_checked = request.query_params.get('show_checked', 'false').lower() == 'true'
         export_all = request.query_params.get('all', 'false').lower() == 'true'
         
         # Должен быть либо запрос на api/cart/export/?all=true, либо передан непустой список ID
@@ -178,8 +193,6 @@ class CartViewSet(viewsets.ModelViewSet):
                     {'detail': f'Указанные ID продуктов корзины ({", ".join(map(str, missing_ids))}) не принадлежит текущему пользователю'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-        if not show_checked:
-            queryset = queryset.filter(is_checked=False)
 
         # Группировка по категориям
         grouped = {}

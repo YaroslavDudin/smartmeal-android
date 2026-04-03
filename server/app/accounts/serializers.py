@@ -3,7 +3,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 from rest_framework_simplejwt.exceptions import AuthenticationFailed, InvalidToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from app.accounts.models import DietType, Allergy, UserFavorite
+from app.accounts.models import DietType, Allergy, UserFavorite, UserStock
 
 
 User = get_user_model()
@@ -101,3 +101,12 @@ class UserFavoriteSerializer(serializers.ModelSerializer):
         model = UserFavorite
         fields = ('id', 'recipe', 'recipe_title', 'recipe_image_url', 'recipe_cook_time')
         read_only_fields = ('created_at',)
+
+
+class UserStockSerializer(serializers.ModelSerializer):
+    ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
+    unit_name = serializers.CharField(source='unit-name', read_only=True)
+    
+    class Meta:
+        model = UserStock
+        fields = ('id', 'ingredient', 'ingredient_name', 'amount', 'unit', 'unit_name')

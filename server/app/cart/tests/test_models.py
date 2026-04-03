@@ -11,11 +11,9 @@ class CartItemModelTests(Setup):
             ingredient=self.potato,
             total_amount=Decimal(2.5),
             unit=self.unit_kg,
-            is_checked=False
         )
 
         self.assertEqual(cart_item.total_amount, 2.50)
-        self.assertFalse(cart_item.is_checked)
         self.assertEqual(cart_item.user.email, self.user.email)
         self.assertEqual(cart_item.ingredient.name, self.potato.name)
         

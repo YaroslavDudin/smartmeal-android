@@ -9,7 +9,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItem
-        fields = ('id', 'ingredient', 'ingredient_name', 'category_name', 'total_amount', 'unit', 'unit_name', 'is_checked')
+        fields = ('id', 'ingredient', 'ingredient_name', 'category_name', 'total_amount', 'unit', 'unit_name')
     
     def validate(self, data):
         request = self.context.get('request')
