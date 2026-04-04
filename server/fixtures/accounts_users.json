@@ -1,540 +1,2510 @@
 [
-{
+  {
     "model": "accounts.user",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$HSb6Ieljmx4R3VLnpHPNf9$rDx7gcslGkpScVvTW6tndjBnFh+6j0SK1M0OxMtORMM=",
-        "last_login": "2026-03-20T13:30:26.443Z",
-        "is_superuser": true,
-        "username": "admin",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:34Z",
-        "email": "test@admin.com",
-        "portion_size": 2,
-        "created_at": "2026-03-10T17:03:34.552Z",
-        "diet_type": 2,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            3
-        ]
+      "password": "pbkdf2_sha256$1200000$HSb6Ieljmx4R3VLnpHPNf9$rDx7gcslGkpScVvTW6tndjBnFh+6j0SK1M0OxMtORMM=",
+      "last_login": "2026-04-04T10:53:31.392Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:34Z",
+      "email": "test@admin.com",
+      "portion_size": 2,
+      "created_at": "2026-03-10T17:03:34.552Z",
+      "diet_type": 2,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        3
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$erfYYJJIN4e9B72aA5vAgi$nYB8PR1y7ES5l9C4eO0+iU/tPvlCev+iADCQRfy23BU=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Юлий",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:35.653Z",
-        "email": "idoronin@example.net",
-        "portion_size": 5,
-        "created_at": "2026-03-10T17:03:36.729Z",
-        "diet_type": 5,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            1,
-            6
-        ]
+      "password": "pbkdf2_sha256$1200000$erfYYJJIN4e9B72aA5vAgi$nYB8PR1y7ES5l9C4eO0+iU/tPvlCev+iADCQRfy23BU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Юлий",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:35.653Z",
+      "email": "idoronin@example.net",
+      "portion_size": 5,
+      "created_at": "2026-03-10T17:03:36.729Z",
+      "diet_type": 5,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        1,
+        6
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 3,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$j6KPpN1LBZPEGaZ63bGsZi$Jh8qd8e3z9b0L0sn7AzIP2UO6eKf1BwxVy1EwHqLPy4=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Андрон",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:36.740Z",
-        "email": "nikonovafevronija@example.com",
-        "portion_size": 6,
-        "created_at": "2026-03-10T17:03:37.846Z",
-        "diet_type": 3,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            6,
-            4,
-            9
-        ]
+      "password": "pbkdf2_sha256$1200000$j6KPpN1LBZPEGaZ63bGsZi$Jh8qd8e3z9b0L0sn7AzIP2UO6eKf1BwxVy1EwHqLPy4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Андрон",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:36.740Z",
+      "email": "nikonovafevronija@example.com",
+      "portion_size": 6,
+      "created_at": "2026-03-10T17:03:37.846Z",
+      "diet_type": 3,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        6,
+        4,
+        9
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 4,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$WqfQpwtLSdPHtGRrpnQXSr$woqLXOYvPG4KmwtFjXzia3ningTRB+qPH8I76FHTIA4=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Любовь",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:37.853Z",
-        "email": "alinanekrasova@example.org",
-        "portion_size": 4,
-        "created_at": "2026-03-10T17:03:38.927Z",
-        "diet_type": 2,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            5,
-            8,
-            2,
-            6,
-            4,
-            9
-        ]
+      "password": "pbkdf2_sha256$1200000$WqfQpwtLSdPHtGRrpnQXSr$woqLXOYvPG4KmwtFjXzia3ningTRB+qPH8I76FHTIA4=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Любовь",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:37.853Z",
+      "email": "alinanekrasova@example.org",
+      "portion_size": 4,
+      "created_at": "2026-03-10T17:03:38.927Z",
+      "diet_type": 2,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        5,
+        8,
+        2,
+        6,
+        4,
+        9
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 5,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$n447rXctByVkvLWS5VmpqZ$c8Sb3F28s7hDC64r8CalTMRCP4EswjnZaWrk7LQl0KU=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Дарья",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:38.935Z",
-        "email": "miron_53@example.com",
-        "portion_size": 2,
-        "created_at": "2026-03-10T17:03:40.015Z",
-        "diet_type": 1,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            5,
-            8,
-            4,
-            7,
-            9
-        ]
+      "password": "pbkdf2_sha256$1200000$n447rXctByVkvLWS5VmpqZ$c8Sb3F28s7hDC64r8CalTMRCP4EswjnZaWrk7LQl0KU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Дарья",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:38.935Z",
+      "email": "miron_53@example.com",
+      "portion_size": 2,
+      "created_at": "2026-03-10T17:03:40.015Z",
+      "diet_type": 1,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        5,
+        8,
+        4,
+        7,
+        9
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 6,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$8ZXMj5hdoqI82kwq48wZ3r$cRXYdrlBGu4kO77oamxuNOewEYw56bdTzvwayFsjmB8=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Амос",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:40.029Z",
-        "email": "vbeljaeva@example.com",
-        "portion_size": 4,
-        "created_at": "2026-03-10T17:03:41.101Z",
-        "diet_type": 5,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": []
+      "password": "pbkdf2_sha256$1200000$8ZXMj5hdoqI82kwq48wZ3r$cRXYdrlBGu4kO77oamxuNOewEYw56bdTzvwayFsjmB8=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Амос",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:40.029Z",
+      "email": "vbeljaeva@example.com",
+      "portion_size": 4,
+      "created_at": "2026-03-10T17:03:41.101Z",
+      "diet_type": 5,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": []
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 7,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$V1C18dk6zHlMYsIBP8IPvo$1Bm3/IwiYZm5TWn4tjpsiGdvFKG12o9EYtOe6dPy18w=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Оксана",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:41.106Z",
-        "email": "nikifor50@example.org",
-        "portion_size": 2,
-        "created_at": "2026-03-10T17:03:42.180Z",
-        "diet_type": 4,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            2,
-            7
-        ]
+      "password": "pbkdf2_sha256$1200000$V1C18dk6zHlMYsIBP8IPvo$1Bm3/IwiYZm5TWn4tjpsiGdvFKG12o9EYtOe6dPy18w=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Оксана",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:41.106Z",
+      "email": "nikifor50@example.org",
+      "portion_size": 2,
+      "created_at": "2026-03-10T17:03:42.180Z",
+      "diet_type": 4,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        2,
+        7
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 8,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$0TqPMjgXetsEfWfh4BSfKB$ApxCP7AM8yzOOSEl88ouV9+bQvzCQ0hyJqJGrcVVDAA=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Полина",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:42.186Z",
-        "email": "avgust2025@example.org",
-        "portion_size": 5,
-        "created_at": "2026-03-10T17:03:43.265Z",
-        "diet_type": 5,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            5,
-            8,
-            2,
-            1,
-            6,
-            4,
-            3,
-            7,
-            9
-        ]
+      "password": "pbkdf2_sha256$1200000$0TqPMjgXetsEfWfh4BSfKB$ApxCP7AM8yzOOSEl88ouV9+bQvzCQ0hyJqJGrcVVDAA=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Полина",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:42.186Z",
+      "email": "avgust2025@example.org",
+      "portion_size": 5,
+      "created_at": "2026-03-10T17:03:43.265Z",
+      "diet_type": 5,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        5,
+        8,
+        2,
+        1,
+        6,
+        4,
+        3,
+        7,
+        9
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 9,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$G46rqSQ7aFWAW5uz9o0H8L$zunODOeEo40u078vtMQoKEWqjiXx4+ZTtghYVA/pbJU=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Викентий",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:43.272Z",
-        "email": "poljakovanatalja@example.com",
-        "portion_size": 1,
-        "created_at": "2026-03-10T17:03:44.351Z",
-        "diet_type": 1,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            2
-        ]
+      "password": "pbkdf2_sha256$1200000$G46rqSQ7aFWAW5uz9o0H8L$zunODOeEo40u078vtMQoKEWqjiXx4+ZTtghYVA/pbJU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Викентий",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:43.272Z",
+      "email": "poljakovanatalja@example.com",
+      "portion_size": 1,
+      "created_at": "2026-03-10T17:03:44.351Z",
+      "diet_type": 1,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        2
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 10,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$YUNqDKsMfk2AXq7y38q7PT$TBq9oJ3QNqQOIwyOFMCm6d7uFxaVzTQgdvz8udyWtdw=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Радислав",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:44.358Z",
-        "email": "varlaamzhuravlev@example.net",
-        "portion_size": 1,
-        "created_at": "2026-03-10T17:03:45.430Z",
-        "diet_type": 1,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": []
+      "password": "pbkdf2_sha256$1200000$YUNqDKsMfk2AXq7y38q7PT$TBq9oJ3QNqQOIwyOFMCm6d7uFxaVzTQgdvz8udyWtdw=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Радислав",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:44.358Z",
+      "email": "varlaamzhuravlev@example.net",
+      "portion_size": 1,
+      "created_at": "2026-03-10T17:03:45.430Z",
+      "diet_type": 1,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": []
     }
-},
-{
+  },
+  {
     "model": "accounts.user",
     "pk": 11,
     "fields": {
-        "password": "pbkdf2_sha256$1200000$X7prKng10zoDP070bwko3E$79wmsSwkO9cZLOJDNDi5NLCMqXsignwzd7muMxn9nMI=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "Евгения",
-        "first_name": "",
-        "last_name": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2026-03-10T17:03:45.435Z",
-        "email": "lavrentevalukija@example.com",
-        "portion_size": 1,
-        "created_at": "2026-03-10T17:03:46.510Z",
-        "diet_type": 1,
-        "preferred_cook_time": "any",
-        "groups": [],
-        "user_permissions": [],
-        "allergies": [
-            5,
-            1,
-            6,
-            4
-        ]
+      "password": "pbkdf2_sha256$1200000$X7prKng10zoDP070bwko3E$79wmsSwkO9cZLOJDNDi5NLCMqXsignwzd7muMxn9nMI=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "Евгения",
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-03-10T17:03:45.435Z",
+      "email": "lavrentevalukija@example.com",
+      "portion_size": 1,
+      "created_at": "2026-03-10T17:03:46.510Z",
+      "diet_type": 1,
+      "preferred_cook_time": "any",
+      "groups": [],
+      "user_permissions": [],
+      "allergies": [
+        5,
+        1,
+        6,
+        4
+      ]
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 1,
     "fields": {
-        "user": 11,
-        "recipe": 27,
-        "created_at": "2026-03-13T15:46:56.568Z"
+      "user": 11,
+      "recipe": 27,
+      "created_at": "2026-03-13T15:46:56.568Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 2,
     "fields": {
-        "user": 10,
-        "recipe": 12,
-        "created_at": "2026-03-13T15:46:56.574Z"
+      "user": 10,
+      "recipe": 12,
+      "created_at": "2026-03-13T15:46:56.574Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 3,
     "fields": {
-        "user": 10,
-        "recipe": 3,
-        "created_at": "2026-03-13T15:46:56.578Z"
+      "user": 10,
+      "recipe": 3,
+      "created_at": "2026-03-13T15:46:56.578Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 4,
     "fields": {
-        "user": 10,
-        "recipe": 25,
-        "created_at": "2026-03-13T15:46:56.582Z"
+      "user": 10,
+      "recipe": 25,
+      "created_at": "2026-03-13T15:46:56.582Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 5,
     "fields": {
-        "user": 10,
-        "recipe": 29,
-        "created_at": "2026-03-13T15:46:56.586Z"
+      "user": 10,
+      "recipe": 29,
+      "created_at": "2026-03-13T15:46:56.586Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 6,
     "fields": {
-        "user": 9,
-        "recipe": 15,
-        "created_at": "2026-03-13T15:46:56.590Z"
+      "user": 9,
+      "recipe": 15,
+      "created_at": "2026-03-13T15:46:56.590Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 7,
     "fields": {
-        "user": 9,
-        "recipe": 5,
-        "created_at": "2026-03-13T15:46:56.593Z"
+      "user": 9,
+      "recipe": 5,
+      "created_at": "2026-03-13T15:46:56.593Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 9,
     "fields": {
-        "user": 8,
-        "recipe": 7,
-        "created_at": "2026-03-13T15:46:56.600Z"
+      "user": 8,
+      "recipe": 7,
+      "created_at": "2026-03-13T15:46:56.600Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 11,
     "fields": {
-        "user": 7,
-        "recipe": 5,
-        "created_at": "2026-03-13T15:46:56.607Z"
+      "user": 7,
+      "recipe": 5,
+      "created_at": "2026-03-13T15:46:56.607Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 12,
     "fields": {
-        "user": 7,
-        "recipe": 27,
-        "created_at": "2026-03-13T15:46:56.610Z"
+      "user": 7,
+      "recipe": 27,
+      "created_at": "2026-03-13T15:46:56.610Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 13,
     "fields": {
-        "user": 6,
-        "recipe": 30,
-        "created_at": "2026-03-13T15:46:56.613Z"
+      "user": 6,
+      "recipe": 30,
+      "created_at": "2026-03-13T15:46:56.613Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 14,
     "fields": {
-        "user": 6,
-        "recipe": 10,
-        "created_at": "2026-03-13T15:46:56.617Z"
+      "user": 6,
+      "recipe": 10,
+      "created_at": "2026-03-13T15:46:56.617Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 15,
     "fields": {
-        "user": 6,
-        "recipe": 6,
-        "created_at": "2026-03-13T15:46:56.623Z"
+      "user": 6,
+      "recipe": 6,
+      "created_at": "2026-03-13T15:46:56.623Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 16,
     "fields": {
-        "user": 6,
-        "recipe": 3,
-        "created_at": "2026-03-13T15:46:56.626Z"
+      "user": 6,
+      "recipe": 3,
+      "created_at": "2026-03-13T15:46:56.626Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 17,
     "fields": {
-        "user": 5,
-        "recipe": 10,
-        "created_at": "2026-03-13T15:46:56.629Z"
+      "user": 5,
+      "recipe": 10,
+      "created_at": "2026-03-13T15:46:56.629Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 18,
     "fields": {
-        "user": 4,
-        "recipe": 8,
-        "created_at": "2026-03-13T15:46:56.633Z"
+      "user": 4,
+      "recipe": 8,
+      "created_at": "2026-03-13T15:46:56.633Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 19,
     "fields": {
-        "user": 4,
-        "recipe": 10,
-        "created_at": "2026-03-13T15:46:56.636Z"
+      "user": 4,
+      "recipe": 10,
+      "created_at": "2026-03-13T15:46:56.636Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 20,
     "fields": {
-        "user": 4,
-        "recipe": 17,
-        "created_at": "2026-03-13T15:46:56.640Z"
+      "user": 4,
+      "recipe": 17,
+      "created_at": "2026-03-13T15:46:56.640Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 21,
     "fields": {
-        "user": 4,
-        "recipe": 14,
-        "created_at": "2026-03-13T15:46:56.643Z"
+      "user": 4,
+      "recipe": 14,
+      "created_at": "2026-03-13T15:46:56.643Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 22,
     "fields": {
-        "user": 4,
-        "recipe": 21,
-        "created_at": "2026-03-13T15:46:56.646Z"
+      "user": 4,
+      "recipe": 21,
+      "created_at": "2026-03-13T15:46:56.646Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 23,
     "fields": {
-        "user": 3,
-        "recipe": 18,
-        "created_at": "2026-03-13T15:46:56.650Z"
+      "user": 3,
+      "recipe": 18,
+      "created_at": "2026-03-13T15:46:56.650Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 24,
     "fields": {
-        "user": 3,
-        "recipe": 23,
-        "created_at": "2026-03-13T15:46:56.654Z"
+      "user": 3,
+      "recipe": 23,
+      "created_at": "2026-03-13T15:46:56.654Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 25,
     "fields": {
-        "user": 2,
-        "recipe": 21,
-        "created_at": "2026-03-13T15:46:56.657Z"
+      "user": 2,
+      "recipe": 21,
+      "created_at": "2026-03-13T15:46:56.657Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 26,
     "fields": {
-        "user": 2,
-        "recipe": 30,
-        "created_at": "2026-03-13T15:46:56.660Z"
+      "user": 2,
+      "recipe": 30,
+      "created_at": "2026-03-13T15:46:56.660Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 27,
     "fields": {
-        "user": 2,
-        "recipe": 3,
-        "created_at": "2026-03-13T15:46:56.664Z"
+      "user": 2,
+      "recipe": 3,
+      "created_at": "2026-03-13T15:46:56.664Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 29,
     "fields": {
-        "user": 2,
-        "recipe": 23,
-        "created_at": "2026-03-13T15:46:56.671Z"
+      "user": 2,
+      "recipe": 23,
+      "created_at": "2026-03-13T15:46:56.671Z"
     }
-},
-{
+  },
+  {
     "model": "accounts.userfavorite",
     "pk": 31,
     "fields": {
-        "user": 2,
-        "recipe": 15,
-        "created_at": "2026-03-18T08:18:06.761Z"
+      "user": 2,
+      "recipe": 15,
+      "created_at": "2026-03-18T08:18:06.761Z"
     }
-}
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 1,
+    "fields": {
+      "user": 6,
+      "ingredient": 87,
+      "amount": "500.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "ingredient": 147,
+      "amount": "250.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 3,
+    "fields": {
+      "user": 8,
+      "ingredient": 15,
+      "amount": "1.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "ingredient": 51,
+      "amount": "377.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 5,
+    "fields": {
+      "user": 1,
+      "ingredient": 52,
+      "amount": "24.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 6,
+    "fields": {
+      "user": 1,
+      "ingredient": 59,
+      "amount": "225.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 7,
+    "fields": {
+      "user": 1,
+      "ingredient": 58,
+      "amount": "479.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 8,
+    "fields": {
+      "user": 1,
+      "ingredient": 3,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 9,
+    "fields": {
+      "user": 1,
+      "ingredient": 4,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 10,
+    "fields": {
+      "user": 1,
+      "ingredient": 2,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 11,
+    "fields": {
+      "user": 1,
+      "ingredient": 42,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 12,
+    "fields": {
+      "user": 1,
+      "ingredient": 5,
+      "amount": "2.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 13,
+    "fields": {
+      "user": 1,
+      "ingredient": 41,
+      "amount": "223.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 14,
+    "fields": {
+      "user": 1,
+      "ingredient": 40,
+      "amount": "379.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 15,
+    "fields": {
+      "user": 1,
+      "ingredient": 66,
+      "amount": "72.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 16,
+    "fields": {
+      "user": 1,
+      "ingredient": 18,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 17,
+    "fields": {
+      "user": 1,
+      "ingredient": 1,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 18,
+    "fields": {
+      "user": 1,
+      "ingredient": 76,
+      "amount": "58.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 19,
+    "fields": {
+      "user": 1,
+      "ingredient": 36,
+      "amount": "947.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 20,
+    "fields": {
+      "user": 1,
+      "ingredient": 67,
+      "amount": "408.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 21,
+    "fields": {
+      "user": 1,
+      "ingredient": 25,
+      "amount": "401.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 22,
+    "fields": {
+      "user": 2,
+      "ingredient": 51,
+      "amount": "264.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 23,
+    "fields": {
+      "user": 2,
+      "ingredient": 52,
+      "amount": "38.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 24,
+    "fields": {
+      "user": 2,
+      "ingredient": 59,
+      "amount": "659.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 25,
+    "fields": {
+      "user": 2,
+      "ingredient": 58,
+      "amount": "401.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 26,
+    "fields": {
+      "user": 2,
+      "ingredient": 3,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 27,
+    "fields": {
+      "user": 2,
+      "ingredient": 4,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 28,
+    "fields": {
+      "user": 2,
+      "ingredient": 2,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 29,
+    "fields": {
+      "user": 2,
+      "ingredient": 42,
+      "amount": "10.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 30,
+    "fields": {
+      "user": 2,
+      "ingredient": 5,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 31,
+    "fields": {
+      "user": 2,
+      "ingredient": 41,
+      "amount": "121.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 32,
+    "fields": {
+      "user": 2,
+      "ingredient": 40,
+      "amount": "179.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 33,
+    "fields": {
+      "user": 2,
+      "ingredient": 66,
+      "amount": "105.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 34,
+    "fields": {
+      "user": 2,
+      "ingredient": 18,
+      "amount": "2.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 35,
+    "fields": {
+      "user": 2,
+      "ingredient": 1,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 36,
+    "fields": {
+      "user": 2,
+      "ingredient": 76,
+      "amount": "73.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 37,
+    "fields": {
+      "user": 2,
+      "ingredient": 36,
+      "amount": "1235.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 38,
+    "fields": {
+      "user": 3,
+      "ingredient": 51,
+      "amount": "324.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 39,
+    "fields": {
+      "user": 3,
+      "ingredient": 52,
+      "amount": "25.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 40,
+    "fields": {
+      "user": 3,
+      "ingredient": 59,
+      "amount": "587.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 41,
+    "fields": {
+      "user": 3,
+      "ingredient": 58,
+      "amount": "140.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 42,
+    "fields": {
+      "user": 3,
+      "ingredient": 3,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 43,
+    "fields": {
+      "user": 3,
+      "ingredient": 4,
+      "amount": "7.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 44,
+    "fields": {
+      "user": 3,
+      "ingredient": 2,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 45,
+    "fields": {
+      "user": 3,
+      "ingredient": 42,
+      "amount": "7.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 46,
+    "fields": {
+      "user": 3,
+      "ingredient": 5,
+      "amount": "2.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 47,
+    "fields": {
+      "user": 3,
+      "ingredient": 41,
+      "amount": "61.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 48,
+    "fields": {
+      "user": 3,
+      "ingredient": 40,
+      "amount": "216.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 49,
+    "fields": {
+      "user": 3,
+      "ingredient": 66,
+      "amount": "124.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 50,
+    "fields": {
+      "user": 3,
+      "ingredient": 18,
+      "amount": "1.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 51,
+    "fields": {
+      "user": 3,
+      "ingredient": 1,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 52,
+    "fields": {
+      "user": 3,
+      "ingredient": 76,
+      "amount": "75.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 53,
+    "fields": {
+      "user": 3,
+      "ingredient": 36,
+      "amount": "1428.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 54,
+    "fields": {
+      "user": 3,
+      "ingredient": 25,
+      "amount": "489.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 55,
+    "fields": {
+      "user": 3,
+      "ingredient": 6,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 56,
+    "fields": {
+      "user": 4,
+      "ingredient": 51,
+      "amount": "399.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 57,
+    "fields": {
+      "user": 4,
+      "ingredient": 52,
+      "amount": "92.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 58,
+    "fields": {
+      "user": 4,
+      "ingredient": 59,
+      "amount": "273.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 59,
+    "fields": {
+      "user": 4,
+      "ingredient": 58,
+      "amount": "411.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 60,
+    "fields": {
+      "user": 4,
+      "ingredient": 3,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 61,
+    "fields": {
+      "user": 4,
+      "ingredient": 4,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 62,
+    "fields": {
+      "user": 4,
+      "ingredient": 2,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 63,
+    "fields": {
+      "user": 4,
+      "ingredient": 42,
+      "amount": "11.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 64,
+    "fields": {
+      "user": 4,
+      "ingredient": 5,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 65,
+    "fields": {
+      "user": 4,
+      "ingredient": 41,
+      "amount": "119.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 66,
+    "fields": {
+      "user": 4,
+      "ingredient": 40,
+      "amount": "385.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 67,
+    "fields": {
+      "user": 4,
+      "ingredient": 66,
+      "amount": "106.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 68,
+    "fields": {
+      "user": 4,
+      "ingredient": 18,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 69,
+    "fields": {
+      "user": 4,
+      "ingredient": 1,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 70,
+    "fields": {
+      "user": 4,
+      "ingredient": 76,
+      "amount": "64.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 71,
+    "fields": {
+      "user": 4,
+      "ingredient": 36,
+      "amount": "565.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 72,
+    "fields": {
+      "user": 4,
+      "ingredient": 25,
+      "amount": "333.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 73,
+    "fields": {
+      "user": 4,
+      "ingredient": 6,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 74,
+    "fields": {
+      "user": 4,
+      "ingredient": 55,
+      "amount": "41.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 75,
+    "fields": {
+      "user": 5,
+      "ingredient": 51,
+      "amount": "252.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 76,
+    "fields": {
+      "user": 5,
+      "ingredient": 52,
+      "amount": "92.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 77,
+    "fields": {
+      "user": 5,
+      "ingredient": 59,
+      "amount": "669.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 78,
+    "fields": {
+      "user": 5,
+      "ingredient": 58,
+      "amount": "173.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 79,
+    "fields": {
+      "user": 5,
+      "ingredient": 3,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 80,
+    "fields": {
+      "user": 5,
+      "ingredient": 4,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 81,
+    "fields": {
+      "user": 5,
+      "ingredient": 2,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 82,
+    "fields": {
+      "user": 5,
+      "ingredient": 42,
+      "amount": "12.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 83,
+    "fields": {
+      "user": 5,
+      "ingredient": 5,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 84,
+    "fields": {
+      "user": 5,
+      "ingredient": 41,
+      "amount": "117.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 85,
+    "fields": {
+      "user": 5,
+      "ingredient": 40,
+      "amount": "399.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 86,
+    "fields": {
+      "user": 5,
+      "ingredient": 66,
+      "amount": "159.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 87,
+    "fields": {
+      "user": 5,
+      "ingredient": 18,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 88,
+    "fields": {
+      "user": 5,
+      "ingredient": 1,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 89,
+    "fields": {
+      "user": 5,
+      "ingredient": 76,
+      "amount": "142.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 90,
+    "fields": {
+      "user": 5,
+      "ingredient": 36,
+      "amount": "783.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 91,
+    "fields": {
+      "user": 5,
+      "ingredient": 67,
+      "amount": "146.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 92,
+    "fields": {
+      "user": 5,
+      "ingredient": 55,
+      "amount": "20.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 93,
+    "fields": {
+      "user": 6,
+      "ingredient": 51,
+      "amount": "455.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 94,
+    "fields": {
+      "user": 6,
+      "ingredient": 52,
+      "amount": "97.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 95,
+    "fields": {
+      "user": 6,
+      "ingredient": 59,
+      "amount": "632.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 96,
+    "fields": {
+      "user": 6,
+      "ingredient": 58,
+      "amount": "405.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 97,
+    "fields": {
+      "user": 6,
+      "ingredient": 3,
+      "amount": "2.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 98,
+    "fields": {
+      "user": 6,
+      "ingredient": 4,
+      "amount": "9.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 99,
+    "fields": {
+      "user": 6,
+      "ingredient": 2,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 100,
+    "fields": {
+      "user": 6,
+      "ingredient": 42,
+      "amount": "11.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 101,
+    "fields": {
+      "user": 6,
+      "ingredient": 5,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 102,
+    "fields": {
+      "user": 6,
+      "ingredient": 41,
+      "amount": "114.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 103,
+    "fields": {
+      "user": 6,
+      "ingredient": 40,
+      "amount": "383.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 104,
+    "fields": {
+      "user": 6,
+      "ingredient": 66,
+      "amount": "52.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 105,
+    "fields": {
+      "user": 6,
+      "ingredient": 18,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 106,
+    "fields": {
+      "user": 6,
+      "ingredient": 1,
+      "amount": "8.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 107,
+    "fields": {
+      "user": 6,
+      "ingredient": 76,
+      "amount": "79.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 108,
+    "fields": {
+      "user": 6,
+      "ingredient": 67,
+      "amount": "236.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 109,
+    "fields": {
+      "user": 6,
+      "ingredient": 6,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 110,
+    "fields": {
+      "user": 6,
+      "ingredient": 55,
+      "amount": "39.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 111,
+    "fields": {
+      "user": 7,
+      "ingredient": 51,
+      "amount": "51.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 112,
+    "fields": {
+      "user": 7,
+      "ingredient": 52,
+      "amount": "43.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 113,
+    "fields": {
+      "user": 7,
+      "ingredient": 59,
+      "amount": "712.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 114,
+    "fields": {
+      "user": 7,
+      "ingredient": 58,
+      "amount": "490.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 115,
+    "fields": {
+      "user": 7,
+      "ingredient": 3,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 116,
+    "fields": {
+      "user": 7,
+      "ingredient": 4,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 117,
+    "fields": {
+      "user": 7,
+      "ingredient": 2,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 118,
+    "fields": {
+      "user": 7,
+      "ingredient": 42,
+      "amount": "12.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 119,
+    "fields": {
+      "user": 7,
+      "ingredient": 5,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 120,
+    "fields": {
+      "user": 7,
+      "ingredient": 41,
+      "amount": "100.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 121,
+    "fields": {
+      "user": 7,
+      "ingredient": 40,
+      "amount": "178.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 122,
+    "fields": {
+      "user": 7,
+      "ingredient": 66,
+      "amount": "145.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 123,
+    "fields": {
+      "user": 7,
+      "ingredient": 18,
+      "amount": "1.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 124,
+    "fields": {
+      "user": 7,
+      "ingredient": 1,
+      "amount": "7.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 125,
+    "fields": {
+      "user": 7,
+      "ingredient": 76,
+      "amount": "185.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 126,
+    "fields": {
+      "user": 7,
+      "ingredient": 67,
+      "amount": "350.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 127,
+    "fields": {
+      "user": 7,
+      "ingredient": 25,
+      "amount": "775.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 128,
+    "fields": {
+      "user": 7,
+      "ingredient": 6,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 129,
+    "fields": {
+      "user": 7,
+      "ingredient": 55,
+      "amount": "25.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 130,
+    "fields": {
+      "user": 8,
+      "ingredient": 51,
+      "amount": "499.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 131,
+    "fields": {
+      "user": 8,
+      "ingredient": 52,
+      "amount": "82.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 132,
+    "fields": {
+      "user": 8,
+      "ingredient": 59,
+      "amount": "280.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 133,
+    "fields": {
+      "user": 8,
+      "ingredient": 58,
+      "amount": "143.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 134,
+    "fields": {
+      "user": 8,
+      "ingredient": 3,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 135,
+    "fields": {
+      "user": 8,
+      "ingredient": 4,
+      "amount": "4.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 136,
+    "fields": {
+      "user": 8,
+      "ingredient": 2,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 137,
+    "fields": {
+      "user": 8,
+      "ingredient": 42,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 138,
+    "fields": {
+      "user": 8,
+      "ingredient": 5,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 139,
+    "fields": {
+      "user": 8,
+      "ingredient": 41,
+      "amount": "292.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 140,
+    "fields": {
+      "user": 8,
+      "ingredient": 40,
+      "amount": "381.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 141,
+    "fields": {
+      "user": 8,
+      "ingredient": 66,
+      "amount": "92.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 142,
+    "fields": {
+      "user": 8,
+      "ingredient": 18,
+      "amount": "2.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 143,
+    "fields": {
+      "user": 8,
+      "ingredient": 1,
+      "amount": "7.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 144,
+    "fields": {
+      "user": 8,
+      "ingredient": 76,
+      "amount": "158.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 145,
+    "fields": {
+      "user": 9,
+      "ingredient": 51,
+      "amount": "254.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 146,
+    "fields": {
+      "user": 9,
+      "ingredient": 52,
+      "amount": "95.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 147,
+    "fields": {
+      "user": 9,
+      "ingredient": 59,
+      "amount": "865.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 148,
+    "fields": {
+      "user": 9,
+      "ingredient": 58,
+      "amount": "291.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 149,
+    "fields": {
+      "user": 9,
+      "ingredient": 3,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 150,
+    "fields": {
+      "user": 9,
+      "ingredient": 4,
+      "amount": "10.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 151,
+    "fields": {
+      "user": 9,
+      "ingredient": 2,
+      "amount": "2.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 152,
+    "fields": {
+      "user": 9,
+      "ingredient": 42,
+      "amount": "7.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 153,
+    "fields": {
+      "user": 9,
+      "ingredient": 5,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 154,
+    "fields": {
+      "user": 9,
+      "ingredient": 41,
+      "amount": "66.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 155,
+    "fields": {
+      "user": 9,
+      "ingredient": 40,
+      "amount": "273.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 156,
+    "fields": {
+      "user": 9,
+      "ingredient": 66,
+      "amount": "55.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 157,
+    "fields": {
+      "user": 9,
+      "ingredient": 18,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 158,
+    "fields": {
+      "user": 9,
+      "ingredient": 1,
+      "amount": "7.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 159,
+    "fields": {
+      "user": 9,
+      "ingredient": 76,
+      "amount": "108.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 160,
+    "fields": {
+      "user": 9,
+      "ingredient": 36,
+      "amount": "514.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 161,
+    "fields": {
+      "user": 9,
+      "ingredient": 67,
+      "amount": "423.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 162,
+    "fields": {
+      "user": 9,
+      "ingredient": 25,
+      "amount": "334.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 163,
+    "fields": {
+      "user": 10,
+      "ingredient": 51,
+      "amount": "86.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 164,
+    "fields": {
+      "user": 10,
+      "ingredient": 52,
+      "amount": "75.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 165,
+    "fields": {
+      "user": 10,
+      "ingredient": 59,
+      "amount": "443.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 166,
+    "fields": {
+      "user": 10,
+      "ingredient": 58,
+      "amount": "242.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 167,
+    "fields": {
+      "user": 10,
+      "ingredient": 3,
+      "amount": "5.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 168,
+    "fields": {
+      "user": 10,
+      "ingredient": 4,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 169,
+    "fields": {
+      "user": 10,
+      "ingredient": 2,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 170,
+    "fields": {
+      "user": 10,
+      "ingredient": 42,
+      "amount": "11.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 171,
+    "fields": {
+      "user": 10,
+      "ingredient": 5,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 172,
+    "fields": {
+      "user": 10,
+      "ingredient": 41,
+      "amount": "250.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 173,
+    "fields": {
+      "user": 10,
+      "ingredient": 40,
+      "amount": "342.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 174,
+    "fields": {
+      "user": 10,
+      "ingredient": 66,
+      "amount": "154.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 175,
+    "fields": {
+      "user": 10,
+      "ingredient": 18,
+      "amount": "1.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 176,
+    "fields": {
+      "user": 10,
+      "ingredient": 1,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 177,
+    "fields": {
+      "user": 10,
+      "ingredient": 76,
+      "amount": "74.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 178,
+    "fields": {
+      "user": 10,
+      "ingredient": 67,
+      "amount": "310.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 179,
+    "fields": {
+      "user": 10,
+      "ingredient": 25,
+      "amount": "673.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 180,
+    "fields": {
+      "user": 10,
+      "ingredient": 6,
+      "amount": "2.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 181,
+    "fields": {
+      "user": 10,
+      "ingredient": 55,
+      "amount": "31.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 182,
+    "fields": {
+      "user": 11,
+      "ingredient": 51,
+      "amount": "459.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 183,
+    "fields": {
+      "user": 11,
+      "ingredient": 52,
+      "amount": "23.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 184,
+    "fields": {
+      "user": 11,
+      "ingredient": 59,
+      "amount": "454.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 185,
+    "fields": {
+      "user": 11,
+      "ingredient": 58,
+      "amount": "198.00",
+      "unit": 6
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 186,
+    "fields": {
+      "user": 11,
+      "ingredient": 3,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 187,
+    "fields": {
+      "user": 11,
+      "ingredient": 4,
+      "amount": "10.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 188,
+    "fields": {
+      "user": 11,
+      "ingredient": 2,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 189,
+    "fields": {
+      "user": 11,
+      "ingredient": 42,
+      "amount": "10.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 190,
+    "fields": {
+      "user": 11,
+      "ingredient": 5,
+      "amount": "3.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 191,
+    "fields": {
+      "user": 11,
+      "ingredient": 41,
+      "amount": "121.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 192,
+    "fields": {
+      "user": 11,
+      "ingredient": 40,
+      "amount": "336.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 193,
+    "fields": {
+      "user": 11,
+      "ingredient": 66,
+      "amount": "113.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 194,
+    "fields": {
+      "user": 11,
+      "ingredient": 18,
+      "amount": "1.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 195,
+    "fields": {
+      "user": 11,
+      "ingredient": 1,
+      "amount": "6.00",
+      "unit": 3
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 196,
+    "fields": {
+      "user": 11,
+      "ingredient": 76,
+      "amount": "190.00",
+      "unit": 1
+    }
+  },
+  {
+    "model": "accounts.userstock",
+    "pk": 197,
+    "fields": {
+      "user": 11,
+      "ingredient": 36,
+      "amount": "1835.00",
+      "unit": 6
+    }
+  }
 ]

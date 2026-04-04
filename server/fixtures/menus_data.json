@@ -106,7 +106,8 @@
         "menu": 1,
         "recipe": 35,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -116,7 +117,8 @@
         "menu": 1,
         "recipe": 33,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -126,7 +128,8 @@
         "menu": 1,
         "recipe": 23,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -136,7 +139,8 @@
         "menu": 2,
         "recipe": 26,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -146,7 +150,8 @@
         "menu": 2,
         "recipe": 2,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -156,7 +161,8 @@
         "menu": 2,
         "recipe": 31,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -166,7 +172,8 @@
         "menu": 2,
         "recipe": 32,
         "day_offset": 1,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -176,7 +183,8 @@
         "menu": 2,
         "recipe": 14,
         "day_offset": 1,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -186,7 +194,8 @@
         "menu": 2,
         "recipe": 12,
         "day_offset": 1,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -196,7 +205,8 @@
         "menu": 2,
         "recipe": 32,
         "day_offset": 2,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -206,7 +216,8 @@
         "menu": 2,
         "recipe": 4,
         "day_offset": 2,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -216,7 +227,8 @@
         "menu": 2,
         "recipe": 24,
         "day_offset": 2,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -226,7 +238,8 @@
         "menu": 2,
         "recipe": 33,
         "day_offset": 3,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -236,7 +249,8 @@
         "menu": 2,
         "recipe": 15,
         "day_offset": 3,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -246,7 +260,8 @@
         "menu": 2,
         "recipe": 22,
         "day_offset": 3,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -256,7 +271,8 @@
         "menu": 2,
         "recipe": 10,
         "day_offset": 4,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -266,7 +282,8 @@
         "menu": 2,
         "recipe": 6,
         "day_offset": 4,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -276,7 +293,8 @@
         "menu": 2,
         "recipe": 7,
         "day_offset": 4,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -286,7 +304,8 @@
         "menu": 2,
         "recipe": 10,
         "day_offset": 5,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -296,7 +315,8 @@
         "menu": 2,
         "recipe": 34,
         "day_offset": 5,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -306,7 +326,8 @@
         "menu": 2,
         "recipe": 21,
         "day_offset": 5,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -316,7 +337,8 @@
         "menu": 2,
         "recipe": 35,
         "day_offset": 6,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -326,7 +348,8 @@
         "menu": 2,
         "recipe": 12,
         "day_offset": 6,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -336,7 +359,8 @@
         "menu": 3,
         "recipe": 8,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -346,7 +370,8 @@
         "menu": 3,
         "recipe": 26,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -356,7 +381,8 @@
         "menu": 4,
         "recipe": 28,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -366,7 +392,8 @@
         "menu": 4,
         "recipe": 22,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -376,7 +403,8 @@
         "menu": 4,
         "recipe": 31,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -386,7 +414,8 @@
         "menu": 4,
         "recipe": 30,
         "day_offset": 1,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -396,7 +425,8 @@
         "menu": 4,
         "recipe": 6,
         "day_offset": 1,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -406,7 +436,8 @@
         "menu": 4,
         "recipe": 5,
         "day_offset": 1,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -416,7 +447,8 @@
         "menu": 4,
         "recipe": 8,
         "day_offset": 2,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -426,7 +458,8 @@
         "menu": 4,
         "recipe": 31,
         "day_offset": 2,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -436,7 +469,8 @@
         "menu": 4,
         "recipe": 19,
         "day_offset": 2,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -446,7 +480,8 @@
         "menu": 4,
         "recipe": 17,
         "day_offset": 3,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -456,7 +491,8 @@
         "menu": 4,
         "recipe": 27,
         "day_offset": 3,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -466,7 +502,8 @@
         "menu": 4,
         "recipe": 25,
         "day_offset": 4,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -476,7 +513,8 @@
         "menu": 4,
         "recipe": 6,
         "day_offset": 4,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -486,7 +524,8 @@
         "menu": 4,
         "recipe": 14,
         "day_offset": 4,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -496,7 +535,8 @@
         "menu": 4,
         "recipe": 17,
         "day_offset": 5,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -506,7 +546,8 @@
         "menu": 4,
         "recipe": 2,
         "day_offset": 5,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -516,7 +557,8 @@
         "menu": 4,
         "recipe": 15,
         "day_offset": 5,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -526,7 +568,8 @@
         "menu": 4,
         "recipe": 34,
         "day_offset": 6,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -536,7 +579,8 @@
         "menu": 4,
         "recipe": 7,
         "day_offset": 6,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -546,7 +590,8 @@
         "menu": 4,
         "recipe": 24,
         "day_offset": 6,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -556,7 +601,8 @@
         "menu": 5,
         "recipe": 18,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -566,7 +612,8 @@
         "menu": 5,
         "recipe": 15,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -576,7 +623,8 @@
         "menu": 5,
         "recipe": 21,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -586,7 +634,8 @@
         "menu": 6,
         "recipe": 25,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -596,7 +645,8 @@
         "menu": 6,
         "recipe": 7,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -606,7 +656,8 @@
         "menu": 6,
         "recipe": 24,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -616,7 +667,8 @@
         "menu": 7,
         "recipe": 33,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -626,7 +678,8 @@
         "menu": 7,
         "recipe": 22,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -636,7 +689,8 @@
         "menu": 7,
         "recipe": 22,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -646,7 +700,8 @@
         "menu": 7,
         "recipe": 10,
         "day_offset": 1,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -656,7 +711,8 @@
         "menu": 7,
         "recipe": 8,
         "day_offset": 1,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -666,7 +722,8 @@
         "menu": 7,
         "recipe": 5,
         "day_offset": 1,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -676,7 +733,8 @@
         "menu": 7,
         "recipe": 34,
         "day_offset": 2,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -686,7 +744,8 @@
         "menu": 7,
         "recipe": 15,
         "day_offset": 2,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -696,7 +755,8 @@
         "menu": 7,
         "recipe": 22,
         "day_offset": 2,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -706,7 +766,8 @@
         "menu": 7,
         "recipe": 33,
         "day_offset": 3,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -716,7 +777,8 @@
         "menu": 7,
         "recipe": 21,
         "day_offset": 3,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -726,7 +788,8 @@
         "menu": 7,
         "recipe": 33,
         "day_offset": 4,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -736,7 +799,8 @@
         "menu": 7,
         "recipe": 8,
         "day_offset": 4,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -746,7 +810,8 @@
         "menu": 7,
         "recipe": 12,
         "day_offset": 4,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -756,7 +821,8 @@
         "menu": 7,
         "recipe": 33,
         "day_offset": 5,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -766,7 +832,8 @@
         "menu": 7,
         "recipe": 1,
         "day_offset": 5,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -776,7 +843,8 @@
         "menu": 7,
         "recipe": 19,
         "day_offset": 5,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -786,7 +854,8 @@
         "menu": 7,
         "recipe": 28,
         "day_offset": 6,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -796,7 +865,8 @@
         "menu": 7,
         "recipe": 35,
         "day_offset": 6,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -806,7 +876,8 @@
         "menu": 7,
         "recipe": 5,
         "day_offset": 6,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -816,7 +887,8 @@
         "menu": 8,
         "recipe": 32,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -826,7 +898,8 @@
         "menu": 8,
         "recipe": 22,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -836,7 +909,8 @@
         "menu": 8,
         "recipe": 12,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -846,7 +920,8 @@
         "menu": 9,
         "recipe": 26,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -856,7 +931,8 @@
         "menu": 9,
         "recipe": 13,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -866,7 +942,8 @@
         "menu": 9,
         "recipe": 7,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -876,7 +953,8 @@
         "menu": 10,
         "recipe": 31,
         "day_offset": 0,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -886,7 +964,8 @@
         "menu": 10,
         "recipe": 31,
         "day_offset": 0,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -896,7 +975,8 @@
         "menu": 10,
         "recipe": 2,
         "day_offset": 0,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -906,7 +986,8 @@
         "menu": 10,
         "recipe": 30,
         "day_offset": 1,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -916,7 +997,8 @@
         "menu": 10,
         "recipe": 24,
         "day_offset": 1,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -926,7 +1008,8 @@
         "menu": 10,
         "recipe": 23,
         "day_offset": 1,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -936,7 +1019,8 @@
         "menu": 10,
         "recipe": 18,
         "day_offset": 2,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -946,7 +1030,8 @@
         "menu": 10,
         "recipe": 34,
         "day_offset": 2,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -956,7 +1041,8 @@
         "menu": 10,
         "recipe": 12,
         "day_offset": 2,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -966,7 +1052,8 @@
         "menu": 10,
         "recipe": 10,
         "day_offset": 3,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -976,7 +1063,8 @@
         "menu": 10,
         "recipe": 4,
         "day_offset": 3,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -986,7 +1074,8 @@
         "menu": 10,
         "recipe": 5,
         "day_offset": 3,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -996,7 +1085,8 @@
         "menu": 10,
         "recipe": 26,
         "day_offset": 4,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -1006,7 +1096,8 @@
         "menu": 10,
         "recipe": 27,
         "day_offset": 4,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -1016,7 +1107,8 @@
         "menu": 10,
         "recipe": 2,
         "day_offset": 4,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -1026,7 +1118,8 @@
         "menu": 10,
         "recipe": 34,
         "day_offset": 5,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -1036,7 +1129,8 @@
         "menu": 10,
         "recipe": 8,
         "day_offset": 5,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -1046,7 +1140,8 @@
         "menu": 10,
         "recipe": 6,
         "day_offset": 5,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 },
 {
@@ -1056,7 +1151,8 @@
         "menu": 10,
         "recipe": 17,
         "day_offset": 6,
-        "meal_type": 1
+        "meal_type": 1,
+        "requested_cook_time": null
     }
 },
 {
@@ -1066,7 +1162,8 @@
         "menu": 10,
         "recipe": 12,
         "day_offset": 6,
-        "meal_type": 2
+        "meal_type": 2,
+        "requested_cook_time": null
     }
 },
 {
@@ -1076,7 +1173,8 @@
         "menu": 10,
         "recipe": 24,
         "day_offset": 6,
-        "meal_type": 3
+        "meal_type": 3,
+        "requested_cook_time": null
     }
 }
 ]
