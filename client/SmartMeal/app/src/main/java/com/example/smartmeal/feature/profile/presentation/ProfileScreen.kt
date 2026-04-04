@@ -49,7 +49,7 @@ private val CardYellow = Color(0xFFFFF4C2)
 private val LogoutRed = Color(0xFFE53935)
 
 // Подэкраны внутри вкладки профиля
-enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES }
+enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, ORDERS }
 
 @Composable
 fun ProfileScreen(
@@ -85,6 +85,15 @@ fun ProfileScreen(
                 onBack = { subScreen = ProfileSubScreen.NONE },
                 onRecipeClick = onRecipeClick,
                 onFavoriteClick = { viewModel.toggleFavorite(it) }
+            )
+
+        ProfileSubScreen.ORDERS ->
+            com.example.smartmeal.feature.products.presentation.OrdersScreen(
+                onBack = { subScreen = ProfileSubScreen.NONE },
+                onGoToProducts = {
+                    subScreen = ProfileSubScreen.NONE
+                    onGoToProducts()
+                }
             )
 
         ProfileSubScreen.NONE -> {
@@ -180,7 +189,7 @@ fun ProfileScreen(
                         ProfileMenuCard(emoji = "⏱️", label = "Изменить время готовки") { /* TODO */ }
 
                         ProfileMenuCard(emoji = "🛒", label = "Заказать продукты") {
-                            onGoToProducts()
+                            subScreen = ProfileSubScreen.ORDERS
                         }
 
                         ProfileMenuCard(emoji = "⭐", label = "Избранное") {
