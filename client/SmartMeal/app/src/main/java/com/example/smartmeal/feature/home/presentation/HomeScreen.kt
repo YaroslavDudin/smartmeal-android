@@ -180,10 +180,11 @@ fun HomeScreen(
 
     var selectedNavItem by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(selectedNavItem, uiState.allMenuItems) {
+    LaunchedEffect(selectedNavItem, uiState.currentMenu) {
         if (selectedNavItem == 1) {
-            if (uiState.allMenuItems.isNotEmpty()) {
-                productListViewModel.generateProductsFromMenuItems(uiState.allMenuItems)
+            val currentItems = uiState.currentMenu?.items ?: emptyList()
+            if (currentItems.isNotEmpty()) {
+                productListViewModel.generateProductsFromMenuItems(currentItems)
             } else {
                 productListViewModel.clearProducts()
             }
@@ -808,6 +809,17 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     AutoGenerateRequest(period = periodStr, start_date = startDateStr, days = customDays)
                 )
                 if (response.isSuccessful) {
+                    val newMenuId = response.body()?.id
+                    if (newMenuId != null) {
+                        try {
+                            menuApi.recalculateCart(
+                                com.example.smartmeal.feature.home.data.api.RecalculateCartRequest(menu_id = newMenuId)
+                            )
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
                     refreshMenu()
                 } else {
                     val errorBody = response.errorBody()?.string()
