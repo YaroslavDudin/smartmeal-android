@@ -4,14 +4,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from app.accounts.models import DietType, Allergy, UserFavorite
+from app.accounts.models import DietType, Allergy, UserFavorite, UserStock
 from app.accounts.serializers import (
     UserRegistrationSerializer, CustomTokenObtainPairSerializer,
     CustomTokenRefreshSerializer,
     UserSerializer, DietTypeSerializer, AllergySerializer,
-    UserFavoriteSerializer,
+    UserFavoriteSerializer, UserStockSerializer
 )
-from app.recipes.models import Recipe
 
 
 User = get_user_model()
@@ -138,3 +137,15 @@ class UserFavoriteViewSet(viewsets.ModelViewSet):
         else:
             UserFavorite.objects.create(user=request.user, recipe_id=recipe_id)
             return Response({"is_favorite": True}, status=status.HTTP_201_CREATED)
+
+
+class UserStockViewSet(viewsets.ModelViewSet):
+    serializer_class = UserStockSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return UserStock.objects.filter(user=self.request.user).select_related('ingredient', 'unit')
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+

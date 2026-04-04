@@ -8,6 +8,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Period(models.TextChoices):
     DAY = 'day', 'День'
     WEEK = 'week', 'Неделя'
+    CUSTOM = 'custom', 'Свой план'
 
 
 class MealType(models.Model):
@@ -20,7 +21,7 @@ class MealType(models.Model):
 
 class Menu(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='menus')
-    period = models.CharField(max_length=20, choices=Period.choices)
+    period = models.CharField(max_length=20, choices=Period.choices, default=Period.CUSTOM)
     start_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
 

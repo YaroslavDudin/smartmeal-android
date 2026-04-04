@@ -3,6 +3,6 @@ from .models import CartItem
 
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('user', 'ingredient', 'total_amount', 'unit', 'is_checked')
-    list_filter = ('is_checked', 'user')
+    list_display = ('user', 'ingredient', 'total_amount', 'unit')
+    list_filter = ('user',)
     search_fields = ('user__email', 'ingredient__name')

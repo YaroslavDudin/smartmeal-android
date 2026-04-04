@@ -2,6 +2,7 @@ from decimal import Decimal
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
+from app.recipes.utils import convert_amount
 
 
 CALORIES_PER_GRAM = {
@@ -247,22 +248,6 @@ class RecipeIngredient(models.Model):
             self.get_amount_in_target_units(self.nutrition.base_unit)
         except ValueError as e:
             raise ValidationError(str(e))
-        
-    def _convert_to(self, target_unit):
-        if target_unit.pk == self.unit.pk:
-            return self.amount
-
-        conversions = self.ingredient.unit_conversions.all()
-        
-        for conv in conversions:  # из prefetch-кеша
-            # Прямая: self.unit → target_unit
-            if conv.from_unit_id == self.unit_id and conv.to_unit_id == target_unit.pk:
-                return self.amount * conv.amount_per_unit
-            # Обратная: target_unit → self.unit
-            if conv.from_unit_id == target_unit.pk and conv.to_unit_id == self.unit_id:
-                return self.amount / conv.amount_per_unit
-        
-        return None
 
     def get_amount_in_target_units(self, target_unit):
         '''Метод, чтобы получить количества ингредиента в указанной единице измерения
@@ -282,7 +267,7 @@ class RecipeIngredient(models.Model):
         if target_unit.pk in self._in_base_units_cache:
             return self._in_base_units_cache[target_unit.pk]
 
-        amount = self._convert_to(target_unit)
+        amount = convert_amount(self.ingredient, self.amount, self.unit, target_unit)
         if amount is None:
             raise ValueError(
                 f'Нет конвертации из "{self.unit}" в "{target_unit}" '
