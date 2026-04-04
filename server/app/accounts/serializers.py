@@ -105,7 +105,7 @@ class UserFavoriteSerializer(serializers.ModelSerializer):
 
 class UserStockSerializer(serializers.ModelSerializer):
     ingredient_name = serializers.CharField(source='ingredient.name', read_only=True)
-    unit_name = serializers.CharField(source='unit-name', read_only=True)
+    unit_name = serializers.CharField(source='unit.name', read_only=True)
     
     class Meta:
         model = UserStock

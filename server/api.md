@@ -187,6 +187,151 @@ Authorization: Bearer <access_token>
 
 ---
 
+### GET `/api/accounts/favorites/`
+Список избранных рецептов пользователя.
+
+**Ответ 200:**
+```json
+[
+  {
+    "id": 1,
+    "recipe": 1,
+    "recipe_title": "Рецепт",
+    "recipe_image_url": "path/to/image.png",
+    "recipe_cook_time": 45
+  }
+]
+```
+
+---
+
+### POST `/api/accounts/favorites/`
+Добавляет рецепт в избранное.
+
+**Тело запроса:**
+```json
+{
+  "recipe": 1
+}
+```
+
+**Ответ 201:**
+```json
+{
+  "id": 1,
+  "recipe": 1,
+  "recipe_title": "Рецепт",
+  "recipe_image_url": "path/to/image.png",
+  "recipe_cook_time": 45
+}
+```
+
+---
+
+### DELETE `/api/accounts/favorites/{id}/`
+Удаляет рецепт из избранного.
+
+---
+
+### POST `/api/accounts/favorites/toggle/`
+Переключает состояние избранного (если есть – удаляет, если нет – создаёт).
+
+**Тело запроса:**
+```json
+{
+  "recipe": 1
+}
+```
+
+**Ответ при создании 201:**
+```json
+{
+  "is_favorite": true
+}
+```
+**Ответ при удалении 200:**
+```json
+{
+  "is_favorite": false
+}
+```
+
+---
+
+### GET `/api/accounts/stock/`
+Список доступных ингредиентов в наличии у пользователя
+
+**Ответ 200:**
+```json
+[
+  {
+    "id": 1,
+    "ingredient": 5,
+    "ingredient_name": "Картофель",
+    "amount": "2.50",
+    "unit": 3,
+    "unit_name": "кг"
+  }
+]
+```
+
+---
+
+### POST `/api/accounts/stock/`
+Добавляет новый ингредиент в запасы пользователя.
+
+**Тело запроса**
+```json
+{
+  "ingredient": 5,
+  "amount": "2.5",
+  "unit": 3
+}
+```
+
+**Ответ 200:**
+```json
+{
+  "id": 1,
+  "ingredient": 5,
+  "ingredient_name": "Картофель",
+  "amount": "2.50",
+  "unit": 3,
+  "unit_name": "кг"
+}
+```
+
+---
+
+### PATCH `/api/accounts/stock/{id}/`
+Добавляет новый ингредиент в запасы пользователя.
+
+**Тело запроса**
+```json
+{
+  "amount": "1.8"
+}
+```
+
+**Ответ 200:**
+```json
+{
+  "id": 1,
+  "ingredient": 5,
+  "ingredient_name": "Картофель",
+  "amount": "1.80",
+  "unit": 3,
+  "unit_name": "кг"
+}
+```
+
+---
+
+### DELETE `/api/accounts/stock/{id}/`
+Удаляет запись о запасе ингредиента.
+
+---
+
 ## Рецепты (`/api/recipes/`)
 
 ### GET `/api/recipes/`
