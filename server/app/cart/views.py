@@ -140,8 +140,8 @@ class CartViewSet(viewsets.ModelViewSet):
                 unit = ri.base_unit
                 
                 try:
-                    # Количество * Порции
-                    amount_to_add = Decimal(str(ri.amount_in_base_units)) * Decimal(str(servings))
+                    recipe_base_servings = Decimal(str(menu_item.recipe.servings))
+                    amount_to_add = (Decimal(str(ri.amount_in_base_units)) / recipe_base_servings) * Decimal(str(servings))
                 except ValueError as e:
                     return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
