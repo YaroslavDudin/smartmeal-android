@@ -420,27 +420,11 @@ class ProductListViewModel(
             if (isLoading) return@launch
             isLoading = true
             try {
-                val checkedProductsRaw = products.filter { it.checked }
-                
-                if (checkedProductsRaw.isEmpty()) {
+                val checkedProducts = products.filter { it.checked }
+                if (checkedProducts.isEmpty()) {
                     onError("Вы не выбрали ни одного продукта для заказа!")
                     return@launch
                 }
-
-                val aggregatedCheckedProducts = aggregateProductsForDisplay(checkedProductsRaw)
-
-                val sb = StringBuilder()
-                val grouped = aggregatedCheckedProducts.groupBy { it.categoryName }
-
-                grouped.forEach { (category, items) ->
-                    sb.append("$category:\n")
-                    items.forEach { item ->
-                        sb.append("\t- ${item.name}: ${item.amount}\n")
-                    }
-                    sb.append("\n")
-                }
-
-                val finalTxt = sb.toString().trimEnd()
 
                 val itemServings = mutableMapOf<String, Int>()
                 lastMenuItems.forEach { item ->
@@ -456,7 +440,32 @@ class ProductListViewModel(
                     )
                 )
 
-                onSuccess(finalTxt)
+                val cartResponse = menuApi.getCart()
+                if (!cartResponse.isSuccessful) throw Exception("Не удалось получить список покупок")
+                val cartMap = cartResponse.body() ?: emptyMap()
+                val cartItems = cartMap.values.flatten()
+
+                val checkedNames = checkedProducts.map { it.name }
+                val idsToExport = cartItems
+                    .filter { it.ingredient_name in checkedNames }
+                    .map { it.id }
+
+                if (idsToExport.isEmpty()) {
+                    onError("Вы не выбрали ни одного продукта для заказа!")
+                    return@launch
+                }
+
+                val exportResponse = menuApi.exportCart(
+                    all = false,
+                    request = com.example.smartmeal.feature.home.data.api.ExportCartRequest(cart_items_ids = idsToExport)
+                )
+
+                if (exportResponse.isSuccessful) {
+                    val txt = exportResponse.body()?.string() ?: ""
+                    onSuccess(txt)
+                } else {
+                    onError("Ошибка генерации списка на сервере")
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()

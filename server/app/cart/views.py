@@ -214,8 +214,28 @@ class CartViewSet(viewsets.ModelViewSet):
         for category, items in grouped.items():
             lines.append(f'{category}:')
             for item in items:
-                lines.append(f'\t- {item.ingredient.name}: {item.total_amount} {item.unit.name}')
-            lines.append('')  # пустая строка между категориями
+                ingredient = item.ingredient
+                
+                if ingredient.is_piece and ingredient.piece_weight:
+                    pieces_count = item.total_amount / ingredient.piece_weight
+                    
+                    if pieces_count % 1 == 0:
+                        formatted_amount = f"{int(pieces_count)} шт"
+                    else:
+                        formatted_amount = f"{round(pieces_count, 1)} шт"
+                else:
+                    # Переводим Decimal в обычный float, чтобы избежать формата 3E+2
+                    amount = float(item.total_amount)
+                    
+                    # Если число целое (например, 300.0), показываем без точки
+                    if amount.is_integer():
+                        formatted_amount = f"{int(amount)} {item.unit.name}"
+                    else:
+                        # Если с дробью (например, 1.5), оставляем как есть
+                        formatted_amount = f"{amount} {item.unit.name}"
+
+                lines.append(f'\t- {ingredient.name}: {formatted_amount}')
+            lines.append('')
 
         text_output = '\n'.join(lines).strip()
         return HttpResponse(

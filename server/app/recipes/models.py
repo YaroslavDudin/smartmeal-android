@@ -75,6 +75,15 @@ class Ingredient(models.Model):
     can_be_added_to_cart = models.BooleanField(default=True, help_text='Должен ли ингредиент добавляться в корзину')
     allergies = models.ManyToManyField('accounts.Allergy', blank=True, related_name='ingredients')
 
+    is_piece = models.BooleanField(
+        default=False, 
+        help_text='Считать ли товар в штуках (например, яйца, булочки)'
+    )
+    piece_weight = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True,
+        help_text='Вес одной штуки в базовых единицах (например, в граммах)'
+    )
+
     class Meta:
         db_table = 'ingredient'
         verbose_name = 'Ингредиент'
