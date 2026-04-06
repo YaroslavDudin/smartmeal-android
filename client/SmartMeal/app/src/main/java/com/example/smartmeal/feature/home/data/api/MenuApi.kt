@@ -65,13 +65,13 @@ interface MenuApi {
 
     /** Список покупок текущего пользователя */
     @GET("api/cart/")
-    suspend fun getCart(): Response<List<CartItemDto>>
+    suspend fun getCart(): Response<Map<String, List<CartItemDto>>>
 
     @POST("api/cart/recalculate/")
     suspend fun recalculateCart(@Body request: RecalculateCartRequest = RecalculateCartRequest()): retrofit2.Response<Unit>
 
     @POST("api/cart/export/")
-    suspend fun exportCart(@Query("all") all: Boolean = true, @Body empty: Map<String, String> = emptyMap()): retrofit2.Response<ResponseBody>
+    suspend fun exportCart(@Query("all") all: Boolean = false, @Body request: ExportCartRequest):retrofit2.Response<okhttp3.ResponseBody>
 
     /**
      * Отметить позицию купленной / снять отметку.
@@ -127,4 +127,8 @@ data class RecalculateCartRequest(
     val end_date: String? = null,
     val item_servings: Map<String, Int>? = null,
     val global_servings: Int? = null
+)
+
+data class ExportCartRequest(
+    val cart_items_ids: List<Int>
 )

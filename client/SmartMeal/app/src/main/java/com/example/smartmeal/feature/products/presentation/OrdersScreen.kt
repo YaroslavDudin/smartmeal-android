@@ -79,7 +79,10 @@ fun OrdersScreen(
                         )
                     )
                     
-                    val response = menuApi.exportCart(all = true)
+                    val response = menuApi.exportCart(
+                        all = true, 
+                        request = com.example.smartmeal.feature.home.data.api.ExportCartRequest(emptyList())
+                    )
                     if (response.isSuccessful) {
                         val txtContent = response.body()?.string() ?: ""
                         

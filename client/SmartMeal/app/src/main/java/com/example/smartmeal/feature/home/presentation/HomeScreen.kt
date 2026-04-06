@@ -253,6 +253,7 @@ fun HomeScreen(
                 // ── ПРОДУКТЫ ───────────────────────────────────────────────
                 1 -> {
                     ProductListScreen(
+                        viewModel = productListViewModel,
                         products = productListViewModel.products,
                         selectedDate = uiState.selectedDate,
                         selectedStartDateKey = productListViewModel.selectedStartDateKey,

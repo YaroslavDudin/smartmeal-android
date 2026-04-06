@@ -414,6 +414,58 @@ class ProductListViewModel(
             if (index == -1) Int.MAX_VALUE else index
         }
     }
+
+    fun exportCheckedProducts(onSuccess: (String) -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            if (isLoading) return@launch
+            isLoading = true
+            try {
+                val checkedProductsRaw = products.filter { it.checked }
+                
+                if (checkedProductsRaw.isEmpty()) {
+                    onError("Вы не выбрали ни одного продукта для заказа!")
+                    return@launch
+                }
+
+                val aggregatedCheckedProducts = aggregateProductsForDisplay(checkedProductsRaw)
+
+                val sb = StringBuilder()
+                val grouped = aggregatedCheckedProducts.groupBy { it.categoryName }
+
+                grouped.forEach { (category, items) ->
+                    sb.append("$category:\n")
+                    items.forEach { item ->
+                        sb.append("\t- ${item.name}: ${item.amount}\n")
+                    }
+                    sb.append("\n")
+                }
+
+                val finalTxt = sb.toString().trimEnd()
+
+                val itemServings = mutableMapOf<String, Int>()
+                lastMenuItems.forEach { item ->
+                    val servings = preferences.getMenuItemServings(item.id)
+                    if (servings > 0) itemServings[item.id.toString()] = servings
+                }
+                menuApi.recalculateCart(
+                    com.example.smartmeal.feature.home.data.api.RecalculateCartRequest(
+                        start_date = selectedStartDateKey,
+                        end_date = selectedEndDateKey,
+                        item_servings = itemServings,
+                        global_servings = preferences.getPortionSize()
+                    )
+                )
+
+                onSuccess(finalTxt)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                onError(e.localizedMessage ?: "Произошла ошибка")
+            } finally {
+                isLoading = false
+            }
+        }
+    }
 }
 
 internal fun buildMenuSignature(menuItems: List<MenuItemDto>): String {

@@ -1,5 +1,6 @@
 package com.example.smartmeal.feature.products.presentation
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
@@ -19,9 +20,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,6 +58,7 @@ data class ProductUiModel(
 
 @Composable
 fun ProductListScreen(
+    viewModel: ProductListViewModel,
     products: List<ProductUiModel>,
     selectedDate: Date?,
     selectedStartDateKey: String?,
@@ -128,22 +132,41 @@ fun ProductListScreen(
         else -> ProductContentState.List
     }
 
+    var showOrderModal by remember { androidx.compose.runtime.mutableStateOf(false) }
+
+    if (showOrderModal) {
+        OrderModalBottomSheet(
+            viewModel = viewModel,
+            onDismiss = { showOrderModal = false }
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color.White)
             .padding(horizontal = 4.dp)
     ) {
-        SmartMealText(
-            text = "Список продуктов",
-            style = MaterialTheme.typography.titleLarge,
-            color = TextBlack,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(horizontal = 12.dp)
-                .padding(top = 16.dp, bottom = 8.dp)
-                .testTag("title")
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            SmartMealText(
+                text = "Список продуктов",
+                style = MaterialTheme.typography.titleLarge,
+                color = TextBlack,
+                modifier = Modifier.testTag("title")
+            )
+            if (contentState == ProductContentState.List) {
+                Button(
+                    onClick = { showOrderModal = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+                ) {
+                    SmartMealText("Заказать", color = Color.White)
+                }
+            }
+        }
 
         if (monthYearLabel.isNotBlank() && !hasSingleAvailableDate) {
             SmartMealText(
@@ -305,21 +328,25 @@ private fun ProductCategoryList(
         "Напитки", "Зерновые", "Сладости", "Разное", "Покупки"
     )
 
-    val regularCategories: List<Pair<String, List<ProductUiModel>>> = aggregatedProducts
-        .filterNot { it.checked }
-        .groupBy { it.categoryName }
-        .toList()
-        .sortedBy { (categoryName, _) ->
-            categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
-        }
+    val regularCategories = remember(aggregatedProducts) {
+        aggregatedProducts
+            .filterNot { it.checked }
+            .groupBy { it.categoryName }
+            .toList()
+            .sortedBy { (categoryName, _) ->
+                categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
+            }
+    }
 
-    val purchasedCategories: List<Pair<String, List<ProductUiModel>>> = aggregatedProducts
-        .filter { it.checked }
-        .groupBy { it.categoryName }
-        .toList()
-        .sortedBy { (categoryName, _) ->
-            categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
-        }
+    val purchasedCategories = remember(aggregatedProducts) {
+        aggregatedProducts
+            .filter { it.checked }
+            .groupBy { it.categoryName }
+            .toList()
+            .sortedBy { (categoryName, _) ->
+                categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
+            }
+    }
 
     LazyColumn(
         state = listState,
@@ -423,9 +450,20 @@ internal fun filterProductsByDateRange(
 internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<ProductUiModel> {
     return products.groupBy { Triple(it.name.trim().lowercase(Locale("ru")), it.categoryName, it.checked) }.values.map { grouped ->
         val first = grouped.first()
+        
+        val isPiece = first.amount.contains("шт") 
+        val totalValue = grouped.sumOf { parseWeightToGrams(it.amount) }
+        
+        val finalAmountString = if (isPiece) {
+            val formatted = if (totalValue % 1.0 == 0.0) totalValue.toInt().toString() else totalValue.toString()
+            "$formatted шт"
+        } else {
+            formatWeightDisplay(totalValue)
+        }
+
         first.copy(
             id = "${first.name}_${first.categoryName}_${first.checked}",
-            amount = formatWeightDisplay(grouped.sumOf { parseWeightToGrams(it.amount) }),
+            amount = finalAmountString,
             sourceIds = grouped.flatMap { it.sourceIds }.toSet()
         )
     }
@@ -456,4 +494,92 @@ internal fun formatMonthYearRangeForSelector(startDate: Date, endDate: Date): St
         startYear == endYear -> "$startMonth - $endMonth $startYear"
         else -> "$startMonth $startYear - $endMonth $endYear"
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun OrderModalBottomSheet(
+    viewModel: ProductListViewModel,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+
+    val shareText = { text: String, storeName: String ->
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Мой список покупок ($storeName):\n\n$text")
+            type = "text/plain"
+        }
+        context.startActivity(Intent.createChooser(sendIntent, "Заказать продукты"))
+    }
+
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SmartMealText(
+                text = "Где заказать продукты?",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            val stores = listOf("СберМаркет", "Самокат", "Яндекс Лавка", "ВкусВилл")
+            
+            stores.forEach { store ->
+                Button(
+                    onClick = { 
+                        viewModel.exportCheckedProducts(
+                            onSuccess = { txtContent -> 
+                                shareText(txtContent, store)
+                                onDismiss()
+                            },
+                            onError = { errorMsg -> 
+                                android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+                ) {
+                    SmartMealText(text = store, color = Color.White)
+                }
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+    }
+}
+
+@Composable
+private fun PdfPreviewDialog(
+    storeName: String,
+    products: List<ProductUiModel>,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { SmartMealText("Список для $storeName (PDF Preview)") },
+        text = {
+            LazyColumn {
+                items(products, key = { it.id }) { product ->
+                    SmartMealText(
+                        text = "• ${product.name} - ${product.amount}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                SmartMealText("Скачать", color = PrimaryGreen)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                SmartMealText("Закрыть", color = Color.Gray)
+            }
+        }
+    )
 }
