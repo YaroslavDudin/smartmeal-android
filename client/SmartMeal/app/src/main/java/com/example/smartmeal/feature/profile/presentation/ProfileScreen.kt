@@ -44,6 +44,8 @@ import com.example.smartmeal.ui.theme.BgLightGray
 import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.HintGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 private val CardYellow = Color(0xFFFFF4C2)
 private val LogoutRed = Color(0xFFE53935)
@@ -87,14 +89,21 @@ fun ProfileScreen(
                 onFavoriteClick = { viewModel.toggleFavorite(it) }
             )
 
-        ProfileSubScreen.ORDERS ->
+        ProfileSubScreen.ORDERS -> {
+            val formatter = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
+            val startDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()?.let { formatter.format(it) }
+            val endDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedEndDate()?.let { formatter.format(it) }
+            
             com.example.smartmeal.feature.products.presentation.OrdersScreen(
                 onBack = { subScreen = ProfileSubScreen.NONE },
                 onGoToProducts = {
                     subScreen = ProfileSubScreen.NONE
                     onGoToProducts()
-                }
+                },
+                startDate = startDate,
+                endDate = endDate
             )
+        }
 
         ProfileSubScreen.NONE -> {
             Box(modifier = Modifier.fillMaxSize()) {

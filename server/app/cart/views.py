@@ -107,45 +107,54 @@ class CartViewSet(viewsets.ModelViewSet):
                 'recipe__recipe_ingredients__unit',
                 'recipe__recipe_ingredients__ingredient__ingredient_nutrition__base_unit',
             )
+        
+        # Фильтрация по диапазону дат, если указаны
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        
+        if start_date:
+            # day_offset = actual_date - menu.start_date
+            start_offset = (start_date - menu.start_date).days
+            menu_items = menu_items.filter(day_offset__gte=start_offset)
+            
+        if end_date:
+            end_offset = (end_date - menu.start_date).days
+            menu_items = menu_items.filter(day_offset__lte=end_offset)
 
-        # Получаем все ингредиенты из рецептов
-        recipe_ingredients = [
-            ri
-            for menu_item in menu_items
-            for ri in menu_item.recipe.recipe_ingredients.all()
-            if ri.ingredient.can_be_added_to_cart # берем только те, которые отмечены для добавления в корзину
-        ]
-
+        # Обновляем порции для элементов меню, если они переданы
+        item_servings_data = data.get('item_servings', {})
+        global_servings = data.get('global_servings')
+        
+        # Получаем список всех ингредиентов с учетом порций
         items_to_create = {}
         
-        for ri in recipe_ingredients:
-            ingredient = ri.ingredient
-            # базовая единица измерения (г или мл или любая c is_base=true)
-            unit = ri.base_unit
-            try:
-                # могут быть не только граммы, но и мл (и любым другим unit c is_base=true)
-                amount_to_add = ri.amount_in_base_units
+        for menu_item in menu_items:
+            # Приоритет порций: переданное значение для ID -> глобальное переданное -> текущее в базе
+            servings = item_servings_data.get(str(menu_item.id)) or global_servings or menu_item.servings
             
-            except ValueError as e:
-                return Response(
-                    {'detail': str(e)},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+            for ri in menu_item.recipe.recipe_ingredients.all():
+                if not ri.ingredient.can_be_added_to_cart:
+                    continue
+                    
+                ingredient = ri.ingredient
+                unit = ri.base_unit
+                
+                try:
+                    # Количество * Порции
+                    amount_to_add = Decimal(str(ri.amount_in_base_units)) * Decimal(str(servings))
+                except ValueError as e:
+                    return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Если ингредиент уже добавлен / обновлен в предыдущих итерациях цикла
-            in_progress = items_to_create.get(ingredient.pk)
-            # не был в предыдущих итерациях цикла
-            if in_progress is None:
-                # Добавляем в объект для создания
-                items_to_create[ingredient.pk] = CartItem(
-                    user=user,
-                    ingredient=ingredient,
-                    total_amount=amount_to_add,
-                    unit=unit,
-                )
-            else:
-                cart_item = in_progress
-                cart_item.total_amount += amount_to_add
+                in_progress = items_to_create.get(ingredient.pk)
+                if in_progress is None:
+                    items_to_create[ingredient.pk] = CartItem(
+                        user=user,
+                        ingredient=ingredient,
+                        total_amount=amount_to_add,
+                        unit=unit,
+                    )
+                else:
+                    in_progress.total_amount += amount_to_add
         
         for ingredient_id in list(items_to_create.keys()):
             item = items_to_create[ingredient_id]

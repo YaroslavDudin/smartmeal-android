@@ -43,11 +43,14 @@ private val ButtonYellow = Color(0xFFFEEDAA)
 @Composable
 fun OrdersScreen(
     onBack: () -> Unit,
-    onGoToProducts: () -> Unit
+    onGoToProducts: () -> Unit,
+    startDate: String? = null,
+    endDate: String? = null
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
+    val preferences = remember { com.example.smartmeal.data.local.SetupPreferences(context) }
     var isExporting by remember { mutableStateOf(false) }
 
     val exportTxtAndShare = {
@@ -55,7 +58,26 @@ fun OrdersScreen(
             isExporting = true
             coroutineScope.launch {
                 try {
-                    menuApi.recalculateCart()
+                    // Собираем все переопределенные порции из настроек
+                    val itemServings = mutableMapOf<String, Int>()
+                    val menuItemsResponse = menuApi.getMenuItems()
+                    if (menuItemsResponse.isSuccessful) {
+                        menuItemsResponse.body()?.forEach { item ->
+                            val servings = preferences.getMenuItemServings(item.id)
+                            if (servings > 0) {
+                                itemServings[item.id.toString()] = servings
+                            }
+                        }
+                    }
+
+                    menuApi.recalculateCart(
+                        com.example.smartmeal.feature.home.data.api.RecalculateCartRequest(
+                            start_date = startDate,
+                            end_date = endDate,
+                            item_servings = itemServings,
+                            global_servings = preferences.getPortionSize()
+                        )
+                    )
                     
                     val response = menuApi.exportCart(all = true)
                     if (response.isSuccessful) {

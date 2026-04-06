@@ -122,5 +122,9 @@ data class UserFavoriteDto(
 )
 
 data class RecalculateCartRequest(
-    val menu_id: Int? = null
+    val menu_id: Int? = null,
+    val start_date: String? = null,
+    val end_date: String? = null,
+    val item_servings: Map<String, Int>? = null,
+    val global_servings: Int? = null
 )

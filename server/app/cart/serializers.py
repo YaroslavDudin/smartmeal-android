@@ -28,6 +28,16 @@ class RecalculateCartSerializer(serializers.Serializer):
     # ID меню, ингредиенты которого перенести в корзину
     # Если не указано, ищется активное меню (в период которого входит текущая дата)
     menu_id = serializers.IntegerField(required=False, allow_null=True)
+    start_date = serializers.DateField(required=False, allow_null=True)
+    end_date = serializers.DateField(required=False, allow_null=True)
+    # Мапа { "menu_item_id": servings }
+    item_servings = serializers.DictField(
+        child=serializers.IntegerField(min_value=1),
+        required=False,
+        default=dict
+    )
+    # Общее кол-во порций (если не указано в item_servings)
+    global_servings = serializers.IntegerField(required=False, min_value=1)
 
 
 class ExportCartSerializer(serializers.Serializer):
