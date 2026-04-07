@@ -28,6 +28,9 @@ object RetrofitClient {
 
     private val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
+            .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
             .addInterceptor(logging)
             .addInterceptor { chain ->
                 val original = chain.request()

@@ -306,7 +306,7 @@ fun HomeContent(
     uiState: HomeUiState,
     onDateSelected: (Date) -> Unit,
     onGenerateMenu: () -> Unit,
-    onReplaceMeal: (String) -> Unit,
+    onReplaceMeal: (Int) -> Unit,
     onToggleFavorite: (Int) -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
     onDateSelectedFromPlan: (Date) -> Unit,
@@ -436,7 +436,7 @@ fun HomeContent(
                 contentPadding = PaddingValues(bottom = 8.dp),
                 modifier = Modifier.weight(1f).testTag("home_meal_list")
             ) {
-                items(uiState.mealSections, key = { it.id }) { section ->
+                items(uiState.mealSections, key = { it.meal.id }) { section ->
                     MealSection(
                         sectionId = section.id,
                         title = section.title,
@@ -461,9 +461,9 @@ fun HomeContent(
             ReplaceMealConfirmDialog(
                 mealTitle = section.meal.recipe_title,
                 onConfirm = {
-                    val sectionId = section.id
+                    val mealId = section.meal.id
                     pendingReplacement = null
-                    onReplaceMeal(sectionId)
+                    onReplaceMeal(mealId)
                 },
                 onDismiss = { pendingReplacement = null }
             )
@@ -876,8 +876,12 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             val resolvedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), state.customPlan).firstOrNull()
             val itemsForDay = if (resolvedDate != null) {
                 val selectedDateStr = apiDateFormatter.format(resolvedDate)
-                if (state.selectedDateFromPlan) state.allMenuItems.filter { it.actual_date == selectedDateStr }
-                else menu.items?.filter { it.actual_date == selectedDateStr } ?: emptyList()
+                val sourceItems = if (state.selectedDateFromPlan) state.allMenuItems.filter { it.actual_date == selectedDateStr }
+                                 else menu.items?.filter { it.actual_date == selectedDateStr } ?: emptyList()
+                
+                // Дедупликация: оставляем только самое свежее блюдо (с макс. ID) для каждого типа приема пищи
+                sourceItems.sortedByDescending { it.id }
+                    .distinctBy { it.meal_type.lowercase(Locale.US) }
             } else emptyList()
 
             val mealSections = itemsForDay.map { item ->
@@ -968,27 +972,23 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         return cal.time
     }
 
-    fun replaceMeal(mealType: String) {
+    fun replaceMeal(mealId: Int) {
         val state = _uiState.value
-        val menu = state.currentMenu ?: return
-        val selectedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), state.customPlan).firstOrNull() ?: return
-        val selectedDateStr = apiDateFormatter.format(selectedDate)
-        val menuItem = if (state.selectedDateFromPlan) {
-            state.allMenuItems.find { it.actual_date == selectedDateStr && it.meal_type == mealType }
-        } else {
-            menu.items?.find { it.actual_date == selectedDateStr && it.meal_type == mealType }
-        } ?: return
+        val menuItem = state.allMenuItems.find { it.id == mealId } ?: return
+        val mealType = menuItem.meal_type
 
         viewModelScope.launch {
             try {
                 // Получаем настройку времени именно для этого типа блюда
-                val russianMealName = when (mealType) {
-                    "breakfast" -> "Завтрак"; "lunch" -> "Обед"; "dinner" -> "Ужин"
+                val russianMealName = when (mealType.lowercase(Locale.US)) {
+                    "breakfast", "завтрак" -> "Завтрак"
+                    "lunch", "обед" -> "Обед"
+                    "dinner", "ужин" -> "Ужин"
                     else -> mealType
                 }
                 val cookTimeRange = preferences.getMealCookTime(russianMealName).takeIf { it != "any" }
 
-                val updatedItem = menuRepository.replaceMenuItem(menuItem.id, cookTimeRange)
+                val updatedItem = menuRepository.replaceMenuItem(mealId, cookTimeRange)
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
                     _uiState.update { currentState -> mergeUpdatedMenuItemIntoState(currentState, updatedItem) }
