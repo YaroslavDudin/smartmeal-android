@@ -124,9 +124,9 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def get_is_favorite(self, obj):
-        user = self.context.get('request').user
-        if user.is_authenticated:
-            return obj.favorited_by.filter(user=user).exists()
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.favorited_by.filter(user=request.user).exists()
         return False
         
     # указать target servings как указанное в рецепте количество порций, если неопределено

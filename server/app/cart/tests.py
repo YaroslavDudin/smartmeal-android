@@ -455,12 +455,16 @@ class CartItemAPITest(APITestCase):
 
         cup_unit = Unit.objects.create(name='стакан')
         new_recipe = Recipe.objects.create(title='Блины', cook_time=20, servings=4)
-        RecipeIngredient.objects.create(
-            recipe=new_recipe,
-            ingredient=new_ingredient,
-            amount=2,
-            unit=cup_unit,
-        )
+        # Используем bulk_create, чтобы обойти validation в save(),
+        # так как мы специально создаем некорректное состояние для теста
+        RecipeIngredient.objects.bulk_create([
+            RecipeIngredient(
+                recipe=new_recipe,
+                ingredient=new_ingredient,
+                amount=2,
+                unit=cup_unit,
+            )
+        ])
         cart_item = CartItem.objects.create(
             user=self.user,
             ingredient=new_ingredient,

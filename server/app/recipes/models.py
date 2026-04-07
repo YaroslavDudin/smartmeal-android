@@ -175,7 +175,7 @@ class Recipe(models.Model):
         if not hasattr(self, '_nutrition_cache'):
             protein = fat = carbs = Decimal(0)
             for ri in self.recipe_ingredients.all():
-                p, f, c = ri._get_macros()
+                p, f, c = ri.get_macros()
                 protein += p
                 fat += f
                 carbs += c
