@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.ui.components.calendar
+package com.example.smartmeal.ui.components.calendar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,13 +49,14 @@ private val DAY_LABELS = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", 
 fun SmartMealCalendar(
     year: Int,
     month: Int,
-    periodType: PeriodType,
+    periodType: PeriodType?,
     selectedStartDateMillis: Long?,
     selectedEndDateMillis: Long? = null,
     onDaySelected: (year: Int, month: Int, day: Int) -> Unit,
     onPreviousMonth: () -> Unit,
     onNextMonth: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     canNavigatePrevious: Boolean = true,
     canNavigateNext: Boolean = true,
     showNavigation: Boolean = true,
@@ -99,6 +100,8 @@ fun SmartMealCalendar(
     val labelSpacing = if (compact) 2.dp else 4.dp
     val iconSize = if (compact) 32.dp else 40.dp
 
+    val calendarAlpha = if (enabled) 1f else 0.38f
+
     Column(modifier = modifier) {
         // --- Header: month name + optional navigation ---
         if (showNavigation) {
@@ -110,29 +113,29 @@ fun SmartMealCalendar(
                 IconButton(
                     onClick = onPreviousMonth,
                     modifier = Modifier.size(iconSize),
-                    enabled = canNavigatePrevious,
+                    enabled = enabled && canNavigatePrevious,
                 ) {
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                         contentDescription = "Предыдущий месяц",
-                        tint = if (canNavigatePrevious) TextBlack else Color.LightGray,
+                        tint = if (enabled && canNavigatePrevious) TextBlack else Color.LightGray,
                     )
                 }
                 SmartMealText(
                     text = if (showYear) "${MONTH_NAMES[month]} $year" else MONTH_NAMES[month],
                     style = headerTextStyle,
                     fontWeight = FontWeight.Medium,
-                    color = TextBlack,
+                    color = TextBlack.copy(alpha = calendarAlpha),
                 )
                 IconButton(
                     onClick = onNextMonth,
                     modifier = Modifier.size(iconSize),
-                    enabled = canNavigateNext,
+                    enabled = enabled && canNavigateNext,
                 ) {
                     Icon(
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = "Следующий месяц",
-                        tint = if (canNavigateNext) TextBlack else Color.LightGray,
+                        tint = if (enabled && canNavigateNext) TextBlack else Color.LightGray,
                     )
                 }
             }
@@ -145,7 +148,7 @@ fun SmartMealCalendar(
                     text = if (showYear) "${MONTH_NAMES[month]} $year" else MONTH_NAMES[month],
                     style = headerTextStyle,
                     fontWeight = FontWeight.Medium,
-                    color = TextBlack,
+                    color = TextBlack.copy(alpha = calendarAlpha),
                 )
             }
         }
@@ -160,7 +163,7 @@ fun SmartMealCalendar(
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
                     style = dayLabelStyle,
-                    color = TextBlack,
+                    color = TextBlack.copy(alpha = calendarAlpha),
                     fontWeight = FontWeight.Medium,
                 )
             }
@@ -210,7 +213,7 @@ fun SmartMealCalendar(
                         val isCustomRangeActive = periodType == PeriodType.CUSTOM &&
                             rangeStart != null && rangeEnd != null
 
-                        val isSelectable = isCurrentMonth && isDateSelectable(cellYear, cellMonth, displayDay)
+                        val isSelectable = enabled && isCurrentMonth && isDateSelectable(cellYear, cellMonth, displayDay)
 
                         CalendarDayCell(
                             day = displayDay,
@@ -225,13 +228,14 @@ fun SmartMealCalendar(
                             isInRange = isCustomRangeActive &&
                                 rangeStart != null && rangeEnd != null &&
                                 cellDateMillis > rangeStart && cellDateMillis < rangeEnd,
-                            isRangeStart = isCustomRangeActive && cellDateMillis == selectedStartDateMillis,
-                            isRangeEnd = isCustomRangeActive && cellDateMillis == selectedEndDateMillis,
+                            isRangeStart = periodType == PeriodType.CUSTOM && cellDateMillis == selectedStartDateMillis,
+                            isRangeEnd = periodType == PeriodType.CUSTOM && cellDateMillis == selectedEndDateMillis,
                             modifier = Modifier.weight(1f),
                             onClick = { if (isSelectable) onDaySelected(cellYear, cellMonth, displayDay) },
                             circleSize = circleSize,
                             textSize = cellTextSize,
                             isSelectable = isSelectable,
+                            enabled = enabled
                         )
                     }
                 }
@@ -243,7 +247,7 @@ fun SmartMealCalendar(
 @Composable
 private fun CalendarDayCell(
     day: Int,
-    periodType: PeriodType,
+    periodType: PeriodType?,
     isCurrentMonth: Boolean,
     isSelected: Boolean,
     isInWeek: Boolean,
@@ -257,22 +261,28 @@ private fun CalendarDayCell(
     circleSize: Dp = 36.dp,
     textSize: TextUnit = 14.sp,
     isSelectable: Boolean = true,
+    enabled: Boolean = true
 ) {
     val isWeeklySelected = periodType == PeriodType.WEEKLY && (isInWeek || isWeekStart || isWeekEnd)
-    val isInAnySelection = isInWeek || isInRange || isWeekStart || isWeekEnd || isRangeStart || isRangeEnd
+    val isInAnySelection = (periodType == PeriodType.WEEKLY && (isInWeek || isWeekStart || isWeekEnd)) ||
+                          (periodType == PeriodType.CUSTOM && (isInRange || isRangeStart || isRangeEnd))
+
     val isCustomEndpoint = periodType == PeriodType.CUSTOM && (isRangeStart || isRangeEnd)
     val isCustomInterior = periodType == PeriodType.CUSTOM && isInRange
     val isWeeklyEndpoint = periodType == PeriodType.WEEKLY && (isWeekStart || isWeekEnd)
     val isWeeklyInterior = periodType == PeriodType.WEEKLY && isInWeek
-    val isStandaloneSelected = isSelected && !isWeeklySelected && !isCustomEndpoint && !isCustomInterior
+    val isStandaloneSelected = isSelected && (periodType == PeriodType.DAILY || periodType == null)
+
+    val selectionAlpha = if (enabled) 1f else 0.38f
+    val primaryColorWithAlpha = PrimaryGreen.copy(alpha = selectionAlpha)
 
     val bgColor = when {
-        isWeeklyInterior -> PrimaryGreen.copy(alpha = 0.18f)
-        isWeeklyEndpoint -> PrimaryGreen.copy(alpha = 0.24f)
-        isCustomInterior -> PrimaryGreen.copy(alpha = 0.18f)
-        isCustomEndpoint -> PrimaryGreen.copy(alpha = 0.24f)
-        isStandaloneSelected -> PrimaryGreen.copy(alpha = 0.22f)
-        isInAnySelection -> PrimaryGreen.copy(alpha = 0.15f)
+        isWeeklyInterior -> primaryColorWithAlpha.copy(alpha = 0.18f * selectionAlpha)
+        isWeeklyEndpoint -> primaryColorWithAlpha.copy(alpha = 0.24f * selectionAlpha)
+        isCustomInterior -> primaryColorWithAlpha.copy(alpha = 0.18f * selectionAlpha)
+        isCustomEndpoint -> primaryColorWithAlpha.copy(alpha = 0.24f * selectionAlpha)
+        isStandaloneSelected -> primaryColorWithAlpha.copy(alpha = 0.22f * selectionAlpha)
+        isInAnySelection -> primaryColorWithAlpha.copy(alpha = 0.15f * selectionAlpha)
         else -> Color.Transparent
     }
 
@@ -287,7 +297,8 @@ private fun CalendarDayCell(
 
     val textColor = when {
         !isCurrentMonth -> Color.LightGray
-        !isSelectable -> Color.LightGray
+        !isSelectable && enabled -> Color.LightGray
+        !enabled -> Color.LightGray.copy(alpha = 0.38f)
         isWeeklyEndpoint -> Color.White
         isWeeklyInterior -> PrimaryGreen
         isCustomEndpoint -> Color.White
@@ -310,12 +321,12 @@ private fun CalendarDayCell(
                 modifier = Modifier
                     .size(circleSize)
                     .clip(CircleShape)
-                    .background(PrimaryGreen),
+                    .background(primaryColorWithAlpha),
                 contentAlignment = Alignment.Center,
             ) {
                 SmartMealText(
                     text = day.toString(),
-                    color = Color.White,
+                    color = Color.White.copy(alpha = selectionAlpha),
                     fontWeight = FontWeight.Bold,
                     fontSize = textSize,
                 )

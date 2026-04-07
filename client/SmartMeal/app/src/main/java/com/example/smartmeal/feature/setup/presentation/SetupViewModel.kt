@@ -28,7 +28,7 @@ data class SetupState(
     val portionSize: Int = 1,
 
     // --- Step 2 ---
-    val periodType: PeriodType = PeriodType.WEEKLY,
+    val periodType: PeriodType? = null,
     val calendarYear: Int = Calendar.getInstance().get(Calendar.YEAR),
     val calendarMonth: Int = Calendar.getInstance().get(Calendar.MONTH),
     val selectedStartDateMillis: Long? = null,

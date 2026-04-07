@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.setup.presentation
+package com.example.smartmeal.feature.setup.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -190,6 +190,7 @@ fun SetupStep2Content(
                     onDaySelected = onSelectDay,
                     onPreviousMonth = onPreviousMonth,
                     onNextMonth = onNextMonth,
+                    enabled = state.periodType != null,
                     canNavigatePrevious = canNavigatePrevious,
                     canNavigateNext = canNavigateNext,
                     showNavigation = true,
@@ -207,7 +208,8 @@ fun SetupStep2Content(
             onClick = onNext,
             enabled = when (state.periodType) {
                 PeriodType.CUSTOM -> state.selectedStartDateMillis != null && state.selectedEndDateMillis != null
-                else -> state.selectedStartDateMillis != null
+                PeriodType.DAILY, PeriodType.WEEKLY -> state.selectedStartDateMillis != null
+                null -> false
             },
             modifier = Modifier
                 .fillMaxWidth()
