@@ -14,9 +14,9 @@ type ToastListener = (toast: Toast) => void
 const listeners: ToastListener[] = []
 
 export const toast = {
-  success: (message: string) => emit({ id: Date.now().toString(), message, type: 'success' }),
-  error: (message: string) => emit({ id: Date.now().toString(), message, type: 'error' }),
-  info: (message: string) => emit({ id: Date.now().toString(), message, type: 'info' }),
+  success: (message: string) => emit({ id: crypto.randomUUID(), message, type: 'success' }),
+  error: (message: string) => emit({ id: crypto.randomUUID(), message, type: 'error' }),
+  info: (message: string) => emit({ id: crypto.randomUUID(), message, type: 'info' }),
 }
 
 function emit(t: Toast) {

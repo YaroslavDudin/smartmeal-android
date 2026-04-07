@@ -1,6 +1,7 @@
+import { AxiosError } from 'axios'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -14,13 +15,13 @@ import {
   Clock,
   Users,
   Timer,
-  Search,
 } from 'lucide-react'
 import {
   getRecipe,
   createRecipe,
   updateRecipe,
   addRecipeIngredient,
+  updateRecipeIngredient,
   deleteRecipeIngredient,
   addRecipeStep,
   updateRecipeStep,
@@ -28,24 +29,47 @@ import {
 } from '@/api/recipes'
 import { getUnits } from '@/api/ingredients'
 import { getDietTypes } from '@/api/users'
-import { uploadImage } from '@/api/auth'
+import { getMealTypes } from '@/api/menus'
 import { toast } from '@/components/ui/Toaster'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
-import { ImageSearchModal } from '@/components/ui/ImageSearchModal'
 import { RecipePhonePreview } from '@/components/ui/RecipePreviewModal'
 import { IngredientAutocomplete } from '@/components/ui/IngredientAutocomplete'
-import type { RecipeIngredient, RecipeStep } from '@/types'
+
+
+const ingredientSchema = z.object({
+  id: z.number().optional(),
+  ingredient: z.number({ invalid_type_error: 'Выберите ингредиент из выпадающего списка' }),
+  amount: z.number({ coerce: true }).min(0.01, 'Укажите количество').positive('Количество должно быть > 0'),
+  unit: z.number({ coerce: true, invalid_type_error: 'Выберите единицу измерения' }),
+})
+
+const stepSchema = z.object({
+  id: z.number().optional(),
+  description: z.string().min(1, 'Введите описание шага'),
+  timer: z.number({ coerce: true }).positive('Таймер должен быть > 0').nullable().default(null),
+  image_url: z.union([z.string(), z.instanceof(File), z.null()]).optional().nullable(),
+})
 
 const recipeSchema = z.object({
-  title: z.string().min(1, 'Введите название'),
-  cook_time: z.number({ coerce: true }).min(1, 'Введите время приготовления'),
-  servings: z.number({ coerce: true }).min(1, 'Введите количество порций'),
-  image_url: z.string().optional(),
-  diet_types: z.array(z.number()).optional(),
+  title: z.string({ required_error: 'Введите название' }).min(1),
+  cook_time: z.number({ coerce: true, invalid_type_error: 'Введите время приготовления' }).positive('Время должно быть > 0'),
+  servings: z.number({ coerce: true, invalid_type_error: 'Введите количество порций' }).min(1, 'Минимум 1').max(20, 'Максимум 20'),
+  meal_types: z.array(z.number({ coerce: true })).min(1, 'Выберите хотя бы один прием пищи'),
+  diet_types: z.array(z.number({ coerce: true })).min(1, 'Выберите хотя бы один тип питания'),
+  image_url: z.union([z.string(), z.instanceof(File), z.null()]).optional().nullable(),
+  ingredients: z.array(ingredientSchema),
+  steps: z.array(stepSchema),
 })
 
 type RecipeFormData = z.infer<typeof recipeSchema>
+type RecipeIngredientForm = RecipeFormData['ingredients'][0]
+type RecipeStepForm = RecipeFormData['steps'][0]
+
+function FieldError({ msg }: { msg?: string }) {
+  if (!msg) return null
+  return <p className="text-xs text-red-500 mt-1">{msg}</p>
+}
 
 export function RecipeFormPage() {
   const { id } = useParams()
@@ -54,235 +78,449 @@ export function RecipeFormPage() {
   const isEdit = !!id
   const recipeId = id ? Number(id) : null
 
-  const [ingredients, setIngredients] = useState<RecipeIngredient[]>([])
-  const [steps, setSteps] = useState<RecipeStep[]>([])
-  const [imageUploading, setImageUploading] = useState(false)
-  const [stepImageUploading, setStepImageUploading] = useState(false)
-  const [deleteIngredientTarget, setDeleteIngredientTarget] = useState<RecipeIngredient | null>(null)
-  const [deleteStepTarget, setDeleteStepTarget] = useState<RecipeStep | null>(null)
-
-  // New ingredient form state
-  const [newIngredient, setNewIngredient] = useState({
-    ingredient: '',
-    amount: '',
-    unit: '',
-  })
-  const [addingIngredient, setAddingIngredient] = useState(false)
-
-  // New step form state
-  const [newStep, setNewStep] = useState({ description: '', timer: '', image_url: '' })
-  const [addingStep, setAddingStep] = useState(false)
-  const [imageSearchOpen, setImageSearchOpen] = useState(false)
-  const [stepImageSearchTarget, setStepImageSearchTarget] = useState<number | 'new' | null>(null)
-
+  // Данные с сервера
   const { data: recipe, isLoading: recipeLoading } = useQuery({
     queryKey: ['recipe', recipeId],
     queryFn: () => getRecipe(recipeId!),
     enabled: !!recipeId,
   })
+  const { data: units } = useQuery({ queryKey: ['units'], queryFn: getUnits })
+  const { data: dietTypes } = useQuery({ queryKey: ['diet-types'], queryFn: getDietTypes })
+  const { data: mealTypes } = useQuery({ queryKey: ['meal-types'], queryFn: getMealTypes })
 
-  const { data: units } = useQuery({
-    queryKey: ['units'],
-    queryFn: getUnits,
-  })
-
-  const { data: dietTypes } = useQuery({
-    queryKey: ['diet-types'],
-    queryFn: getDietTypes,
-  })
-
+  // Основная форма
   const {
     register,
+    control,
     handleSubmit,
     setValue,
     watch,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<RecipeFormData>({
     resolver: zodResolver(recipeSchema),
     defaultValues: {
-      diet_types: [],
+      diet_types: [6],
+      meal_types: [],
+      ingredients: [],
+      steps: [],
+      image_url: null,
     },
   })
 
-  const watchedImageUrl = watch('image_url')
-  const watchedDietTypes = watch('diet_types') ?? []
+  // Массивы для динамических полей
+  const {
+    fields: ingredientFields,
+    append: appendIngredient,
+    remove: removeIngredient,
+  } = useFieldArray({
+    control,
+    name: 'ingredients',
+    keyName: 'fieldId',
+  })
 
+  const {
+    fields: stepFields,
+    append: appendStep,
+    remove: removeStep,
+  } = useFieldArray({
+    control,
+    name: 'steps',
+    keyName: 'fieldId',
+  })
+
+  // Отслеживаем значения
+  const watchedDietTypes = watch('diet_types') ?? []
+  const watchedMealTypes = watch('meal_types') ?? []
+  const watchedRecipeImage = watch('image_url')
+
+  // Сохраняем исходные данные рецепта (для сравнения)
+  const [initialRecipe, setInitialRecipe] = useState<RecipeFormData | null>(null)
+
+  // Локальный стейт для превью основного фото
+  const [recipeImagePreview, setRecipeImagePreview] = useState<string>('')
+  // Храним временные URL для превью шагов (ключ - индекс в stepFields)
+  const [stepPreviewUrls, setStepPreviewUrls] = useState<Map<number, string>>(new Map())
+  // Общие ошибки сервера (не привязанные к конкретному полю)
+  const [serverErrors, setServerErrors] = useState<{ general?: string[] }>({})
+
+  // При загрузке рецепта заполняем форму и сохраняем исходное состояние
   useEffect(() => {
     if (recipe) {
       setValue('title', recipe.title)
       setValue('cook_time', recipe.cook_time)
       setValue('servings', recipe.servings)
-      setValue('image_url', recipe.image_url)
       setValue('diet_types', recipe.diet_types)
-      setIngredients(recipe.ingredients)
-      setSteps([...recipe.steps].sort((a, b) => a.step_number - b.step_number))
+      setValue('meal_types', recipe.meal_types)
+      setValue(
+        'ingredients',
+        recipe.ingredients.map(ing => ({
+          id: ing.id,
+          ingredient: ing.ingredient,
+          amount: ing.amount,
+          unit: ing.unit,
+        }))
+      )
+      setValue(
+        'steps',
+        recipe.steps
+          .sort((a, b) => a.step_number - b.step_number)
+          .map(step => ({
+            id: step.id,
+            description: step.description,
+            timer: step.timer ?? null,
+            image_url: step.image_url,
+          }))
+      )
+      setValue('image_url', recipe.image_url)
+
+      setInitialRecipe({
+        title: recipe.title,
+        cook_time: recipe.cook_time,
+        servings: recipe.servings,
+        diet_types: recipe.diet_types,
+        meal_types: recipe.meal_types,
+        image_url: recipe.image_url,
+        ingredients: recipe.ingredients.map(ing => ({
+          id: ing.id,
+          ingredient: ing.ingredient,
+          amount: ing.amount,
+          unit: ing.unit,
+        })),
+        steps: recipe.steps.map(step => ({
+          id: step.id,
+          description: step.description,
+          timer: step.timer,
+          image_url: step.image_url,
+        })),
+      })
+
+      if (recipe.image_url) {
+        setRecipeImagePreview(recipe.image_url)
+      }
+    } else {
+      setInitialRecipe(null)
+      setRecipeImagePreview('')
     }
+    // Очищаем предыдущие ошибки при загрузке нового рецепта
+    setServerErrors({})
   }, [recipe, setValue])
 
+  // Обработка выбора файла для основного фото
+  const handleRecipeImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setValue('image_url', file)
+    // Создаём временный URL для превью
+    if (recipeImagePreview && !recipeImagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(recipeImagePreview)
+    }
+    const previewUrl = URL.createObjectURL(file)
+    setRecipeImagePreview(previewUrl)
+  }
+
+  // Обработка выбора файла для шага
+  const handleStepImageChange = (index: number, file: File) => {
+    const url = URL.createObjectURL(file)
+    setStepPreviewUrls(prev => new Map(prev).set(index, url))
+    setValue(`steps.${index}.image_url`, file, { shouldDirty: true })
+  }
+
+  // Функция для получения URL для отображения шага (существующий или временный)
+  const getStepImageUrl = (field: RecipeStepForm, index: number): string | null => {
+    if (stepPreviewUrls.has(index)) {
+      return stepPreviewUrls.get(index)!
+    }
+    if (typeof field.image_url === 'string') {
+      return field.image_url
+    }
+    return null
+  }
+
+  // Удаление шага с очисткой временного URL
+  const handleDeleteStep = (index: number) => {
+    // Очищаем временный URL, если есть
+    const url = stepPreviewUrls.get(index)
+    if (url) {
+      URL.revokeObjectURL(url)
+      setStepPreviewUrls(prev => {
+        const newMap = new Map(prev)
+        newMap.delete(index)
+        return newMap
+      })
+    }
+    removeStep(index)
+    setDeleteStepIndex(null)
+  }
+
+  // Очистка всех временных URL при размонтировании
+  useEffect(() => {
+    return () => {
+      if (recipeImagePreview && recipeImagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(recipeImagePreview)
+      }
+      stepPreviewUrls.forEach(url => URL.revokeObjectURL(url))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Переключение типов
+  const toggleDietType = (dtId: number) => {
+    const cur = watchedDietTypes
+    setValue('diet_types', cur.includes(dtId) ? cur.filter(d => d !== dtId) : [...cur, dtId])
+  }
+
+  const toggleMealType = (mtId: number) => {
+    const cur = watchedMealTypes
+    setValue('meal_types', cur.includes(mtId) ? cur.filter(m => m !== mtId) : [...cur, mtId])
+  }
+
+  // Состояние для диалогов удаления
+  const [deleteIngredientIndex, setDeleteIngredientIndex] = useState<number | null>(null)
+  const [deleteStepIndex, setDeleteStepIndex] = useState<number | null>(null)
+
+  // Мутация сохранения
   const saveMutation = useMutation({
     mutationFn: async (data: RecipeFormData) => {
-      if (isEdit && recipeId) {
-        return updateRecipe(recipeId, data)
+      let savedRecipe: Awaited<ReturnType<typeof getRecipe>>
+
+      // Определяем, изменились ли основные поля рецепта
+      const recipeChanged =
+        !isEdit ||
+        !initialRecipe ||
+        data.title !== initialRecipe.title ||
+        data.cook_time !== initialRecipe.cook_time ||
+        data.servings !== initialRecipe.servings ||
+        JSON.stringify([...data.diet_types].sort()) !== JSON.stringify([...initialRecipe.diet_types].sort()) ||
+        JSON.stringify([...data.meal_types].sort()) !== JSON.stringify([...initialRecipe.meal_types].sort()) ||
+        (data.image_url instanceof File) // если выбран новый файл
+
+      if (recipeChanged) {
+        const formData = new FormData()
+        formData.append('title', data.title)
+        formData.append('cook_time', String(data.cook_time))
+        formData.append('servings', String(data.servings))
+        if (data.meal_types.length === 0) formData.append('meal_types', '')
+        else data.meal_types.forEach(mt => formData.append('meal_types', String(mt)))
+        if (data.diet_types.length === 0) formData.append('diet_types', '')
+        else data.diet_types.forEach(dt => formData.append('diet_types', String(dt)))
+        if (data.image_url instanceof File) {
+          formData.append('image_url', data.image_url)
+        }
+        if (!isEdit) {
+          savedRecipe = await createRecipe(formData)
+        } else {
+          savedRecipe = await updateRecipe(recipeId!, formData)
+        }
+      } else {
+        savedRecipe = recipe!
       }
-      return createRecipe(data)
+
+      const currentRecipeId = savedRecipe.id
+
+      // 2. Обработка ингредиентов
+      const currentIngredients = data.ingredients
+      const originalIngredients = initialRecipe?.ingredients ?? []
+
+      const addedIngredients: RecipeIngredientForm[] = []
+      const updatedIngredients: { id: number; data: Partial<RecipeIngredientForm> }[] = []
+      const removedIngredientIds: number[] = []
+
+      const originalMap = new Map<number, RecipeIngredientForm>()
+      originalIngredients.forEach(ing => {
+        if (ing.id) originalMap.set(ing.id, ing)
+      })
+
+      currentIngredients.forEach(ing => {
+        if (ing.id === undefined) {
+          addedIngredients.push(ing)
+        } else {
+          const original = originalMap.get(ing.id)
+          if (original) {
+            if (
+              original.ingredient !== ing.ingredient ||
+              original.amount !== ing.amount ||
+              original.unit !== ing.unit
+            ) {
+              updatedIngredients.push({
+                id: ing.id,
+                data: {
+                  ingredient: ing.ingredient,
+                  amount: ing.amount,
+                  unit: ing.unit,
+                },
+              })
+            }
+            originalMap.delete(ing.id)
+          }
+        }
+      })
+      originalMap.forEach((_, id) => removedIngredientIds.push(id))
+
+      for (const ing of addedIngredients) {
+        await addRecipeIngredient(currentRecipeId, {
+          ingredient: ing.ingredient,
+          amount: String(ing.amount),
+          unit: ing.unit,
+        })
+      }
+      for (const upd of updatedIngredients) {
+        await updateRecipeIngredient(currentRecipeId, upd.id, {
+          amount: String(upd.data.amount),
+          unit: upd.data.unit,
+        })
+      }
+      for (const id of removedIngredientIds) {
+        await deleteRecipeIngredient(currentRecipeId, id)
+      }
+
+      // 3. Обработка шагов
+      const currentSteps = data.steps
+      const originalSteps = initialRecipe?.steps ?? []
+
+      const addedSteps: RecipeStepForm[] = []
+      const updatedSteps: { id: number; data: Partial<RecipeStepForm> }[] = []
+      const removedStepIds: number[] = []
+
+      const originalStepMap = new Map<number, RecipeStepForm>()
+      originalSteps.forEach(step => {
+        if (step.id) originalStepMap.set(step.id, step)
+      })
+
+      currentSteps.forEach(step => {
+        if (step.id === undefined) {
+          addedSteps.push(step)
+        } else {
+          const original = originalStepMap.get(step.id)
+          if (original) {
+            const imageChanged = step.image_url instanceof File ||
+              (typeof step.image_url === 'string' && step.image_url !== original.image_url)
+            if (
+              original.description !== step.description ||
+              original.timer !== step.timer ||
+              imageChanged
+            ) {
+              updatedSteps.push({
+                id: step.id,
+                data: {
+                  description: step.description,
+                  timer: step.timer,
+                  image_url: step.image_url,
+                },
+              })
+            }
+            originalStepMap.delete(step.id)
+          }
+        }
+      })
+      originalStepMap.forEach((_, id) => removedStepIds.push(id))
+
+      // Добавление новых шагов (step_number не передаём, сервер сам определит порядок)
+      for (const step of addedSteps) {
+        const formData = new FormData()
+        formData.append('description', step.description)
+        if (step.timer) formData.append('timer', String(step.timer))
+        if (step.image_url instanceof File) {
+          formData.append('image_url', step.image_url)
+        } else if (typeof step.image_url === 'string' && step.image_url) {
+          formData.append('image_url', step.image_url)
+        }
+        await addRecipeStep(currentRecipeId, formData)
+      }
+      // Обновление существующих шагов
+      for (const upd of updatedSteps) {
+        const formData = new FormData()
+        if (upd.data.description !== undefined) formData.append('description', upd.data.description)
+        if (upd.data.timer !== undefined) formData.append('timer', String(upd.data.timer ?? ''))
+        if (upd.data.image_url instanceof File) {
+          formData.append('image_url', upd.data.image_url)
+        } else if (typeof upd.data.image_url === 'string' && upd.data.image_url) {
+          formData.append('image_url', upd.data.image_url)
+        }
+        if ([...formData.keys()].length > 0) {
+          await updateRecipeStep(currentRecipeId, upd.id, formData)
+        }
+      }
+      // Удаление шагов
+      for (const id of removedStepIds) {
+        await deleteRecipeStep(currentRecipeId, id)
+      }
+
+      return savedRecipe
     },
-    onSuccess: (saved) => {
+    onSuccess: saved => {
       toast.success(isEdit ? 'Рецепт обновлён' : 'Рецепт создан')
-      void queryClient.invalidateQueries({ queryKey: ['recipes'] })
+      queryClient.invalidateQueries({ queryKey: ['recipes'] })
+      setServerErrors({}) // очищаем ошибки
       if (!isEdit) {
         navigate(`/recipes/${saved.id}`)
       } else {
-        void queryClient.invalidateQueries({ queryKey: ['recipe', recipeId] })
+        queryClient.invalidateQueries({ queryKey: ['recipe', recipeId] })
       }
     },
-    onError: () => {
-      toast.error('Не удалось сохранить рецепт')
-    },
+    onError: (error: unknown) => {
+      console.error('Ошибка сохранения:', error);
+      if (error instanceof AxiosError && error.response) {
+        const { data } = error.response;
+        let errorMessages: string[] = [];
+
+        if (typeof data === 'string') {
+          // Сервер вернул HTML или текст (например, ошибка Django)
+          // Пробуем извлечь сообщение об ошибке из текста
+          if (data.includes('ValidationError')) {
+            const match = data.match(/\{.*\}/);
+            if (match) {
+              const jsonStr = match[0].replace(/'/g, '"');
+              errorMessages = [jsonStr];
+            }
+          } else {
+            errorMessages = [data.substring(0, 200)];
+          }
+        } else if (data && typeof data === 'object') {
+          // Ожидаемый JSON от DRF
+          if (data.__all__) {
+            errorMessages = Array.isArray(data.__all__) ? data.__all__ : [data.__all__];
+          } else if (data.non_field_errors) {
+            errorMessages = Array.isArray(data.non_field_errors) ? data.non_field_errors : [data.non_field_errors];
+          } else {
+            errorMessages = Object.entries(data).flatMap(([field, msgs]) => {
+              const msgsArray = Array.isArray(msgs) ? msgs : [String(msgs)];
+              return msgsArray.map(msg => `${field}: ${msg}`);
+            });
+          }
+        }
+
+        setServerErrors({ general: errorMessages });
+        toast.error('Ошибка сохранения. Проверьте правильность заполнения.');
+      } else {
+        toast.error('Не удалось сохранить рецепт');
+      }
+    }
   })
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setImageUploading(true)
-    try {
-      const result = await uploadImage(file)
-      setValue('image_url', result.url)
-      toast.success('Изображение загружено')
-    } catch {
-      toast.error('Не удалось загрузить изображение')
-    } finally {
-      setImageUploading(false)
-    }
-  }
+  const onSubmit = (data: RecipeFormData) => {
+    if (isEdit && initialRecipe) {
+      const isRecipeChanged =
+        data.title !== initialRecipe.title ||
+        data.cook_time !== initialRecipe.cook_time ||
+        data.servings !== initialRecipe.servings ||
+        JSON.stringify([...data.diet_types].sort()) !== JSON.stringify([...initialRecipe.diet_types].sort()) ||
+        JSON.stringify([...data.meal_types].sort()) !== JSON.stringify([...initialRecipe.meal_types].sort()) ||
+        (data.image_url instanceof File)
 
-  const toggleDietType = (dtId: number) => {
-    const current = watchedDietTypes
-    if (current.includes(dtId)) {
-      setValue('diet_types', current.filter((d) => d !== dtId))
-    } else {
-      setValue('diet_types', [...current, dtId])
-    }
-  }
+      const ingredientsChanged =
+        JSON.stringify(data.ingredients) !== JSON.stringify(initialRecipe.ingredients)
 
-  const handleAddIngredient = async () => {
-    if (!recipeId) {
-      toast.error('Сначала сохраните рецепт')
-      return
-    }
-    if (!newIngredient.ingredient || !newIngredient.amount || !newIngredient.unit) {
-      toast.error('Заполните все поля ингредиента')
-      return
-    }
-    setAddingIngredient(true)
-    try {
-      const added = await addRecipeIngredient(recipeId, {
-        ingredient: Number(newIngredient.ingredient),
-        amount: newIngredient.amount,
-        unit: Number(newIngredient.unit),
-      })
-      setIngredients((prev) => [...prev, added as RecipeIngredient])
-      setNewIngredient({ ingredient: '', amount: '', unit: '' })
-      toast.success('Ингредиент добавлен')
-    } catch {
-      toast.error('Не удалось добавить ингредиент')
-    } finally {
-      setAddingIngredient(false)
-    }
-  }
+      const stepsChanged =
+        JSON.stringify(data.steps.map(s => ({ ...s, image_url: typeof s.image_url === 'string' ? s.image_url : (s.image_url instanceof File ? 'FILE' : null) }))) !==
+        JSON.stringify(initialRecipe.steps.map(s => ({ ...s, image_url: s.image_url })))
 
-  const handleDeleteIngredient = async () => {
-    if (!recipeId || !deleteIngredientTarget) return
-    try {
-      await deleteRecipeIngredient(recipeId, deleteIngredientTarget.id)
-      setIngredients((prev) => prev.filter((i) => i.id !== deleteIngredientTarget.id))
-      setDeleteIngredientTarget(null)
-      toast.success('Ингредиент удалён')
-    } catch {
-      toast.error('Не удалось удалить ингредиент')
-    }
-  }
-
-  const handleAddStep = async () => {
-    if (!recipeId) {
-      toast.error('Сначала сохраните рецепт')
-      return
-    }
-    if (!newStep.description) {
-      toast.error('Введите описание шага')
-      return
-    }
-    setAddingStep(true)
-    try {
-      const added = await addRecipeStep(recipeId, {
-        description: newStep.description,
-        timer: newStep.timer ? Number(newStep.timer) : null,
-        step_number: steps.length + 1,
-        image_url: newStep.image_url || null,
-      })
-      setSteps((prev) => [...prev, added as RecipeStep])
-      setNewStep({ description: '', timer: '', image_url: '' })
-      toast.success('Шаг добавлен')
-    } catch {
-      toast.error('Не удалось добавить шаг')
-    } finally {
-      setAddingStep(false)
-    }
-  }
-
-  const handleDeleteStep = async () => {
-    if (!recipeId || !deleteStepTarget) return
-    try {
-      await deleteRecipeStep(recipeId, deleteStepTarget.id)
-      setSteps((prev) => prev.filter((s) => s.id !== deleteStepTarget.id))
-      setDeleteStepTarget(null)
-      toast.success('Шаг удалён')
-    } catch {
-      toast.error('Не удалось удалить шаг')
-    }
-  }
-
-  const handleUpdateStep = async (stepId: number, description: string) => {
-    if (!recipeId) return
-    try {
-      await updateRecipeStep(recipeId, stepId, { description })
-      setSteps((prev) =>
-        prev.map((s) => (s.id === stepId ? { ...s, description } : s))
-      )
-    } catch {
-      toast.error('Не удалось обновить шаг')
-    }
-  }
-
-  const handleUpdateStepImage = async (stepId: number, image_url: string) => {
-    if (!recipeId) return
-    try {
-      await updateRecipeStep(recipeId, stepId, { image_url })
-      setSteps((prev) =>
-        prev.map((s) => (s.id === stepId ? { ...s, image_url } : s))
-      )
-    } catch {
-      toast.error('Не удалось обновить изображение шага')
-    }
-  }
-
-  const handleStepImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, stepId: number | 'new') => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setStepImageUploading(true)
-    try {
-      const result = await uploadImage(file)
-      if (stepId === 'new') {
-        setNewStep((prev) => ({ ...prev, image_url: result.url }))
-      } else {
-        await handleUpdateStepImage(stepId, result.url)
+      if (!isRecipeChanged && !ingredientsChanged && !stepsChanged) {
+        toast.info('Нет изменений для сохранения')
+        return
       }
-      toast.success('Изображение загружено')
-    } catch {
-      toast.error('Не удалось загрузить изображение')
-    } finally {
-      setStepImageUploading(false)
-      e.target.value = ''
     }
+    saveMutation.mutate(data)
   }
 
   if (recipeLoading) {
@@ -290,420 +528,425 @@ export function RecipeFormPage() {
       <div className="space-y-4">
         <Skeleton className="h-8 w-48" />
         <div className="card p-6 space-y-4">
-          {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}
+          {[...Array(5)].map((_, i) => (
+            <Skeleton key={i} className="h-10 w-full" />
+          ))}
         </div>
       </div>
     )
   }
 
-  const previewData = {
-    title: watch('title') || '',
-    image_url: watchedImageUrl,
-    servings: watch('servings') || recipe?.servings || 1,
-    cook_time: watch('cook_time') || recipe?.cook_time || 0,
-    total_calories: recipe?.total_calories ?? 0,
-    total_proteins: recipe?.total_proteins ?? 0,
-    total_fats: recipe?.total_fats ?? 0,
-    total_carbs: recipe?.total_carbs ?? 0,
-    ingredients,
-    steps,
-  }
+  // Динамические данные для предпросмотра (используем форму и исходные данные для названий)
+  const previewData = recipe ? {
+    title: recipe.title,
+    image_url: recipeImagePreview || (typeof watchedRecipeImage === 'string' ? watchedRecipeImage : ''),
+    servings: recipe.servings,
+    cook_time: recipe.cook_time,
+    total_calories: recipe.total_calories,
+    total_proteins: recipe.total_proteins,
+    total_fats: recipe.total_fats,
+    total_carbs: recipe.total_carbs,
+    ingredients: recipe.ingredients,
+    steps: recipe.steps,
+  } : undefined
 
   return (
     <div className="flex gap-8 items-start">
-    <div className="flex-1 min-w-0 space-y-6">
-      <div className="flex items-center gap-4">
-        <button className="btn-ghost p-2" onClick={() => navigate('/recipes')}>
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold text-[var(--text-primary)]">
-            {isEdit ? 'Редактировать рецепт' : 'Новый рецепт'}
-          </h1>
-          {isEdit && <p className="text-sm text-[var(--text-muted)]">ID: {recipeId}</p>}
+      <div className="flex-1 min-w-0 space-y-6">
+        {/* Заголовок */}
+        <div className="flex items-center gap-4">
+          <button className="btn-ghost p-2" onClick={() => navigate('/recipes')}>
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+              {isEdit ? 'Редактировать рецепт' : 'Новый рецепт'}
+            </h1>
+            {isEdit && <p className="text-sm text-[var(--text-muted)]">ID: {recipeId}</p>}
+          </div>
         </div>
-      </div>
 
-      <form onSubmit={handleSubmit((data) => saveMutation.mutate(data))}>
-        <div className="card p-6 space-y-5">
-          <h2 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
-            <ChefHat className="w-4 h-4 text-primary-600" />
-            Основная информация
-          </h2>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="card p-6 space-y-5">
+            <h2 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
+              <ChefHat className="w-4 h-4 text-primary-600" />
+              Основная информация
+            </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
-                Название рецепта *
-              </label>
-              <input
-                {...register('title')}
-                className="input"
-                placeholder="Введите название рецепта"
-              />
-              {errors.title && <p className="text-xs text-red-500 mt-1">{errors.title.message}</p>}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
-                <Clock className="w-3.5 h-3.5 inline mr-1" />
-                Время приготовления (мин) *
-              </label>
-              <input
-                {...register('cook_time', { valueAsNumber: true })}
-                type="number"
-                className="input"
-                placeholder="30"
-                min={1}
-              />
-              {errors.cook_time && <p className="text-xs text-red-500 mt-1">{errors.cook_time.message}</p>}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
-                <Users className="w-3.5 h-3.5 inline mr-1" />
-                Количество порций *
-              </label>
-              <input
-                {...register('servings', { valueAsNumber: true })}
-                type="number"
-                className="input"
-                placeholder="4"
-                min={1}
-              />
-              {errors.servings && <p className="text-xs text-red-500 mt-1">{errors.servings.message}</p>}
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
-                <ImageIcon className="w-3.5 h-3.5 inline mr-1" />
-                Изображение
-              </label>
-              <div className="flex gap-2 items-start flex-wrap sm:flex-nowrap">
-                <input
-                  {...register('image_url')}
-                  className="input flex-1 min-w-0"
-                  placeholder="https://..."
-                />
-                <button
-                  type="button"
-                  className="btn-secondary flex-shrink-0"
-                  onClick={() => setImageSearchOpen(true)}
-                >
-                  <Search className="w-4 h-4" />
-                  Найти в интернете
-                </button>
-                <label className="btn-secondary cursor-pointer flex-shrink-0">
-                  {imageUploading ? (
-                    <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
-                  ) : (
-                    <ImageIcon className="w-4 h-4" />
-                  )}
-                  Загрузить
-                  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
+                  Название рецепта *
                 </label>
+                <input {...register('title')} className="input" placeholder="Введите название рецепта" />
+                <FieldError msg={errors.title?.message} />
               </div>
-              {watchedImageUrl && (
-                <img src={watchedImageUrl} alt="Preview" className="mt-2 h-32 rounded-lg object-cover" />
-              )}
-            </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
-              Типы диет
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {dietTypes?.map((dt) => (
-                <button
-                  key={dt.id}
-                  type="button"
-                  onClick={() => toggleDietType(dt.id)}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
-                    watchedDietTypes.includes(dt.id)
-                      ? 'bg-primary-600 text-white border-primary-600'
-                      : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-primary-400'
-                  }`}
-                >
-                  {dt.name}
-                </button>
-              ))}
-            </div>
-          </div>
+              <div>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
+                  <Clock className="w-3.5 h-3.5 inline mr-1" />
+                  Время приготовления (мин) *
+                </label>
+                <input
+                  {...register('cook_time', { valueAsNumber: true })}
+                  type="number"
+                  className="input"
+                  placeholder="30"
+                  min={1}
+                />
+                <FieldError msg={errors.cook_time?.message} />
+              </div>
 
-          <div className="flex justify-end pt-2">
-            <button
-              type="submit"
-              className="btn-primary"
-              disabled={isSubmitting || saveMutation.isPending}
-            >
-              {(isSubmitting || saveMutation.isPending) ? (
-                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <Save className="w-4 h-4" />
-              )}
-              {isEdit ? 'Сохранить изменения' : 'Создать рецепт'}
-            </button>
-          </div>
-        </div>
-      </form>
+              <div>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
+                  <Users className="w-3.5 h-3.5 inline mr-1" />
+                  Количество порций *
+                </label>
+                <input
+                  {...register('servings', { valueAsNumber: true })}
+                  type="number"
+                  className="input"
+                  placeholder="4"
+                  min={1}
+                />
+                <FieldError msg={errors.servings?.message} />
+              </div>
 
-      {/* Ingredients Section */}
-      <div className="card p-6 space-y-4">
-        <h2 className="font-semibold text-[var(--text-primary)]">Ингредиенты ({ingredients.length})</h2>
-
-        {!isEdit && (
-          <p className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-4 py-2">
-            Сначала создайте рецепт, затем добавьте ингредиенты
-          </p>
-        )}
-
-        {ingredients.length > 0 && (
-          <div className="border border-[var(--border-color)] rounded-lg overflow-hidden">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-[var(--border-color)]">
-                  <th className="table-header text-left">Ингредиент</th>
-                  <th className="table-header text-center">Количество</th>
-                  <th className="table-header text-center">Единица</th>
-                  <th className="table-header text-right"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {ingredients.map((ing) => (
-                  <tr key={ing.id} className="border-b border-[var(--border-color)] last:border-0">
-                    <td className="table-cell font-medium">{ing.ingredient_name}</td>
-                    <td className="table-cell text-center">{ing.amount}</td>
-                    <td className="table-cell text-center">{ing.unit_name}</td>
-                    <td className="table-cell text-right">
-                      <button
-                        className="btn-ghost p-1.5 text-red-500 hover:text-red-600"
-                        onClick={() => setDeleteIngredientTarget(ing)}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {isEdit && (
-          <div className="border border-dashed border-[var(--border-color)] rounded-lg p-4 space-y-3">
-            <p className="text-sm font-medium text-[var(--text-secondary)]">Добавить ингредиент</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <IngredientAutocomplete
-                value={newIngredient.ingredient}
-                onChange={(id, _name) => setNewIngredient({ ...newIngredient, ingredient: id })}
-              />
-              <input
-                className="input"
-                type="number"
-                placeholder="Количество"
-                value={newIngredient.amount}
-                onChange={(e) => setNewIngredient({ ...newIngredient, amount: e.target.value })}
-                min={0}
-                step="0.1"
-              />
-              <select
-                className="input"
-                value={newIngredient.unit}
-                onChange={(e) => setNewIngredient({ ...newIngredient, unit: e.target.value })}
-              >
-                <option value="">Единица измерения</option>
-                {units?.map((u) => (
-                  <option key={u.id} value={u.id}>{u.name}</option>
-                ))}
-              </select>
-            </div>
-            <button
-              className="btn-secondary"
-              onClick={handleAddIngredient}
-              disabled={addingIngredient}
-            >
-              {addingIngredient ? (
-                <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
-              ) : (
-                <Plus className="w-4 h-4" />
-              )}
-              Добавить
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Steps Section */}
-      <div className="card p-6 space-y-4">
-        <h2 className="font-semibold text-[var(--text-primary)]">Шаги приготовления ({steps.length})</h2>
-
-        {!isEdit && (
-          <p className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-4 py-2">
-            Сначала создайте рецепт, затем добавьте шаги
-          </p>
-        )}
-
-        {steps.length > 0 && (
-          <div className="space-y-3">
-            {steps.map((step, idx) => (
-              <div key={step.id} className="flex gap-3 p-4 border border-[var(--border-color)] rounded-lg">
-                <div className="w-7 h-7 rounded-full bg-primary-600 text-white text-sm font-semibold flex items-center justify-center flex-shrink-0">
-                  {idx + 1}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
+                  <ImageIcon className="w-3.5 h-3.5 inline mr-1" />
+                  Изображение
+                </label>
+                <div className="flex gap-2 items-start">
+                  <label className="btn-secondary cursor-pointer flex-shrink-0">
+                    <ImageIcon className="w-4 h-4" />
+                    Загрузить
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleRecipeImageFileChange}
+                    />
+                  </label>
                 </div>
-                <div className="flex-1">
-                  <textarea
-                    className="input resize-none"
-                    rows={2}
-                    defaultValue={step.description}
-                    onBlur={(e) => {
-                      if (e.target.value !== step.description) {
-                        void handleUpdateStep(step.id, e.target.value)
-                      }
-                    }}
+                {recipeImagePreview && (
+                  <img
+                    src={recipeImagePreview}
+                    alt="Preview"
+                    className="mt-2 h-32 rounded-lg object-cover"
                   />
-                  {step.timer && (
-                    <p className="text-xs text-[var(--text-muted)] mt-1 flex items-center gap-1">
-                      <Timer className="w-3 h-3" />
-                      Таймер: {step.timer} минут
-                    </p>
-                  )}
-                  {step.image_url && (
-                    <img src={step.image_url} alt={`Шаг ${idx + 1}`} className="mt-2 h-24 rounded-lg object-cover" />
-                  )}
-                  <div className="flex items-center gap-2 mt-1">
+                )}
+              </div>
+            </div>
+
+            {/* Типы диет */}
+            <div>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                Типы диет
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {dietTypes?.map(dt => (
+                  <button
+                    key={dt.id}
+                    type="button"
+                    onClick={() => toggleDietType(dt.id)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                      watchedDietTypes.includes(dt.id)
+                        ? 'bg-primary-600 text-white border-primary-600'
+                        : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-primary-400'
+                    }`}
+                  >
+                    {dt.name}
+                  </button>
+                ))}
+              </div>
+              <FieldError msg={errors.diet_types?.message} />
+            </div>
+
+            {/* Приёмы пищи */}
+            <div>
+              <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                Приёмы пищи
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {mealTypes?.map(mt => (
+                  <button
+                    key={mt.id}
+                    type="button"
+                    onClick={() => toggleMealType(mt.id)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                      watchedMealTypes.includes(mt.id)
+                        ? 'bg-primary-600 text-white border-primary-600'
+                        : 'bg-[var(--bg-secondary)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-primary-400'
+                    }`}
+                  >
+                    {mt.name}
+                  </button>
+                ))}
+              </div>
+              <FieldError msg={errors.meal_types?.message} />
+            </div>
+
+            {/* Ингредиенты */}
+            <div className="space-y-4">
+              <h2 className="font-semibold text-[var(--text-primary)]">
+                Ингредиенты ({ingredientFields.length})
+              </h2>
+
+              {!isEdit && (
+                <p className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-4 py-2">
+                  Сначала создайте рецепт, затем добавьте ингредиенты
+                </p>
+              )}
+
+              {ingredientFields.length > 0 && (
+                <div className="border border-[var(--border-color)] rounded-lg overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-[var(--border-color)]">
+                        <th className="table-header text-left">Ингредиент</th>
+                        <th className="table-header text-center">Количество</th>
+                        <th className="table-header text-center">Единица</th>
+                        <th className="table-header text-right"></th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                      {ingredientFields.map((field, index) => {
+                        const error = (errors.ingredients as any)?.[index]
+                        const initialIngredientName = (() => {
+                          if (!isEdit || !recipe) return undefined
+                          const ingredientId = field.id // id ингредиента в БД (если есть)
+                          if (!ingredientId) return undefined
+                          const found = recipe.ingredients.find(ing => ing.id === ingredientId)
+                          return found?.ingredient_name
+                        })()
+                        return (
+                          <tr key={field.fieldId} className="border-b border-[var(--border-color)] last:border-0">
+                            <td className="table-cell">
+                              <Controller
+                                control={control}
+                                name={`ingredients.${index}.ingredient`}
+                                render={({ field: controllerField }) => (
+                                  <IngredientAutocomplete
+                                    initialValue={initialIngredientName}
+                                    value={String(controllerField.value)}
+                                    onChange={(id) => {
+                                      controllerField.onChange(Number(id))
+                                    }}
+                                    error={!!error?.ingredient}
+                                  />
+                                )}
+                              />
+                              <FieldError msg={error?.ingredient?.message} />
+                            </td>
+                            <td className="table-cell">
+                              <input
+                                type="number"
+                                className="input w-24 mx-auto block"
+                                {...register(`ingredients.${index}.amount`, { valueAsNumber: true })}
+                                step="0.01"
+                                min={0}
+                              />
+                              <FieldError msg={error?.amount?.message} />
+                            </td>
+                            <td className="table-cell">
+                              <select
+                                className="input"
+                                {...register(`ingredients.${index}.unit`, { valueAsNumber: true })}
+                              >
+                                <option value="">Единица</option>
+                                {units?.map(u => (
+                                  <option key={u.id} value={u.id}>{u.name}</option>
+                                ))}
+                              </select>
+                              <FieldError msg={error?.unit?.message} />
+                            </td>
+                            <td className="table-cell text-right">
+                              <button
+                                type="button"
+                                className="btn-ghost p-1.5 text-red-500 hover:text-red-600"
+                                onClick={() => setDeleteIngredientIndex(index)}
+                                title="Удалить"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {isEdit && (
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() =>
+                    appendIngredient({
+                      ingredient: 0,
+                      amount: 0,
+                      unit: 0,
+                    })
+                  }
+                >
+                  <Plus className="w-4 h-4" /> Добавить ингредиент
+                </button>
+              )}
+            </div>
+
+            {/* Шаги приготовления */}
+            <div className="space-y-4">
+              <h2 className="font-semibold text-[var(--text-primary)]">
+                Шаги приготовления ({stepFields.length})
+              </h2>
+
+              {!isEdit && (
+                <p className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg px-4 py-2">
+                  Сначала создайте рецепт, затем добавьте шаги
+                </p>
+              )}
+
+              {stepFields.map((field, index) => {
+                const error = (errors.steps as any)?.[index]
+                const displayImageUrl = getStepImageUrl(field, index)
+                return (
+                  <div key={field.fieldId} className="flex gap-3 p-4 border border-[var(--border-color)] rounded-lg">
+                    <div className="w-7 h-7 rounded-full bg-primary-600 text-white text-sm font-semibold flex items-center justify-center flex-shrink-0">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <textarea
+                        className="input resize-none w-full"
+                        rows={2}
+                        {...register(`steps.${index}.description`)}
+                      />
+                      <FieldError msg={error?.description?.message} />
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <Timer className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                          <input
+                            type="number"
+                            className="input w-28"
+                            placeholder="Таймер (мин)"
+                            {...register(`steps.${index}.timer`, { valueAsNumber: true })}
+                          />
+                        </div>
+                        <label className="btn-ghost text-xs cursor-pointer flex items-center gap-1">
+                          <ImageIcon className="w-3 h-3" />
+                          {displayImageUrl ? 'Сменить фото' : 'Загрузить фото'}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={e => {
+                              const file = e.target.files?.[0]
+                              if (file) handleStepImageChange(index, file)
+                            }}
+                          />
+                        </label>
+                      </div>
+                      <FieldError msg={error?.timer?.message} />
+                      {displayImageUrl && (
+                        <img
+                          src={displayImageUrl}
+                          alt={`Шаг ${index + 1}`}
+                          className="h-24 rounded-lg object-cover"
+                        />
+                      )}
+                    </div>
                     <button
                       type="button"
-                      className="btn-ghost text-xs flex items-center gap-1 text-[var(--text-muted)]"
-                      onClick={() => setStepImageSearchTarget(step.id)}
+                      className="btn-ghost p-1.5 text-red-500 hover:text-red-600 flex-shrink-0"
+                      onClick={() => setDeleteStepIndex(index)}
                     >
-                      <Search className="w-3 h-3" />
-                      {step.image_url ? 'Изменить фото' : 'Найти фото'}
+                      <Trash2 className="w-3.5 h-3.5" />
                     </button>
-                    <label className="btn-ghost text-xs flex items-center gap-1 text-[var(--text-muted)] cursor-pointer">
-                      {stepImageUploading ? (
-                        <span className="w-3 h-3 border border-current/30 border-t-current rounded-full animate-spin" />
-                      ) : (
-                        <ImageIcon className="w-3 h-3" />
-                      )}
-                      Загрузить
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => void handleStepImageUpload(e, step.id)} />
-                    </label>
                   </div>
-                </div>
-                <button
-                  className="btn-ghost p-1.5 text-red-500 hover:text-red-600 flex-shrink-0"
-                  onClick={() => setDeleteStepTarget(step)}
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+                )
+              })}
 
-        {isEdit && (
-          <div className="border border-dashed border-[var(--border-color)] rounded-lg p-4 space-y-3">
-            <p className="text-sm font-medium text-[var(--text-secondary)]">Добавить шаг</p>
-            <textarea
-              className="input resize-none"
-              rows={3}
-              placeholder="Описание шага..."
-              value={newStep.description}
-              onChange={(e) => setNewStep({ ...newStep, description: e.target.value })}
-            />
-            <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center gap-2">
-                <Timer className="w-4 h-4 text-[var(--text-muted)]" />
-                <input
-                  className="input w-32"
-                  type="number"
-                  placeholder="Таймер (минуты)"
-                  value={newStep.timer}
-                  onChange={(e) => setNewStep({ ...newStep, timer: e.target.value })}
-                  min={0}
-                />
+              {isEdit && (
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() =>
+                    appendStep({
+                      description: '',
+                      timer: null,
+                      image_url: null,
+                    })
+                  }
+                >
+                  <Plus className="w-4 h-4" /> Добавить шаг
+                </button>
+              )}
+            </div>
+
+            {/* Отображение общих ошибок сервера перед кнопкой */}
+            {serverErrors.general && serverErrors.general.length > 0 && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                <p className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">Ошибки сохранения:</p>
+                <ul className="text-xs text-red-700 dark:text-red-300 list-disc pl-5 space-y-0.5">
+                  {serverErrors.general.map((err, i) => (
+                    <li key={i}>{err}</li>
+                  ))}
+                </ul>
               </div>
+            )}
+
+            <div className="flex justify-end pt-2">
               <button
-                type="button"
-                className="btn-secondary flex-shrink-0"
-                onClick={() => setStepImageSearchTarget('new')}
+                type="submit"
+                className="btn-primary"
+                disabled={isSubmitting || saveMutation.isPending}
               >
-                <Search className="w-4 h-4" />
-                {newStep.image_url ? 'Фото выбрано' : 'Найти фото'}
-              </button>
-              <label className="btn-secondary cursor-pointer flex-shrink-0">
-                {stepImageUploading ? (
-                  <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
+                {isSubmitting || saveMutation.isPending ? (
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  <ImageIcon className="w-4 h-4" />
+                  <Save className="w-4 h-4" />
                 )}
-                Загрузить
-                <input type="file" accept="image/*" className="hidden" onChange={(e) => void handleStepImageUpload(e, 'new')} />
-              </label>
-              <button
-                className="btn-secondary"
-                onClick={handleAddStep}
-                disabled={addingStep}
-              >
-                {addingStep ? (
-                  <span className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
-                ) : (
-                  <Plus className="w-4 h-4" />
-                )}
-                Добавить шаг
+                {isEdit ? 'Сохранить изменения' : 'Создать рецепт'}
               </button>
             </div>
-            {newStep.image_url && (
-              <img src={newStep.image_url} alt="Фото шага" className="h-20 rounded-lg object-cover" />
-            )}
           </div>
-        )}
+        </form>
       </div>
 
+      {/* Превью (только для редактирования) */}
+      {isEdit && (
+        <div className="hidden xl:block sticky top-6 flex-shrink-0">
+          <p className="text-xs text-[var(--text-muted)] text-center mb-2">Предпросмотр</p>
+          <RecipePhonePreview data={previewData} />
+        </div>
+      )}
+
+      {/* Диалоги удаления */}
       <ConfirmDialog
-        open={!!deleteIngredientTarget}
+        open={deleteIngredientIndex !== null}
         title="Удалить ингредиент?"
-        description={`Ингредиент "${deleteIngredientTarget?.ingredient_name}" будет удалён из рецепта.`}
-        onConfirm={handleDeleteIngredient}
-        onCancel={() => setDeleteIngredientTarget(null)}
+        description="Ингредиент будет удалён из рецепта."
+        onConfirm={() => {
+          if (deleteIngredientIndex !== null) {
+            removeIngredient(deleteIngredientIndex)
+            setDeleteIngredientIndex(null)
+          }
+        }}
+        onCancel={() => setDeleteIngredientIndex(null)}
       />
 
       <ConfirmDialog
-        open={!!deleteStepTarget}
+        open={deleteStepIndex !== null}
         title="Удалить шаг?"
         description="Шаг будет удалён из рецепта безвозвратно."
-        onConfirm={handleDeleteStep}
-        onCancel={() => setDeleteStepTarget(null)}
-      />
-
-      <ImageSearchModal
-        open={imageSearchOpen}
-        onClose={() => setImageSearchOpen(false)}
-        onSelect={(url) => setValue('image_url', url)}
-      />
-
-      <ImageSearchModal
-        open={stepImageSearchTarget !== null}
-        onClose={() => setStepImageSearchTarget(null)}
-        onSelect={(url) => {
-          if (stepImageSearchTarget === 'new') {
-            setNewStep((prev) => ({ ...prev, image_url: url }))
-          } else if (typeof stepImageSearchTarget === 'number') {
-            void handleUpdateStepImage(stepImageSearchTarget, url)
+        onConfirm={() => {
+          if (deleteStepIndex !== null) {
+            handleDeleteStep(deleteStepIndex)
           }
-          setStepImageSearchTarget(null)
         }}
+        onCancel={() => setDeleteStepIndex(null)}
       />
-
-    </div>
-
-    {isEdit && (
-      <div className="hidden xl:block sticky top-6 flex-shrink-0">
-        <p className="text-xs text-[var(--text-muted)] text-center mb-2">Предпросмотр</p>
-        <RecipePhonePreview data={previewData} />
-      </div>
-    )}
     </div>
   )
 }

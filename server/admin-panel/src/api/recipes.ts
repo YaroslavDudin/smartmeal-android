@@ -23,13 +23,17 @@ export async function getRecipe(id: number) {
   return response.data
 }
 
-export async function createRecipe(data: Partial<Recipe>) {
-  const response = await api.post<Recipe>('/recipes/', data)
+export async function createRecipe(data: FormData) {
+  const response = await api.post('/recipes/', data, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
   return response.data
 }
 
-export async function updateRecipe(id: number, data: Partial<Recipe>) {
-  const response = await api.patch<Recipe>(`/recipes/${id}/`, data)
+export async function updateRecipe(id: number, data: FormData) {
+  const response = await api.patch<Recipe>(`/recipes/${id}/`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
   return response.data
 }
 
@@ -51,13 +55,17 @@ export async function deleteRecipeIngredient(recipeId: number, ingredientId: num
   await api.delete(`/recipes/${recipeId}/ingredients/${ingredientId}/`)
 }
 
-export async function addRecipeStep(recipeId: number, data: object) {
-  const response = await api.post(`/recipes/${recipeId}/steps/`, data)
+export async function addRecipeStep(recipeId: number, data: FormData) {
+  const response = await api.post(`/recipes/${recipeId}/steps/`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
   return response.data
 }
 
-export async function updateRecipeStep(recipeId: number, stepId: number, data: object) {
-  const response = await api.patch(`/recipes/${recipeId}/steps/${stepId}/`, data)
+export async function updateRecipeStep(recipeId: number, stepId: number, data: FormData) {
+  const response = await api.patch<Recipe>(`/recipes/${recipeId}/steps/${stepId}/`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
   return response.data
 }
 

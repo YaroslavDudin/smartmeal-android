@@ -32,6 +32,7 @@ const ingredientSchema = z.object({
     })
     .nullable()
     .optional(),
+  canBeAddedToCart: z.boolean().default(true),
 })
 
 type IngredientFormData = z.infer<typeof ingredientSchema>
@@ -80,6 +81,7 @@ export function IngredientFormPage() {
     if (ingredient) {
       setValue('name', ingredient.name)
       setValue('category', ingredient.category ?? null)
+      setValue('canBeAddedToCart', ingredient.can_be_added_to_cart)
       if (ingredient.nutrition) {
         setHasNutrition(true)
         setValue('nutrition.base_weight', Number(ingredient.nutrition.base_weight))
@@ -112,6 +114,7 @@ export function IngredientFormPage() {
       name: data.name,
       category: data.category || null,
       nutrition: hasNutrition ? data.nutrition : null,
+      can_be_added_to_cart: data.canBeAddedToCart,
     }
     if (isEdit && ingredientId) {
       return updateIngredient(ingredientId, payload as unknown as Parameters<typeof updateIngredient>[1])
@@ -242,6 +245,17 @@ export function IngredientFormPage() {
             </div>
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
+              Нужно ли добавлять в корзину
+            </label>
+            <input
+              {...register('canBeAddedToCart')}
+              type="checkbox"
+              className="checkbox"
+            />
+          </div>
+
           {/* Nutrition */}
           <div>
             <div className="flex items-center gap-3 mb-3">
@@ -364,9 +378,9 @@ export function IngredientFormPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--border-color)]">
-                  <th className="table-header text-left">Единица</th>
-                  <th className="table-header text-center">Грамм на единицу</th>
-                  <th className="table-header text-right"></th>
+                  <th className="table-header text-left">Из единицы изменения</th>
+                  <th className="table-header text-left">В единицу изменения</th>
+                  <th className="table-header text-right">Количество</th>
                 </tr>
               </thead>
               <tbody>
@@ -374,7 +388,7 @@ export function IngredientFormPage() {
                   <tr key={conv.id} className="border-b border-[var(--border-color)] last:border-0">
                     <td className="table-cell font-medium">{conv.from_unit_name}</td>
                     <td className="table-cell font-medium">{conv.to_unit_name}</td>
-                    <td className="table-cell text-center">{conv.amount_per_unit} г</td>
+                    <td className="table-cell text-center">{conv.amount_per_unit} {conv.to_unit_name}</td>
                     <td className="table-cell text-right">
                       <button
                         className="btn-ghost p-1.5 text-red-500 hover:text-red-600"
