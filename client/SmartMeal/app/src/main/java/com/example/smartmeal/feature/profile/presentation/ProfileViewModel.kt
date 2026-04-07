@@ -17,35 +17,39 @@ import kotlinx.coroutines.launch
 data class ProfileState(
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
+    val isRegenerating: Boolean = false,
     val error: String? = null,
     val savedSuccess: Boolean = false,
 
-    // Р вЂќР В°Р Р…Р Р…РЎвЂ№Р Вµ Р С—РЎР‚Р С•РЎвЂћР С‘Р В»РЎРЏ РЎРѓ РЎРѓР ВµРЎР‚Р Р†Р ВµРЎР‚Р В°
+    // Данные профиля с сервера
     val userName: String = "admin",
+    val userEmail: String = "",
+    val birthDate: String = "",
     val currentDietTypeId: Int? = null,
     val currentDietTypeName: String? = null,
     val currentAllergyIds: Set<Int> = emptySet(),
     val currentAllergyNames: List<String> = emptyList(),
     val portionSize: Int = 1,
     val preferredCookTime: String? = null,
+    val mealCookTimes: Map<String, String> = emptyMap(),
 
-    // Р РЋР С—РЎР‚Р В°Р Р†Р С•РЎвЂЎР Р…Р С‘Р С”Р С‘
+    // Справочники
     val allDietTypes: List<DietTypeDto> = emptyList(),
     val allAllergies: List<AllergyDto> = emptyList(),
 
-    // Р вЂ™РЎР‚Р ВµР СР ВµР Р…Р Р…РЎвЂ№Р Вµ Р Р†РЎвЂ№Р В±Р С•РЎР‚РЎвЂ№ (Р Т‘Р С• Р Р…Р В°Р В¶Р В°РЎвЂљР С‘РЎРЏ "Р СџР С•Р Т‘РЎвЂљР Р†Р ВµРЎР‚Р Т‘Р С‘РЎвЂљРЎРЉ")
+    // Временные выборы (до нажатия "Подтвердить")
     val pendingAllergyIds: Set<Int> = emptySet(),
     val pendingDietTypeId: Int? = null,
     val pendingPortionSize: Int = 1,
 
-    // Р ВР В·Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р Вµ
+    // Избранное
     val favorites: List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto> = emptyList()
 )
 
 class ProfileViewModel(
     private val api: SetupApi,
     private val preferences: SetupPreferences,
-    // Р С™Р С•Р В»Р В±РЎРЊР С” Р Р†РЎвЂ№Р В·РЎвЂ№Р Р†Р В°Р ВµРЎвЂљРЎРѓРЎРЏ Р С—Р С•РЎРѓР В»Р Вµ Р В»РЎР‹Р В±Р С•Р С–Р С• РЎС“РЎРѓР С—Р ВµРЎв‚¬Р Р…Р С•Р С–Р С• PATCH РІР‚вЂќ HomeViewModel Р С—Р ВµРЎР‚Р ВµР В·Р В°Р С–РЎР‚РЎС“Р В¶Р В°Р ВµРЎвЂљ Р СР ВµР Р…РЎР‹
+    // Колбэк вызывается после любого успешного PATCH — HomeViewModel перезагружает меню
     private val onProfileUpdated: () -> Unit = {}
 ) : ViewModel() {
 
@@ -84,12 +88,15 @@ class ProfileViewModel(
                     it.copy(
                         isLoading = false,
                         userName = user?.username ?: "Admin",
+                        userEmail = user?.email ?: "",
+                        birthDate = preferences.getBirthDate() ?: "",
                         currentDietTypeId = user?.diet_type,
                         currentDietTypeName = user?.diet_type_name,
                         currentAllergyIds = user?.allergies?.toSet() ?: emptySet(),
                         currentAllergyNames = user?.allergies_names ?: emptyList(),
                         portionSize = user?.portion_size ?: 1,
                         preferredCookTime = user?.preferred_cook_time,
+                        mealCookTimes = preferences.getAllMealCookTimes(),
                         allDietTypes = diets,
                         allAllergies = allergies,
                         // pending Р С‘Р Р…Р С‘РЎвЂ Р С‘Р В°Р В»Р С‘Р В·Р С‘РЎР‚РЎС“Р ВµР С РЎвЂљР ВµР С”РЎС“РЎвЂ°Р С‘Р СР С‘ Р В·Р Р…Р В°РЎвЂЎР ВµР Р…Р С‘РЎРЏР СР С‘
@@ -99,11 +106,40 @@ class ProfileViewModel(
                     )
                 }
                 user?.portion_size?.let { preferences.setPortionSize(it) }
+                preferences.setDietType(user?.diet_type)
+                preferences.setAllergies(user?.allergies ?: emptyList())
             } catch (e: Exception) {
                 _state.update { it.copy(isLoading = false, error = "Ошибка загрузки: ${e.message}") }
             }
         }
     }
+
+    fun setBirthDate(date: String) {
+        if (date.length <= 10) {
+            _state.update { it.copy(birthDate = date) }
+            preferences.setBirthDate(date)
+        }
+    }
+
+    fun saveMealCookTimes(mealTimes: Map<String, String>) {
+        viewModelScope.launch {
+            _state.update { it.copy(mealCookTimes = mealTimes) }
+            mealTimes.forEach { (meal, time) ->
+                preferences.setMealCookTime(meal, time)
+            }
+            // Справочник поддерживает три типа приема пищи
+            listOf("Завтрак", "Обед", "Ужин").forEach { meal ->
+                if (!mealTimes.containsKey(meal)) {
+                    preferences.setMealCookTime(meal, "any")
+                }
+            }
+        }
+    }
+
+    fun confirmCookTimes() {
+        onProfileUpdated()
+    }
+
 
     // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р ВР В·Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р Вµ РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
 
@@ -161,6 +197,7 @@ class ProfileViewModel(
                 )
                 if (resp.isSuccessful) {
                     val body = resp.body()
+                    preferences.setAllergies(s.pendingAllergyIds.toList())
                     _state.update {
                         it.copy(
                             isSaving = false,
@@ -208,6 +245,7 @@ class ProfileViewModel(
                 )
                 if (resp.isSuccessful) {
                     val body = resp.body()
+                    preferences.setDietType(s.pendingDietTypeId)
                     _state.update {
                         it.copy(
                             isSaving = false,

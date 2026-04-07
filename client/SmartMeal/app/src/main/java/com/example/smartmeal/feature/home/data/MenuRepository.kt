@@ -71,8 +71,8 @@ class MenuRepository(private val api: MenuApi) {
     }
 
     /** Заменяет блюдо в меню на другое подходящее. */
-    suspend fun replaceMenuItem(menuItemId: Int): MenuItemDto? {
-        val response = api.replaceMenuItem(menuItemId)
+    suspend fun replaceMenuItem(menuItemId: Int, cookTimeRange: String? = null): MenuItemDto? {
+        val response = api.replaceMenuItem(menuItemId, cookTimeRange)
         if (response.isSuccessful) {
             return response.body()
         } else {

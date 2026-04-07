@@ -290,7 +290,10 @@ fun HomeScreen(
                             selectedNavItem = 1
                             shouldOpenOrderModal = true
                         },
-                        onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) }
+                        onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) },
+                        onProfileUpdatedSuccessfully = {
+                            selectedNavItem = 0 // ПЕРЕКЛЮЧАЕМ НА ГЛАВНУЮ
+                        }
                     )
                 }
             }
@@ -812,8 +815,30 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 val startDateStr = resolveGenerationStartDateString(
                     formatter = apiDateFormatter, selectedPlanDate = selectedPlanDate
                 )
+
+                // Получаем индивидуальные настройки времени для каждого приема пищи
+                val breakfastTime = preferences.getMealCookTime("Завтрак")
+                val lunchTime = preferences.getMealCookTime("Обед")
+                val dinnerTime = preferences.getMealCookTime("Ужин")
+                
+                val cookTimesMap = mutableMapOf<String, String>()
+                if (breakfastTime != null && breakfastTime != "any") cookTimesMap["Завтрак"] = breakfastTime
+                if (lunchTime != null && lunchTime != "any") cookTimesMap["Обед"] = lunchTime
+                if (dinnerTime != null && dinnerTime != "any") cookTimesMap["Ужин"] = dinnerTime
+
+                // Получаем диету и аллергии
+                val dietType = preferences.getDietType()
+                val allergies = preferences.getAllergies()
+
                 val response = generatorApi.autoGenerate(
-                    AutoGenerateRequest(period = periodStr, start_date = startDateStr, days = customDays)
+                    AutoGenerateRequest(
+                        period = periodStr,
+                        start_date = startDateStr,
+                        days = customDays,
+                        diet_type = dietType,
+                        exclude_allergies = allergies,
+                        cook_times = if (cookTimesMap.isEmpty()) null else cookTimesMap
+                    )
                 )
                 if (response.isSuccessful) {
                     val newMenuId = response.body()?.id
@@ -856,16 +881,18 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             } else emptyList()
 
             val mealSections = itemsForDay.map { item ->
-                val title = when (item.meal_type) {
-                    "breakfast" -> "Завтрак"; "lunch" -> "Обед"; "dinner" -> "Ужин"
+                val title = when (item.meal_type.lowercase(Locale.US)) {
+                    "breakfast", "завтрак" -> "Завтрак"
+                    "lunch", "обед" -> "Обед"
+                    "dinner", "ужин" -> "Ужин"
                     else -> item.meal_type.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                 }
                 MealSection(id = item.meal_type, title = title, meal = item)
             }.sortedBy { section ->
-                when(section.id) {
-                    "breakfast" -> 1
-                    "lunch" -> 2
-                    "dinner" -> 3
+                when(section.id.lowercase(Locale.US)) {
+                    "breakfast", "завтрак" -> 1
+                    "lunch", "обед" -> 2
+                    "dinner", "ужин" -> 3
                     else -> 4
                 }
             }
@@ -954,7 +981,14 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val updatedItem = menuRepository.replaceMenuItem(menuItem.id)
+                // Получаем настройку времени именно для этого типа блюда
+                val russianMealName = when (mealType) {
+                    "breakfast" -> "Завтрак"; "lunch" -> "Обед"; "dinner" -> "Ужин"
+                    else -> mealType
+                }
+                val cookTimeRange = preferences.getMealCookTime(russianMealName).takeIf { it != "any" }
+
+                val updatedItem = menuRepository.replaceMenuItem(menuItem.id, cookTimeRange)
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
                     _uiState.update { currentState -> mergeUpdatedMenuItemIntoState(currentState, updatedItem) }

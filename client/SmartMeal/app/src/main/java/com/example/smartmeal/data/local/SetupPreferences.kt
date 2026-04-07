@@ -175,6 +175,64 @@ class SetupPreferences(context: Context) {
         return prefs.getInt(scopedKey(KEY_PORTION_SIZE), 1)
     }
 
+    fun setBirthDate(date: String) {
+        prefs.edit().putString(scopedKey(KEY_BIRTH_DATE), date).apply()
+    }
+
+    fun getBirthDate(): String? {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return null
+        return prefs.getString(scopedKey(KEY_BIRTH_DATE), null)
+    }
+
+    fun setDietType(id: Int?) {
+        if (id == null) prefs.edit().remove(scopedKey(KEY_DIET_TYPE)).apply()
+        else prefs.edit().putInt(scopedKey(KEY_DIET_TYPE), id).apply()
+    }
+
+    fun getDietType(): Int? {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return null
+        val key = scopedKey(KEY_DIET_TYPE)
+        if (!prefs.contains(key)) return null
+        return prefs.getInt(key, -1).takeIf { it != -1 }
+    }
+
+    fun setAllergies(ids: List<Int>) {
+        val set = ids.map { it.toString() }.toSet()
+        prefs.edit().putStringSet(scopedKey(KEY_ALLERGIES), set).apply()
+    }
+
+    fun getAllergies(): List<Int> {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return emptyList()
+        val set = prefs.getStringSet(scopedKey(KEY_ALLERGIES), emptySet()) ?: emptySet()
+        return set.mapNotNull { it.toIntOrNull() }
+    }
+
+    fun setMealCookTime(mealType: String, cookTimeApiValue: String) {
+        prefs.edit().putString(scopedKey("${KEY_MEAL_COOK_TIME}_$mealType"), cookTimeApiValue).apply()
+    }
+
+    fun getMealCookTime(mealType: String): String? {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return null
+        return prefs.getString(scopedKey("${KEY_MEAL_COOK_TIME}_$mealType"), null)
+    }
+
+    fun getAllMealCookTimes(): Map<String, String> {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return emptyMap()
+        val map = mutableMapOf<String, String>()
+        listOf("Завтрак", "Обед", "Ужин").forEach { mealType ->
+            val value = prefs.getString(scopedKey("${KEY_MEAL_COOK_TIME}_$mealType"), null)
+            if (value != null && value != "any") {
+                map[mealType] = value
+            }
+        }
+        return map
+    }
+
     companion object {
         const val PLAN_TYPE_DAILY = "daily"
         const val PLAN_TYPE_WEEKLY = "weekly"
@@ -189,5 +247,9 @@ class SetupPreferences(context: Context) {
         private const val KEY_SELECTED_PLAN_DATE = "selected_plan_date"
         private const val KEY_PORTION_SIZE = "portion_size"
         private const val KEY_PENDING_PLAN_REGENERATION = "pending_plan_regeneration"
+        private const val KEY_BIRTH_DATE = "birth_date"
+        private const val KEY_MEAL_COOK_TIME = "meal_cook_time"
+        private const val KEY_DIET_TYPE = "diet_type"
+        private const val KEY_ALLERGIES = "allergies"
     }
 }

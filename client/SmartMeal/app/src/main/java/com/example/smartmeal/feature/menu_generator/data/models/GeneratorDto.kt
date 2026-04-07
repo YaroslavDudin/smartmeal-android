@@ -61,7 +61,8 @@ data class AutoGenerateRequest(
     val diet_type: Int? = null,                  // null → берётся из профиля пользователя
     val cook_time_range: String? = null,         // "short" | "medium" | "long" | "any"
     val max_cook_time: Int? = null,              // null = без ограничения; 30 = «до 30 минут»
-    val exclude_allergies: List<Int> = emptyList() // зарезервировано для будущего
+    val exclude_allergies: List<Int> = emptyList(), // зарезервировано для будущего
+    val cook_times: Map<String, String>? = null
 )
 
 /**

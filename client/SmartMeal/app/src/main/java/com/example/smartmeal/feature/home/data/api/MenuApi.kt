@@ -43,7 +43,10 @@ interface MenuApi {
 
     /** Заменить блюдо в меню на другое подходящее */
     @POST("api/menus/items/{id}/replace/")
-    suspend fun replaceMenuItem(@Path("id") id: Int): Response<MenuItemDto>
+    suspend fun replaceMenuItem(
+        @Path("id") id: Int,
+        @Query("cook_time_range") cookTimeRange: String? = null
+    ): Response<MenuItemDto>
 
     // ─── Рецепты ────────────────────────────────────────────────────────────
 

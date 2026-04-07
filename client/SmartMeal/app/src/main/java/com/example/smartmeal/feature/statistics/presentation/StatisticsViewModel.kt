@@ -35,17 +35,16 @@ data class StatisticsUiState(
 )
 
 internal fun sortMealsForStatistics(items: List<MenuItemDto>): List<MenuItemDto> {
-    fun mealOrder(mealType: String): Int = when (mealType) {
-        "breakfast" -> 0
-        "lunch" -> 1
-        "dinner" -> 2
+    fun mealOrder(mealType: String): Int = when (mealType.lowercase(Locale.US)) {
+        "breakfast", "завтрак" -> 0
+        "lunch", "обед" -> 1
+        "dinner", "ужин" -> 2
         else -> 3
     }
 
     return items.sortedWith(
         compareBy<MenuItemDto> { mealOrder(it.meal_type) }
             .thenBy { it.meal_type }
-            .thenBy { it.recipe_title.lowercase(Locale("ru")) }
     )
 }
 
@@ -85,59 +84,52 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
-                // Получаем ВСЕ элементы меню пользователя. 
-                // Теперь они сразу содержат КБЖУ за одну порцию.
+                // 1. Получаем все элементы меню
                 val allItems = menuRepository.getMenuItems()
                 
+                // 2. Определяем план как в HomeScreen
                 val planType = preferences.getPlanType()
                 val planRange = preferences.getCustomPlanRange()
-                val customPlan = if (planType == SetupPreferences.PLAN_TYPE_CUSTOM && planRange != null) {
-                    Date(planRange.first) to Date(planRange.second)
-                } else {
-                    null
+                val selectedPlanDateMillis = preferences.getSelectedPlanDate()
+                
+                val customPlan = when (planType) {
+                    SetupPreferences.PLAN_TYPE_CUSTOM -> {
+                        planRange?.let { (start, end) -> com.example.smartmeal.feature.home.presentation.CustomPlan(Date(start), Date(end)) }
+                    }
+                    SetupPreferences.PLAN_TYPE_WEEKLY -> {
+                        selectedPlanDateMillis?.let { start ->
+                            val end = Calendar.getInstance().apply {
+                                time = Date(start)
+                                add(Calendar.DATE, 6)
+                            }.timeInMillis
+                            com.example.smartmeal.feature.home.presentation.CustomPlan(Date(start), Date(end))
+                        }
+                    }
+                    SetupPreferences.PLAN_TYPE_DAILY -> {
+                        selectedPlanDateMillis?.let { start ->
+                            com.example.smartmeal.feature.home.presentation.CustomPlan(Date(start), Date(start))
+                        }
+                    }
+                    else -> null
+                }
+
+                // 3. Используем ту же логику buildAvailableDates что и в HomeScreen
+                val availableDates = buildAvailableDatesInternal(allItems, customPlan)
+                
+                if (availableDates.isEmpty()) {
+                    _uiState.update { it.copy(isLoading = false, dailyStats = emptyList()) }
+                    return@launch
                 }
 
                 val itemsByDate = allItems.groupBy { it.actual_date }
-                
-                // Определяем диапазон дат для отображения
-                val today = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, 0)
-                    set(Calendar.MINUTE, 0)
-                    set(Calendar.SECOND, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.time
-
-                val startDate: Date
-                val endDate: Date
-
-                if (customPlan != null) {
-                    startDate = normalizeDate(customPlan.first)
-                    endDate = normalizeDate(customPlan.second)
-                } else {
-                    if (allItems.isNotEmpty()) {
-                        val sortedDateStrings = itemsByDate.keys.sorted()
-                        val firstDate = apiDateFormatter.parse(sortedDateStrings.first()) ?: Date()
-                        val lastMenuDate = apiDateFormatter.parse(sortedDateStrings.last()) ?: Date()
-                        
-                        startDate = normalizeDate(firstDate)
-                        endDate = if (lastMenuDate.before(today)) today else normalizeDate(lastMenuDate)
-                    } else {
-                        startDate = today
-                        endDate = today
-                    }
-                }
-                
                 val statsList = mutableListOf<DailyStats>()
-                val currentCal = Calendar.getInstance().apply { time = startDate }
-                
-                while (!currentCal.time.after(endDate)) {
-                    val currentDate = currentCal.time
+
+                for (currentDate in availableDates) {
                     val dateKey = apiDateFormatter.format(currentDate)
                     val itemsForDay = itemsByDate[dateKey] ?: emptyList()
                     
-                    // ДЕДУПЛИКАЦИЯ: только один прием пищи каждого типа.
-                    // РАСЧЕТ: строго по одной порции (per_serving), игнорируя настройки пользователя.
-                    val uniqueItemsForDay = itemsForDay.sortedByDescending { it.id }.distinctBy { it.meal_type }
+                    // ДЕДУПЛИКАЦИЯ: завтрак, обед, ужин
+                    val uniqueItemsForDay = itemsForDay.distinctBy { it.meal_type.lowercase(Locale.US) }
                     
                     var dayCalories = 0.0
                     var dayProteins = 0.0
@@ -145,7 +137,6 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                     var dayCarbs = 0.0
 
                     for (item in uniqueItemsForDay) {
-                        // Используем значения за одну порцию напрямую из API
                         dayCalories += item.per_serving_calories
                         dayProteins += item.per_serving_proteins
                         dayFats += item.per_serving_fats
@@ -162,9 +153,9 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                             meals = sortMealsForStatistics(uniqueItemsForDay)
                         )
                     )
-                    currentCal.add(Calendar.DATE, 1)
                 }
 
+                val today = normalizeDate(Date())
                 val lastSelected = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()
                 val targetDate = lastSelected ?: today
 
@@ -174,9 +165,7 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                 
                 if (targetIndex == -1) {
                     targetIndex = statsList.indexOfFirst { normalizeDate(it.date).time == today.time }
-                    if (targetIndex == -1) {
-                        targetIndex = if (today.before(startDate)) 0 else statsList.size - 1
-                    }
+                    if (targetIndex == -1) targetIndex = 0
                 }
 
                 _uiState.update { it.copy(
@@ -188,6 +177,37 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                 _uiState.update { it.copy(isLoading = false, error = "Ошибка: ${e.localizedMessage}") }
             }
         }
+    }
+
+    // Дублируем внутреннюю логику из HomeScreen для консистентности
+    private fun buildAvailableDatesInternal(
+        menuItems: List<MenuItemDto>,
+        customPlan: com.example.smartmeal.feature.home.presentation.CustomPlan?,
+        today: Date = Date()
+    ): List<Date> {
+        val normalizedToday = normalizeDate(today)
+        if (customPlan != null) {
+            val dates = mutableListOf<Date>()
+            val cal = Calendar.getInstance().apply { 
+                time = if (normalizeDate(customPlan.startDate).before(normalizedToday)) normalizedToday else normalizeDate(customPlan.startDate)
+            }
+            val end = normalizeDate(customPlan.endDate)
+
+            if (cal.time.after(end)) return emptyList()
+
+            while (!cal.time.after(end)) {
+                dates.add(cal.time.clone() as Date)
+                cal.add(Calendar.DATE, 1)
+            }
+            return dates
+        }
+
+        return menuItems
+            .mapNotNull { item -> try { apiDateFormatter.parse(item.actual_date) } catch(e: Exception) { null } }
+            .map { normalizeDate(it) }
+            .filter { !it.before(normalizedToday) }
+            .distinct()
+            .sorted()
     }
 
     private fun normalizeDate(date: Date): Date {

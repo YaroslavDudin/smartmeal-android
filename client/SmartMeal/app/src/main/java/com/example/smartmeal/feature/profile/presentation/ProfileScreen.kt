@@ -51,7 +51,7 @@ private val CardYellow = Color(0xFFFFF4C2)
 private val LogoutRed = Color(0xFFE53935)
 
 // Подэкраны внутри вкладки профиля
-enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES }
+enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME }
 
 @Composable
 fun ProfileScreen(
@@ -59,7 +59,8 @@ fun ProfileScreen(
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
     onGoToProducts: (Boolean) -> Unit,      // переключает BottomNav → вкладка "Продукты"
-    onRecipeClick: (Int) -> Unit = {}
+    onRecipeClick: (Int) -> Unit = {},
+    onProfileUpdatedSuccessfully: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
     var subScreen by remember { mutableStateOf(ProfileSubScreen.NONE) }
@@ -87,6 +88,15 @@ fun ProfileScreen(
                 onBack = { subScreen = ProfileSubScreen.NONE },
                 onRecipeClick = onRecipeClick,
                 onFavoriteClick = { viewModel.toggleFavorite(it) }
+            )
+
+        ProfileSubScreen.COOK_TIME ->
+            CookTimeSettingsScreen(
+                viewModel = viewModel,
+                onBack = { 
+                    subScreen = ProfileSubScreen.NONE 
+                    onProfileUpdatedSuccessfully()
+                }
             )
 
         ProfileSubScreen.NONE -> {
@@ -142,6 +152,13 @@ fun ProfileScreen(
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
+                            if (state.userEmail.isNotBlank()) {
+                                SmartMealText(
+                                    text = state.userEmail,
+                                    fontSize = 13.sp,
+                                    color = HintGray
+                                )
+                            }
                             SmartMealText(text = "Настройки >", fontSize = 13.sp, color = HintGray)
                         }
                     }
@@ -179,10 +196,11 @@ fun ProfileScreen(
                             onSave = { viewModel.savePortion() }
                         )
 
-                        ProfileMenuCard(emoji = "⏱️", label = "Изменить время готовки") { /* TODO */ }
+                        ProfileMenuCard(emoji = "⏱️", label = "Изменить время готовки") { 
+                            subScreen = ProfileSubScreen.COOK_TIME
+                        }
 
                         ProfileMenuCard(emoji = "🛒", label = "Заказать продукты") {
-                            subScreen = ProfileSubScreen.NONE
                             onGoToProducts(true)
                         }
 
