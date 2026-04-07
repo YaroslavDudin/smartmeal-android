@@ -1,5 +1,10 @@
+from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
+from app.recipes.models import IngredientNutrition
+from app.recipes.utils import convert_amount
 
 
 class Allergy(models.Model):
@@ -81,3 +86,62 @@ class UserFavorite(models.Model):
 
     def __str__(self):
         return f'User ID: {self.user_id} - Recipe ID: {self.recipe_id}'
+
+
+class UserStock(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ingredients_in_stock')
+    ingredient = models.ForeignKey('recipes.Ingredient', on_delete=models.CASCADE, related_name='in_users_stock')
+    amount = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+    unit = models.ForeignKey('recipes.Unit', on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = 'user_stock'
+        verbose_name = 'Ингредиент в наличии у пользователя'
+        verbose_name_plural = 'Ингредиенты в наличии у пользователей'
+        ordering = ['user', 'ingredient', 'amount']
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'ingredient'], name='unique_user_ingredient_in_stock')
+        ]
+    
+    def clean(self):
+        super().clean()
+        if not self.ingredient_id or not self.unit_id:
+            return
+        
+        try:
+            self.amount_in_base_units
+        except (ValueError, ValidationError) as e:
+            raise ValidationError({'unit': str(e)})
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+    
+    @property
+    def amount_in_base_units(self):
+        if hasattr(self, '_in_base_units_cache'):
+            return self._in_base_units_cache
+
+        try:
+            nutrition = self.ingredient.ingredient_nutrition
+            base_unit = nutrition.base_unit
+        except IngredientNutrition.DoesNotExist:
+            raise ValidationError({
+                'ingredient': f'Для ингредиента "{self.ingredient.name}" не указана пищевая ценность'
+            })
+
+        if self.unit_id == base_unit.pk:
+            self._in_base_units_cache = self.amount
+            return self._in_base_units_cache
+
+        result = convert_amount(self.ingredient, self.amount, self.unit, base_unit)
+        if result is None:
+            raise ValueError(
+                f'Невозможно конвертировать "{self.unit}" в "{base_unit}" '
+                f'для ингредиента "{self.ingredient}"'
+            )
+        self._in_base_units_cache = result
+        return self._in_base_units_cache
+        
+    def __str__(self):
+        return f'Пользователь ID {self.user_id} имеет {self.amount} {self.unit.name} {self.ingredient.name}'

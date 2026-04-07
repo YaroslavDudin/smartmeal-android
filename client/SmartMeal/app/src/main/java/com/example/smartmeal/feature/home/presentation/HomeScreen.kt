@@ -111,7 +111,7 @@ fun HomeScreen(
             ProfileViewModelFactory(
                 api = setupApi,
                 preferences = setupPreferences,
-                onProfileUpdated = { viewModel.reloadMenu() }
+                onProfileUpdated = { viewModel.regenerateMenuForCurrentPlan() }
             )
         }
     )
@@ -179,11 +179,13 @@ fun HomeScreen(
     }
 
     var selectedNavItem by remember { mutableIntStateOf(0) }
+    var shouldOpenOrderModal by remember { mutableStateOf(false) }
 
-    LaunchedEffect(selectedNavItem, uiState.allMenuItems) {
+    LaunchedEffect(selectedNavItem, uiState.currentMenu) {
         if (selectedNavItem == 1) {
-            if (uiState.allMenuItems.isNotEmpty()) {
-                productListViewModel.generateProductsFromMenuItems(uiState.allMenuItems)
+            val currentItems = uiState.currentMenu?.items ?: emptyList()
+            if (currentItems.isNotEmpty()) {
+                productListViewModel.generateProductsFromMenuItems(currentItems)
             } else {
                 productListViewModel.clearProducts()
             }
@@ -252,6 +254,7 @@ fun HomeScreen(
                 // ── ПРОДУКТЫ ───────────────────────────────────────────────
                 1 -> {
                     ProductListScreen(
+                        viewModel = productListViewModel,
                         products = productListViewModel.products,
                         selectedDate = uiState.selectedDate,
                         selectedStartDateKey = productListViewModel.selectedStartDateKey,
@@ -268,7 +271,9 @@ fun HomeScreen(
                         hasNoAvailableDays = productListViewModel.hasNoAvailableDays,
                         isLoading = productListViewModel.isLoading,
                         errorMessage = productListViewModel.errorMessage,
-                        customPlan = if (showMyPlanSection) customPlan else null
+                        customPlan = if (showMyPlanSection) customPlan else null,
+                        openOrderModal = shouldOpenOrderModal,
+                        onOrderModalConsumed = { shouldOpenOrderModal = false }
                     )
                 }
 
@@ -281,7 +286,10 @@ fun HomeScreen(
                         viewModel = profileViewModel,
                         onLogout = onLogout,
                         onLogoutSuccess = onLogoutSuccess,
-                        onGoToProducts = { selectedNavItem = 1 },
+                        onGoToProducts = {
+                            selectedNavItem = 1
+                            shouldOpenOrderModal = true
+                        },
                         onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) }
                     )
                 }
@@ -680,6 +688,25 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         viewModelScope.launch { refreshMenu() }
     }
 
+    fun regenerateMenuForCurrentPlan() {
+        val request = resolveStoredPlanGeneration(
+            planType = preferences.getPlanType(),
+            selectedPlanDateMillis = preferences.getSelectedPlanDate(),
+            customRange = preferences.getCustomPlanRange()
+        )
+
+        if (request.startDate == null) {
+            reloadMenu()
+            return
+        }
+
+        generateMenu(
+            planType = request.planType,
+            selectedPlanDate = request.startDate,
+            customDays = request.customDays
+        )
+    }
+
     private suspend fun refreshMenu(): MenuDto? {
         _uiState.update { it.copy(isLoading = true, error = null) }
         return try {
@@ -789,6 +816,17 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     AutoGenerateRequest(period = periodStr, start_date = startDateStr, days = customDays)
                 )
                 if (response.isSuccessful) {
+                    val newMenuId = response.body()?.id
+                    if (newMenuId != null) {
+                        try {
+                            menuApi.recalculateCart(
+                                com.example.smartmeal.feature.home.data.api.RecalculateCartRequest(menu_id = newMenuId)
+                            )
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
                     refreshMenu()
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -1022,6 +1060,37 @@ internal fun resolveCustomDays(range: Pair<Long, Long>?): Int? {
     if (range == null) return null
     val diff = range.second - range.first
     return (diff / (1000L * 60L * 60L * 24L)).toInt() + 1
+}
+
+internal data class StoredPlanGeneration(
+    val planType: String?,
+    val startDate: Date?,
+    val customDays: Int?
+)
+
+internal fun resolveStoredPlanGeneration(
+    planType: String?,
+    selectedPlanDateMillis: Long?,
+    customRange: Pair<Long, Long>?
+): StoredPlanGeneration {
+    return when (planType) {
+        SetupPreferences.PLAN_TYPE_CUSTOM -> StoredPlanGeneration(
+            planType = planType,
+            startDate = customRange?.first?.let(::Date),
+            customDays = resolveCustomDays(customRange)
+        )
+        SetupPreferences.PLAN_TYPE_WEEKLY,
+        SetupPreferences.PLAN_TYPE_DAILY -> StoredPlanGeneration(
+            planType = planType,
+            startDate = selectedPlanDateMillis?.let(::Date),
+            customDays = null
+        )
+        else -> StoredPlanGeneration(
+            planType = planType,
+            startDate = selectedPlanDateMillis?.let(::Date),
+            customDays = null
+        )
+    }
 }
 
 private class HomeViewModelFactory(

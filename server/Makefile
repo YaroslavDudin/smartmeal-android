@@ -86,7 +86,7 @@ save_data:
 	$(call dump_to_file,accounts_static,accounts.Allergy accounts.DietType)
 	$(call dump_to_file,meal_types_data,menus.MealType)
 	$(call dump_to_file,recipes_data,recipes)
-	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite)
+	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite accounts.UserStock)
 	$(call dump_to_file,menus_data,menus.Menu menus.MenuItem)
 	$(call dump_to_file,cart_data,cart)
 
@@ -121,7 +121,7 @@ docker_save_data:
 	$(call dump_to_file,accounts_static,accounts.Allergy accounts.DietType)
 	$(call dump_to_file,meal_types_data,menus.MealType)
 	$(call dump_to_file,recipes_data,recipes)
-	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite)
+	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite accounts.UserStock)
 	$(call dump_to_file,menus_data,menus.Menu menus.MenuItem)
 	$(call dump_to_file,cart_data,cart)
 	docker-compose exec web rm /tmp/accounts_static.json /tmp/accounts_users.json /tmp/cart_data.json /tmp/menus_data.json /tmp/recipes_data.json

@@ -1,11 +1,16 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Allergy, DietType, UserFavorite
+from .models import User, Allergy, DietType, UserFavorite, UserStock
 
 class UserFavoriteInline(admin.TabularInline):
     model = UserFavorite
     extra = 0
     autocomplete_fields = ('recipe',)
+
+class UserStockInline(admin.TabularInline):
+    model = UserStock
+    extra = 0
+    autocomplete_fields = ('ingredient', 'unit')
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
@@ -31,3 +36,8 @@ class UserFavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe', 'created_at')
     list_filter = ('created_at',)
     search_fields = ('user__email', 'recipe__title')
+
+@admin.register(UserStock)
+class UserStockAdmin(admin.ModelAdmin):
+    list_display = ('user', 'ingredient', 'amount', 'unit')
+    search_fields = ('user__email', 'ingredient__name')

@@ -5,6 +5,7 @@ import com.example.smartmeal.feature.home.data.menu.MenuDto
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
 import com.example.smartmeal.feature.home.data.menu.RecipeShortDto
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -64,7 +65,13 @@ interface MenuApi {
 
     /** Список покупок текущего пользователя */
     @GET("api/cart/")
-    suspend fun getCart(): Response<List<CartItemDto>>
+    suspend fun getCart(): Response<Map<String, List<CartItemDto>>>
+
+    @POST("api/cart/recalculate/")
+    suspend fun recalculateCart(@Body request: RecalculateCartRequest = RecalculateCartRequest()): retrofit2.Response<Unit>
+
+    @POST("api/cart/export/")
+    suspend fun exportCart(@Query("all") all: Boolean = false, @Body request: ExportCartRequest):retrofit2.Response<okhttp3.ResponseBody>
 
     /**
      * Отметить позицию купленной / снять отметку.
@@ -112,4 +119,16 @@ data class UserFavoriteDto(
     val recipe_title: String,
     val recipe_image_url: String?,
     val recipe_cook_time: Int
+)
+
+data class RecalculateCartRequest(
+    val menu_id: Int? = null,
+    val start_date: String? = null,
+    val end_date: String? = null,
+    val item_servings: Map<String, Int>? = null,
+    val global_servings: Int? = null
+)
+
+data class ExportCartRequest(
+    val cart_items_ids: List<Int>
 )

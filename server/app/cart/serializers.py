@@ -9,7 +9,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItem
-        fields = ('id', 'ingredient', 'ingredient_name', 'category_name', 'total_amount', 'unit', 'unit_name', 'is_checked')
+        fields = ('id', 'ingredient', 'ingredient_name', 'category_name', 'total_amount', 'unit', 'unit_name')
     
     def validate(self, data):
         request = self.context.get('request')
@@ -26,7 +26,23 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 class RecalculateCartSerializer(serializers.Serializer):
     # ID меню, ингредиенты которого перенести в корзину
-    # Если не указано, ищется меню, в период которого входит текущая дата
-    # Если такого меню нет, ищется любое меню, которое запланировано на будущее
-    # Если меню нет совсем или на прошедшие даты, в корзину не кладется ничего
+    # Если не указано, ищется активное меню (в период которого входит текущая дата)
     menu_id = serializers.IntegerField(required=False, allow_null=True)
+    start_date = serializers.DateField(required=False, allow_null=True)
+    end_date = serializers.DateField(required=False, allow_null=True)
+    # Мапа { "menu_item_id": servings }
+    item_servings = serializers.DictField(
+        child=serializers.IntegerField(min_value=1),
+        required=False,
+        default=dict
+    )
+    # Общее кол-во порций (если не указано в item_servings)
+    global_servings = serializers.IntegerField(required=False, min_value=1)
+
+
+class ExportCartSerializer(serializers.Serializer):
+    # список с ID cart items
+    cart_items_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        default=[],
+    )

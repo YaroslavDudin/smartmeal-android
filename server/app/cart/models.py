@@ -8,15 +8,13 @@ class CartItem(models.Model):
     ingredient = models.ForeignKey('recipes.Ingredient', on_delete=models.CASCADE, related_name='in_carts')
     total_amount = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0.01)])
     unit = models.ForeignKey('recipes.Unit', on_delete=models.RESTRICT)
-    is_checked = models.BooleanField(default=False)
-    
+
     class Meta:
         db_table = 'cart_item'
         verbose_name = 'Продукт в корзине'
         verbose_name_plural = 'Продукты в корзинах'
         indexes = [
             models.Index(fields=['user', 'ingredient']),
-            models.Index(fields=['is_checked']),
         ]
         constraints = [
             models.UniqueConstraint(fields=['user', 'ingredient'], name='unique_user_cart_item')

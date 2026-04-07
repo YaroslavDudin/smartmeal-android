@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Max
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
+from app.recipes.utils import convert_amount
 
 
 CALORIES_PER_GRAM = {
@@ -74,6 +75,15 @@ class Ingredient(models.Model):
     category = models.ForeignKey(IngredientCategory, on_delete=models.RESTRICT, related_name='ingredients')
     can_be_added_to_cart = models.BooleanField(default=True, help_text='Должен ли ингредиент добавляться в корзину')
     allergies = models.ManyToManyField('accounts.Allergy', blank=True, related_name='ingredients')
+
+    is_piece = models.BooleanField(
+        default=False, 
+        help_text='Считать ли товар в штуках (например, яйца, булочки)'
+    )
+    piece_weight = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True,
+        help_text='Вес одной штуки в базовых единицах (например, в граммах)'
+    )
 
     class Meta:
         db_table = 'ingredient'
@@ -252,39 +262,6 @@ class RecipeIngredient(models.Model):
             self.get_amount_in_target_units(self.nutrition.base_unit)
         except ValueError as e:
             raise ValidationError(str(e))
-    
-    def __setattr__(self, name, value):
-        if name in ('amount', 'unit', 'unit_id'):
-            for attr in ('_macros_cache', '_in_base_units_cache'):
-                self.__dict__.pop(attr, None)
-        elif name in ('ingredient', 'ingredient_id'):
-            # При смене ингредиента сбрасываем всё включая nutrition
-            for attr in ('_macros_cache', '_nutrition_cache', '_in_base_units_cache'):
-                self.__dict__.pop(attr, None)
-        super().__setattr__(name, value)
-    
-    def save(self, *args, **kwargs):
-        self.full_clean()  # вызывает clean() и валидацию полей
-        super().save(*args, **kwargs)
-        # Сбрасываем кэш рецепта если он уже загружен в память
-        if hasattr(self, 'recipe') and hasattr(self.recipe, '_nutrition_cache'):
-            del self.recipe._nutrition_cache
-
-    def _convert_to(self, target_unit):
-        if target_unit.pk == self.unit.pk:
-            return self.amount
-
-        conversions = self.ingredient.unit_conversions.all()
-        
-        for conv in conversions:  # из prefetch-кеша
-            # Прямая: self.unit → target_unit
-            if conv.from_unit_id == self.unit_id and conv.to_unit_id == target_unit.pk:
-                return self.amount * conv.amount_per_unit
-            # Обратная: target_unit → self.unit
-            if conv.from_unit_id == target_unit.pk and conv.to_unit_id == self.unit_id:
-                return self.amount / conv.amount_per_unit
-        
-        return None
 
     def get_amount_in_target_units(self, target_unit):
         '''Метод, чтобы получить количества ингредиента в указанной единице измерения
@@ -304,7 +281,7 @@ class RecipeIngredient(models.Model):
         if target_unit.pk in self._in_base_units_cache:
             return self._in_base_units_cache[target_unit.pk]
 
-        amount = self._convert_to(target_unit)
+        amount = convert_amount(self.ingredient, self.amount, self.unit, target_unit)
         if amount is None:
             raise ValueError(
                 f'Нет конвертации из "{self.unit}" в "{target_unit}" '

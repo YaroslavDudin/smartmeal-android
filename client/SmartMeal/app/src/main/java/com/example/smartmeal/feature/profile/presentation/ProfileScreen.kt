@@ -44,6 +44,8 @@ import com.example.smartmeal.ui.theme.BgLightGray
 import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.HintGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 private val CardYellow = Color(0xFFFFF4C2)
 private val LogoutRed = Color(0xFFE53935)
@@ -56,7 +58,7 @@ fun ProfileScreen(
     viewModel: ProfileViewModel,
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
-    onGoToProducts: () -> Unit,      // переключает BottomNav → вкладка "Продукты"
+    onGoToProducts: (Boolean) -> Unit,      // переключает BottomNav → вкладка "Продукты"
     onRecipeClick: (Int) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
@@ -180,7 +182,8 @@ fun ProfileScreen(
                         ProfileMenuCard(emoji = "⏱️", label = "Изменить время готовки") { /* TODO */ }
 
                         ProfileMenuCard(emoji = "🛒", label = "Заказать продукты") {
-                            onGoToProducts()
+                            subScreen = ProfileSubScreen.NONE
+                            onGoToProducts(true)
                         }
 
                         ProfileMenuCard(emoji = "⭐", label = "Избранное") {

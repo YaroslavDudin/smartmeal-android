@@ -9,18 +9,20 @@ import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
 
 class MenuRepository(private val api: MenuApi) {
 
-    /** Получает список покупок, сгруппированный по категориям (пока одна общая). */
+    /** Получает список покупок, сгруппированный по категориям. */
     suspend fun getCart(): List<CartCategoryDto> {
         val response = api.getCart()
         if (!response.isSuccessful) {
             val errorBody = response.errorBody()?.string()
             throw Exception("Ошибка загрузки корзины: ${response.code()} ${errorBody ?: ""}".trim())
         }
-        val items = response.body() ?: emptyList()
-        return if (items.isEmpty()) {
-            emptyList()
-        } else {
-            listOf(CartCategoryDto(name = "Продукты", items = items))
+        
+        /** Получаем словарь от API: Map<Категория, Список_продуктов> */
+        val cartMap = response.body() ?: emptyMap()
+        
+        /** Преобразуем словарь в удобный список DTO */
+        return cartMap.map { (categoryName, items) ->
+            CartCategoryDto(name = categoryName, items = items)
         }
     }
 

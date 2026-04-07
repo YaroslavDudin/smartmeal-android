@@ -170,11 +170,12 @@ class ProductListViewModel(
 
         updateDateRangeText()
         
-        // Notify other screens about the selected start date.
-        selectedStartDateKey?.let { key ->
-            parseApiDate(key)?.let { date ->
-                com.example.smartmeal.data.manager.DateManager.notifyDateSelected(date)
-            }
+        // Notify other screens about the selected range.
+        val startDate = selectedStartDateKey?.let { parseApiDate(it) }
+        val endDate = selectedEndDateKey?.let { parseApiDate(it) }
+        
+        if (startDate != null) {
+            com.example.smartmeal.data.manager.DateManager.notifyDateSelected(startDate, endDate)
         }
     }
 
@@ -281,12 +282,23 @@ class ProductListViewModel(
                         val normalizedCategory = categoryNormalizeMap[rawCategory] ?: rawCategory
                         val icon = categoryIconMap[normalizedCategory] ?: "🛒"
 
-                        val normalizedAmountInGrams = resolveAmountInGrams(
-                            amountInGrams = ingredient.amount_in_base_units,
-                            fallbackAmount = ingredient.amount,
-                            fallbackUnit = ingredient.unit_name
-                        )
-                        val amountString = formatWeightDisplay(normalizedAmountInGrams)
+                        val isEgg = ingredient.ingredient_name.trim().lowercase(Locale("ru")).contains("яйцо") || 
+                                     ingredient.ingredient_name.trim().lowercase(Locale("ru")).contains("яйца")
+
+                        val amountString = if (isEgg) {
+                            // Для яиц ВСЕГДА показываем количество в штуках, как в рецепте
+                            val roundedAmount = kotlin.math.round(ingredient.amount * 10) / 10.0
+                            val formatted = if (roundedAmount % 1.0 == 0.0) roundedAmount.toInt().toString() else roundedAmount.toString()
+                            "$formatted шт"
+                        } else {
+                            // Для всего остального используем стандартную логику веса
+                            val normalizedAmountInGrams = resolveAmountInGrams(
+                                amountInGrams = ingredient.amount_in_base_units,
+                                fallbackAmount = ingredient.amount,
+                                fallbackUnit = ingredient.unit_name
+                            )
+                            formatWeightDisplay(normalizedAmountInGrams)
+                        }
 
                         val occurrenceId = buildOccurrenceId(
                             ingredientName = ingredient.ingredient_name,
@@ -342,11 +354,24 @@ class ProductListViewModel(
             return
         }
 
-        val currentStart = selectedStartDateKey?.takeIf { it in orderedDateKeys }
-        val currentEnd = selectedEndDateKey?.takeIf { it in orderedDateKeys }
+        val globalSelectedDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()
+        val globalSelectedEndDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedEndDate()
+        
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val globalStartKey = globalSelectedDate?.let { formatter.format(it) }
+        val globalEndKey = globalSelectedEndDate?.let { formatter.format(it) }
 
-        selectedStartDateKey = currentStart ?: orderedDateKeys.first()
-        selectedEndDateKey = currentEnd ?: orderedDateKeys.last()
+        // Приоритет: 
+        // 1. Уже выбранный ключ в текущей сессии ViewModel (если он валиден)
+        // 2. Глобально выбранная дата из DateManager (из Home/Stats)
+        // 3. Первый доступный день (обычно сегодня)
+        
+        val candidateStart = selectedStartDateKey ?: globalStartKey
+        selectedStartDateKey = if (candidateStart in orderedDateKeys) candidateStart else orderedDateKeys.first()
+        
+        val candidateEnd = selectedEndDateKey ?: globalEndKey
+        selectedEndDateKey = if (candidateEnd in orderedDateKeys) candidateEnd else null
+        
         updateDateRangeText()
     }
 
@@ -387,6 +412,71 @@ class ProductListViewModel(
         )
         return categoryOrder.indexOf(categoryName).let { index ->
             if (index == -1) Int.MAX_VALUE else index
+        }
+    }
+
+    fun exportCheckedProducts(onSuccess: (String) -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            if (isLoading) return@launch
+            isLoading = true
+            try {
+                val startKey = selectedStartDateKey
+                val endKey = selectedEndDateKey ?: startKey
+
+                val checkedProductsRaw = products.filter { product ->
+                    val isChecked = product.checked
+                    
+                    val isInDateRange = if (startKey != null && endKey != null) {
+                        product.actualDates.any { date -> date in startKey..endKey }
+                    } else {
+                        true
+                    }
+                    
+                    isChecked && isInDateRange
+                }
+                
+                if (checkedProductsRaw.isEmpty()) {
+                    onError("Вы не выбрали ни одного продукта для заказа в эти дни!")
+                    return@launch
+                }
+
+                val aggregatedCheckedProducts = aggregateProductsForDisplay(checkedProductsRaw)
+
+                val sb = StringBuilder()
+                val grouped = aggregatedCheckedProducts.groupBy { it.categoryName }
+
+                grouped.forEach { (category, items) ->
+                    sb.append("$category:\n")
+                    items.forEach { item ->
+                        sb.append("\t- ${item.name}: ${item.amount}\n")
+                    }
+                    sb.append("\n")
+                }
+
+                val finalTxt = sb.toString().trimEnd()
+
+                val itemServings = mutableMapOf<String, Int>()
+                lastMenuItems.forEach { item ->
+                    val servings = preferences.getMenuItemServings(item.id)
+                    if (servings > 0) itemServings[item.id.toString()] = servings
+                }
+                menuApi.recalculateCart(
+                    com.example.smartmeal.feature.home.data.api.RecalculateCartRequest(
+                        start_date = selectedStartDateKey,
+                        end_date = selectedEndDateKey,
+                        item_servings = itemServings,
+                        global_servings = preferences.getPortionSize()
+                    )
+                )
+
+                onSuccess(finalTxt)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                onError(e.localizedMessage ?: "Произошла ошибка")
+            } finally {
+                isLoading = false
+            }
         }
     }
 }

@@ -12,11 +12,14 @@ object DateManager {
     val dateUpdates = _dateUpdates.asSharedFlow()
 
     private var lastSelectedDate: Date? = null
+    private var lastSelectedEndDate: Date? = null
 
-    fun notifyDateSelected(date: Date) {
+    fun notifyDateSelected(date: Date, endDate: Date? = null) {
         lastSelectedDate = date
+        lastSelectedEndDate = endDate
         _dateUpdates.tryEmit(date)
     }
 
     fun getLastSelectedDate(): Date? = lastSelectedDate
+    fun getLastSelectedEndDate(): Date? = lastSelectedEndDate
 }
