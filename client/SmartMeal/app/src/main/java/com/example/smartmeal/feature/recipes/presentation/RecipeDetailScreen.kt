@@ -160,7 +160,7 @@ fun RecipeDetailScreen(
                             InfoChip(label = "${recipe.cook_time} мин")
                             Spacer(modifier = Modifier.width(8.dp))
                             InfoChip(
-                                label = "${calculatePer100(recipe.total_calories, totalWeight).toInt()} ккал/100 г"
+                                label = "${recipe.per_serving_calories.toInt()} ккал порция"
                             )
                         }
 
