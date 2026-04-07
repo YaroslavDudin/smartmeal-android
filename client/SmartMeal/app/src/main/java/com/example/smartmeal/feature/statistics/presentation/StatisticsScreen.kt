@@ -356,6 +356,11 @@ fun MealNutritionRow(meal: MenuItemDto) {
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1
                 )
+                SmartMealText(
+                    text = "${meal.per_serving_calories.toInt()} ккал (1 порция)",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
             }
             
             SmartMealText(

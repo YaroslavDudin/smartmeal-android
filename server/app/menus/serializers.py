@@ -8,10 +8,18 @@ class MenuItemSerializer(serializers.ModelSerializer):
     image_url = serializers.ImageField(source='recipe.image_url', read_only=True)
     meal_type = serializers.SlugRelatedField(slug_field='name', queryset=MealType.objects.all())
     is_favorite = serializers.SerializerMethodField()
+    per_serving_calories = serializers.FloatField(source='recipe.per_serving_calories', read_only=True)
+    per_serving_proteins = serializers.FloatField(source='recipe.per_serving_proteins', read_only=True)
+    per_serving_fats = serializers.FloatField(source='recipe.per_serving_fats', read_only=True)
+    per_serving_carbs = serializers.FloatField(source='recipe.per_serving_carbs', read_only=True)
 
     class Meta:
         model = MenuItem
-        fields = ('id', 'recipe', 'recipe_title', 'cook_time', 'image_url', 'day_offset', 'meal_type', 'actual_date', 'is_favorite')
+        fields = (
+            'id', 'recipe', 'recipe_title', 'cook_time', 'image_url', 
+            'day_offset', 'meal_type', 'actual_date', 'is_favorite', 'servings',
+            'per_serving_calories', 'per_serving_proteins', 'per_serving_fats', 'per_serving_carbs'
+        )
 
     def get_is_favorite(self, obj):
         user = self.context.get('request').user

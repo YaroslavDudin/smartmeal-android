@@ -19,6 +19,11 @@ data class MenuItemDto(
     val cook_time: Int = 0,
     val image_url: String? = null,
     val is_favorite: Boolean = false,
+    val servings: Int = 1,
+    val per_serving_calories: Double = 0.0,
+    val per_serving_proteins: Double = 0.0,
+    val per_serving_fats: Double = 0.0,
+    val per_serving_carbs: Double = 0.0,
 )
 
 data class RecipeShortDto(
