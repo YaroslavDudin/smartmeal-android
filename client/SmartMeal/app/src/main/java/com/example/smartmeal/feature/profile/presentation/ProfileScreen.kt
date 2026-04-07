@@ -51,14 +51,14 @@ private val CardYellow = Color(0xFFFFF4C2)
 private val LogoutRed = Color(0xFFE53935)
 
 // Подэкраны внутри вкладки профиля
-enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, ORDERS }
+enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES }
 
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
-    onGoToProducts: () -> Unit,      // переключает BottomNav → вкладка "Продукты"
+    onGoToProducts: (Boolean) -> Unit,      // переключает BottomNav → вкладка "Продукты"
     onRecipeClick: (Int) -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
@@ -88,22 +88,6 @@ fun ProfileScreen(
                 onRecipeClick = onRecipeClick,
                 onFavoriteClick = { viewModel.toggleFavorite(it) }
             )
-
-        ProfileSubScreen.ORDERS -> {
-            val formatter = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
-            val startDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()?.let { formatter.format(it) }
-            val endDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedEndDate()?.let { formatter.format(it) }
-            
-            com.example.smartmeal.feature.products.presentation.OrdersScreen(
-                onBack = { subScreen = ProfileSubScreen.NONE },
-                onGoToProducts = {
-                    subScreen = ProfileSubScreen.NONE
-                    onGoToProducts()
-                },
-                startDate = startDate,
-                endDate = endDate
-            )
-        }
 
         ProfileSubScreen.NONE -> {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -198,7 +182,8 @@ fun ProfileScreen(
                         ProfileMenuCard(emoji = "⏱️", label = "Изменить время готовки") { /* TODO */ }
 
                         ProfileMenuCard(emoji = "🛒", label = "Заказать продукты") {
-                            subScreen = ProfileSubScreen.ORDERS
+                            subScreen = ProfileSubScreen.NONE
+                            onGoToProducts(true)
                         }
 
                         ProfileMenuCard(emoji = "⭐", label = "Избранное") {

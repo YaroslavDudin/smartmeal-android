@@ -40,6 +40,10 @@ import com.example.smartmeal.ui.theme.TextBlack
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.draw.clip
 
 // Переносим модель данных сюда, так как она используется в UI
 data class ProductUiModel(
@@ -72,7 +76,9 @@ fun ProductListScreen(
     hasNoAvailableDays: Boolean = false,
     isLoading: Boolean = false,
     errorMessage: String? = null,
-    customPlan: CustomPlan? = null
+    customPlan: CustomPlan? = null,
+    openOrderModal: Boolean = false,
+    onOrderModalConsumed: () -> Unit = {}
 ) {
     val availableDates = remember(products, customPlan) {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -132,7 +138,12 @@ fun ProductListScreen(
         else -> ProductContentState.List
     }
 
-    var showOrderModal by remember { androidx.compose.runtime.mutableStateOf(false) }
+    var showOrderModal by remember { mutableStateOf(openOrderModal) }
+    androidx.compose.runtime.LaunchedEffect(openOrderModal) {
+        if (openOrderModal) {
+            showOrderModal = true
+        }
+    }
 
     if (showOrderModal) {
         OrderModalBottomSheet(
@@ -450,10 +461,11 @@ internal fun filterProductsByDateRange(
 internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<ProductUiModel> {
     return products.groupBy { Triple(it.name.trim().lowercase(Locale("ru")), it.categoryName, it.checked) }.values.map { grouped ->
         val first = grouped.first()
-        
-        val isPiece = first.amount.contains("шт") 
+
+        val isPiece = first.amount.contains("шт")
+
         val totalValue = grouped.sumOf { parseWeightToGrams(it.amount) }
-        
+
         val finalAmountString = if (isPiece) {
             val formatted = if (totalValue % 1.0 == 0.0) totalValue.toInt().toString() else totalValue.toString()
             "$formatted шт"
@@ -513,6 +525,13 @@ private fun OrderModalBottomSheet(
         context.startActivity(Intent.createChooser(sendIntent, "Заказать продукты"))
     }
 
+    data class StoreItem(val name: String, val iconRes: Int)
+    val stores = listOf(
+        StoreItem("Яндекс Лавка", com.example.smartmeal.R.drawable.yandex_lavka_icon_logo),
+        StoreItem("Самокат", com.example.smartmeal.R.drawable.samokat_sign_logo),
+        StoreItem("Яндекс Маркет", com.example.smartmeal.R.drawable.yandex_market_sign_logo)
+    )
+
     ModalBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -523,27 +542,40 @@ private fun OrderModalBottomSheet(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            val stores = listOf("СберМаркет", "Самокат", "Яндекс Лавка", "ВкусВилл")
-            
-            stores.forEach { store ->
-                Button(
-                    onClick = { 
-                        viewModel.exportCheckedProducts(
-                            onSuccess = { txtContent -> 
-                                shareText(txtContent, store)
-                                onDismiss()
-                            },
-                            onError = { errorMsg -> 
-                                android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_SHORT).show()
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                stores.forEach { store ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .clickable {
+                                viewModel.exportCheckedProducts(
+                                    onSuccess = { txtContent ->
+                                        shareText(txtContent, store.name)
+                                        onDismiss()
+                                    },
+                                    onError = { errorMsg ->
+                                        android.widget.Toast.makeText(context, errorMsg, android.widget.Toast.LENGTH_SHORT).show()
+                                    }
+                                )
                             }
+                            .padding(8.dp)
+                    ) {
+                        androidx.compose.foundation.Image(
+                            painter = androidx.compose.ui.res.painterResource(id = store.iconRes),
+                            contentDescription = store.name,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .clip(RoundedCornerShape(16.dp))
                         )
-                    },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
-                ) {
-                    SmartMealText(text = store, color = Color.White)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        SmartMealText(text = store.name, style = MaterialTheme.typography.bodyMedium)
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))

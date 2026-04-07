@@ -179,6 +179,7 @@ fun HomeScreen(
     }
 
     var selectedNavItem by remember { mutableIntStateOf(0) }
+    var shouldOpenOrderModal by remember { mutableStateOf(false) }
 
     LaunchedEffect(selectedNavItem, uiState.currentMenu) {
         if (selectedNavItem == 1) {
@@ -270,7 +271,9 @@ fun HomeScreen(
                         hasNoAvailableDays = productListViewModel.hasNoAvailableDays,
                         isLoading = productListViewModel.isLoading,
                         errorMessage = productListViewModel.errorMessage,
-                        customPlan = if (showMyPlanSection) customPlan else null
+                        customPlan = if (showMyPlanSection) customPlan else null,
+                        openOrderModal = shouldOpenOrderModal,
+                        onOrderModalConsumed = { shouldOpenOrderModal = false }
                     )
                 }
 
@@ -283,7 +286,10 @@ fun HomeScreen(
                         viewModel = profileViewModel,
                         onLogout = onLogout,
                         onLogoutSuccess = onLogoutSuccess,
-                        onGoToProducts = { selectedNavItem = 1 },
+                        onGoToProducts = {
+                            selectedNavItem = 1
+                            shouldOpenOrderModal = true
+                        },
                         onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) }
                     )
                 }
