@@ -11,7 +11,17 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.example.smartmeal.feature.products.presentation.ProductListScreen
 import com.example.smartmeal.feature.products.presentation.ProductUiModel
+import com.example.smartmeal.feature.products.presentation.ProductListViewModel
+import com.example.smartmeal.data.local.SetupPreferences
+import com.example.smartmeal.feature.home.data.api.MenuApi
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.smartmeal.ui.theme.SmartMealTheme
+import retrofit2.Response
+import okhttp3.ResponseBody
+import com.example.smartmeal.feature.home.data.api.RecalculateCartRequest
+import com.example.smartmeal.feature.home.data.api.UpdateCartItemRequest
+import com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest
+import com.example.smartmeal.feature.home.data.api.ExportCartRequest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -27,11 +37,35 @@ class ProductListScreenTest {
 
     private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
+    private val dummyViewModel: ProductListViewModel by lazy {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val prefs = SetupPreferences(context)
+        val api = object : MenuApi {
+            override suspend fun getMenus(): Response<List<com.example.smartmeal.feature.home.data.menu.MenuDto>> = TODO()
+            override suspend fun getMenu(id: Int): Response<com.example.smartmeal.feature.home.data.menu.MenuDto> = TODO()
+            override suspend fun deleteMenu(id: Int): Response<Unit> = TODO()
+            override suspend fun getMenuItems(): Response<List<com.example.smartmeal.feature.home.data.menu.MenuItemDto>> = TODO()
+            override suspend fun deleteMenuItem(id: Int): Response<Unit> = TODO()
+            override suspend fun replaceMenuItem(id: Int, cookTimeRange: String?): Response<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = TODO()
+            override suspend fun getRecipes(search: String?): Response<List<com.example.smartmeal.feature.home.data.menu.RecipeShortDto>> = TODO()
+            override suspend fun getRecipe(id: Int, servings: Int?): Response<com.example.smartmeal.feature.home.data.menu.RecipeDetailDto> = TODO()
+            override suspend fun getCart(): Response<Map<String, List<com.example.smartmeal.feature.home.data.menu.CartItemDto>>> = TODO()
+            override suspend fun recalculateCart(request: RecalculateCartRequest): Response<Unit> = TODO()
+            override suspend fun exportCart(all: Boolean, request: ExportCartRequest): Response<ResponseBody> = TODO()
+            override suspend fun updateCartItem(id: Int, request: UpdateCartItemRequest): Response<com.example.smartmeal.feature.home.data.menu.CartItemDto> = TODO()
+            override suspend fun deleteCartItem(id: Int): Response<Unit> = TODO()
+            override suspend fun getFavorites(): Response<List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>> = TODO()
+            override suspend fun toggleFavorite(request: ToggleFavoriteRequest): Response<com.example.smartmeal.feature.home.data.api.ToggleFavoriteResponse> = TODO()
+        }
+        ProductListViewModel(api, prefs)
+    }
+
     @Test
     fun productListScreen_titleIsDisplayed() {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = emptyList(),
                     selectedDate = null,
                     selectedStartDateKey = null,
@@ -55,6 +89,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = emptyList(),
                     selectedDate = date,
                     selectedStartDateKey = null,
@@ -78,6 +113,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = listOf(
                         ProductUiModel(
                             id = "1",
@@ -113,6 +149,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = listOf(
                         ProductUiModel(
                             id = "1",
@@ -149,6 +186,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = listOf(
                         ProductUiModel(
                             id = "1",
@@ -198,6 +236,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = listOf(
                         ProductUiModel(
                             id = "1",
@@ -246,6 +285,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = listOf(
                         ProductUiModel(
                             id = "1",
@@ -300,6 +340,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = listOf(
                         ProductUiModel(
                             id = "1",
@@ -346,6 +387,7 @@ class ProductListScreenTest {
         composeTestRule.setContent {
             SmartMealTheme {
                 ProductListScreen(
+                    viewModel = dummyViewModel,
                     products = emptyList(),
                     selectedDate = null,
                     selectedStartDateKey = null,
