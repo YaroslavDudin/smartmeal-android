@@ -21,7 +21,7 @@ from app.recipes.models import (
     Recipe, RecipeIngredient, RecipeStep,
     Ingredient, IngredientCategory, Unit,
 )
-from app.menus.models import MealType, Menu
+from app.menus.models import MealType, Menu , MenuItem
 
 from .permissions import IsSuperuser
 from .serializers import (
