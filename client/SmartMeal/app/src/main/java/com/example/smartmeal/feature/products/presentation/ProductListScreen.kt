@@ -34,9 +34,12 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
+import com.example.smartmeal.ui.theme.BgLightGray
+import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
+import androidx.compose.ui.unit.sp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -142,6 +145,7 @@ fun ProductListScreen(
     androidx.compose.runtime.LaunchedEffect(openOrderModal) {
         if (openOrderModal) {
             showOrderModal = true
+            onOrderModalConsumed()
         }
     }
 
@@ -155,26 +159,34 @@ fun ProductListScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 4.dp)
+            .background(BgLightGray)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        // --- Шапка ---
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             SmartMealText(
-                text = "Список продуктов",
-                style = MaterialTheme.typography.titleLarge,
-                color = TextBlack,
-                modifier = Modifier.testTag("title")
+                text = "Продукты",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.align(Alignment.Center).testTag("title")
             )
+
             if (contentState == ProductContentState.List) {
                 Button(
                     onClick = { showOrderModal = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryGreen,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
                 ) {
-                    SmartMealText("Заказать", color = Color.White)
+                    SmartMealText("Заказать", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                 }
             }
         }
@@ -483,14 +495,44 @@ internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<P
 
 @Composable
 private fun ProductRowItem(product: ProductUiModel, onProductChecked: (Collection<String>, Boolean) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth().background(if (product.checked) LightGreenBg.copy(alpha = 0.48f) else Color.Transparent, RoundedCornerShape(14.dp)).padding(vertical = 5.dp).animateContentSize(),
-        verticalAlignment = Alignment.CenterVertically
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
+            .animateContentSize(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (product.checked) LightGreenBg.copy(alpha = 0.5f) else Color.White
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = if (product.checked) 0.dp else 1.dp)
     ) {
-        Checkbox(checked = product.checked, onCheckedChange = { onProductChecked(product.sourceIds, !product.checked) })
-        SmartMealText(text = product.icon, modifier = Modifier.padding(horizontal = 6.dp))
-        SmartMealText(text = product.name, style = MaterialTheme.typography.bodyLarge, color = if (product.checked) PrimaryGreen else TextBlack, modifier = Modifier.weight(1f))
-        SmartMealText(text = product.amount, style = MaterialTheme.typography.bodyLarge, color = PrimaryGreen, modifier = Modifier.padding(start = 8.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = product.checked,
+                onCheckedChange = { onProductChecked(product.sourceIds, !product.checked) },
+                colors = CheckboxDefaults.colors(checkedColor = PrimaryGreen)
+            )
+            SmartMealText(text = product.icon, modifier = Modifier.padding(horizontal = 8.dp), fontSize = 20.sp)
+            SmartMealText(
+                text = product.name,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (product.checked) PrimaryGreen else TextBlack,
+                fontWeight = if (product.checked) FontWeight.Bold else FontWeight.Medium,
+                modifier = Modifier.weight(1f)
+            )
+            SmartMealText(
+                text = product.amount,
+                style = MaterialTheme.typography.bodyLarge,
+                color = PrimaryGreen,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
     }
 }
 
@@ -515,6 +557,7 @@ private fun OrderModalBottomSheet(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val shareText = { text: String, storeName: String ->
         val sendIntent = Intent().apply {
@@ -526,32 +569,44 @@ private fun OrderModalBottomSheet(
     }
 
     data class StoreItem(val name: String, val iconRes: Int)
-    val stores = listOf(
-        StoreItem("Яндекс Лавка", com.example.smartmeal.R.drawable.yandex_lavka_icon_logo),
-        StoreItem("Самокат", com.example.smartmeal.R.drawable.samokat_sign_logo),
-        StoreItem("Яндекс Маркет", com.example.smartmeal.R.drawable.yandex_market_sign_logo)
-    )
+    val stores = remember {
+        listOf(
+            StoreItem("Яндекс Лавка", com.example.smartmeal.R.drawable.yandex_lavka_icon_logo),
+            StoreItem("Самокат", com.example.smartmeal.R.drawable.samokat_sign_logo),
+            StoreItem("Яндекс Маркет", com.example.smartmeal.R.drawable.yandex_market_sign_logo)
+        )
+    }
 
-    ModalBottomSheet(onDismissRequest = onDismiss) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        dragHandle = { BottomSheetDefaults.DragHandle() }
+    ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SmartMealText(
                 text = "Где заказать продукты?",
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = TextBlack
             )
             Spacer(modifier = Modifier.height(24.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 stores.forEach { store ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
+                            .weight(1f)
                             .clip(RoundedCornerShape(16.dp))
                             .clickable {
                                 viewModel.exportCheckedProducts(
@@ -564,7 +619,7 @@ private fun OrderModalBottomSheet(
                                     }
                                 )
                             }
-                            .padding(8.dp)
+                            .padding(vertical = 8.dp)
                     ) {
                         androidx.compose.foundation.Image(
                             painter = androidx.compose.ui.res.painterResource(id = store.iconRes),
@@ -574,11 +629,16 @@ private fun OrderModalBottomSheet(
                                 .clip(RoundedCornerShape(16.dp))
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        SmartMealText(text = store.name, style = MaterialTheme.typography.bodyMedium)
+                        SmartMealText(
+                            text = store.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = TextBlack,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

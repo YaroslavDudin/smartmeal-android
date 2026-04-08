@@ -88,12 +88,12 @@ class HomeScreenTest {
             MealSection(
                 id = "breakfast",
                 title = "Завтрак",
-                meal = fakeMeal("Омлет", "breakfast")
+                meal = fakeMeal(1, "Омлет", "breakfast")
             ),
             MealSection(
                 id = "dinner",
                 title = "Ужин",
-                meal = fakeMeal("Паста", "dinner")
+                meal = fakeMeal(2, "Паста", "dinner")
             )
         )
 
@@ -135,7 +135,7 @@ class HomeScreenTest {
                     MealSection(
                         id = "breakfast",
                         title = "Завтрак",
-                        meal = fakeMeal("Тест", "breakfast")
+                        meal = fakeMeal(1, "Тест", "breakfast")
                     )
                 )
             )
@@ -150,7 +150,7 @@ class HomeScreenTest {
                     onReplaceMeal = { id ->
                         state.value = state.value.copy(
                             mealSections = state.value.mealSections.map {
-                                if (it.id == id) {
+                                if (it.meal.id == id) {
                                     it.copy(
                                         meal = it.meal.copy(
                                             recipe_title = "Обновлено"
@@ -369,11 +369,12 @@ class HomeScreenTest {
     }
 
     private fun fakeMeal(
+        id: Int,
         title: String,
         type: String
     ) = MenuItemDto(
-        id = 1,
-        recipe = 1,
+        id = id,
+        recipe = id,
         recipe_title = title,
         cook_time = 15,
         meal_type = type,

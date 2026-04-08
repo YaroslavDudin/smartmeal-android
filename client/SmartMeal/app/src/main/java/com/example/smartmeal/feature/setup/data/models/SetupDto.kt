@@ -21,11 +21,16 @@ data class UserProfileDto(
     val preferred_cook_time_display: String?,
     val allergies: List<Int>,
     val allergies_names: List<String>,
+    val birth_date: String? = null,
+    val gender: String? = null,
 )
 
 data class UpdateProfileRequest(
+    val username: String? = null,
     val diet_type: Int?,
     val portion_size: Int,
     val allergies: List<Int>,
     val preferred_cook_time: String? = null,
+    val birth_date: String? = null,
+    val gender: String? = null,
 )

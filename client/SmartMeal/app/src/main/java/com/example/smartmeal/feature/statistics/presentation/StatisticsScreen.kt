@@ -31,7 +31,10 @@ import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.presentation.CustomPlan
 import com.example.smartmeal.feature.home.presentation.MyPlanSection
 import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.theme.BgLightGray
+import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.TextBlack
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -83,16 +86,21 @@ fun StatisticsScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .background(BgLightGray)
         ) {
-            SmartMealText(
-                text = "Статистика",
-                style = MaterialTheme.typography.headlineMedium,
+            // --- Шапка ---
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                fontWeight = FontWeight.Bold
-            )
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                SmartMealText(
+                    text = "Статистика",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
 
             // Секция "Мой план" (календарик), если есть кастомный план
             if (customPlan != null) {
@@ -250,7 +258,8 @@ fun DailyNutritionCard(stats: DailyStats) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -260,7 +269,7 @@ fun DailyNutritionCard(stats: DailyStats) {
                 CircularProgressIndicator(
                     progress = { 1f },
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    color = BgLightGray,
                     strokeWidth = 12.dp,
                     strokeCap = StrokeCap.Round,
                 )
@@ -276,12 +285,12 @@ fun DailyNutritionCard(stats: DailyStats) {
                         text = stats.totalCalories.toInt().toString(),
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = TextBlack
                     )
                     SmartMealText(
                         text = "ккал",
                         fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = Color.Gray
                     )
                 }
             }
@@ -306,12 +315,13 @@ fun MacroNutrientItem(label: String, value: Double, color: Color) {
         SmartMealText(
             text = "${value.toInt()}г",
             fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            color = TextBlack
         )
         SmartMealText(
             text = label,
             fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = Color.Gray
         )
         Spacer(modifier = Modifier.height(4.dp))
         Box(
@@ -333,11 +343,11 @@ fun MealNutritionRow(meal: MenuItemDto) {
         else -> meal.meal_type.replaceFirstChar { it.titlecase() }
     }
 
-    Surface(
+    Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 2.dp
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -353,7 +363,7 @@ fun MealNutritionRow(meal: MenuItemDto) {
                 SmartMealText(
                     text = meal.recipe_title,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = TextBlack,
                     maxLines = 1
                 )
                 SmartMealText(
@@ -362,7 +372,7 @@ fun MealNutritionRow(meal: MenuItemDto) {
                     color = Color.Gray
                 )
             }
-            
+
             SmartMealText(
                 text = "${meal.cook_time} мин",
                 fontSize = 12.sp,

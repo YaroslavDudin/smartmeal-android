@@ -22,6 +22,7 @@ import com.example.smartmeal.feature.home.data.api.RecalculateCartRequest
 import com.example.smartmeal.feature.home.data.api.UpdateCartItemRequest
 import com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest
 import com.example.smartmeal.feature.home.data.api.ExportCartRequest
+import com.example.smartmeal.feature.home.data.api.SetRecipeRequest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -56,6 +57,7 @@ class ProductListScreenTest {
             override suspend fun deleteCartItem(id: Int): Response<Unit> = TODO()
             override suspend fun getFavorites(): Response<List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>> = TODO()
             override suspend fun toggleFavorite(request: ToggleFavoriteRequest): Response<com.example.smartmeal.feature.home.data.api.ToggleFavoriteResponse> = TODO()
+            override suspend fun setRecipeToMenuItem(id: Int, request: SetRecipeRequest): Response<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = TODO()
         }
         ProductListViewModel(api, prefs)
     }

@@ -18,26 +18,30 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import com.example.smartmeal.feature.setup.data.models.DietTypeDto
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.BgLightGray
+import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.TextBlack
 
 private val YellowDivider = Color(0xFFD4B800)
 
@@ -111,40 +115,35 @@ fun DietScreen(
                 )
 
                 if (state.allDietTypes.isEmpty()) {
-                    SmartMealText(
-                        text = "Список рационов пока недоступен",
-                        fontSize = 14.sp,
-                        color = Color.Gray,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
+                    Box(modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp), contentAlignment = Alignment.Center) {
+                        SmartMealText(
+                            text = "Список рационов пока недоступен",
+                            fontSize = 14.sp,
+                            color = Color.Gray
+                        )
+                    }
                 } else {
                     state.allDietTypes.forEach { diet ->
-                        DietRow(
+                        DietCard(
                             diet = diet,
                             isChecked = state.pendingDietTypeId == diet.id,
                             onClick = { viewModel.selectPendingDiet(diet.id) }
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
 
-                HorizontalDivider(
-                    color = YellowDivider,
-                    thickness = 1.dp,
-                    modifier = Modifier.padding(vertical = 12.dp)
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
                 val selectedDietName = state.allDietTypes
                     .firstOrNull { it.id == state.pendingDietTypeId }
                     ?.name
 
                 SmartMealText(
-                    text = if (selectedDietName == null) {
-                        "Сейчас рацион не выбран"
-                    } else {
-                        "Текущий выбор: $selectedDietName"
-                    },
+                    text = if (selectedDietName == null) "Рацион не выбран" else "Выбрано: $selectedDietName",
                     fontSize = 14.sp,
-                    color = Color.Gray,
+                    fontWeight = FontWeight.Bold,
+                    color = TextBlack,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
 
@@ -153,45 +152,72 @@ fun DietScreen(
                         text = state.error!!,
                         color = Color.Red,
                         fontSize = 13.sp,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier.padding(top = 16.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
 
-        SmartMealButton(
-            text = if (state.isSaving) "Сохраняем..." else "Подтвердить",
-            onClick = { viewModel.saveDiet() },
-            variant = SmartMealButtonVariant.PRIMARY,
-            color = SmartMealButtonColor.GREEN,
-            enabled = !state.isSaving,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
-        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.White,
+            shadowElevation = 8.dp
+        ) {
+            SmartMealButton(
+                text = if (state.isSaving) "Сохранение..." else "Подтвердить",
+                onClick = { viewModel.saveDiet() },
+                variant = SmartMealButtonVariant.PRIMARY,
+                color = SmartMealButtonColor.GREEN,
+                enabled = !state.isSaving,
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
+            )
+        }
     }
 }
 
 @Composable
-private fun DietRow(
+private fun DietCard(
     diet: DietTypeDto,
     isChecked: Boolean,
-    onClick: (() -> Unit)?
+    onClick: () -> Unit
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
-            .padding(vertical = 10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        border = androidx.compose.foundation.BorderStroke(
+            width = if (isChecked) 2.dp else 1.dp,
+            color = if (isChecked) PrimaryGreen else BorderGray.copy(alpha = 0.5f)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = if (isChecked) 0.dp else 2.dp)
     ) {
-        Icon(
-            imageVector = if (isChecked) Icons.Filled.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
-            contentDescription = null,
-            tint = if (isChecked) PrimaryGreen else Color.LightGray,
-            modifier = Modifier.size(22.dp)
-        )
-        SmartMealText(text = diet.name, fontSize = 15.sp)
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            SmartMealText(
+                text = diet.name,
+                fontSize = 16.sp,
+                fontWeight = if (isChecked) FontWeight.Bold else FontWeight.Medium,
+                color = if (isChecked) PrimaryGreen else TextBlack
+            )
+            Icon(
+                imageVector = if (isChecked) Icons.Filled.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
+                contentDescription = null,
+                tint = if (isChecked) PrimaryGreen else Color.LightGray,
+                modifier = Modifier.size(24.dp)
+            )
+        }
     }
 }

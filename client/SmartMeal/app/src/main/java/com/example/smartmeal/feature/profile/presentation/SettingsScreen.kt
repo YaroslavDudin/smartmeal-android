@@ -2,40 +2,24 @@ package com.example.smartmeal.feature.profile.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import android.content.res.Configuration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
@@ -45,25 +29,26 @@ import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.BgLightGray
 import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.HintGray
-
-object UserSession {
-    var name: String = "Admin"
-    var birthDate: String = ""
-    var gender: String = "" // "male" | "female" | ""
-    var email: String = "test@admin.com"
-}
+import com.example.smartmeal.ui.theme.PrimaryGreen
+import java.text.SimpleDateFormat
+import java.util.*
 
 private val AvatarYellow = Color(0xFFFFF4C2)
-private val GenderSelectedBg = Color(0xFFFFF176)
+private val GenderSelectedBg = Color(0xFFFFC107) // Gold
 private val GenderUnselectedBg = Color(0xFFEEEEEE)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(onBack: () -> Unit) {
-    var birthDate by remember { mutableStateOf(UserSession.birthDate) }
-    var gender by remember { mutableStateOf(UserSession.gender) }
-    var email by remember { mutableStateOf(UserSession.email) }
-    var emailError by remember { mutableStateOf<String?>(null) }
+fun SettingsScreen(
+    viewModel: ProfileViewModel,
+    onBack: () -> Unit
+) {
+    val state by viewModel.state.collectAsState()
+    
+    var showDatePicker by remember { mutableStateOf(false) }
+    
+    val dateFormatter = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
+    val displayDateFormatter = remember { SimpleDateFormat("dd MMMM yyyy", Locale("ru")) }
 
     Column(
         modifier = Modifier
@@ -105,121 +90,226 @@ fun SettingsScreen(onBack: () -> Unit) {
                 modifier = Modifier
                     .size(90.dp)
                     .clip(CircleShape)
-                    .background(AvatarYellow)
+                    .background(AvatarYellow),
+                contentAlignment = Alignment.Center
+            ) {
+                SmartMealText(
+                    text = state.userName.take(1).uppercase(),
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // --- Имя пользователя ---
+        SettingsFieldLabel("ИМЯ ПОЛЬЗОВАТЕЛЯ")
+        OutlinedTextField(
+            value = state.pendingUserName,
+            onValueChange = { viewModel.updatePendingUserName(it) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            shape = RoundedCornerShape(12.dp),
+            isError = state.usernameError != null,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = BorderGray,
+                focusedBorderColor = PrimaryGreen,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                errorBorderColor = Color.Red,
+                errorContainerColor = Color.White
+            ),
+            singleLine = true
+        )
+        if (state.usernameError != null) {
+            SmartMealText(
+                text = state.usernameError!!,
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(start = 24.dp, top = 4.dp)
             )
         }
 
-        // --- Имя ---
-        SmartMealText(
-            text = UserSession.name,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // --- Email (Read-only) ---
+        SettingsFieldLabel("ЭЛ.ПОЧТА")
+        OutlinedTextField(
+            value = state.userEmail,
+            onValueChange = { },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            textAlign = TextAlign.Center
+                .padding(horizontal = 20.dp),
+            shape = RoundedCornerShape(12.dp),
+            enabled = false,
+            colors = OutlinedTextFieldDefaults.colors(
+                disabledBorderColor = BorderGray,
+                disabledContainerColor = Color(0xFFF5F5F5), // Light gray
+                disabledTextColor = Color.Gray
+            ),
+            singleLine = true
         )
 
-        HorizontalDivider(color = BorderGray, thickness = 1.dp)
+        Spacer(modifier = Modifier.height(12.dp))
 
         // --- Дата рождения ---
-        SettingsFieldLabel("Дата рождения")
-        OutlinedTextField(
-            value = birthDate,
-            onValueChange = { birthDate = it },
-            placeholder = { SmartMealText(text = "ДД ММ ГГГГ", color = HintGray, fontSize = 15.sp) },
+        SettingsFieldLabel("ДАТА РОЖДЕНИЯ")
+        val displayDate = remember(state.pendingBirthDate) {
+            if (state.pendingBirthDate.isNullOrBlank()) "Не указана"
+            else {
+                try {
+                    val date = dateFormatter.parse(state.pendingBirthDate!!)
+                    date?.let { displayDateFormatter.format(it) } ?: "Не указана"
+                } catch (e: Exception) {
+                    state.pendingBirthDate ?: "Не указана"
+                }
+            }
+        }
+
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
-                .height(56.dp),
-            shape = RoundedCornerShape(0.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent
-            ),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
+                .height(56.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(Color.White)
+                .clickable { showDatePicker = true }
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            SmartMealText(
+                text = displayDate,
+                color = if (state.pendingBirthDate.isNullOrBlank()) HintGray else Color.Black,
+                fontSize = 16.sp
+            )
+        }
 
-        HorizontalDivider(color = BorderGray, thickness = 1.dp)
+        Spacer(modifier = Modifier.height(12.dp))
 
         // --- Пол ---
-        SettingsFieldLabel("Пол")
+        SettingsFieldLabel("ПОЛ")
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 10.dp),
+                .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             GenderButton(
                 text = "Мужской",
-                isSelected = gender == "male",
-                onClick = { gender = "male" },
+                isSelected = state.pendingGender == "male",
+                onClick = { viewModel.updatePendingGender("male") },
                 modifier = Modifier.weight(1f)
             )
             GenderButton(
                 text = "Женский",
-                isSelected = gender == "female",
-                onClick = { gender = "female" },
+                isSelected = state.pendingGender == "female",
+                onClick = { viewModel.updatePendingGender("female") },
                 modifier = Modifier.weight(1f)
             )
         }
 
-        HorizontalDivider(color = BorderGray, thickness = 1.dp)
+        Spacer(modifier = Modifier.height(32.dp))
 
-        // --- Email ---
-        SettingsFieldLabel("ЭЛ.ПОЧТА")
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it; emailError = validateEmail(it) },
-            placeholder = { SmartMealText(text = "email@example.com", color = HintGray, fontSize = 15.sp) },
-            isError = emailError != null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .height(56.dp),
-            shape = RoundedCornerShape(0.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                errorBorderColor = Color.Transparent
-            ),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        // --- Кнопка Сохранить ---
+        SmartMealButton(
+            text = if (state.isSaving) "Сохранение..." else "Сохранить",
+            onClick = { viewModel.savePersonalData() },
+            variant = SmartMealButtonVariant.PRIMARY,
+            color = SmartMealButtonColor.GREEN,
+            modifier = Modifier.padding(horizontal = 20.dp),
+            enabled = !state.isSaving
         )
-        if (emailError != null) {
+
+        if (state.savedSuccess) {
+            LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(1500)
+                viewModel.clearSavedSuccess()
+            }
             SmartMealText(
-                text = emailError!!,
-                color = Color.Red,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(horizontal = 20.dp)
+                text = "Данные успешно сохранены",
+                color = PrimaryGreen,
+                fontSize = 14.sp,
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                textAlign = TextAlign.Center
             )
         }
 
-        HorizontalDivider(color = BorderGray, thickness = 1.dp)
-
         Spacer(modifier = Modifier.height(32.dp))
+    }
 
-        // --- Кнопка Подтвердить ---
-        SmartMealButton(
-            text = "Подтвердить",
-            onClick = {
-                val error = validateEmail(email)
-                if (error != null) { emailError = error; return@SmartMealButton }
-                UserSession.birthDate = birthDate
-                UserSession.gender = gender
-                UserSession.email = email
-            },
-            variant = SmartMealButtonVariant.PRIMARY,
-            color = SmartMealButtonColor.GREEN,
-            modifier = Modifier.padding(horizontal = 20.dp)
-        )
+    if (showDatePicker) {
+        val russianLocale = remember { Locale("ru", "RU") }
+        val configuration = LocalConfiguration.current
+        val context = LocalContext.current
 
-        Spacer(modifier = Modifier.height(32.dp))
+        val localizedConfiguration = remember(configuration) {
+            Configuration(configuration).apply {
+                setLocale(russianLocale)
+                setLayoutDirection(russianLocale)
+            }
+        }
+        val localizedContext = remember(context, localizedConfiguration) {
+            context.createConfigurationContext(localizedConfiguration)
+        }
+
+        // Устанавливаем глобальную локаль ПЕРЕД созданием стейта
+        SideEffect {
+            Locale.setDefault(russianLocale)
+        }
+
+        CompositionLocalProvider(
+            LocalConfiguration provides localizedConfiguration,
+            LocalContext provides localizedContext
+        ) {
+            val datePickerState = rememberDatePickerState()
+
+            DatePickerDialog(
+                onDismissRequest = { showDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        datePickerState.selectedDateMillis?.let { millis ->
+                            val date = Date(millis)
+                            viewModel.updatePendingBirthDate(dateFormatter.format(date))
+                        }
+                        showDatePicker = false
+                    }) {
+                        SmartMealText("OK", color = PrimaryGreen)
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDatePicker = false }) {
+                        SmartMealText("Отмена", color = Color.Gray)
+                    }
+                }
+            ) {
+                DatePicker(
+                    state = datePickerState,
+                    title = {
+                        SmartMealText(
+                            text = "Дата рождения",
+                            modifier = Modifier.padding(start = 24.dp, top = 16.dp),
+                            fontSize = 14.sp,
+                            color = Color.Gray
+                        )
+                    },
+                    headline = {
+                        SmartMealText(
+                            text = if (datePickerState.selectedDateMillis != null) {
+                                displayDateFormatter.format(Date(datePickerState.selectedDateMillis!!))
+                            } else {
+                                "Выберите дату"
+                            },
+                            modifier = Modifier.padding(start = 24.dp, bottom = 12.dp),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -227,10 +317,10 @@ fun SettingsScreen(onBack: () -> Unit) {
 private fun SettingsFieldLabel(label: String) {
     SmartMealText(
         text = label,
-        fontSize = 13.sp,
-        fontWeight = FontWeight.SemiBold,
-        color = Color.Black,
-        modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 2.dp)
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.Gray,
+        modifier = Modifier.padding(start = 24.dp, bottom = 4.dp)
     )
 }
 
@@ -241,25 +331,25 @@ private fun GenderButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(20.dp))
-            .background(if (isSelected) GenderSelectedBg else GenderUnselectedBg)
-            .clickable { onClick() }
-            .padding(vertical = 10.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        SmartMealText(
-            text = text,
-            fontSize = 14.sp,
-            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-            color = if (isSelected) Color.Black else Color(0xFF9E9E9E)
-        )
-    }
-}
+    val bgColor = if (isSelected) GenderSelectedBg else GenderUnselectedBg
+    val contentColor = if (isSelected) Color.Black else Color.Gray
+    val fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
 
-private fun validateEmail(email: String): String? = when {
-    email.isBlank() -> null
-    !email.contains("@") || !email.contains(".") -> "Введите корректный email"
-    else -> null
+    Surface(
+        modifier = modifier
+            .height(48.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable { onClick() },
+        color = bgColor,
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            SmartMealText(
+                text = text,
+                fontSize = 15.sp,
+                fontWeight = fontWeight,
+                color = contentColor
+            )
+        }
+    }
 }

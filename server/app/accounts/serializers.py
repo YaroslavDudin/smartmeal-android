@@ -60,7 +60,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'username', 'email', 'portion_size', 'diet_type', 'diet_type_name', 
-            'preferred_cook_time', 'preferred_cook_time_display', 'allergies', 'allergies_names'
+            'preferred_cook_time', 'preferred_cook_time_display', 'allergies', 'allergies_names',
+            'birth_date', 'gender'
         )
 
 

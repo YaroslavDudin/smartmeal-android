@@ -19,6 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.ui.platform.LocalConfiguration
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.theme.*
 
@@ -75,9 +77,16 @@ fun CookTimeSettingsScreen(
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 20.dp)
         ) {
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            SmartMealText(
+                text = "Выберите прием пищи, чтобы изменить предпочтительное время приготовления",
+                fontSize = 14.sp,
+                color = Color.Gray,
+                modifier = Modifier.padding(bottom = 16.dp),
+                textAlign = TextAlign.Center
+            )
 
             // --- 3 Кнопки времен готовки ---
             MEAL_TYPES_3.forEach { meal ->
@@ -85,86 +94,112 @@ fun CookTimeSettingsScreen(
                 val currentPref = state.mealCookTimes[meal] ?: "any"
                 val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
 
-                Box(
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 6.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(if (isSelected) MainGreen else Color.White)
-                        .border(2.dp, GreenBorder, RoundedCornerShape(16.dp))
-                        .clickable { selectedMeal = if (isSelected) null else meal }
-                        .padding(vertical = 14.dp, horizontal = 20.dp),
-                    contentAlignment = Alignment.Center
+                        .padding(vertical = 8.dp)
+                        .clickable { selectedMeal = if (isSelected) null else meal },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (isSelected) PrimaryGreen else Color.White
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 4.dp else 2.dp)
                 ) {
-                    SmartMealText(
-                        text = "$meal: $displayPref",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = if (isSelected) Color.White else Color.Black,
-                        textAlign = TextAlign.Center
-                    )
+                    Row(
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            SmartMealText(
+                                text = meal,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (isSelected) Color.White else Color.Black
+                            )
+                            SmartMealText(
+                                text = displayPref,
+                                fontSize = 14.sp,
+                                color = if (isSelected) Color.White.copy(alpha = 0.8f) else Color.Gray
+                            )
+                        }
+                        if (isSelected) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            HorizontalDivider(
-                color = YellowDivider,
-                thickness = 1.5.dp,
-                modifier = Modifier.padding(vertical = 16.dp)
-            )
+            Spacer(modifier = Modifier.height(24.dp))
         }
 
-        // --- Кнопка Изменить ---
-        Button(
-            onClick = { showEditModal = true },
+        // --- Кнопки действий внизу ---
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 8.dp),
-            enabled = selectedMeal != null && !state.isSaving,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = CardYellow,
-                contentColor = Color.Black,
-                disabledContainerColor = Color.LightGray.copy(alpha = 0.5f)
-            ),
-            shape = RoundedCornerShape(16.dp),
-            elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
+                .background(Color.White)
+                .navigationBarsPadding()
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            SmartMealText(
-                text = "Изменить",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // --- Кнопка Изменить ---
+                Button(
+                    onClick = { showEditModal = true },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
+                    enabled = selectedMeal != null && !state.isSaving,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = CardYellow,
+                        contentColor = Color.Black,
+                        disabledContainerColor = Color.LightGray.copy(alpha = 0.3f)
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    SmartMealText(
+                        text = "Изменить",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
 
-        // --- Кнопка Подтвердить (Обновляет план) ---
-        Button(
-            onClick = { 
-                viewModel.confirmCookTimes()
-                onBack()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 24.dp),
-            enabled = !state.isRegenerating,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MainGreen,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            if (state.isRegenerating) {
-                CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
-            } else {
-                SmartMealText(
-                    text = "Подтвердить",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                // --- Кнопка Подтвердить ---
+                Button(
+                    onClick = { 
+                        viewModel.confirmCookTimes()
+                        onBack()
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
+                    enabled = !state.isRegenerating,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryGreen,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    if (state.isRegenerating) {
+                        CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
+                    } else {
+                        SmartMealText(
+                            text = "Подтвердить",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
     }
@@ -204,23 +239,25 @@ fun CookTimeEditModal(
         onDismissRequest = onDismiss,
         containerColor = Color.White,
         shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
-        tonalElevation = 8.dp
+        dragHandle = { BottomSheetDefaults.DragHandle() }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp)
+                .navigationBarsPadding()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 40.dp)
         ) {
             SmartMealText(
                 text = "Время готовки для: $mealName",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 24.dp),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
                 textAlign = TextAlign.Center
             )
 
-            Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     TimeSelectableChip(
                         label = COOK_TIME_OPTIONS[0].second,
                         isSelected = selectedOption == COOK_TIME_OPTIONS[0].first,
@@ -234,7 +271,7 @@ fun CookTimeEditModal(
                         modifier = Modifier.weight(1f)
                     )
                 }
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     TimeSelectableChip(
                         label = COOK_TIME_OPTIONS[2].second,
                         isSelected = selectedOption == COOK_TIME_OPTIONS[2].first,
@@ -252,13 +289,14 @@ fun CookTimeEditModal(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MainGreen, contentColor = Color.White),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = PrimaryGreen,
+                    contentColor = Color.White
+                ),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                SmartMealText(text = "Сохранить", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                SmartMealText(text = "Сохранить", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
@@ -270,26 +308,27 @@ fun TimeSelectableChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val bgColor = if (isSelected) MainGreen else Color.White
+    val bgColor = if (isSelected) PrimaryGreen else Color.White
     val textColor = if (isSelected) Color.White else Color.Black
-    val borderColor = if (isSelected) MainGreen else GreenBorder
+    val borderColor = if (isSelected) PrimaryGreen else BorderGray
 
     Surface(
         modifier = modifier
-            .border(1.dp, borderColor, RoundedCornerShape(12.dp))
+            .border(1.dp, borderColor, RoundedCornerShape(16.dp))
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         color = bgColor,
+        shadowElevation = if (isSelected) 2.dp else 0.dp
     ) {
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.padding(vertical = 14.dp, horizontal = 8.dp)
+            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
         ) {
             SmartMealText(
                 text = label,
                 color = textColor,
                 fontSize = 14.sp,
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                 textAlign = TextAlign.Center
             )
         }

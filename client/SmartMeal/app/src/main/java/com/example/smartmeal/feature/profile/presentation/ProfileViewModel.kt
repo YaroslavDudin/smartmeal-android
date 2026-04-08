@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal.feature.profile.presentation
+package com.example.smartmeal.feature.profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +25,7 @@ data class ProfileState(
     val userName: String = "admin",
     val userEmail: String = "",
     val birthDate: String = "",
+    val gender: String? = null,
     val currentDietTypeId: Int? = null,
     val currentDietTypeName: String? = null,
     val currentAllergyIds: Set<Int> = emptySet(),
@@ -41,6 +42,10 @@ data class ProfileState(
     val pendingAllergyIds: Set<Int> = emptySet(),
     val pendingDietTypeId: Int? = null,
     val pendingPortionSize: Int = 1,
+    val pendingUserName: String = "",
+    val pendingBirthDate: String? = null,
+    val pendingGender: String? = null,
+    val usernameError: String? = null,
 
     // Избранное
     val favorites: List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto> = emptyList(),
@@ -55,7 +60,7 @@ fun ProfileState.getGroupedFavorites(): Map<String, List<com.example.smartmeal.f
     favorites.forEach { fav ->
         // Проверяем русские названия из бэкенда
         val type = order.find { type -> 
-            fav.meal_types.any { it.equals(type, ignoreCase = true) } 
+            fav.meal_types.any { it.equals(type, ignoreCase = true) || it.contains(type, ignoreCase = true) } 
         } ?: "Другое"
         
         grouped.getOrPut(type) { mutableListOf() }.add(fav)
@@ -209,7 +214,6 @@ class ProfileViewModel(
         }
     }
 
-    // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р вЂ”Р В°Р С–РЎР‚РЎС“Р В·Р С”Р В° Р С—РЎР‚Р С•РЎвЂћР С‘Р В»РЎРЏ + РЎРѓР С—РЎР‚Р В°Р Р†Р С•РЎвЂЎР Р…Р С‘Р С”Р С•Р Р† РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р Р Р…Р Вµ Р СР ВµР Р…РЎРЏР ВµР С Р Р…Р С‘Р В¶Р Вµ
     fun loadProfile() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
@@ -231,7 +235,8 @@ class ProfileViewModel(
                         isLoading = false,
                         userName = user?.username ?: "Admin",
                         userEmail = user?.email ?: "",
-                        birthDate = preferences.getBirthDate() ?: "",
+                        birthDate = user?.birth_date ?: "",
+                        gender = user?.gender,
                         currentDietTypeId = user?.diet_type,
                         currentDietTypeName = user?.diet_type_name,
                         currentAllergyIds = user?.allergies?.toSet() ?: emptySet(),
@@ -241,10 +246,13 @@ class ProfileViewModel(
                         mealCookTimes = preferences.getAllMealCookTimes(),
                         allDietTypes = diets,
                         allAllergies = allergies,
-                        // pending Р С‘Р Р…Р С‘РЎвЂ Р С‘Р В°Р В»Р С‘Р В·Р С‘РЎР‚РЎС“Р ВµР С РЎвЂљР ВµР С”РЎС“РЎвЂ°Р С‘Р СР С‘ Р В·Р Р…Р В°РЎвЂЎР ВµР Р…Р С‘РЎРЏР СР С‘
+                        // pending
                         pendingAllergyIds = user?.allergies?.toSet() ?: emptySet(),
                         pendingDietTypeId = user?.diet_type,
                         pendingPortionSize = user?.portion_size ?: 1,
+                        pendingUserName = user?.username ?: "",
+                        pendingBirthDate = user?.birth_date,
+                        pendingGender = user?.gender
                     )
                 }
                 user?.portion_size?.let { preferences.setPortionSize(it) }
@@ -252,6 +260,60 @@ class ProfileViewModel(
                 preferences.setAllergies(user?.allergies ?: emptyList())
             } catch (e: Exception) {
                 _state.update { it.copy(isLoading = false, error = "Ошибка загрузки: ${e.message}") }
+            }
+        }
+    }
+
+    fun updatePendingUserName(name: String) {
+        _state.update { it.copy(pendingUserName = name, usernameError = null) }
+    }
+
+    fun updatePendingBirthDate(date: String?) {
+        _state.update { it.copy(pendingBirthDate = date) }
+    }
+
+    fun updatePendingGender(gender: String?) {
+        _state.update { it.copy(pendingGender = gender) }
+    }
+
+    fun savePersonalData() {
+        val s = _state.value
+        viewModelScope.launch {
+            _state.update { it.copy(isSaving = true, error = null, savedSuccess = false) }
+            try {
+                val resp = api.updateProfile(
+                    UpdateProfileRequest(
+                        username = s.pendingUserName,
+                        diet_type = s.currentDietTypeId,
+                        portion_size = s.portionSize,
+                        allergies = s.currentAllergyIds.toList(),
+                        preferred_cook_time = s.preferredCookTime,
+                        birth_date = s.pendingBirthDate,
+                        gender = s.pendingGender
+                    )
+                )
+                if (resp.isSuccessful) {
+                    val body = resp.body()
+                    _state.update {
+                        it.copy(
+                            isSaving = false,
+                            savedSuccess = true,
+                            userName = it.pendingUserName,
+                            birthDate = it.pendingBirthDate ?: "",
+                            gender = it.pendingGender,
+                            usernameError = null
+                        )
+                    }
+                } else {
+                    val errorBody = resp.errorBody()?.string()
+                    if (errorBody?.contains("username") == true) {
+                        _state.update { it.copy(isSaving = false, usernameError = "Это имя уже занято, попробуйте другое") }
+                    } else {
+                        _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
+                    }
+                }
+            } catch (e: Exception) {
+                _state.update { it.copy(isSaving = false, error = e.message) }
             }
         }
     }
@@ -293,7 +355,7 @@ class ProfileViewModel(
                     _state.update { it.copy(favorites = resp.body() ?: emptyList()) }
                 }
             } catch (e: Exception) {
-                // Р С›РЎв‚¬Р С‘Р В±Р С”РЎС“ Р С‘Р В·Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р С–Р С• Р СР С•Р В¶Р Р…Р С• Р Р…Р Вµ Р С—Р С•Р С”Р В°Р В·РЎвЂ№Р Р†Р В°РЎвЂљРЎРЉ Р С”Р В°Р С” Р С”РЎР‚Р С‘РЎвЂљР С‘РЎвЂЎР ВµРЎРѓР С”РЎС“РЎР‹
+                // Р С›РЎв‚¬Р С‘Р В±Р С”РЎС“ Р С‘Р В·Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р С–Р С• Р СР С•Р В¶Р Р…Р С• Р Р…Р Вµ Р С—Р С•Р С”Р В°Р В·РЎвЂ№Р Р†Р В°РЎвЂљРЎРЉ Р С”Р В°Р С” Р С”РЎР‚Р С‘РЎвЂћР СљР С‘РЎвЂЎР ВµРЎРѓР С”РЎС“РЎР‹
             }
         }
     }
@@ -305,11 +367,11 @@ class ProfileViewModel(
                 if (response.isSuccessful) {
                     val isFavorite = response.body()?.is_favorite ?: false
                     loadFavorites()
-                    // Р Р€Р Р†Р ВµР Т‘Р С•Р СР В»РЎРЏР ВµР С Р Т‘РЎР‚РЎС“Р С–Р С‘Р Вµ РЎРЊР С”РЎР‚Р В°Р Р…РЎвЂ№
+                    // Р Р€Р Р†Р ВµР Т‘Р С•Р СР В»РЎРЏР ВµР С Р Т‘РЎР‚РЎС“Р С–Р С‘Р В© РЎРЊР С”РЎР‚Р В°Р Р…РЎвЂ№
                     com.example.smartmeal.data.manager.FavoritesManager.notifyFavoriteChanged(recipeId, isFavorite)
                 }
             } catch (e: Exception) {
-                // Р С›РЎв‚¬Р С‘Р В±Р С”РЎС“ Р С‘Р В·Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р С–Р С• Р СР С•Р В¶Р Р…Р С• Р Р…Р Вµ Р С—Р С•Р С”Р В°Р В·РЎвЂ№Р Р†Р В°РЎвЂљРЎРЉ Р С”Р В°Р С” Р С”РЎР‚Р С‘РЎвЂљР С‘РЎвЂЎР ВµРЎРѓР С”РЎС“РЎР‹
+                // Р С›РЎв‚¬Р С‘Р В±Р С”РЎС“ Р С‘Р В·Р В±РЎР‚Р В°Р Р…Р Р…Р С•Р С–Р С• Р СР С•Р В¶Р Р…Р С• Р Р…Р Вµ Р С—Р С•Р С”Р В°Р В·РЎвЂ№Р Р†Р В°РЎвЂљРЎРЉ Р С”Р В°Р С” Р С”РЎР‚Р С‘РЎвЂћР СљР С‘РЎвЂЎР ВµРЎРѓР С”РЎС“РЎР‹
             }
         }
     }
@@ -353,7 +415,7 @@ class ProfileViewModel(
                         dietTypeId = s.currentDietTypeId,
                         allergyIds = s.pendingAllergyIds
                     )
-                    onProfileSettingsChanged() // Reload menu.
+                    onProfileSettingsChanged() // Р СџР С•Р В»Р Р…Р В°РЎРЏ Р С—Р ВµРЎР‚Р ВµР С–Р ВµР Р…Р ВµРЎР‚Р В°РЎвЂ Р С‘РЎРЏ.
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }
@@ -363,7 +425,7 @@ class ProfileViewModel(
         }
     }
 
-    // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р В Р В°РЎвЂ Р С‘Р С•Р Р… РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
+    // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р В Р В°РЎвЂ Р С‘Р С•Р Р… РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќРРІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
 
     fun selectPendingDiet(id: Int) {
         _state.update {
@@ -401,7 +463,7 @@ class ProfileViewModel(
                         dietTypeId = s.pendingDietTypeId,
                         allergyIds = s.currentAllergyIds
                     )
-                    onProfileSettingsChanged() // Reload menu.
+                    onProfileSettingsChanged() // Р СџР С•Р В»Р Р…Р В°РЎРЏ Р С—Р ВµРЎР‚Р ВµР С–Р ВµР Р…Р ВµРЎР‚Р В°РЎвЂ Р С‘РЎРЏ.
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }
@@ -411,7 +473,7 @@ class ProfileViewModel(
         }
     }
 
-    // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р СџР С•РЎР‚РЎвЂ Р С‘Р С‘ РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
+    // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р СџР С•РЎР‚РЎвЂ Р С‘Р С•Р Р… РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
 
     fun incrementPortion() {
         _state.update { it.copy(pendingPortionSize = (it.pendingPortionSize + 1).coerceAtMost(20)) }
@@ -462,4 +524,3 @@ class ProfileViewModel(
         _state.update { it.copy(error = null) }
     }
 }
-

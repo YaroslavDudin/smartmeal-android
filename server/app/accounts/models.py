@@ -43,6 +43,14 @@ class CookTimeRange(models.TextChoices):
 class User(AbstractUser):
     email = models.EmailField(unique=True, max_length=255)
     portion_size = models.IntegerField(default=1)
+    birth_date = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
+    gender = models.CharField(
+        max_length=10,
+        choices=[('male', 'Мужской'), ('female', 'Женский')],
+        null=True,
+        blank=True,
+        verbose_name="Пол"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     
     allergies = models.ManyToManyField(Allergy, blank=True, related_name='users')
