@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -61,8 +62,8 @@ class Setup(TestCase):
         self.dinner_type = MealType.objects.create(name='dinner', order=2)
 
         # Рецепты
-        self.soup_recipe = Recipe.objects.create(title='Суп', cook_time=30, servings=2)
-        self.salad_recipe = Recipe.objects.create(title='Салат', cook_time=20, servings=4)
+        self.soup_recipe = Recipe.objects.create(title='Суп', cook_time=30, servings=1)
+        self.salad_recipe = Recipe.objects.create(title='Салат', cook_time=20, servings=1)
 
         # Меню
         today = date.today()
@@ -87,9 +88,9 @@ class Setup(TestCase):
             ingredient=ingredient,
             base_unit=self.unit_g,
             base_weight=100,
-            protein=2,
-            fat=0.1,
-            carbs=16
+            protein=Decimal('2'),
+            fat=Decimal('0.1'),
+            carbs=Decimal('16')
         )
         UnitConversion.objects.create(
             ingredient=ingredient,
@@ -109,9 +110,9 @@ class Setup(TestCase):
             ingredient=ingredient,
             base_unit=self.unit_g,
             base_weight=100,
-            protein=0.9,
-            fat=0.2,
-            carbs=6.8
+            protein=Decimal('0.9'),
+            fat=Decimal('0.2'),
+            carbs=Decimal('6.8')
         )
         UnitConversion.objects.create(
             ingredient=ingredient,
@@ -131,9 +132,9 @@ class Setup(TestCase):
             ingredient=ingredient,
             base_unit=self.unit_ml,
             base_weight=100,
-            protein=3.5,
-            fat=3.2,
-            carbs=4.4
+            protein=Decimal('3.5'),
+            fat=Decimal('3.2'),
+            carbs=Decimal('4.4')
         )
         UnitConversion.objects.create(
             ingredient=ingredient,

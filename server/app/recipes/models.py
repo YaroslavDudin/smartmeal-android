@@ -233,6 +233,16 @@ class Recipe(models.Model):
     def per_serving_calories(self):
         return self.total_calories / self.servings
 
+    def save(self, *args, **kwargs):
+        if hasattr(self, '_nutrition_cache'):
+            delattr(self, '_nutrition_cache')
+        super().save(*args, **kwargs)
+
+    def refresh_from_db(self, *args, **kwargs):
+        super().refresh_from_db(*args, **kwargs)
+        if hasattr(self, '_nutrition_cache'):
+            delattr(self, '_nutrition_cache')
+
     def __str__(self):
         return self.title
 
@@ -342,6 +352,23 @@ class RecipeIngredient(models.Model):
             + self.carbs * CALORIES_PER_GRAM['carbs']
             + self.fat * CALORIES_PER_GRAM['fat']
         )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        for attr in ['_macros_cache', '_nutrition_cache', '_in_base_units_cache']:
+            if hasattr(self, attr):
+                delattr(self, attr)
+        if hasattr(self.recipe, '_nutrition_cache'):
+            delattr(self.recipe, '_nutrition_cache')
+        super().save(*args, **kwargs)
+
+    def refresh_from_db(self, *args, **kwargs):
+        super().refresh_from_db(*args, **kwargs)
+        for attr in ['_macros_cache', '_nutrition_cache', '_in_base_units_cache']:
+            if hasattr(self, attr):
+                delattr(self, attr)
+        if hasattr(self.recipe, '_nutrition_cache'):
+            delattr(self.recipe, '_nutrition_cache')
 
     def __str__(self):
         return f'{self.amount} (Unit ID {self.unit_id}) of Ingredient ID {self.ingredient_id} for Recipe ID {self.recipe_id}'

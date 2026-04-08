@@ -33,9 +33,9 @@ class UserStockAPITestCase(APITestCase):
             ingredient=self.ingredient,
             base_unit=self.unit_g,
             base_weight=100,
-            protein=2.0,
-            fat=0.1,
-            carbs=16.0
+            protein=Decimal('2.0'),
+            fat=Decimal('0.1'),
+            carbs=Decimal('16.0')
         )
         UnitConversion.objects.create(
             ingredient=self.ingredient,

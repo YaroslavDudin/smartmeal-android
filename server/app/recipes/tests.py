@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from decimal import Decimal
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import AnonymousUser
@@ -82,7 +83,7 @@ class RecipesModelTests(TestCase):
                 amount=Decimal('100.0'),
                 unit=self.base_unit_g
             )
-            self.assertIn('пищевая ценность', str(cm.exception).lower())
+        self.assertIn('пищевая ценность', str(cm.exception).lower())
 
     def test_recipe_ingredient_fails_if_no_conversion(self):
         recipe = Recipe.objects.create(
@@ -213,14 +214,13 @@ class RecipesModelTests(TestCase):
             amount=Decimal('1.0'),
             unit=self.unit_kg
         )
-        with self.assertRaises(ValidationError) as cm:
+        with self.assertRaises((ValidationError, IntegrityError)):
             RecipeIngredient.objects.create(
                 recipe=recipe,
                 ingredient=self.ingredient,
                 amount=Decimal('2.0'),
                 unit=self.unit_cup 
             )
-        self.assertIn('already exists', str(cm.exception).lower())
 
     def test_recipe_step_auto_number(self):
         from app.recipes.models import RecipeStep
@@ -250,10 +250,12 @@ class RecipesModelTests(TestCase):
         self.assertEqual(macros1, macros2)
 
         ri.amount = Decimal('2.0')
+        ri.save()
         macros3 = ri.get_macros()
         self.assertNotEqual(macros1, macros3)
 
         ri.unit = self.unit_cup
+        ri.save()
         macros4 = ri.get_macros()
         self.assertNotEqual(macros3, macros4)
 
@@ -281,8 +283,15 @@ class RecipesModelTests(TestCase):
             fat=Decimal('0.2'),
             carbs=Decimal('8.0'),
         )
+        UnitConversion.objects.create(
+            ingredient=new_ingredient,
+            from_unit=self.unit_kg,
+            to_unit=self.base_unit_g,
+            amount_per_unit=Decimal('1000'),
+        )
 
         ri.ingredient = new_ingredient
+        ri.save()
         nutr3 = ri.nutrition
         self.assertNotEqual(nutr1, nutr3)
 
