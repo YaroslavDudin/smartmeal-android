@@ -1,6 +1,6 @@
 package com.example.smartmeal.feature.home.presentation
 
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContent      
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -80,9 +80,10 @@ import java.util.Locale
 
 private val ReplaceDialogYellow = Color(0xFFFFF4C2)
 private val ReplaceDialogRed = Color(0xFFE53935)
-private val ModalBackground = Color(0xFFEAD284) // Песочный цвет фона
-private val ModalBorderColor = Color(0xFF4CA3FF) // Голубая рамка
-private val ButtonBackgroundColor = Color(0xFFE4C871) // Чуть более плотный цвет для кнопок
+private val ModalBackground = Color(0xFFF4F4F4)
+private val ModalBorderColor = Color(0xFFF4F4F4) 
+private val ButtonBackgroundColor = Color(0xFFE4C871)
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -100,7 +101,7 @@ fun HomeScreen(
     val viewModel: HomeViewModel = viewModel(
         factory = remember { HomeViewModelFactory(setupPreferences) }
     )
-    
+
     val productListViewModel: ProductListViewModel = viewModel(
         factory = remember { ProductListViewModelFactory(menuApi, setupPreferences) }
     )
@@ -124,7 +125,7 @@ fun HomeScreen(
     // "Мой план" нужен только для пользовательского диапазона.
     // Для daily/weekly даты уже и так очевидны из самого плана, поэтому секцию скрываем.
     val showMyPlanSection = planType == SetupPreferences.PLAN_TYPE_CUSTOM
-    
+
     val customPlan = remember(planType, planRange, selectedPlanDateMillis) {
         when (planType) {
             SetupPreferences.PLAN_TYPE_CUSTOM -> {
@@ -147,7 +148,7 @@ fun HomeScreen(
             else -> null
         }
     }
-    
+
     val visibleCustomPlan = remember(customPlan?.startDate?.time, customPlan?.endDate?.time) {
         trimCustomPlanToToday(customPlan)
     }
@@ -502,8 +503,9 @@ fun MealSection(
             CircleIconButton(
                 iconType = CircleIconType.REPLACE,
                 onClick = onReplaceClick,
-                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.primary,
+                backgroundColor = Color.Transparent,
+                contentColor = Color.Black.copy(alpha = 0.6f),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
                 modifier = Modifier.size(36.dp).testTag("home_replace_${sectionId}")
             )
         }
@@ -547,7 +549,6 @@ private fun ReplaceMealConfirmDialog(
                 .testTag("home_replace_confirm_dialog"),
             shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
             color = ModalBackground,
-            border = androidx.compose.foundation.BorderStroke(2.dp, ModalBorderColor), // Голубая рамка из дизайна
             shadowElevation = 8.dp
         ) {
             Column(
@@ -560,16 +561,16 @@ private fun ReplaceMealConfirmDialog(
                     fontWeight = FontWeight.Medium,
                     color = Color.Black
                 )
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 SmartMealText(
                     text = "Вы уверены что хотите заменить\nэто блюдо на что-нибудь другое?\nЕсли блюдо добавлено в\nизбранное, оно останется в\nизбранном",
                     fontSize = 16.sp,
                     color = Color.Black,
                     lineHeight = 22.sp
                 )
-                
+
                 Spacer(modifier = Modifier.height(28.dp))
 
                 // Кнопка "Заменить блюдо"
@@ -579,20 +580,19 @@ private fun ReplaceMealConfirmDialog(
                         .fillMaxWidth()
                         .height(54.dp)
                         .testTag("home_replace_confirm_button"),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = ButtonBackgroundColor,
-                        contentColor = Color.Red
+                        containerColor = Color(0xFF4CAF50), // Зеленый
+                        contentColor = Color.White
                     ),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, Color.White), // Белый контур для объема
                     elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 4.dp,
-                        pressedElevation = 0.dp
+                        defaultElevation = 2.dp,
+                        pressedElevation = 0.0.dp
                     )
                 ) {
                     SmartMealText(
-                        text = "Заменить блюдо", 
-                        color = Color.Red, 
+                        text = "Заменить блюдо",
+                        color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -607,20 +607,19 @@ private fun ReplaceMealConfirmDialog(
                         .fillMaxWidth()
                         .height(54.dp)
                         .testTag("home_replace_cancel_button"),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(50),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = ButtonBackgroundColor,
-                        contentColor = Color.Black
+                        containerColor = Color(0xFFE53935), // Красный
+                        contentColor = Color.White
                     ),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, Color.White),
                     elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 4.dp,
+                        defaultElevation = 2.dp,
                         pressedElevation = 0.dp
                     )
                 ) {
                     SmartMealText(
-                        text = "Отменить", 
-                        color = Color.Black, 
+                        text = "Отменить",
+                        color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -654,7 +653,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private val dayNames = listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс")
     private val apiDateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
-    init { 
+    init {
         loadCurrentMenu()
         viewModelScope.launch {
             com.example.smartmeal.data.manager.FavoritesManager.favoriteUpdates.collect { update ->
@@ -674,12 +673,12 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private fun updateFavoriteInState(recipeId: Int, isFavorite: Boolean) {
         _uiState.update { currentState ->
             val updatedCurrentMenu = currentState.currentMenu?.copy(
-                items = currentState.currentMenu.items?.map { 
-                    if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it 
+                items = currentState.currentMenu.items?.map {
+                    if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it
                 }
             )
-            val updatedAllMenuItems = currentState.allMenuItems.map { 
-                if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it 
+            val updatedAllMenuItems = currentState.allMenuItems.map {
+                if (it.recipe == recipeId) it.copy(is_favorite = isFavorite) else it
             }
             currentState.copy(
                 currentMenu = updatedCurrentMenu,
@@ -721,11 +720,11 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         return try {
             val allItemsResponse = menuApi.getMenuItems()
             val allItems = if (allItemsResponse.isSuccessful) allItemsResponse.body() ?: emptyList() else emptyList()
-            
+
             val planType = preferences.getPlanType()
             val planRange = preferences.getCustomPlanRange()
             val selectedPlanDateMillis = preferences.getSelectedPlanDate()
-            
+
             val (planStart, planEnd) = when (planType) {
                 SetupPreferences.PLAN_TYPE_CUSTOM -> {
                     if (planRange != null) Date(planRange.first) to Date(planRange.second)
@@ -734,7 +733,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 SetupPreferences.PLAN_TYPE_WEEKLY -> {
                     if (selectedPlanDateMillis != null) {
                         val start = Date(selectedPlanDateMillis)
-                        val end = Calendar.getInstance().apply { 
+                        val end = Calendar.getInstance().apply {
                             time = start
                             add(Calendar.DATE, 6)
                         }.time
@@ -751,7 +750,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             val latestMenu = menuRepository.getLatestMenu()
             var hasMenuForPlan = false
             var currentMenuToDisplay: MenuDto? = null
-            
+
             if (latestMenu != null && planStart != null && planEnd != null) {
                 val menuStart = apiDateFormatter.parse(latestMenu.start_date) ?: Date(0)
                 if (!menuStart.before(normalizeDate(planStart)) && !menuStart.after(normalizeDate(planEnd))) {
@@ -767,7 +766,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 val menuItems = currentMenuToDisplay.items ?: emptyList()
                 val menuStart = apiDateFormatter.parse(currentMenuToDisplay.start_date) ?: Date()
                 val maxOffset = menuItems.maxOfOrNull { it.day_offset } ?: 0
-                val menuEnd = Calendar.getInstance().apply { 
+                val menuEnd = Calendar.getInstance().apply {
                     time = menuStart
                     add(Calendar.DATE, maxOffset)
                 }.time
@@ -775,7 +774,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 _uiState.update {
                     val today = normalizeDate(Date())
                     val availableDates = buildAvailableDates(menuItems, CustomPlan(menuStart, menuEnd))
-                    
+
                     // СИНХРОНИЗАЦИЯ: Приоритет дате из менеджера
                     val lastSelected = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()
                     val resolvedSelectedDate = if (lastSelected != null && availableDates.any { it.time == normalizeDate(lastSelected).time }) {
@@ -799,15 +798,15 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 }
                 updateMealSections()
             } else {
-                _uiState.update { 
+                _uiState.update {
                     it.copy(
-                        isLoading = false, 
-                        hasMenu = false, 
+                        isLoading = false,
+                        hasMenu = false,
                         allMenuItems = allItems,
                         selectedDate = planStart?.let { d -> normalizeDate(d) },
                         selectedDay = planStart?.let { d -> resolveDayNameForDate(d) }.orEmpty(),
                         customPlan = if (planStart != null && planEnd != null) CustomPlan(planStart, planEnd) else null
-                    ) 
+                    )
                 }
             }
             currentMenuToDisplay
@@ -835,7 +834,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 val breakfastTime = preferences.getMealCookTime("Завтрак")
                 val lunchTime = preferences.getMealCookTime("Обед")
                 val dinnerTime = preferences.getMealCookTime("Ужин")
-                
+
                 val cookTimesMap = mutableMapOf<String, String>()
                 if (breakfastTime != null && breakfastTime != "any") cookTimesMap["Завтрак"] = breakfastTime
                 if (lunchTime != null && lunchTime != "any") cookTimesMap["Обед"] = lunchTime
@@ -889,7 +888,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         val menu = state.currentMenu ?: return
         try {
             val resolvedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), state.customPlan).firstOrNull()
-            
+
             // СИНХРОНИЗАЦИЯ: Если мы определили дату (даже по умолчанию), уведомляем DateManager
             if (state.selectedDate == null && resolvedDate != null) {
                 com.example.smartmeal.data.manager.DateManager.notifyDateSelected(resolvedDate)
@@ -899,17 +898,17 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 val selectedDateStr = apiDateFormatter.format(resolvedDate)
                 val sourceItems = if (state.selectedDateFromPlan) state.allMenuItems.filter { it.actual_date == selectedDateStr }
                                  else menu.items?.filter { it.actual_date == selectedDateStr } ?: emptyList()
-                
+
                 // Дедупликация: оставляем только самое свежее блюдо (с макс. ID) для каждого типа приема пищи
                 val uniqueItems = sourceItems.sortedByDescending { it.id }
                     .distinctBy { it.meal_type.lowercase(Locale.US) }
-                
+
                 // СИНХРОНИЗАЦИЯ: Обновляем глобальный менеджер для этой даты
                 com.example.smartmeal.data.manager.MenuSyncManager.updateMenuForDate(
-                    selectedDateStr, 
+                    selectedDateStr,
                     uniqueItems.map { it.recipe }.toSet()
                 )
-                
+
                 uniqueItems
             } else emptyList()
 
@@ -953,10 +952,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 val response = menuApi.toggleFavorite(com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest(recipeId))
                 if (response.isSuccessful) {
                     val isFavorite = response.body()?.is_favorite ?: false
-                    
+
                     // Обновляем состояние локально
                     updateFavoriteInState(recipeId, isFavorite)
-                    
+
                     // Уведомляем другие экраны
                     com.example.smartmeal.data.manager.FavoritesManager.notifyFavoriteChanged(recipeId, isFavorite)
                 }
@@ -981,7 +980,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         }
         _uiState.update { it.copy(selectedDay = dayNames[dayIndex], selectedDate = normalized, selectedDateFromPlan = customPlan != null) }
         updateMealSections()
-        
+
         if (notifyManager) {
             com.example.smartmeal.data.manager.DateManager.notifyDateSelected(normalized)
         }
@@ -1022,7 +1021,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 val updatedItem = menuRepository.replaceMenuItem(mealId, cookTimeRange)
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
-                    
+
                     // СИНХРОНИЗАЦИЯ: Оптимистично обновляем менеджер!
                     com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
                         dateStr, oldRecipeId, updatedItem.recipe
@@ -1049,7 +1048,7 @@ internal fun buildAvailableDates(
     val normalizedToday = normalizeDateStatic(today)
     if (customPlan != null) {
         val dates = mutableListOf<Date>()
-        val cal = Calendar.getInstance().apply { 
+        val cal = Calendar.getInstance().apply {
             time = maxOf(normalizeDateStatic(customPlan.startDate), normalizedToday)
         }
         val end = normalizeDateStatic(customPlan.endDate)

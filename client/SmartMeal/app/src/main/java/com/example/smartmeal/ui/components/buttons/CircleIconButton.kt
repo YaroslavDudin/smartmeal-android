@@ -36,6 +36,9 @@ import com.example.smartmeal.R
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
 
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.foundation.shape.RoundedCornerShape
+
 enum class CircleIconType {
     FAVORITE,
     REPLACE,
@@ -50,7 +53,8 @@ fun CircleIconButton(
     isSelected: Boolean = false,
     backgroundColor: Color = Color.White,
     contentColor: Color? = null,
-    size: Int = 48
+    size: Int = 48,
+    shape: Shape = CircleShape
 ) {
     // Состояние для анимации нажатия
     var isPressed by remember { mutableStateOf(false) }
@@ -92,7 +96,7 @@ fun CircleIconButton(
     Box(
         modifier = modifier
             .size(animatedSize)
-            .clip(CircleShape)
+            .clip(shape)
             .background(backgroundColor)
             .clickable(
                 interactionSource = interactionSource,
