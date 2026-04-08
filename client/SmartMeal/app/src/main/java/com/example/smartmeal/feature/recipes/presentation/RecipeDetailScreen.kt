@@ -169,6 +169,23 @@ fun RecipeDetailScreen(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
+                        SmartMealText(
+                            text = "Пищевая ценность на 100 г",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+
+                        NutritionCard(
+                            calories = formatNutritionValue(calculatePer100(recipe.total_calories, totalWeight)),
+                            proteins = formatNutritionValue(calculatePer100(recipe.total_proteins, totalWeight)),
+                            fats = formatNutritionValue(calculatePer100(recipe.total_fats, totalWeight)),
+                            carbs = formatNutritionValue(calculatePer100(recipe.total_carbs, totalWeight))
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -200,15 +217,6 @@ fun RecipeDetailScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         IngredientsCard(ingredients = recipe.ingredients ?: emptyList())
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        NutritionCard(
-                            calories = formatNutritionValue(calculatePer100(recipe.total_calories, totalWeight)),
-                            proteins = formatNutritionValue(calculatePer100(recipe.total_proteins, totalWeight)),
-                            fats = formatNutritionValue(calculatePer100(recipe.total_fats, totalWeight)),
-                            carbs = formatNutritionValue(calculatePer100(recipe.total_carbs, totalWeight))
-                        )
 
                         Spacer(modifier = Modifier.height(24.dp))
 
@@ -338,51 +346,57 @@ fun RecipePlusButton(
 @Composable
 fun NutritionCard(calories: String, proteins: String, fats: String, carbs: String) {
     Surface(
-        shape = RoundedCornerShape(16.dp),
-        color = NutritionBgColor,
-        shadowElevation = 2.dp,
+        shape = RoundedCornerShape(20.dp),
+        color = NutritionBgColor.copy(alpha = 0.95f),
+        shadowElevation = 0.dp,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 8.dp)
+                .padding(vertical = 14.dp, horizontal = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            SmartMealText(
-                text = "на 100 г",
-                fontSize = 14.sp,
-                color = TextGray,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 8.dp)
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                NutritionItem(value = calories, label = "ккал")
-                NutritionItem(value = proteins, label = "белки")
-                NutritionItem(value = fats, label = "жиры")
-                NutritionItem(value = carbs, label = "углеводы")
-            }
+            NutritionItem(value = calories, label = "ккал")
+            NutritionDivider()
+            NutritionItem(value = proteins, label = "белки")
+            NutritionDivider()
+            NutritionItem(value = fats, label = "жиры")
+            NutritionDivider()
+            NutritionItem(value = carbs, label = "угл.")
         }
     }
 }
 
 @Composable
+fun NutritionDivider() {
+    Box(
+        modifier = Modifier
+            .width(1.5.dp)
+            .height(38.dp)
+            .background(Color.Black.copy(alpha = 0.15f))
+    )
+}
+
+@Composable
 fun NutritionItem(value: String, label: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.width(60.dp) // Фиксированная ширина для ровного распределения
+    ) {
         SmartMealText(
             text = value,
-            fontSize = 20.sp,
-            color = TextGreen,
-            fontWeight = FontWeight.Bold
+            fontSize = 22.sp, // Увеличенные цифры
+            color = Color.Black,
+            fontWeight = FontWeight.ExtraBold,
+            lineHeight = 24.sp
         )
         SmartMealText(
             text = label,
-            fontSize = 12.sp,
-            color = Color.Black
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Medium,
+            color = Color.Black.copy(alpha = 0.6f)
         )
     }
 }

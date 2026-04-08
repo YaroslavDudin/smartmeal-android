@@ -332,8 +332,12 @@ fun HomeContent(
         SmartMealText(
             text = "Меню",
             style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp).testTag("home_title"),
-            color = MaterialTheme.colorScheme.onBackground
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, bottom = 8.dp)
+                .testTag("home_title"),
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center
         )
 
         val monthYearLabel = availableDates.firstOrNull()?.let {
