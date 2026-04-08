@@ -28,7 +28,11 @@ class AdminAllergySerializer(serializers.ModelSerializer):
 
 class AdminUserSerializer(serializers.ModelSerializer):
     diet_type_name = serializers.SerializerMethodField()
-    allergies = AdminAllergySerializer(many=True, read_only=True)
+    allergies = serializers.PrimaryKeyRelatedField(
+        queryset=Allergy.objects.all(),
+        many=True,
+        required=False,
+    )
 
     class Meta:
         model = User

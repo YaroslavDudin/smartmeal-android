@@ -21,7 +21,7 @@ class IngredientCategory(models.Model):
         db_table = 'ingredient_category'
         verbose_name = 'Категория ингредиента'
         verbose_name_plural = 'Категории ингредиентов'
-        ordering = ['name']
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
@@ -37,7 +37,7 @@ class Unit(models.Model):
         db_table = 'unit'
         verbose_name = 'Единица измерения'
         verbose_name_plural = 'Единицы измерения'
-        ordering = ['name']
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
@@ -89,7 +89,7 @@ class Ingredient(models.Model):
         db_table = 'ingredient'
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['name']
+        ordering = ['-id']
 
     def __str__(self):
         return self.name

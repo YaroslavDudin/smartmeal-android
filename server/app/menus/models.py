@@ -15,6 +15,12 @@ class MealType(models.Model):
     name = models.CharField(max_length=50, unique=True)
     order = models.IntegerField(default=0)
 
+    class Meta:
+        db_table = 'meal_type'
+        verbose_name = 'Прием пищи'
+        verbose_name_plural = 'Приемы пищи'
+        ordering = ['-id']
+
     def __str__(self):
         return self.name
 

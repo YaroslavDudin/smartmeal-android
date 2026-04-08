@@ -20,9 +20,15 @@ import type { UnitConversion } from '@/types'
 
 const ingredientSchema = z.object({
   name: z.string().min(1, 'Введите название'),
-  category: z.number({ coerce: true }).nullable().optional(),
+  category: z.preprocess(
+    (val) => (val === '' || val === null || val === undefined || (typeof val === 'number' && isNaN(val)) ? null : Number(val)),
+    z.number().nullable().optional()
+  ),
   is_piece: z.boolean().default(false),
-  piece_weight: z.number({ coerce: true }).min(0).nullable().optional(),
+  piece_weight: z.preprocess(
+    (val) => (val === '' || val === null || val === undefined || (typeof val === 'number' && isNaN(val)) ? null : Number(val)),
+    z.number().min(0, 'Мин. 0').nullable().optional()
+  ),
   nutrition: z
     .object({
       base_weight: z.number({ coerce: true }).min(0, 'Мин. 0'),
@@ -85,12 +91,7 @@ export function IngredientFormPage() {
     defaultValues: {
       is_piece: false,
       canBeAddedToCart: true,
-      nutrition: {
-        base_weight: 100,
-        protein: 0,
-        fat: 0,
-        carbs: 0,
-      }
+      nutrition: null
     }
   })
 
@@ -130,15 +131,12 @@ export function IngredientFormPage() {
   }, [ingredientId])
 
   const doSave = useCallback(async (data: IngredientFormData) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { calories, ...nutritionPayload } = (data.nutrition || {}) as any;
-    
     const payload = {
       name: data.name,
-      category: data.category || null,
+      category: data.category,
       is_piece: data.is_piece,
       piece_weight: data.is_piece ? data.piece_weight : null,
-      nutrition: hasNutrition ? nutritionPayload : null,
+      nutrition: hasNutrition ? data.nutrition : null,
       can_be_added_to_cart: data.canBeAddedToCart,
     }
     if (isEdit && ingredientId) {
@@ -267,6 +265,7 @@ export function IngredientFormPage() {
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
               </select>
+              <FieldError msg={errors.category?.message} />
             </div>
           </div>
 
@@ -296,19 +295,22 @@ export function IngredientFormPage() {
                 </span>
               </label>
 
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-[var(--text-primary)]">
-                  Вес одной штуки (г):
-                </label>
-                <input
-                  {...register('piece_weight', { valueAsNumber: true })}
-                  type="number"
-                  className="input w-24 py-1"
-                  placeholder="0"
-                  step="0.01"
-                  min={0}
-                  disabled={!formStateIsPiece}
-                />
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-[var(--text-primary)]">
+                    Вес одной штуки (г):
+                  </label>
+                  <input
+                    {...register('piece_weight', { valueAsNumber: true })}
+                    type="number"
+                    className="input w-24 py-1"
+                    placeholder="0"
+                    step="0.01"
+                    min={0}
+                    disabled={!formStateIsPiece}
+                  />
+                </div>
+                <FieldError msg={errors.piece_weight?.message} />
               </div>
             </div>
           </div>
@@ -319,7 +321,19 @@ export function IngredientFormPage() {
               <label className="font-medium text-[var(--text-primary)] text-sm">Пищевая ценность</label>
               <button
                 type="button"
-                onClick={() => setHasNutrition(!hasNutrition)}
+                onClick={() => {
+                  const newVal = !hasNutrition;
+                  setHasNutrition(newVal);
+                  if (newVal && !watch('nutrition')) {
+                    setValue('nutrition', {
+                      base_weight: 100,
+                      base_unit: units?.find(u => u.is_base)?.id || 0,
+                      protein: 0,
+                      fat: 0,
+                      carbs: 0
+                    });
+                  }
+                }}
                 className={`relative w-10 h-5 rounded-full transition-colors ${hasNutrition ? 'bg-primary-600' : 'bg-[var(--bg-tertiary)]'}`}
               >
                 <span

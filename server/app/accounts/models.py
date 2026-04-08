@@ -14,7 +14,7 @@ class Allergy(models.Model):
         db_table = 'allergy'
         verbose_name = 'Аллергия'
         verbose_name_plural = 'Аллергии'
-        ordering = ['name']
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
@@ -27,7 +27,7 @@ class DietType(models.Model):
         db_table = 'diet_type'
         verbose_name = 'Тип питания'
         verbose_name_plural = 'Типы питания'
-        ordering = ['name']
+        ordering = ['-id']
 
     def __str__(self):
         return self.name
