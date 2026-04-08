@@ -98,7 +98,8 @@ class AdminUnitConversionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UnitConversion
-        fields = ['id', 'from_unit', 'from_unit_name', 'to_unit', 'to_unit_name', 'amount_per_unit']
+        fields = ['id', 'ingredient', 'from_unit', 'from_unit_name', 'to_unit', 'to_unit_name', 'amount_per_unit']
+        read_only_fields = ['id', 'ingredient']
 
 
 class AdminIngredientSerializer(serializers.ModelSerializer):

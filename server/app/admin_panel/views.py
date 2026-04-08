@@ -19,7 +19,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from app.accounts.models import User, DietType, Allergy
 from app.recipes.models import (
     Recipe, RecipeIngredient, RecipeStep,
-    Ingredient, IngredientCategory, Unit,
+    Ingredient, IngredientCategory, Unit, UnitConversion,
 )
 from app.menus.models import MealType, Menu , MenuItem
 
@@ -33,6 +33,7 @@ from .serializers import (
     AdminRecipeStepSerializer,
     AdminIngredientSerializer,
     AdminIngredientWriteSerializer,
+    AdminUnitConversionSerializer,
     AdminIngredientCategorySerializer,
     AdminUnitSerializer,
     AdminDietTypeSerializer,
@@ -401,6 +402,42 @@ class AdminIngredientDetailView(generics.RetrieveUpdateDestroyAPIView):
     def partial_update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return self.update(request, *args, **kwargs)
+
+
+# ---------------------------------------------------------------------------
+# Ingredient Conversion views
+# ---------------------------------------------------------------------------
+
+class AdminIngredientConversionListCreateView(generics.ListCreateAPIView):
+    """
+    GET  /api/admin/ingredients/<ingredient_pk>/conversions/
+    POST /api/admin/ingredients/<ingredient_pk>/conversions/
+    """
+    permission_classes = [IsAuthenticated, IsSuperuser]
+    serializer_class = AdminUnitConversionSerializer
+
+    def get_queryset(self):
+        return UnitConversion.objects.filter(
+            ingredient_id=self.kwargs['ingredient_pk']
+        ).select_related('from_unit', 'to_unit')
+
+    def perform_create(self, serializer):
+        serializer.save(ingredient_id=self.kwargs['ingredient_pk'])
+
+
+class AdminIngredientConversionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    GET    /api/admin/ingredients/<ingredient_pk>/conversions/<pk>/
+    PATCH  /api/admin/ingredients/<ingredient_pk>/conversions/<pk>/
+    DELETE /api/admin/ingredients/<ingredient_pk>/conversions/<pk>/
+    """
+    permission_classes = [IsAuthenticated, IsSuperuser]
+    serializer_class = AdminUnitConversionSerializer
+
+    def get_queryset(self):
+        return UnitConversion.objects.filter(
+            ingredient_id=self.kwargs['ingredient_pk']
+        ).select_related('from_unit', 'to_unit')
 
 
 # ---------------------------------------------------------------------------

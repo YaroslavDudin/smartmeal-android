@@ -10,6 +10,14 @@ export async function loginSuperuser(email: string, password: string) {
   return response.data
 }
 
+export async function logoutAdmin(refresh: string) {
+  try {
+    await axios.post('/api/accounts/logout/', { refresh })
+  } catch {
+    // Ignore logout errors
+  }
+}
+
 export async function getAdminMe() {
   const response = await api.get<AdminUser>('/auth/me/')
   return response.data

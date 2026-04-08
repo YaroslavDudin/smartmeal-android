@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react'
+import { logoutAdmin } from '@/api/auth'
 
 interface AdminUser {
   id: number
@@ -13,7 +14,7 @@ interface AuthContextValue {
   user: AdminUser | null
   isAuthenticated: boolean
   login: (user: AdminUser, access: string, refresh: string) => void
-  logout: () => void
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -38,7 +39,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('admin_refresh_token', refresh)
   }, [])
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    const refresh = localStorage.getItem('admin_refresh_token')
+    if (refresh) {
+      await logoutAdmin(refresh)
+    }
     setUser(null)
     localStorage.removeItem('admin_user')
     localStorage.removeItem('admin_access_token')

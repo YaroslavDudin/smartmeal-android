@@ -443,9 +443,10 @@ export function IngredientFormPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--border-color)]">
-                  <th className="table-header text-left">Из единицы измерения</th>
-                  <th className="table-header text-left">В единицу измерения</th>
-                  <th className="table-header text-right">Количество</th>
+                  <th className="table-header text-left">Из ед. изм.</th>
+                  <th className="table-header text-left">В ед. изм.</th>
+                  <th className="table-header text-center">Количество</th>
+                  <th className="table-header text-right"></th>
                 </tr>
               </thead>
               <tbody>

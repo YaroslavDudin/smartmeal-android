@@ -20,6 +20,8 @@ from .views import (
     # Ingredients
     AdminIngredientListCreateView,
     AdminIngredientDetailView,
+    AdminIngredientConversionListCreateView,
+    AdminIngredientConversionDetailView,
     # Categories
     AdminCategoryListCreateView,
     AdminCategoryDetailView,
@@ -65,6 +67,8 @@ urlpatterns = [
     # Ingredients
     path('ingredients/', AdminIngredientListCreateView.as_view(), name='admin-ingredient-list'),
     path('ingredients/<int:pk>/', AdminIngredientDetailView.as_view(), name='admin-ingredient-detail'),
+    path('ingredients/<int:ingredient_pk>/conversions/', AdminIngredientConversionListCreateView.as_view(), name='admin-ingredient-conversion-list'),
+    path('ingredients/<int:ingredient_pk>/conversions/<int:pk>/', AdminIngredientConversionDetailView.as_view(), name='admin-ingredient-conversion-detail'),
 
     # Ingredient categories
     path('categories/', AdminCategoryListCreateView.as_view(), name='admin-category-list'),
