@@ -96,10 +96,16 @@ class UserFavoriteSerializer(serializers.ModelSerializer):
     recipe_title = serializers.CharField(source='recipe.title', read_only=True)
     recipe_image_url = serializers.ImageField(source='recipe.image_url', read_only=True)
     recipe_cook_time = serializers.IntegerField(source='recipe.cook_time', read_only=True)
+    meal_types = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name',
+        source='recipe.meal_types'
+    )
     
     class Meta:
         model = UserFavorite
-        fields = ('id', 'recipe', 'recipe_title', 'recipe_image_url', 'recipe_cook_time')
+        fields = ('id', 'recipe', 'recipe_title', 'recipe_image_url', 'recipe_cook_time', 'meal_types')
         read_only_fields = ('created_at',)
 
 

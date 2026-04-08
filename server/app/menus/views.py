@@ -303,3 +303,21 @@ class MenuItemViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(menu_item)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='set-recipe')
+    def set_recipe(self, request, pk=None):
+        menu_item = self.get_object()
+        recipe_id = request.data.get('recipe_id')
+        if not recipe_id:
+            return Response({'detail': 'recipe_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            recipe = Recipe.objects.get(id=recipe_id)
+        except Recipe.DoesNotExist:
+            return Response({'detail': 'Recipe not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        menu_item.recipe = recipe
+        menu_item.save()
+
+        serializer = self.get_serializer(menu_item)
+        return Response(serializer.data, status=status.HTTP_200_OK)

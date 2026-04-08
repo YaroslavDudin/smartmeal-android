@@ -90,6 +90,13 @@ interface MenuApi {
     @DELETE("api/cart/{id}/")
     suspend fun deleteCartItem(@Path("id") id: Int): Response<Unit>
 
+    /** Установить конкретный рецепт для элемента меню */
+    @POST("api/menus/items/{id}/set-recipe/")
+    suspend fun setRecipeToMenuItem(
+        @Path("id") id: Int,
+        @Body request: SetRecipeRequest
+    ): Response<MenuItemDto>
+
     // ─── Избранное ──────────────────────────────────────────────────────────
 
     /** Список избранных рецептов текущего пользователя */
@@ -121,7 +128,8 @@ data class UserFavoriteDto(
     val recipe: Int,
     val recipe_title: String,
     val recipe_image_url: String?,
-    val recipe_cook_time: Int
+    val recipe_cook_time: Int,
+    val meal_types: List<String> = emptyList()
 )
 
 data class RecalculateCartRequest(
@@ -134,4 +142,8 @@ data class RecalculateCartRequest(
 
 data class ExportCartRequest(
     val cart_items_ids: List<Int>
+)
+
+data class SetRecipeRequest(
+    val recipe_id: Int
 )

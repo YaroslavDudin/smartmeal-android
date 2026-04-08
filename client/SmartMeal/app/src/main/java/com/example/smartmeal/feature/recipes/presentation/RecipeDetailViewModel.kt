@@ -15,11 +15,13 @@ data class RecipeDetailState(
     val recipe: RecipeDetailDto? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val currentServings: Int = 1
+    val currentServings: Int = 1,
+    val isInMenuOnSelectedDay: Boolean = false
 )
 
 class RecipeDetailViewModel(
     private val api: RecipeApi,
+    private val menuApi: com.example.smartmeal.feature.home.data.api.MenuApi,
     private val preferences: SetupPreferences? = null
 ) : ViewModel() {
 
@@ -36,6 +38,24 @@ class RecipeDetailViewModel(
                     _state.update { it.copy(
                         recipe = it.recipe?.copy(is_favorite = update.isFavorite)
                     )}
+                }
+            }
+        }
+        
+        // СИНХРОНИЗАЦИЯ: Следим за изменением выбранной даты
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.DateManager.dateUpdates.collect { _ ->
+                if (currentRecipeId != -1) {
+                    checkIfInMenu(currentRecipeId)
+                }
+            }
+        }
+
+        // СИНХРОНИЗАЦИЯ: Следим за изменениями в глобальном менеджере меню
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.MenuSyncManager.menuState.collect { _ ->
+                if (currentRecipeId != -1) {
+                    checkIfInMenu(currentRecipeId)
                 }
             }
         }
@@ -60,16 +80,80 @@ class RecipeDetailViewModel(
             try {
                 val response = api.getRecipeDetail(recipeId, effectiveServings)
                 if (response.isSuccessful) {
+                    val recipe = response.body()
                     _state.update { it.copy(
                         isLoading = false,
-                        recipe = response.body(),
+                        recipe = recipe,
                         currentServings = effectiveServings
                     )}
+                    checkIfInMenu(recipeId)
                 } else {
                     _state.update { it.copy(isLoading = false, error = "Ошибка: ${response.code()}") }
                 }
             } catch (e: Exception) {
                 _state.update { it.copy(isLoading = false, error = e.localizedMessage ?: "Неизвестная ошибка") }
+            }
+        }
+    }
+
+    private fun checkIfInMenu(recipeId: Int) {
+        val selectedDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate() ?: 
+                          preferences?.getSelectedPlanDate()?.let { java.util.Date(it) } ?: return
+        val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(selectedDate)
+        
+        val isInMenu = com.example.smartmeal.data.manager.MenuSyncManager.isRecipeInMenu(dateStr, recipeId)
+        _state.update { it.copy(isInMenuOnSelectedDay = isInMenu) }
+    }
+
+    fun addToMenu() {
+        val recipe = _state.value.recipe ?: return
+        val selectedDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate() ?: 
+                          preferences?.getSelectedPlanDate()?.let { java.util.Date(it) } ?: return
+        val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(selectedDate)
+        
+        viewModelScope.launch {
+            try {
+                // 1. Находим все элементы меню пользователя
+                val itemsRes = menuApi.getMenuItems()
+                if (!itemsRes.isSuccessful) return@launch
+                val allItems = itemsRes.body() ?: emptyList()
+                
+                // 2. Ищем любой доступный слот на выбранную дату.
+                val targetSlot = allItems.find { item ->
+                    item.actual_date == dateStr
+                }
+                
+                if (targetSlot != null) {
+                    val oldRecipeId = targetSlot.recipe
+                    
+                    // СИНХРОНИЗАЦИЯ: Оптимистичное обновление UI (мгновенно!)
+                    com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
+                        dateStr, oldRecipeId, recipe.id
+                    )
+
+                    val replaceRes = menuApi.setRecipeToMenuItem(
+                        targetSlot.id, 
+                        com.example.smartmeal.feature.home.data.api.SetRecipeRequest(recipe.id)
+                    )
+                    
+                    if (replaceRes.isSuccessful) {
+                        preferences?.clearMenuItemServings(targetSlot.id)
+                        com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
+                        try {
+                            menuApi.recalculateCart(com.example.smartmeal.feature.home.data.api.RecalculateCartRequest())
+                        } catch (e: Exception) {}
+                    } else {
+                        // ОТКАТ: Если сервер вернул ошибку
+                        com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
+                            dateStr, recipe.id, oldRecipeId
+                        )
+                        _state.update { it.copy(error = "Ошибка обновления") }
+                    }
+                } else {
+                    _state.update { it.copy(error = "На дату $dateStr не найдено приемов пищи.") }
+                }
+            } catch (e: Exception) {
+                _state.update { it.copy(error = "Ошибка связи") }
             }
         }
     }

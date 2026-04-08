@@ -84,10 +84,12 @@ fun ProfileScreen(
 
         ProfileSubScreen.FAVORITES ->
             FavoritesScreen(
-                favorites = state.favorites,
+                state = state,
+                recipeIdsInMenu = state.recipeIdsInMenuOnSelectedDay,
                 onBack = { subScreen = ProfileSubScreen.NONE },
                 onRecipeClick = onRecipeClick,
-                onFavoriteClick = { viewModel.toggleFavorite(it) }
+                onFavoriteClick = { viewModel.toggleFavorite(it) },
+                onPlusClick = { viewModel.addToMenu(it) }
             )
 
         ProfileSubScreen.COOK_TIME ->
@@ -401,12 +403,15 @@ private fun personLabel(n: Int): String = when {
 
 @Composable
 fun FavoritesScreen(
-    favorites: List<UserFavoriteDto>,
+    state: ProfileState,
+    recipeIdsInMenu: Set<Int>,
     onBack: () -> Unit,
     onRecipeClick: (Int) -> Unit,
-    onFavoriteClick: (Int) -> Unit
+    onFavoriteClick: (Int) -> Unit,
+    onPlusClick: (Int) -> Unit
 ) {
     val recentlyRemoved = remember { mutableStateListOf<UserFavoriteDto>() }
+    val groupedFavorites = remember(state.favorites) { state.getGroupedFavorites() }
 
     Column(
         modifier = Modifier
@@ -437,7 +442,7 @@ fun FavoritesScreen(
             )
         }
 
-        if (favorites.isEmpty() && recentlyRemoved.isEmpty()) {
+        if (state.favorites.isEmpty() && recentlyRemoved.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 SmartMealText(text = "У вас пока нет избранных рецептов", color = HintGray)
             }
@@ -447,29 +452,43 @@ fun FavoritesScreen(
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 20.dp, start = 20.dp, end = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(
-                    items = favorites,
-                    key = { it.id } // Используем id самого Favorite для ключа
-                ) { favorite ->
-                    MealCard(
-                        title = favorite.recipe_title,
-                        cookTime = "${favorite.recipe_cook_time} мин",
-                        imageUrl = favorite.recipe_image_url,
-                        isFavorite = true,
-                        onFavoriteClick = {
-                            recentlyRemoved.add(favorite)
-                            onFavoriteClick(favorite.recipe)
-                        },
-                        modifier = Modifier
-                            .animateItem()
-                            .clickable { onRecipeClick(favorite.recipe) }
-                    )
+                groupedFavorites.forEach { (category, items) ->
+                    item(key = "header_$category") {
+                        SmartMealText(
+                            text = category,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = PrimaryGreen,
+                            modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                        )
+                    }
+
+                    items(
+                        items = items,
+                        key = { it.id }
+                    ) { favorite ->
+                        MealCard(
+                            title = favorite.recipe_title,
+                            cookTime = "${favorite.recipe_cook_time} мин",
+                            imageUrl = favorite.recipe_image_url,
+                            isFavorite = true,
+                            onFavoriteClick = {
+                                recentlyRemoved.add(favorite)
+                                onFavoriteClick(favorite.recipe)
+                            },
+                            isInMenu = favorite.recipe in recipeIdsInMenu,
+                            onPlusClick = { onPlusClick(favorite.recipe) },
+                            modifier = Modifier
+                                .animateItem()
+                                .clickable { onRecipeClick(favorite.recipe) }
+                        )
+                    }
                 }
 
                 if (recentlyRemoved.isNotEmpty()) {
                     item(key = "recently_removed_header") {
                         Column(modifier = Modifier.animateItem()) {
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
                             SmartMealText(
                                 text = "Недавно удаленные",
                                 fontSize = 16.sp,

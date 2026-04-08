@@ -51,6 +51,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
     val authApi = remember { RetrofitClient.createService(AuthApi::class.java) }
     val setupApi = remember { RetrofitClient.createService(SetupApi::class.java) }
     val recipeApi = remember { RetrofitClient.createService(RecipeApi::class.java) }
+    val menuApi = remember { RetrofitClient.createService(com.example.smartmeal.feature.home.data.api.MenuApi::class.java) }
     val setupPreferences = remember { SetupPreferences(context) }
 
     val authViewModel: AuthViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
@@ -202,7 +203,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
             val recipeViewModel: RecipeDetailViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                    return RecipeDetailViewModel(recipeApi, setupPreferences) as T
+                    return RecipeDetailViewModel(recipeApi, menuApi, setupPreferences) as T
                 }
             })
 

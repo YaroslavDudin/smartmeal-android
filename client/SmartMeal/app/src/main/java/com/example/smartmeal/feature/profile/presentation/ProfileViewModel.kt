@@ -43,16 +43,40 @@ data class ProfileState(
     val pendingPortionSize: Int = 1,
 
     // Избранное
-    val favorites: List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto> = emptyList()
+    val favorites: List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto> = emptyList(),
+    val recipeIdsInMenuOnSelectedDay: Set<Int> = emptySet(),
+    val menuItemsOnSelectedDay: List<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = emptyList()
 )
+
+fun ProfileState.getGroupedFavorites(): Map<String, List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>> {
+    val order = listOf("Завтрак", "Обед", "Ужин", "Перекус", "Напитки")
+    val grouped = mutableMapOf<String, MutableList<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>>()
+    
+    favorites.forEach { fav ->
+        // Проверяем русские названия из бэкенда
+        val type = order.find { type -> 
+            fav.meal_types.any { it.equals(type, ignoreCase = true) } 
+        } ?: "Другое"
+        
+        grouped.getOrPut(type) { mutableListOf() }.add(fav)
+    }
+    
+    val sortedLabels = order + "Другое"
+    return sortedLabels.mapNotNull { label ->
+        grouped[label]?.let { label to it }
+    }.toMap()
+}
 
 class ProfileViewModel(
     private val api: SetupApi,
     private val preferences: SetupPreferences,
-    // Колбэк вызывается после любого успешного PATCH — HomeViewModel перезагружает меню
-    private val onProfileUpdated: () -> Unit = {}
+    // Колбэк для полной перегенерации (диета, аллергии)
+    private val onProfileSettingsChanged: () -> Unit = {},
+    // Колбэк для легкого обновления данных (плюсик)
+    private val onMenuManualChanged: () -> Unit = {}
 ) : ViewModel() {
 
+    private val menuApi = com.example.smartmeal.data.api.RetrofitClient.createService(com.example.smartmeal.feature.home.data.api.MenuApi::class.java)
     private val _state = MutableStateFlow(ProfileState())
     val state: StateFlow<ProfileState> = _state.asStateFlow()
 
@@ -64,10 +88,128 @@ class ProfileViewModel(
                 loadFavorites()
             }
         }
+        
+        // СИНХРОНИЗАЦИЯ: Следим за изменением выбранной даты
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.DateManager.dateUpdates.collect { date ->
+                updateMenuStateForDate(date)
+            }
+        }
+
+        // СИНХРОНИЗАЦИЯ: Следим за изменениями в глобальном менеджере меню
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.MenuSyncManager.menuState.collect { _ ->
+                val currentDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate() ?: 
+                                 preferences.getSelectedPlanDate()?.let { java.util.Date(it) }
+                currentDate?.let { updateMenuStateForDate(it) }
+            }
+        }
     }
 
-    // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р вЂ”Р В°Р С–РЎР‚РЎС“Р В·Р С”Р В° Р С—РЎР‚Р С•РЎвЂћР С‘Р В»РЎРЏ + РЎРѓР С—РЎР‚Р В°Р Р†Р С•РЎвЂЎР Р…Р С‘Р С”Р С•Р Р† РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
+    private fun updateMenuStateForDate(date: java.util.Date) {
+        val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(date)
+        
+        // 1. Обновляем набор ID для быстрой отрисовки иконок
+        val recipeIds = com.example.smartmeal.data.manager.MenuSyncManager.getRecipeIdsForDate(dateStr)
+        _state.update { it.copy(recipeIdsInMenuOnSelectedDay = recipeIds) }
+        
+        // 2. Фоново подгружаем актуальные объекты MenuItem, чтобы знать их ID и типы (для будущих нажатий на +)
+        viewModelScope.launch {
+            try {
+                val response = menuApi.getMenuItems()
+                if (response.isSuccessful) {
+                    val items = response.body()?.filter { it.actual_date == dateStr } ?: emptyList()
+                    _state.update { it.copy(menuItemsOnSelectedDay = items) }
+                }
+            } catch (e: Exception) {}
+        }
+    }
 
+    private fun checkRecipesInMenu() {
+        // Метод оставлен для совместимости, но теперь мы используем MenuSyncManager
+        val currentDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate() ?: 
+                         preferences.getSelectedPlanDate()?.let { java.util.Date(it) }
+        currentDate?.let { updateMenuStateForDate(it) }
+    }
+
+    fun addToMenu(recipeId: Int) {
+        val selectedDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate() ?: return
+        val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(selectedDate)
+
+        viewModelScope.launch {
+            try {
+                // 1. Загружаем свежие пункты меню
+                val itemsRes = menuApi.getMenuItems()
+                if (!itemsRes.isSuccessful) {
+                    _state.update { it.copy(error = "Ошибка загрузки меню: ${itemsRes.code()}") }
+                    return@launch
+                }
+                
+                // 2. Фильтруем слоты СТРОГО по выбранной дате (как в HomeScreen)
+                val allItemsOnDate = itemsRes.body()?.filter { it.actual_date == dateStr } ?: emptyList()
+                
+                if (allItemsOnDate.isEmpty()) {
+                    _state.update { it.copy(error = "На $dateStr нет приемов пищи в плане") }
+                    return@launch
+                }
+
+                val favorite = _state.value.favorites.find { it.recipe == recipeId } ?: return@launch
+                val recipeMealTypes = favorite.meal_types.map { it.lowercase(java.util.Locale.US) }
+                
+                // 3. Ищем подходящий слот по типу (Обед к Обеду) среди слотов этой даты
+                // Сортируем по ID убыванию, чтобы взять самый актуальный слот (если их несколько)
+                var targetSlot = allItemsOnDate.sortedByDescending { it.id }.find { item ->
+                    val slotType = item.meal_type.lowercase(java.util.Locale.US)
+                    recipeMealTypes.any { rt -> 
+                        slotType.contains(rt) || rt.contains(slotType) ||
+                        (slotType == "lunch" && rt.contains("обед")) ||
+                        (slotType == "breakfast" && rt.contains("завтрак")) ||
+                        (slotType == "dinner" && rt.contains("ужин"))
+                    }
+                }
+                
+                // Fallback: берем любой первый слот этой даты
+                if (targetSlot == null) {
+                    targetSlot = allItemsOnDate.maxByOrNull { it.id }
+                }
+                
+                if (targetSlot != null) {
+                    val oldRecipeId = targetSlot.recipe
+                    
+                    // СИНХРОНИЗАЦИЯ: Оптимистичное обновление UI
+                    com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
+                        dateStr, oldRecipeId, recipeId
+                    )
+
+                    val replaceRes = menuApi.setRecipeToMenuItem(
+                        targetSlot.id, 
+                        com.example.smartmeal.feature.home.data.api.SetRecipeRequest(recipeId)
+                    )
+                    
+                    if (replaceRes.isSuccessful) {
+                        preferences.clearMenuItemServings(targetSlot.id)
+                        
+                        onMenuManualChanged() 
+                        updateMenuStateForDate(selectedDate)
+                        
+                        try {
+                            menuApi.recalculateCart(com.example.smartmeal.feature.home.data.api.RecalculateCartRequest())
+                        } catch (e: Exception) {}
+                    } else {
+                        // ОТКАТ ПРИ ОШИБКЕ
+                        com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
+                            dateStr, recipeId, oldRecipeId
+                        )
+                        _state.update { it.copy(error = "Ошибка сервера: ${replaceRes.code()}") }
+                    }
+                }
+            } catch (e: Exception) {
+                _state.update { it.copy(error = "Ошибка связи: ${e.localizedMessage}") }
+            }
+        }
+    }
+
+    // РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р вЂ”Р В°Р С–РЎР‚РЎС“Р В·Р С”Р В° Р С—РЎР‚Р С•РЎвЂћР С‘Р В»РЎРЏ + РЎРѓР С—РЎР‚Р В°Р Р†Р С•РЎвЂЎР Р…Р С‘Р С”Р С•Р Р† РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚ Р Р Р…Р Вµ Р СР ВµР Р…РЎРЏР ВµР С Р Р…Р С‘Р В¶Р Вµ
     fun loadProfile() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
@@ -137,7 +279,7 @@ class ProfileViewModel(
     }
 
     fun confirmCookTimes() {
-        onProfileUpdated()
+        onProfileSettingsChanged()
     }
 
 
@@ -211,7 +353,7 @@ class ProfileViewModel(
                         dietTypeId = s.currentDietTypeId,
                         allergyIds = s.pendingAllergyIds
                     )
-                    onProfileUpdated() // Reload menu.
+                    onProfileSettingsChanged() // Reload menu.
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }
@@ -259,7 +401,7 @@ class ProfileViewModel(
                         dietTypeId = s.pendingDietTypeId,
                         allergyIds = s.currentAllergyIds
                     )
-                    onProfileUpdated() // Reload menu.
+                    onProfileSettingsChanged() // Reload menu.
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }
@@ -302,7 +444,7 @@ class ProfileViewModel(
                         dietTypeId = s.currentDietTypeId,
                         allergyIds = s.currentAllergyIds
                     )
-                    onProfileUpdated()
+                    onProfileSettingsChanged()
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }

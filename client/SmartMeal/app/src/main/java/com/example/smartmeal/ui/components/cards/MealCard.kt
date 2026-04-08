@@ -1,6 +1,5 @@
 package com.example.smartmeal.ui.components.cards
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,21 +29,27 @@ import com.example.smartmeal.ui.components.SmartMealText
 
 import com.example.smartmeal.utils.softBottomShadow
 
+import androidx.compose.material3.IconButton
+
 @Composable
 fun MealCard(
     modifier: Modifier = Modifier,
     title: String,
     cookTime: String,
     imageRes: Int = R.drawable.food,
-    imageUrl: String? = null, // Зарезервировано
+    imageUrl: String? = null,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
+    isInMenu: Boolean = false,
+    onPlusClick: (() -> Unit)? = null,
     cardTag: String? = null,
     titleTag: String? = null,
-    favoriteTag: String? = null
+    favoriteTag: String? = null,
+    plusTag: String? = null
 ) {
     val resolvedCardTag = cardTag ?: "meal_card"
     val resolvedFavoriteTag = favoriteTag ?: "favorite_button"
+    val resolvedPlusTag = plusTag ?: "plus_button"
 
     Card(
         modifier = modifier
@@ -99,19 +104,37 @@ fun MealCard(
                 }
             }
 
-            CircleIconButton(
-                iconType = CircleIconType.FAVORITE,
-                isSelected = isFavorite,
-                onClick = onFavoriteClick,
-                backgroundColor = Color.Transparent,
-                modifier = Modifier
-                    .padding(end = 12.dp)
-                    .size(40.dp)
-                    .testTag(resolvedFavoriteTag)
-            )
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = 8.dp)) {
+                if (onPlusClick != null && isFavorite) {
+                    IconButton(
+                        onClick = onPlusClick,
+                        modifier = Modifier.size(36.dp).testTag(resolvedPlusTag)
+                    ) {
+                        Icon(
+                            painter = painterResource(
+                                id = if (isInMenu) R.drawable.ic_plus_active else R.drawable.ic_plus_inactive
+                            ),
+                            contentDescription = "Add to menu",
+                            modifier = Modifier.size(24.dp),
+                            tint = Color.Unspecified
+                        )
+                    }
+                }
+
+                CircleIconButton(
+                    iconType = CircleIconType.FAVORITE,
+                    isSelected = isFavorite,
+                    onClick = onFavoriteClick,
+                    backgroundColor = Color.Transparent,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .testTag(resolvedFavoriteTag)
+                )
+            }
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun MealCardPreview() {

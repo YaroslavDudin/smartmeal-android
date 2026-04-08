@@ -111,7 +111,8 @@ fun HomeScreen(
             ProfileViewModelFactory(
                 api = setupApi,
                 preferences = setupPreferences,
-                onProfileUpdated = { viewModel.regenerateMenuForCurrentPlan() }
+                onProfileSettingsChanged = { viewModel.regenerateMenuForCurrentPlan() },
+                onMenuManualChanged = { viewModel.reloadMenu() }
             )
         }
     )
@@ -158,7 +159,8 @@ fun HomeScreen(
                 selected.before(visibleCustomPlan.startDate) ||
                 selected.after(visibleCustomPlan.endDate)
 
-            if (!uiState.selectedDateFromPlan || outOfRange) {
+            // СБРОС ДАТЫ: Только если текущая дата ВНЕ диапазона нового плана
+            if (outOfRange) {
                 viewModel.selectDate(visibleCustomPlan.startDate, visibleCustomPlan)
             }
         }
@@ -769,7 +771,16 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 _uiState.update {
                     val today = normalizeDate(Date())
                     val availableDates = buildAvailableDates(menuItems, CustomPlan(menuStart, menuEnd))
-                    val resolvedSelectedDate = if (availableDates.any { it.time == today.time }) today else availableDates.firstOrNull()
+                    
+                    // СИНХРОНИЗАЦИЯ: Приоритет дате из менеджера
+                    val lastSelected = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()
+                    val resolvedSelectedDate = if (lastSelected != null && availableDates.any { it.time == normalizeDate(lastSelected).time }) {
+                        normalizeDate(lastSelected)
+                    } else if (availableDates.any { it.time == today.time }) {
+                        today
+                    } else {
+                        availableDates.firstOrNull()
+                    }
 
                     it.copy(
                         isLoading = false,
@@ -874,14 +885,28 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         val menu = state.currentMenu ?: return
         try {
             val resolvedDate = state.selectedDate ?: buildAvailableDates(menu.items ?: emptyList(), state.customPlan).firstOrNull()
+            
+            // СИНХРОНИЗАЦИЯ: Если мы определили дату (даже по умолчанию), уведомляем DateManager
+            if (state.selectedDate == null && resolvedDate != null) {
+                com.example.smartmeal.data.manager.DateManager.notifyDateSelected(resolvedDate)
+            }
+
             val itemsForDay = if (resolvedDate != null) {
                 val selectedDateStr = apiDateFormatter.format(resolvedDate)
                 val sourceItems = if (state.selectedDateFromPlan) state.allMenuItems.filter { it.actual_date == selectedDateStr }
                                  else menu.items?.filter { it.actual_date == selectedDateStr } ?: emptyList()
                 
                 // Дедупликация: оставляем только самое свежее блюдо (с макс. ID) для каждого типа приема пищи
-                sourceItems.sortedByDescending { it.id }
+                val uniqueItems = sourceItems.sortedByDescending { it.id }
                     .distinctBy { it.meal_type.lowercase(Locale.US) }
+                
+                // СИНХРОНИЗАЦИЯ: Обновляем глобальный менеджер для этой даты
+                com.example.smartmeal.data.manager.MenuSyncManager.updateMenuForDate(
+                    selectedDateStr, 
+                    uniqueItems.map { it.recipe }.toSet()
+                )
+                
+                uniqueItems
             } else emptyList()
 
             val mealSections = itemsForDay.map { item ->
@@ -975,7 +1000,9 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     fun replaceMeal(mealId: Int) {
         val state = _uiState.value
         val menuItem = state.allMenuItems.find { it.id == mealId } ?: return
+        val oldRecipeId = menuItem.recipe
         val mealType = menuItem.meal_type
+        val dateStr = menuItem.actual_date
 
         viewModelScope.launch {
             try {
@@ -991,8 +1018,15 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 val updatedItem = menuRepository.replaceMenuItem(mealId, cookTimeRange)
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
+                    
+                    // СИНХРОНИЗАЦИЯ: Оптимистично обновляем менеджер!
+                    com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
+                        dateStr, oldRecipeId, updatedItem.recipe
+                    )
+
                     _uiState.update { currentState -> mergeUpdatedMenuItemIntoState(currentState, updatedItem) }
                     updateMealSections()
+                    com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.localizedMessage) }
@@ -1146,12 +1180,13 @@ private class ProductListViewModelFactory(private val menuApi: MenuApi, private 
 class ProfileViewModelFactory(
     private val api: SetupApi,
     private val preferences: SetupPreferences,
-    private val onProfileUpdated: () -> Unit
+    private val onProfileSettingsChanged: () -> Unit,
+    private val onMenuManualChanged: () -> Unit
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ProfileViewModel(api, preferences, onProfileUpdated) as T
+            return ProfileViewModel(api, preferences, onProfileSettingsChanged, onMenuManualChanged) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

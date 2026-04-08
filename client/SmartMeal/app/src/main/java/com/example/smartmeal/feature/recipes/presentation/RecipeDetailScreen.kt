@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.smartmeal.R
 import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.QuantityStepper
@@ -87,7 +88,9 @@ fun RecipeDetailScreen(
         topBar = { 
             CustomRecipeTopBar(
                 isFavorite = state.recipe?.is_favorite ?: false,
+                isInMenu = state.isInMenuOnSelectedDay,
                 onFavoriteClick = { viewModel.toggleFavorite() },
+                onAddClick = { viewModel.addToMenu() },
                 onBack = onBack 
             ) 
         }
@@ -238,7 +241,9 @@ fun RecipeDetailScreen(
 @Composable
 fun CustomRecipeTopBar(
     isFavorite: Boolean,
+    isInMenu: Boolean,
     onFavoriteClick: () -> Unit,
+    onAddClick: () -> Unit,
     onBack: () -> Unit
 ) {
     Row(
@@ -256,13 +261,14 @@ fun CustomRecipeTopBar(
             )
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Добавить",
-                    modifier = Modifier.size(32.dp)
+            // Кнопка "+" отображается только если рецепт в избранном
+            if (isFavorite) {
+                RecipePlusButton(
+                    isActive = isInMenu,
+                    onClick = onAddClick
                 )
             }
+
             // Используем Box + clickable(indication = null), чтобы убрать ripple эффект (серый круг)
             Box(
                 modifier = Modifier
@@ -292,7 +298,7 @@ fun CustomRecipeTopBar(
                     label = "star_fade"
                 ) { favorite ->
                     Icon(
-                        painter = painterResource(id = if (favorite) com.example.smartmeal.R.drawable.star else com.example.smartmeal.R.drawable.badstar),
+                        painter = painterResource(id = if (favorite) R.drawable.star else R.drawable.badstar),
                         contentDescription = if (favorite) "Убрать из избранного" else "В избранное",
                         modifier = Modifier
                             .size(32.dp)
@@ -306,6 +312,26 @@ fun CustomRecipeTopBar(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun RecipePlusButton(
+    isActive: Boolean,
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier.size(48.dp)
+    ) {
+        Icon(
+            painter = painterResource(
+                id = if (isActive) R.drawable.ic_plus_active else R.drawable.ic_plus_inactive
+            ),
+            contentDescription = "Add to menu",
+            modifier = Modifier.size(24.dp),
+            tint = Color.Unspecified
+        )
     }
 }
 
