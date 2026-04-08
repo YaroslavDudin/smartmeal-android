@@ -55,6 +55,7 @@ export function UsersPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[var(--border-color)]">
+                <th className="table-header text-left w-12">#</th>
                 <th className="table-header text-left">Пользователь</th>
                 <th className="table-header text-left hidden sm:table-cell">Email</th>
                 <th className="table-header text-center hidden md:table-cell">Диета</th>
@@ -66,13 +67,13 @@ export function UsersPage() {
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={6}>
-                    <TableSkeleton rows={8} cols={6} />
+                  <td colSpan={7}>
+                    <TableSkeleton rows={8} cols={7} />
                   </td>
                 </tr>
               ) : !data?.results?.length ? (
                 <tr>
-                  <td colSpan={6}>
+                  <td colSpan={7}>
                     <EmptyState
                       icon={Users}
                       title="Пользователи не найдены"
@@ -81,12 +82,15 @@ export function UsersPage() {
                   </td>
                 </tr>
               ) : (
-                data.results.map((user) => (
+                data.results.map((user, index) => (
                   <tr
                     key={user.id}
                     className="border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--bg-secondary)] transition-colors cursor-pointer"
                     onClick={() => navigate(`/users/${user.id}`)}
                   >
+                    <td className="table-cell text-[var(--text-muted)] text-sm">
+                      {(page - 1) * PAGE_SIZE + index + 1}
+                    </td>
                     <td className="table-cell">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full bg-violet-500 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
@@ -96,9 +100,12 @@ export function UsersPage() {
                           <p className="font-medium text-[var(--text-primary)]">
                             {getUserDisplayName(user)}
                           </p>
-                          {user.is_superuser && (
-                            <span className="badge-blue text-xs">Superuser</span>
-                          )}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">ID {user.id}</span>
+                            {user.is_superuser && (
+                              <span className="badge-blue text-[10px] py-0 px-1">Superuser</span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </td>

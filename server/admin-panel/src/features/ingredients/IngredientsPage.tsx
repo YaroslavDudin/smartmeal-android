@@ -87,6 +87,7 @@ export function IngredientsPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[var(--border-color)]">
+                <th className="table-header text-left w-12">#</th>
                 <th className="table-header text-left">Название</th>
                 <th className="table-header text-left hidden sm:table-cell">Категория</th>
                 <th className="table-header text-center hidden md:table-cell">Калории</th>
@@ -97,13 +98,13 @@ export function IngredientsPage() {
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={5}>
-                    <TableSkeleton rows={8} cols={5} />
+                  <td colSpan={6}>
+                    <TableSkeleton rows={8} cols={6} />
                   </td>
                 </tr>
               ) : !data?.results?.length ? (
                 <tr>
-                  <td colSpan={5}>
+                  <td colSpan={6}>
                     <EmptyState
                       icon={Apple}
                       title="Ингредиенты не найдены"
@@ -118,11 +119,14 @@ export function IngredientsPage() {
                   </td>
                 </tr>
               ) : (
-                data.results.map((ingredient) => (
+                data.results.map((ingredient, index) => (
                   <tr
                     key={ingredient.id}
                     className="border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--bg-secondary)] transition-colors"
                   >
+                    <td className="table-cell text-[var(--text-muted)] text-sm">
+                      {(page - 1) * PAGE_SIZE + index + 1}
+                    </td>
                     <td className="table-cell">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
@@ -130,7 +134,7 @@ export function IngredientsPage() {
                         </div>
                         <div>
                           <p className="font-medium text-[var(--text-primary)]">{ingredient.name}</p>
-                          <p className="text-xs text-[var(--text-muted)]">#{ingredient.id}</p>
+                          <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider">ID {ingredient.id}</p>
                         </div>
                       </div>
                     </td>

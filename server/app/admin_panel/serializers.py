@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
 from app.accounts.models import User, DietType, Allergy
@@ -76,6 +77,16 @@ class AdminIngredientNutritionSerializer(serializers.ModelSerializer):
     def get_calories(self, obj):
         return float(obj.calories)
 
+    def validate(self, attrs):
+        try:
+            # Создаем временный объект для вызова model.clean()
+            # ingredient_id будет передан позже в .save()
+            instance = IngredientNutrition(**attrs)
+            instance.clean()
+        except DjangoValidationError as e:
+            raise serializers.ValidationError(e.message_dict if hasattr(e, 'message_dict') else e.messages)
+        return attrs
+
 
 class AdminUnitConversionSerializer(serializers.ModelSerializer):
     from_unit_name = serializers.CharField(source='from_unit.name', read_only=True)
@@ -97,9 +108,37 @@ class AdminIngredientSerializer(serializers.ModelSerializer):
 
 
 class AdminIngredientWriteSerializer(serializers.ModelSerializer):
+    nutrition = AdminIngredientNutritionSerializer(source='ingredient_nutrition', required=False)
+
     class Meta:
         model = Ingredient
-        fields = ['id', 'name', 'category']
+        fields = ['id', 'name', 'category', 'can_be_added_to_cart', 'is_piece', 'piece_weight', 'nutrition']
+
+    def create(self, validated_data):
+        nutrition_data = validated_data.pop('ingredient_nutrition', None)
+        ingredient = Ingredient.objects.create(**validated_data)
+        
+        if nutrition_data:
+            IngredientNutrition.objects.create(ingredient=ingredient, **nutrition_data)
+        
+        return ingredient
+
+    def update(self, instance, validated_data):
+        nutrition_data = validated_data.pop('ingredient_nutrition', None)
+        
+        # Обновляем поля ингредиента
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Обновляем или создаем КБЖУ
+        if nutrition_data:
+            IngredientNutrition.objects.update_or_create(
+                ingredient=instance,
+                defaults=nutrition_data
+            )
+        
+        return instance
 
 
 # ---------------------------------------------------------------------------
@@ -114,6 +153,22 @@ class AdminRecipeIngredientSerializer(serializers.ModelSerializer):
         model = RecipeIngredient
         fields = ['id', 'recipe', 'ingredient', 'ingredient_name', 'amount', 'unit', 'unit_name']
         read_only_fields = ['id', 'recipe']
+
+    def validate(self, attrs):
+        # Временный объект для вызова model.clean()
+        # Поле recipe может отсутствовать в attrs при создании (так как оно в read_only_fields 
+        # и передается позже в .save()), но для clean() оно не критично, 
+        # так как clean() проверяет именно связку ингредиент+единица измерения.
+        try:
+            instance = RecipeIngredient(**attrs)
+            instance.clean()
+        except DjangoValidationError as e:
+            raise serializers.ValidationError(e.message_dict if hasattr(e, 'message_dict') else e.messages)
+        except ValueError as e:
+            # На случай, если clean() или свойства модели выбросят ValueError напрямую
+            raise serializers.ValidationError(str(e))
+        
+        return attrs
 
 
 class AdminRecipeStepSerializer(serializers.ModelSerializer):

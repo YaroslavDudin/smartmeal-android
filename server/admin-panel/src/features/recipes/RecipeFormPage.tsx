@@ -39,9 +39,9 @@ import { IngredientAutocomplete } from '@/components/ui/IngredientAutocomplete'
 
 const ingredientSchema = z.object({
   id: z.number().optional(),
-  ingredient: z.number({ invalid_type_error: 'Выберите ингредиент из выпадающего списка' }),
+  ingredient: z.number({ invalid_type_error: 'Выберите ингредиент из выпадающего списка' }).min(1, 'Выберите ингредиент'),
   amount: z.number({ coerce: true }).min(0.01, 'Укажите количество').positive('Количество должно быть > 0'),
-  unit: z.number({ coerce: true, invalid_type_error: 'Выберите единицу измерения' }),
+  unit: z.number({ coerce: true, invalid_type_error: 'Выберите единицу измерения' }).min(1, 'Выберите единицу'),
 })
 
 const stepSchema = z.object({

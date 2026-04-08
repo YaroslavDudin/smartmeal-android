@@ -131,11 +131,14 @@ export function RecipesPage() {
                   </td>
                 </tr>
               ) : (
-                data.results.map((recipe) => (
+                data.results.map((recipe, index) => (
                   <tr
                     key={recipe.id}
                     className="border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--bg-secondary)] transition-colors"
                   >
+                    <td className="table-cell text-[var(--text-muted)] text-sm">
+                      {(page - 1) * PAGE_SIZE + index + 1}
+                    </td>
                     <td className="table-cell">
                       <div className="flex items-center gap-3">
                         <button
@@ -162,7 +165,7 @@ export function RecipesPage() {
                           >
                             {truncate(recipe.title, 40)}
                           </button>
-                          <p className="text-xs text-[var(--text-muted)]">#{recipe.id}</p>
+                          <p className="text-xs text-[var(--text-muted)] text-[10px] uppercase tracking-wider">ID {recipe.id}</p>
                         </div>
                       </div>
                     </td>

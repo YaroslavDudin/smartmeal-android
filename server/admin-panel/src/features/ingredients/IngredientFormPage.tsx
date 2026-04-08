@@ -21,14 +21,15 @@ import type { UnitConversion } from '@/types'
 const ingredientSchema = z.object({
   name: z.string().min(1, 'Введите название'),
   category: z.number({ coerce: true }).nullable().optional(),
+  is_piece: z.boolean().default(false),
+  piece_weight: z.number({ coerce: true }).min(0).nullable().optional(),
   nutrition: z
     .object({
-      base_weight: z.number({ coerce: true }).min(0),
-      base_unit: z.number({ coerce: true }).min(0),
-      protein: z.number({ coerce: true }).min(0),
-      fat: z.number({ coerce: true }).min(0),
-      carbs: z.number({ coerce: true }).min(0),
-      calories: z.number({ coerce: true }).min(0),
+      base_weight: z.number({ coerce: true }).min(0, 'Мин. 0'),
+      base_unit: z.number({ coerce: true }).min(1, 'Выберите единицу'),
+      protein: z.number({ coerce: true }).min(0, 'Мин. 0'),
+      fat: z.number({ coerce: true }).min(0, 'Мин. 0'),
+      carbs: z.number({ coerce: true }).min(0, 'Мин. 0'),
     })
     .nullable()
     .optional(),
@@ -36,6 +37,11 @@ const ingredientSchema = z.object({
 })
 
 type IngredientFormData = z.infer<typeof ingredientSchema>
+
+function FieldError({ msg }: { msg?: string }) {
+  if (!msg) return null
+  return <p className="text-xs text-red-500 mt-1">{msg}</p>
+}
 
 export function IngredientFormPage() {
   const { id } = useParams()
@@ -72,16 +78,31 @@ export function IngredientFormPage() {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<IngredientFormData>({
     resolver: zodResolver(ingredientSchema),
+    defaultValues: {
+      is_piece: false,
+      canBeAddedToCart: true,
+      nutrition: {
+        base_weight: 100,
+        protein: 0,
+        fat: 0,
+        carbs: 0,
+      }
+    }
   })
+
+  const formStateIsPiece = watch('is_piece')
 
   useEffect(() => {
     if (ingredient) {
       setValue('name', ingredient.name)
       setValue('category', ingredient.category ?? null)
       setValue('canBeAddedToCart', ingredient.can_be_added_to_cart)
+      setValue('is_piece', ingredient.is_piece ?? false)
+      setValue('piece_weight', ingredient.piece_weight ?? null)
       if (ingredient.nutrition) {
         setHasNutrition(true)
         setValue('nutrition.base_weight', Number(ingredient.nutrition.base_weight))
@@ -89,7 +110,6 @@ export function IngredientFormPage() {
         setValue('nutrition.protein', Number(ingredient.nutrition.protein))
         setValue('nutrition.fat', Number(ingredient.nutrition.fat))
         setValue('nutrition.carbs', Number(ingredient.nutrition.carbs))
-        setValue('nutrition.calories', ingredient.nutrition.calories)
       }
       setUnitConversions(ingredient.unit_conversions)
     }
@@ -99,9 +119,9 @@ export function IngredientFormPage() {
     if (!name.trim() || name.trim().length < 3) return []
     try {
       const res = await api.get<{ results: { id: number; name: string }[] }>('/ingredients/', {
-        params: { search: name.trim(), page_size: 5 },
+        params: { search: name.trim() },
       })
-      return res.data.results
+      return (res.data.results || [])
         .filter((i) => i.id !== ingredientId)
         .map((i) => i.name)
     } catch {
@@ -110,16 +130,21 @@ export function IngredientFormPage() {
   }, [ingredientId])
 
   const doSave = useCallback(async (data: IngredientFormData) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { calories, ...nutritionPayload } = (data.nutrition || {}) as any;
+    
     const payload = {
       name: data.name,
       category: data.category || null,
-      nutrition: hasNutrition ? data.nutrition : null,
+      is_piece: data.is_piece,
+      piece_weight: data.is_piece ? data.piece_weight : null,
+      nutrition: hasNutrition ? nutritionPayload : null,
       can_be_added_to_cart: data.canBeAddedToCart,
     }
     if (isEdit && ingredientId) {
-      return updateIngredient(ingredientId, payload as unknown as Parameters<typeof updateIngredient>[1])
+      return updateIngredient(ingredientId, payload as any)
     }
-    return createIngredient(payload as unknown as Parameters<typeof createIngredient>[0])
+    return createIngredient(payload as any)
   }, [isEdit, ingredientId, hasNutrition])
 
   const handleFormSubmit = async (data: IngredientFormData) => {
@@ -245,20 +270,52 @@ export function IngredientFormPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-[var(--text-primary)] mb-1.5">
-              Нужно ли добавлять в корзину
-            </label>
-            <input
-              {...register('canBeAddedToCart')}
-              type="checkbox"
-              className="checkbox"
-            />
+          <div className="space-y-4">
+            <div>
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  {...register('canBeAddedToCart')}
+                  type="checkbox"
+                  className="rounded border-[var(--border-color)] text-primary-600 focus:ring-primary-500"
+                />
+                <span className="text-sm font-medium text-[var(--text-primary)]">
+                  Нужно ли добавлять в корзину
+                </span>
+              </label>
+            </div>
+
+            <div className="flex gap-8">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  {...register('is_piece')}
+                  type="checkbox"
+                  className="rounded border-[var(--border-color)] text-primary-600 focus:ring-primary-500"
+                />
+                <span className="text-sm font-medium text-[var(--text-primary)]">
+                  Штучный товар
+                </span>
+              </label>
+
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-[var(--text-primary)]">
+                  Вес одной штуки (г):
+                </label>
+                <input
+                  {...register('piece_weight', { valueAsNumber: true })}
+                  type="number"
+                  className="input w-24 py-1"
+                  placeholder="0"
+                  step="0.01"
+                  min={0}
+                  disabled={!formStateIsPiece}
+                />
+              </div>
+            </div>
           </div>
 
           {/* Nutrition */}
-          <div>
-            <div className="flex items-center gap-3 mb-3">
+          <div className="pt-4 border-t border-[var(--border-color)]">
+            <div className="flex items-center gap-3 mb-4">
               <label className="font-medium text-[var(--text-primary)] text-sm">Пищевая ценность</label>
               <button
                 type="button"
@@ -272,7 +329,7 @@ export function IngredientFormPage() {
             </div>
 
             {hasNutrition && (
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                 <div>
                   <label className="block text-xs text-[var(--text-muted)] mb-1">Базовый вес (г)</label>
                   <input
@@ -283,18 +340,20 @@ export function IngredientFormPage() {
                     step="0.01"
                     min={0}
                   />
+                  <FieldError msg={errors.nutrition?.base_weight?.message} />
                 </div>
                 <div>
-                  <label className="block text-xs text-[var(--text-muted)] mb-1">Единица измерения</label>
+                  <label className="block text-xs text-[var(--text-muted)] mb-1">Ед. изм.</label>
                   <select
                     {...register('nutrition.base_unit', { valueAsNumber: true })}
                     className="input"
                   >
-                    <option value="">Выберите единицу</option>
+                    <option value="">Выбрать</option>
                     {units?.filter(u => u.is_base).map((u) => (
                       <option key={u.id} value={u.id}>{u.name}</option>
                     ))}
                   </select>
+                  <FieldError msg={errors.nutrition?.base_unit?.message} />
                 </div>
                 <div>
                   <label className="block text-xs text-[var(--text-muted)] mb-1">Белки (г)</label>
@@ -306,6 +365,7 @@ export function IngredientFormPage() {
                     step="0.01"
                     min={0}
                   />
+                  <FieldError msg={errors.nutrition?.protein?.message} />
                 </div>
                 <div>
                   <label className="block text-xs text-[var(--text-muted)] mb-1">Жиры (г)</label>
@@ -317,6 +377,7 @@ export function IngredientFormPage() {
                     step="0.01"
                     min={0}
                   />
+                  <FieldError msg={errors.nutrition?.fat?.message} />
                 </div>
                 <div>
                   <label className="block text-xs text-[var(--text-muted)] mb-1">Углеводы (г)</label>
@@ -328,23 +389,13 @@ export function IngredientFormPage() {
                     step="0.01"
                     min={0}
                   />
-                </div>
-                <div>
-                  <label className="block text-xs text-[var(--text-muted)] mb-1">Калории</label>
-                  <input
-                    {...register('nutrition.calories', { valueAsNumber: true })}
-                    type="number"
-                    className="input"
-                    placeholder="0"
-                    step="0.01"
-                    min={0}
-                  />
+                  <FieldError msg={errors.nutrition?.carbs?.message} />
                 </div>
               </div>
             )}
           </div>
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-end pt-4 border-t border-[var(--border-color)]">
             <button
               type="submit"
               className="btn-primary"
@@ -378,8 +429,8 @@ export function IngredientFormPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--border-color)]">
-                  <th className="table-header text-left">Из единицы изменения</th>
-                  <th className="table-header text-left">В единицу изменения</th>
+                  <th className="table-header text-left">Из единицы измерения</th>
+                  <th className="table-header text-left">В единицу измерения</th>
                   <th className="table-header text-right">Количество</th>
                 </tr>
               </thead>

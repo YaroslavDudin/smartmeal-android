@@ -132,7 +132,7 @@ export function UnitsPage() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-[var(--border-color)]">
-              <th className="table-header text-left">ID</th>
+              <th className="table-header text-left">#</th>
               <th className="table-header text-left">Название</th>
               <th className="table-header text-center">Базовая</th>
               <th className="table-header text-right">Действия</th>
@@ -162,9 +162,9 @@ export function UnitsPage() {
                 </td>
               </tr>
             ) : (
-              units.map((unit) => (
+              units.map((unit, index) => (
                 <tr key={unit.id} className="border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--bg-secondary)] transition-colors">
-                  <td className="table-cell text-[var(--text-muted)] w-16">#{unit.id}</td>
+                  <td className="table-cell text-[var(--text-muted)] w-16">{index + 1}</td>
                   <td className="table-cell">
                     {editingId === unit.id ? (
                       <input

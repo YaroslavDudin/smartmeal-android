@@ -118,7 +118,7 @@ export function CategoriesPage() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-[var(--border-color)]">
-              <th className="table-header text-left">ID</th>
+              <th className="table-header text-left">#</th>
               <th className="table-header text-left">Название</th>
               <th className="table-header text-right">Действия</th>
             </tr>
@@ -147,9 +147,9 @@ export function CategoriesPage() {
                 </td>
               </tr>
             ) : (
-              categories.map((cat) => (
+              categories.map((cat, index) => (
                 <tr key={cat.id} className="border-b border-[var(--border-color)] last:border-0 hover:bg-[var(--bg-secondary)] transition-colors">
-                  <td className="table-cell text-[var(--text-muted)] w-16">#{cat.id}</td>
+                  <td className="table-cell text-[var(--text-muted)] w-16">{index + 1}</td>
                   <td className="table-cell">
                     {editingId === cat.id ? (
                       <input
