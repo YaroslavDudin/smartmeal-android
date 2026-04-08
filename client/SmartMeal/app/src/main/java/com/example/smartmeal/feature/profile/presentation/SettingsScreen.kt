@@ -47,8 +47,18 @@ fun SettingsScreen(
     
     var showDatePicker by remember { mutableStateOf(false) }
     
-    val dateFormatter = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US) }
+    // Идеальная работа с датами: фиксируем UTC, чтобы избежать смещения на день из-за часовых поясов
+    val dateFormatter = remember { 
+        SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+            timeZone = TimeZone.getTimeZone("UTC")
+        }
+    }
     val displayDateFormatter = remember { SimpleDateFormat("dd MMMM yyyy", Locale("ru")) }
+
+    // Константы для валидации
+    val calendar = Calendar.getInstance()
+    val currentYear = calendar.get(Calendar.YEAR)
+    val minYear = 1900 // Разумный предел для даты рождения
 
     Column(
         modifier = Modifier
@@ -264,7 +274,38 @@ fun SettingsScreen(
             LocalConfiguration provides localizedConfiguration,
             LocalContext provides localizedContext
         ) {
-            val datePickerState = rememberDatePickerState()
+            // Рассчитываем начальную дату для календаря (если уже выбрана)
+            val initialDateMillis = remember(state.pendingBirthDate) {
+                if (state.pendingBirthDate.isNullOrBlank()) null
+                else {
+                    try {
+                        dateFormatter.parse(state.pendingBirthDate!!)?.time
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+            }
+
+            val selectableDates = remember {
+                object : SelectableDates {
+                    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                        val now = System.currentTimeMillis()
+                        // Ограничение: не в будущем и не раньше 1900 года
+                        // 1900 год в миллисекундах (примерно -2208988800000L)
+                        val minDateMillis = Calendar.getInstance().apply { set(minYear, 0, 1) }.timeInMillis
+                        return utcTimeMillis in minDateMillis..now
+                    }
+
+                    override fun isSelectableYear(year: Int): Boolean {
+                        return year in minYear..currentYear
+                    }
+                }
+            }
+            
+            val datePickerState = rememberDatePickerState(
+                initialSelectedDateMillis = initialDateMillis,
+                selectableDates = selectableDates
+            )
 
             DatePickerDialog(
                 onDismissRequest = { showDatePicker = false },

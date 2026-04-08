@@ -20,9 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,7 +33,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
@@ -44,7 +41,7 @@ import com.example.smartmeal.ui.theme.GreenBorder
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.MainGreen
 import com.example.smartmeal.ui.theme.PrimaryGreen
-import com.example.smartmeal.ui.theme.YellowBorder
+import com.example.smartmeal.ui.theme.TextBlack
 import com.example.smartmeal.utils.ShadowData
 import com.example.smartmeal.utils.dropShadow
 
@@ -55,9 +52,6 @@ private val SETUP_SHADOW = ShadowData(
     offset = DpOffset(0.dp, 1.5.dp)
 )
 
-/**
- * Шаг 1 из 3: выбор типа питания и размера порции (количество персон).
- */
 @Composable
 fun SetupStep1Screen(
     viewModel: SetupViewModel,
@@ -95,27 +89,43 @@ fun SetupStep1Content(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SmartMealText(
-                text = "Шаг: 1 / 3",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MainGreen,
-                fontWeight = FontWeight.Medium,
-            )
-            OutlinedButton(
-                onClick = onBack,
-                border = BorderStroke(1.dp, YellowBorder),
-                shape = RoundedCornerShape(12.dp),
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                SmartMealText(
+                    text = "Шаг:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = PrimaryGreen,
+                    fontWeight = FontWeight.Medium,
+                )
+                SmartMealText(
+                    text = " 1",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = PrimaryGreen,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                SmartMealText(
+                    text = " /3",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFFBDBDBD),
+                    fontWeight = FontWeight.Medium,
+                )
+            }
+
+            // Визуал кнопки взят из SetupStep2Screen
+            Surface(
                 modifier = Modifier
-                    .height(36.dp)
                     .testTag("setup_step1_back")
-                    .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = Color.White,
-                    contentColor = MaterialTheme.colorScheme.onBackground
-                ),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 0.dp)
+                    .clickable(onClick = onBack),
+                shape = RoundedCornerShape(12.dp),
+                color = Color.White,
+                shadowElevation = 8.dp,
+                border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
             ) {
-                SmartMealText(text = "Назад", fontSize = 14.sp)
+                SmartMealText(
+                    text = "Назад",
+                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextBlack,
+                )
             }
         }
 
@@ -192,13 +202,8 @@ private fun DietTypeChip(
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
     
-    // Hover-эффект (состояние при нажатии или выделении)
-    val bgColor = when {
-        isSelected -> MainGreen
-        else -> Color.White
-    }
+    val bgColor = if (isSelected) MainGreen else Color.White
     val textColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onBackground
     val borderColor = if (isSelected) MainGreen else GreenBorder
 

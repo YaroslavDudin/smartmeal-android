@@ -19,9 +19,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,14 +33,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.GreenBorder
 import com.example.smartmeal.ui.theme.MainGreen
-import com.example.smartmeal.ui.theme.YellowBorder
+import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.TextBlack
 import com.example.smartmeal.utils.ShadowData
 import com.example.smartmeal.utils.dropShadow
 
@@ -59,9 +57,6 @@ private val COOK_TIME_OPTIONS = listOf(
     Triple("over60", "От часа и более", false),
 )
 
-/**
- * Шаг 3 из 3: выбор исключений (аллергии) и предпочтений по времени приготовления.
- */
 @Composable
 fun SetupStep3Screen(
     viewModel: SetupViewModel,
@@ -70,7 +65,6 @@ fun SetupStep3Screen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    // Navigate when setup is complete
     LaunchedEffect(state.isComplete) {
         if (state.isComplete) onComplete()
     }
@@ -105,27 +99,43 @@ fun SetupStep3Content(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            SmartMealText(
-                text = "Шаг: 3 / 3",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MainGreen,
-                fontWeight = FontWeight.Medium,
-            )
-            OutlinedButton(
-                onClick = onBack,
-                border = BorderStroke(1.dp, YellowBorder),
-                shape = RoundedCornerShape(12.dp),
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                SmartMealText(
+                    text = "Шаг:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = PrimaryGreen,
+                    fontWeight = FontWeight.Medium,
+                )
+                SmartMealText(
+                    text = " 3",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = PrimaryGreen,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                SmartMealText(
+                    text = " /3",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFFBDBDBD),
+                    fontWeight = FontWeight.Medium,
+                )
+            }
+
+            // Визуал кнопки взят из SetupStep2Screen
+            Surface(
                 modifier = Modifier
-                    .height(36.dp)
                     .testTag("setup_step3_back")
-                    .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = Color.White,
-                    contentColor = MaterialTheme.colorScheme.onBackground
-                ),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 0.dp)
+                    .clickable(onClick = onBack),
+                shape = RoundedCornerShape(12.dp),
+                color = Color.White,
+                shadowElevation = 8.dp,
+                border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
             ) {
-                SmartMealText(text = "Назад", fontSize = 14.sp)
+                SmartMealText(
+                    text = "Назад",
+                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextBlack,
+                )
             }
         }
 
@@ -140,7 +150,6 @@ fun SetupStep3Content(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- Allergy chips ---
         if (state.allergies.isEmpty()) {
             SmartMealText(text = "Загрузка...", color = Color.Gray)
         } else {
@@ -183,7 +192,6 @@ fun SetupStep3Content(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- Cook time options ---
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -223,7 +231,6 @@ fun SetupStep3Content(
             )
         }
 
-        // --- Error message ---
         if (state.error != null) {
             Spacer(modifier = Modifier.height(12.dp))
             SmartMealText(
@@ -271,12 +278,8 @@ private fun SelectableChip(
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
 
-    val bgColor = when {
-        isSelected -> MainGreen
-        else -> Color.White
-    }
+    val bgColor = if (isSelected) MainGreen else Color.White
     val textColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onBackground
     val borderColor = if (isSelected) MainGreen else GreenBorder
 
