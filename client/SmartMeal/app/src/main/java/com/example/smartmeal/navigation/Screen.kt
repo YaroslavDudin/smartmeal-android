@@ -8,6 +8,10 @@ sealed class Screen(val route: String) {
     object Welcome : Screen("welcome_screen")
     object Test : Screen("test_screen")
     object AuthForm : Screen("login_register_form")
+    object ForgotPassword : Screen("forgot_password")
+    object ResetPassword : Screen("reset-password?uid={uid}&token={token}") {
+        fun createRoute(uid: String, token: String): String = "reset-password?uid=$uid&token=$token"
+    }
     object Home : Screen("home_screen")
 
     // Флоу первоначальной настройки профиля (показывается после авторизации, если профиль не настроен)

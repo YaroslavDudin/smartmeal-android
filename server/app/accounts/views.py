@@ -5,15 +5,73 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from app.accounts.models import DietType, Allergy, UserFavorite, UserStock
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
 from app.accounts.serializers import (
     UserRegistrationSerializer, CustomTokenObtainPairSerializer,
     CustomTokenRefreshSerializer,
     UserSerializer, DietTypeSerializer, AllergySerializer,
-    UserFavoriteSerializer, UserStockSerializer
+    UserFavoriteSerializer, UserStockSerializer,
+    PasswordResetRequestSerializer, PasswordResetConfirmSerializer
 )
 
 
 User = get_user_model()
+
+
+class PasswordResetRequestView(generics.GenericAPIView):
+    serializer_class = PasswordResetRequestSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        user = User.objects.filter(email=email).first()
+        
+        if user:
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            # Формируем прямую ссылку (без лишних слешей)
+            reset_url = f"smartmeal://reset-password?uid={uid}&token={token}"
+            
+            # For development: print to console for easy access
+            print(f"\n--- DEBUG PARAMS ---")
+            print(f"UID: {uid}")
+            print(f"TOKEN: {token}")
+            print(f"FULL URL: {reset_url}")
+            print(f"--------------------\n")
+
+            send_mail(
+                'Сброс пароля - SmartMeal',
+                f'Используйте эту ссылку для сброса пароля: {reset_url}\n\n'
+                f'Если вы не запрашивали сброс, просто проигнорируйте это письмо.',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            
+        return Response(
+            {"detail": "Если аккаунт с таким email существует, письмо для сброса пароля было отправлено."},
+            status=status.HTTP_200_OK
+        )
+
+
+class PasswordResetConfirmView(generics.GenericAPIView):
+    serializer_class = PasswordResetConfirmSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"detail": "Пароль успешно изменен."},
+            status=status.HTTP_200_OK
+        )
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -71,6 +129,19 @@ class RegisterView(generics.CreateAPIView):
 
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
+
+        # Send welcome email
+        try:
+            send_mail(
+                'Добро пожаловать в SmartMeal!',
+                f'Здравствуйте, {user.username}!\n\n'
+                f'Спасибо за регистрацию в SmartMeal. Теперь вы можете планировать свой рацион и следить за статистикой.',
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+                fail_silently=True,
+            )
+        except Exception:
+            pass
 
         return Response({
             'user': UserSerializer(user).data,

@@ -12,6 +12,7 @@ import com.example.smartmeal.feature.auth.presentation.AuthState
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterFormContent
 import com.example.smartmeal.ui.theme.SmartMealTheme
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -129,5 +130,25 @@ class LoginRegisterFormTest {
         assertEquals("ivan@example.com", emailValue)
         assertEquals("password123", passValue)
         assertEquals("password123", confirmValue)
+    }
+
+    @Test
+    fun forgotPasswordClick_callsOnForgotPasswordClick() {
+        var clicked = false
+
+        composeTestRule.setContent {
+            SmartMealTheme {
+                LoginRegisterFormContent(
+                    authState = AuthState.Idle,
+                    onAuthSuccess = {},
+                    onLogin = { _, _ -> },
+                    onRegister = { _, _, _, _ -> },
+                    onForgotPasswordClick = { clicked = true }
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("auth_forgot").performClick()
+        assertTrue(clicked)
     }
 }

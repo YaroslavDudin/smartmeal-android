@@ -35,6 +35,10 @@ import com.example.smartmeal.feature.setup.presentation.SetupStep2Screen
 import com.example.smartmeal.feature.setup.presentation.SetupStep3Screen
 import com.example.smartmeal.feature.setup.presentation.SetupViewModel
 
+import androidx.navigation.navDeepLink
+import com.example.smartmeal.feature.auth.presentation.ForgotPasswordScreen
+import com.example.smartmeal.feature.auth.presentation.ResetPasswordScreen
+
 /**
  * Главный граф навигации приложения.
  * Принимает [navController], который создается в MainActivity.
@@ -106,8 +110,51 @@ fun SmartMealNavGraph(navController: NavHostController) {
                         launchSingleTop = true
                     }
                 },
+                onForgotPassword = {
+                    navController.navigate(Screen.ForgotPassword.route)
+                },
                 onNavigateToSandbox = {
                     navController.navigate(Screen.Test.route)
+                }
+            )
+        }
+
+        composable(route = Screen.ForgotPassword.route) {
+            ForgotPasswordScreen(
+                viewModel = authViewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = Screen.ResetPassword.route,
+            arguments = listOf(
+                navArgument("uid") { type = NavType.StringType },
+                navArgument("token") { type = NavType.StringType }
+            ),
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "smartmeal://reset-password?uid={uid}&token={token}"
+                }
+            )
+        ) { backStackEntry ->
+            val uid = backStackEntry.arguments?.getString("uid") ?: ""
+            val token = backStackEntry.arguments?.getString("token") ?: ""
+            
+            // Сбрасываем состояние при входе на экран, чтобы убрать Loading или Error от прошлых попыток
+            LaunchedEffect(uid, token) {
+                authViewModel.resetAuthState()
+            }
+
+            ResetPasswordScreen(
+                viewModel = authViewModel,
+                uid = uid,
+                token = token,
+                onSuccess = {
+                    authViewModel.resetAuthState()
+                    navController.navigate(Screen.AuthForm.route) {
+                        popUpTo(Screen.AuthForm.route) { inclusive = true }
+                    }
                 }
             )
         }

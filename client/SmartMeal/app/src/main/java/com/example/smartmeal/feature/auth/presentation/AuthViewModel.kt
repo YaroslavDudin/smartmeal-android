@@ -17,6 +17,8 @@ sealed class AuthState {
     object Loading : AuthState()
     data class Success(val token: String? = null) : AuthState()
     data class Error(val message: String) : AuthState()
+    data class PasswordResetSent(val message: String) : AuthState()
+    data class PasswordResetConfirmed(val message: String) : AuthState()
 }
 
 class AuthViewModel(
@@ -88,7 +90,8 @@ class AuthViewModel(
             _authState.value = AuthState.Error("Вы не заполнили поле пароль")
             return false
         }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$".toRegex()
+        if (!email.matches(emailRegex)) {
             _authState.value = AuthState.Error("Некорректный email")
             return false
         }
@@ -113,15 +116,15 @@ class AuthViewModel(
     }
 
     private fun parseError(errorJson: String?): String {
+        if (errorJson.isNullOrBlank()) return "Неизвестная ошибка"
+        
         return try {
-            val json = JSONObject(errorJson ?: "{}")
-
-            fun getMsg(key: String): String {
-                val obj = json.opt(key)
-                return when (obj) {
-                    is org.json.JSONArray -> obj.optString(0)
-                    null -> ""
-                    else -> obj.toString()
+            // Упрощенный поиск сообщения в JSON без использования org.json
+            fun extractValue(key: String): String? {
+                val regex = "\"$key\":\\s*\"([^\"]+)\"".toRegex()
+                return regex.find(errorJson)?.groupValues?.get(1) ?: run {
+                    val arrayRegex = "\"$key\":\\s*\\[\\s*\"([^\"]+)\"".toRegex()
+                    arrayRegex.find(errorJson)?.groupValues?.get(1)
                 }
             }
 
@@ -147,24 +150,76 @@ class AuthViewModel(
                 }
             }
 
+            val detail = extractValue("detail")
+            val nonField = extractValue("non_field_errors")
+            val emailErr = extractValue("email")
+            val userErr = extractValue("username")
+            val passErr = extractValue("password")
+            val confirmErr = extractValue("password_confirm")
+
             when {
-                json.has("detail") -> translate(getMsg("detail"))
-                json.has("non_field_errors") -> translate(getMsg("non_field_errors"))
-                json.has("email") -> "Email: " + translate(getMsg("email"), "email")
-                json.has("username") -> "Имя пользователя: " + translate(getMsg("username"), "username")
-                json.has("password") -> "Пароль: " + translate(getMsg("password"), "password")
-                json.has("password_confirm") -> "Подтверждение пароля: " + translate(getMsg("password_confirm"))
-                else -> {
-                    val firstKey = json.keys().asSequence().firstOrNull()
-                    if (firstKey != null) {
-                        translate(getMsg(firstKey), firstKey)
-                    } else {
-                        "Ошибка сервера: $errorJson"
-                    }
-                }
+                detail != null -> translate(detail)
+                nonField != null -> translate(nonField)
+                emailErr != null -> "Email: " + translate(emailErr, "email")
+                userErr != null -> "Имя пользователя: " + translate(userErr, "username")
+                passErr != null -> "Пароль: " + translate(passErr, "password")
+                confirmErr != null -> "Подтверждение пароля: " + translate(confirmErr)
+                else -> "Ошибка сервера: $errorJson"
             }
         } catch (e: Exception) {
             "Неизвестная ошибка: $errorJson"
+        }
+    }
+
+    fun forgotPassword(email: String) {
+        if (email.isBlank()) {
+            _authState.value = AuthState.Error("Введите email")
+            return
+        }
+        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$".toRegex()
+        if (!email.matches(emailRegex)) {
+            _authState.value = AuthState.Error("Некорректный email")
+            return
+        }
+
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            try {
+                val response = authApi.passwordReset(com.example.smartmeal.feature.auth.data.models.PasswordResetRequest(email))
+                if (response.isSuccessful) {
+                    _authState.value = AuthState.PasswordResetSent(response.body()?.get("detail") ?: "Инструкции отправлены на почту")
+                } else {
+                    _authState.value = AuthState.Error(parseError(response.errorBody()?.string()))
+                }
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error("Ошибка сети: ${e.message}")
+            }
+        }
+    }
+
+    fun resetPasswordConfirm(uid: String, token: String, pass: String, passConfirm: String) {
+        if (pass.length < 8) {
+            _authState.value = AuthState.Error("Пароль должен быть не менее 8 символов")
+            return
+        }
+        if (pass != passConfirm) {
+            _authState.value = AuthState.Error("Пароли не совпадают")
+            return
+        }
+
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            try {
+                val req = com.example.smartmeal.feature.auth.data.models.PasswordResetConfirmRequest(uid, token, pass, passConfirm)
+                val response = authApi.passwordResetConfirm(req)
+                if (response.isSuccessful) {
+                    _authState.value = AuthState.PasswordResetConfirmed(response.body()?.get("detail") ?: "Пароль успешно изменен")
+                } else {
+                    _authState.value = AuthState.Error(parseError(response.errorBody()?.string()))
+                }
+            } catch (e: Exception) {
+                _authState.value = AuthState.Error("Ошибка сети: ${e.message}")
+            }
         }
     }
 

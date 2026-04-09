@@ -190,3 +190,8 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 # Поиск изображений - бесплатный ключ: https://pixabay.com/api/docs/
 PIXABAY_API_KEY = os.getenv('PIXABAY_API_KEY', '')
+
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'SmartMeal <noreply@smartmeal.app>'
+FRONTEND_URL = 'smartmeal://reset-password/'  # For mobile deep links

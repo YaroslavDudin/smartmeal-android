@@ -9,6 +9,7 @@ class TestRegistration:
     url = '/api/accounts/register/'
 
     def test_register_success(self, api_client):
+        from django.core import mail
         data = {
             'username': 'newuser',
             'email': 'new@example.com',
@@ -18,6 +19,9 @@ class TestRegistration:
         response = api_client.post(self.url, data)
         assert response.status_code == 201
         assert User.objects.filter(email='new@example.com').exists()
+        assert len(mail.outbox) == 1
+        assert 'new@example.com' in mail.outbox[0].to
+        assert 'Добро пожаловать' in mail.outbox[0].subject
 
     def test_register_weak_password(self, api_client):
         data = {

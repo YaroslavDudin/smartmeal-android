@@ -6,7 +6,49 @@ from django.contrib.auth.password_validation import validate_password
 from app.accounts.models import DietType, Allergy, UserFavorite, UserStock
 
 
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+
+
 User = get_user_model()
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            # We don't want to leak if an email exists, 
+            # but usually for password reset it's okay or handled by view.
+            pass
+        return value
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+    new_password = serializers.CharField(write_only=True, validators=[validate_password])
+    new_password_confirm = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        if data['new_password'] != data['new_password_confirm']:
+            raise serializers.ValidationError({"new_password_confirm": "Пароли не совпадают"})
+        
+        try:
+            uid = urlsafe_base64_decode(data['uid']).decode()
+            self.user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            raise serializers.ValidationError({"uid": "Invalid user"})
+
+        if not default_token_generator.check_token(self.user, data['token']):
+            raise serializers.ValidationError({"token": "Неверный или просроченный токен"})
+
+        return data
+
+    def save(self):
+        self.user.set_password(self.validated_data['new_password'])
+        self.user.save()
+        return self.user
 
 
 class DietTypeSerializer(serializers.ModelSerializer):

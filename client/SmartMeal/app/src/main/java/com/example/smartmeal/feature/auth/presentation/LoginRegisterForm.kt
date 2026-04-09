@@ -68,6 +68,7 @@ import com.example.smartmeal.ui.theme.SurfaceGray
 fun LoginRegisterForm(
     viewModel: AuthViewModel,
     onAuthSuccess: () -> Unit,
+    onForgotPassword: () -> Unit,
     onNavigateToSandbox: () -> Unit = {}
 ) {
     val authState by viewModel.authState.collectAsState()
@@ -77,7 +78,8 @@ fun LoginRegisterForm(
         onAuthSuccess = onAuthSuccess,
         onLogin = { email, pass -> viewModel.login(email, pass) },
         onRegister = { user, email, pass, confirm -> viewModel.register(user, email, pass, confirm) },
-        onNavigateToSandbox = onNavigateToSandbox
+        onNavigateToSandbox = onNavigateToSandbox,
+        onForgotPasswordClick = onForgotPassword
     )
 }
 
@@ -88,6 +90,7 @@ fun LoginRegisterFormContent(
     onLogin: (String, String) -> Unit,
     onRegister: (String, String, String, String) -> Unit,
     onNavigateToSandbox: () -> Unit = {},
+    onForgotPasswordClick: () -> Unit = {},
     initialIsLoginMode: Boolean = true,
 ) {
     var isLoginMode by remember { mutableStateOf(initialIsLoginMode) }
@@ -216,8 +219,7 @@ fun LoginRegisterFormContent(
                     modifier = Modifier
                         .align(Alignment.Start)
                         .testTag("auth_forgot")
-                        .clickable { /* TODO: Forgot Password */ }
-                        .testTag("auth_forgot")
+                        .clickable { onForgotPasswordClick() }
                 )
             }
 

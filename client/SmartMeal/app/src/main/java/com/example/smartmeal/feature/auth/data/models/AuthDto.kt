@@ -17,6 +17,17 @@ data class RefreshRequest(
     val refresh: String
 )
 
+data class PasswordResetRequest(
+    val email: String
+)
+
+data class PasswordResetConfirmRequest(
+    val uid: String,
+    val token: String,
+    val new_password: String,
+    val new_password_confirm: String
+)
+
 // --- Responses ---
 data class RegisterResponse(
     val user: UserDto,

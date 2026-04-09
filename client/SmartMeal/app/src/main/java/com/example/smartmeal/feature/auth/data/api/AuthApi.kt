@@ -17,4 +17,10 @@ interface AuthApi {
 
     @POST("api/accounts/logout/")
     suspend fun logout(@Body request: RefreshRequest): Response<Unit>
+
+    @POST("api/accounts/password-reset/")
+    suspend fun passwordReset(@Body request: PasswordResetRequest): Response<Map<String, String>>
+
+    @POST("api/accounts/password-reset-confirm/")
+    suspend fun passwordResetConfirm(@Body request: PasswordResetConfirmRequest): Response<Map<String, String>>
 }

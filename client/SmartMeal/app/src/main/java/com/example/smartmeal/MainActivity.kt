@@ -11,11 +11,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import android.content.Intent
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.smartmeal.ui.navigation.SmartMealNavGraph
 import com.example.smartmeal.ui.theme.SmartMealTheme
 
 class MainActivity : ComponentActivity() {
+    private var navController: NavHostController? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,17 +29,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Создаем контроллер навигации на самом верхнем уровне
-                    val navController = rememberNavController()
+                    val controller = rememberNavController()
+                    navController = controller
 
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         Box(modifier = Modifier.padding(innerPadding)) {
-                            // Вызываем наш вынесенный граф навигации!
-                            SmartMealNavGraph(navController = navController)
+                            SmartMealNavGraph(navController = controller)
                         }
                     }
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        // Передаем новый интент в navController, чтобы Compose Navigation обработал Deep Link
+        navController?.handleDeepLink(intent)
     }
 }
