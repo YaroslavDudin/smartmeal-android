@@ -8,6 +8,8 @@ import com.example.smartmeal.feature.setup.data.models.UserProfileDto
 import com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest
 import com.example.smartmeal.feature.home.data.api.ToggleFavoriteResponse
 import com.example.smartmeal.feature.home.data.api.UserFavoriteDto
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.util.Calendar
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -68,6 +70,19 @@ private class FakeSetupApi : SetupApi {
     }
 
     override suspend fun toggleFavorite(request: ToggleFavoriteRequest): Response<ToggleFavoriteResponse> {
+        throw UnsupportedOperationException()
+    }
+
+    override suspend fun updateProfileWithAvatar(
+        username: RequestBody?,
+        dietType: RequestBody?,
+        portionSize: RequestBody?,
+        preferredCookTime: RequestBody?,
+        birthDate: RequestBody?,
+        gender: RequestBody?,
+        allergies: List<MultipartBody.Part>,
+        avatar: MultipartBody.Part?
+    ): Response<UserProfileDto> {
         throw UnsupportedOperationException()
     }
 }
