@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.smartmeal.feature.home.presentation.CustomPlan
 import com.example.smartmeal.feature.home.presentation.MyPlanSection
@@ -156,179 +157,206 @@ fun ProductListScreen(
         )
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(BgLightGray)
-    ) {
-        // --- Шапка ---
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-        ) {
-            SmartMealText(
-                text = "Продукты",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.align(Alignment.Center).testTag("title")
-            )
-
-            if (contentState == ProductContentState.List) {
-                Button(
-                    onClick = { showOrderModal = true },
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryGreen,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
-                ) {
-                    SmartMealText("Заказать", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                }
-            }
-        }
-
-        if (monthYearLabel.isNotBlank() && !hasSingleAvailableDate) {
-            SmartMealText(
-                text = monthYearLabel,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 4.dp)
-                    .testTag("products_month_year")
-            )
-        }
-
-        if (availableDates.isNotEmpty()) {
+    Box(modifier = modifier.fillMaxSize().background(BgLightGray)) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            // --- Элегантная шапка ---
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTag("products_date_selector")
-            ) {
-                if (hasSingleAvailableDate) {
-                    SmartMealText(
-                        text = formatSelectedDateLabel(availableDates.first()),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = TextBlack,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(top = 8.dp, bottom = 14.dp)
-                            .testTag("products_selected_date_summary")
-                    )
-                } else {
-                    DateSelector(
-                        items = dateSelectorItems,
-                        selectedStartId = selectedStartDateKey,
-                        selectedEndId = selectedEndDateKey,
-                        onItemClick = onDateSelected
-                    )
-                }
-            }
-        }
-
-        if (customPlan != null) {
-            val apiFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-            MyPlanSection(
-                customPlan = customPlan,
-                selectedDate = selectedStartDateKey?.let { parseApiDate(it) },
-                isRangeSelection = true, 
-                onDateSelectedFromPlan = { /* Не используется */ },
-                onRangeSelected = { start, end ->
-                    onDateSelected(apiFormatter.format(start))
-                    onDateSelected(apiFormatter.format(end))
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-            )
-        }
-
-        if (contentState == ProductContentState.List) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp)
-                    .padding(bottom = 8.dp)
-                    .testTag("checkAllRow"),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
+                    .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
             ) {
                 SmartMealText(
-                    text = "Выбрать всё",
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = "Продукты",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
                     color = TextBlack,
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.align(Alignment.CenterStart).testTag("title")
                 )
-                Checkbox(
-                    checked = allVisibleChecked,
-                    onCheckedChange = { onCheckAll(allVisibleProductIds, !allVisibleChecked) },
-                    modifier = Modifier.testTag("checkAllButton")
-                )
+            }
+
+            // --- Зона Контекста (Даты + План) ---
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color.White)
+                    .padding(vertical = 12.dp)
+            ) {
+                if (availableDates.isNotEmpty()) {
+                    if (hasSingleAvailableDate) {
+                        SmartMealText(
+                            text = formatSelectedDateLabel(availableDates.first()),
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = PrimaryGreen,
+                            modifier = Modifier.padding(horizontal = 12.dp)
+                        )
+                    } else {
+                        if (monthYearLabel.isNotBlank()) {
+                            SmartMealText(
+                                text = monthYearLabel,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = 8.dp)
+                            )
+                        }
+                        DateSelector(
+                            items = dateSelectorItems,
+                            selectedStartId = selectedStartDateKey,
+                            selectedEndId = selectedEndDateKey,
+                            onItemClick = onDateSelected
+                        )
+                    }
+                }
+
+                if (customPlan != null) {
+                    if (availableDates.isNotEmpty()) {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 12.dp),
+                            thickness = 1.dp,
+                            color = BgLightGray
+                        )
+                    }
+                    val apiFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                    MyPlanSection(
+                        customPlan = customPlan,
+                        selectedDate = selectedStartDateKey?.let { parseApiDate(it) },
+                        isRangeSelection = true,
+                        onDateSelectedFromPlan = { /* Не используется */ },
+                        onRangeSelected = { start, end ->
+                            onDateSelected(apiFormatter.format(start))
+                            onDateSelected(apiFormatter.format(end))
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // --- Контент списка ---
+            AnimatedContent<ProductContentState>(
+                targetState = contentState,
+                transitionSpec = {
+                    (fadeIn(animationSpec = tween(220)) + scaleIn(initialScale = 0.985f)) togetherWith
+                        (fadeOut(animationSpec = tween(180)) + scaleOut(targetScale = 0.985f))
+                },
+                modifier = Modifier.weight(1f),
+                label = "ProductContentState"
+            ) { state ->
+                when (state) {
+                    ProductContentState.Loading -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(color = PrimaryGreen)
+                        }
+                    }
+                    ProductContentState.Error -> {
+                        Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+                            SmartMealText(text = errorMessage.orEmpty(), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+                        }
+                    }
+                    ProductContentState.Empty -> {
+                        Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+                            SmartMealText(text = "Список продуктов пуст", color = Color.Gray)
+                        }
+                    }
+                    ProductContentState.Expired -> {
+                        Column(
+                            modifier = Modifier.fillMaxSize().padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            SmartMealText(text = "Доступные дни закончились", fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = onReselectPlan) { SmartMealText("Выбрать заново") }
+                        }
+                    }
+                    ProductContentState.List -> {
+                        ProductCategoryList(
+                            aggregatedProducts = aggregatedProducts,
+                            listState = listState,
+                            onProductChecked = onProductChecked
+                        )
+                    }
+                }
             }
         }
 
-        AnimatedContent<ProductContentState>(
-            targetState = contentState,
-            transitionSpec = {
-                (fadeIn(animationSpec = tween(220)) + scaleIn(initialScale = 0.985f)) togetherWith
-                    (fadeOut(animationSpec = tween(180)) + scaleOut(targetScale = 0.985f))
-            },
-            label = "ProductContentState"
-        ) { state ->
-            when (state) {
-                ProductContentState.Loading -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(color = PrimaryGreen)
-                    }
-                }
-                ProductContentState.Error -> {
-                    SmartMealText(
-                        text = errorMessage.orEmpty(),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 32.dp)
-                    )
-                }
-                ProductContentState.Empty -> {
-                    SmartMealText(
-                        text = "Список продуктов пуст",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 32.dp)
-                    )
-                }
-                ProductContentState.Expired -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 32.dp)
-                            .testTag("products_expired_state"),
-                        horizontalAlignment = Alignment.CenterHorizontally
+        // --- Панель Действий (Sticky Bottom Bar) ---
+        if (contentState == ProductContentState.List) {
+            val checkedCount = aggregatedProducts.count { it.checked }
+            
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(),
+                color = Color.White,
+                shadowElevation = 16.dp
+            ) {
+                Row(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .padding(horizontal = 20.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    // Выбрать всё
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable(
+                            interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                            indication = null
+                        ) { onCheckAll(allVisibleProductIds, !allVisibleChecked) }
                     ) {
-                        SmartMealText(
-                            text = "Доступные дни закончились. Выберите план и дату заново",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = TextBlack,
-                            modifier = Modifier.padding(horizontal = 24.dp)
+                        Checkbox(
+                            checked = allVisibleChecked,
+                            onCheckedChange = { onCheckAll(allVisibleProductIds, it) },
+                            colors = CheckboxDefaults.colors(checkedColor = PrimaryGreen)
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = onReselectPlan,
-                            modifier = Modifier.testTag("products_reselect_plan_button")
-                        ) {
-                            SmartMealText("Выбрать план и дату")
+                        SmartMealText(
+                            text = "Выбрать всё",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = TextBlack
+                        )
+                    }
+
+                    // Кнопка Заказать
+                    androidx.compose.material3.Button(
+                        onClick = { showOrderModal = true },
+                        enabled = checkedCount > 0,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = PrimaryGreen,
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier.height(48.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            SmartMealText(
+                                text = "Заказать",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            if (checkedCount > 0) {
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Surface(
+                                    color = Color.White.copy(alpha = 0.2f),
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    SmartMealText(
+                                        text = checkedCount.toString(),
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Black,
+                                        color = Color.White
+                                    )
+                                }
+                            }
                         }
                     }
-                }
-                ProductContentState.List -> {
-                    ProductCategoryList(
-                        aggregatedProducts = aggregatedProducts,
-                        listState = listState,
-                        onProductChecked = onProductChecked
-                    )
                 }
             }
         }
@@ -427,16 +455,25 @@ private fun ProductCategoryHeader(
     icon: String,
     modifier: Modifier = Modifier,
     testTag: String,
-    textStyle: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.titleMedium
+    textStyle: androidx.compose.ui.text.TextStyle = androidx.compose.ui.text.TextStyle(
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = 0.5.sp
+    )
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(start = 4.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            SmartMealText(text = title, style = textStyle, color = TextBlack, fontWeight = FontWeight.SemiBold, modifier = Modifier.testTag(testTag))
+            SmartMealText(
+                text = title.uppercase(), 
+                style = textStyle, 
+                color = if (title == "Покупки") Color.Gray else PrimaryGreen, 
+                modifier = Modifier.testTag(testTag)
+            )
             if (icon.isNotBlank()) {
-                SmartMealText(text = icon, fontSize = textStyle.fontSize, modifier = Modifier.padding(start = 6.dp))
+                SmartMealText(text = icon, fontSize = 13.sp, modifier = Modifier.padding(start = 6.dp))
             }
         }
-        Spacer(modifier = Modifier.height(2.dp))
+        Spacer(modifier = Modifier.height(4.dp))
     }
 }
 
@@ -495,41 +532,46 @@ internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<P
 
 @Composable
 private fun ProductRowItem(product: ProductUiModel, onProductChecked: (Collection<String>, Boolean) -> Unit) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 2.dp)
-            .animateContentSize(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (product.checked) LightGreenBg.copy(alpha = 0.5f) else Color.White
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (product.checked) 0.dp else 1.dp)
+            .padding(vertical = 4.dp)
+            .animateContentSize()
+            .clickable { onProductChecked(product.sourceIds, !product.checked) },
+        shape = RoundedCornerShape(16.dp),
+        color = if (product.checked) Color(0xFFF4F9F4) else Color.White,
+        border = if (product.checked)
+            androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen)
+        else
+            androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 12.dp),
+                .padding(horizontal = 12.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
                 checked = product.checked,
-                onCheckedChange = { onProductChecked(product.sourceIds, !product.checked) },
-                colors = CheckboxDefaults.colors(checkedColor = PrimaryGreen)
+                onCheckedChange = { onProductChecked(product.sourceIds, it) },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = PrimaryGreen,
+                    uncheckedColor = Color(0xFFE0E0E0)
+                )
             )
             SmartMealText(text = product.icon, modifier = Modifier.padding(horizontal = 8.dp), fontSize = 20.sp)
             SmartMealText(
                 text = product.name,
-                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 16.sp,
                 color = if (product.checked) PrimaryGreen else TextBlack,
-                fontWeight = if (product.checked) FontWeight.Bold else FontWeight.Medium,
+                fontWeight = FontWeight.Normal,
                 modifier = Modifier.weight(1f)
             )
             SmartMealText(
                 text = product.amount,
-                style = MaterialTheme.typography.bodyLarge,
-                color = PrimaryGreen,
-                fontWeight = FontWeight.Bold,
+                fontSize = 15.sp,
+                color = if (product.checked) PrimaryGreen else Color.Gray,
+                fontWeight = FontWeight.Normal,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }

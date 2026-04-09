@@ -39,6 +39,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
+import androidx.compose.foundation.BorderStroke
+
 @Composable
 fun StatisticsScreen() {
     val context = LocalContext.current
@@ -88,61 +94,77 @@ fun StatisticsScreen() {
                 .fillMaxSize()
                 .background(BgLightGray)
         ) {
-            // --- Шапка ---
+            // --- Элегантная шапка (как в продуктах) ---
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
             ) {
                 SmartMealText(
                     text = "Статистика",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.align(Alignment.Center)
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextBlack,
+                    modifier = Modifier.align(Alignment.CenterStart)
                 )
             }
 
-            // Секция "Мой план" (календарик), если есть кастомный план
-            if (customPlan != null) {
-                MyPlanSection(
-                    customPlan = customPlan,
-                    selectedDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
-                    onDateSelectedFromPlan = { date ->
-                        val index = uiState.dailyStats.indexOfFirst { 
-                            val cal1 = Calendar.getInstance().apply { time = it.date }
-                            val cal2 = Calendar.getInstance().apply { time = date }
-                            cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                            cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
-                        }
-                        if (index != -1) {
-                            scope.launch {
-                                pagerState.animateScrollToPage(index)
+            // Секция "Мой план" (календарик), теперь в белой карточке (зона контекста)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color.White)
+                    .padding(vertical = 12.dp)
+            ) {
+                if (customPlan != null) {
+                    MyPlanSection(
+                        customPlan = customPlan,
+                        selectedDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
+                        onDateSelectedFromPlan = { date ->
+                            val index = uiState.dailyStats.indexOfFirst { 
+                                val cal1 = Calendar.getInstance().apply { time = it.date }
+                                val cal2 = Calendar.getInstance().apply { time = date }
+                                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
                             }
+                            if (index != -1) {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                    )
+                    
+                    HorizontalDivider(
+                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 12.dp),
+                        thickness = 1.dp,
+                        color = BgLightGray
+                    )
+                }
+
+                // Заголовок навигации внутри зоны контекста
+                DateNavigationHeader(
+                    currentDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date ?: Date(),
+                    showArrows = uiState.dailyStats.size > 1,
+                    canGoBack = pagerState.currentPage > 0,
+                    canGoForward = pagerState.currentPage < uiState.dailyStats.size - 1,
+                    onBackClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage - 1)
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                    onForwardClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
+                    }
                 )
             }
 
-            // Заголовок навигации со стрелками (стрелки только если больше 1 дня)
-            DateNavigationHeader(
-                currentDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date ?: Date(),
-                showArrows = uiState.dailyStats.size > 1,
-                canGoBack = pagerState.currentPage > 0,
-                canGoForward = pagerState.currentPage < uiState.dailyStats.size - 1,
-                onBackClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                    }
-                },
-                onForwardClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                    }
-                }
-            )
+            Spacer(modifier = Modifier.height(16.dp))
 
             HorizontalPager(
                 state = pagerState,
@@ -181,16 +203,17 @@ fun DateNavigationHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         if (showArrows) {
             IconButton(onClick = onBackClick, enabled = canGoBack) {
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = "Предыдущий день",
-                    tint = if (canGoBack) PrimaryGreen else Color.Gray
+                    tint = if (canGoBack) PrimaryGreen else Color.LightGray,
+                    modifier = Modifier.size(28.dp)
                 )
             }
         } else {
@@ -199,18 +222,20 @@ fun DateNavigationHeader(
 
         SmartMealText(
             text = dateStr,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = TextBlack
         )
 
         if (showArrows) {
             IconButton(onClick = onForwardClick, enabled = canGoForward) {
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "Следующий день",
-                    tint = if (canGoForward) PrimaryGreen else Color.Gray
+                    tint = if (canGoForward) PrimaryGreen else Color.LightGray,
+                    modifier = Modifier.size(28.dp)
                 )
             }
         } else {
@@ -223,7 +248,7 @@ fun DateNavigationHeader(
 fun DailyStatsContent(stats: DailyStats) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(bottom = 24.dp)
     ) {
         item {
@@ -232,9 +257,12 @@ fun DailyStatsContent(stats: DailyStats) {
 
         item {
             SmartMealText(
-                text = "Приёмы пищи",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                text = "ПРИЁМЫ ПИЩИ",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.5.sp,
+                color = PrimaryGreen,
+                modifier = Modifier.padding(start = 4.dp, top = 8.dp)
             )
         }
 
@@ -255,47 +283,48 @@ fun DailyNutritionCard(stats: DailyStats) {
         label = "CalorieProgress"
     )
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        color = Color.White,
+        border = BorderStroke(1.dp, Color(0xFFF0F0F0))
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.size(160.dp)) {
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.size(170.dp)) {
                 CircularProgressIndicator(
                     progress = { 1f },
                     modifier = Modifier.fillMaxSize(),
-                    color = BgLightGray,
-                    strokeWidth = 12.dp,
+                    color = BgLightGray.copy(alpha = 0.5f),
+                    strokeWidth = 14.dp,
                     strokeCap = StrokeCap.Round,
                 )
                 CircularProgressIndicator(
                     progress = { animatedProgress },
                     modifier = Modifier.fillMaxSize(),
                     color = PrimaryGreen,
-                    strokeWidth = 12.dp,
+                    strokeWidth = 14.dp,
                     strokeCap = StrokeCap.Round,
                 )
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     SmartMealText(
                         text = stats.totalCalories.toInt().toString(),
-                        fontSize = 32.sp,
+                        fontSize = 36.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextBlack
                     )
                     SmartMealText(
                         text = "ккал",
-                        fontSize = 14.sp,
-                        color = Color.Gray
+                        fontSize = 15.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -321,15 +350,16 @@ fun MacroNutrientItem(label: String, value: Double, color: Color) {
         SmartMealText(
             text = label,
             fontSize = 12.sp,
-            color = Color.Gray
+            color = Color.Gray,
+            fontWeight = FontWeight.Medium
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         Box(
             modifier = Modifier
-                .width(40.dp)
+                .width(36.dp)
                 .height(4.dp)
                 .clip(CircleShape)
-                .background(color)
+                .background(color.copy(alpha = 0.8f))
         )
     }
 }
@@ -343,11 +373,11 @@ fun MealNutritionRow(meal: MenuItemDto) {
         else -> meal.meal_type.replaceFirstChar { it.titlecase() }
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        color = Color.White,
+        border = BorderStroke(1.dp, Color(0xFFF0F0F0))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -356,28 +386,41 @@ fun MealNutritionRow(meal: MenuItemDto) {
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 SmartMealText(
-                    text = mealTypeTitle,
+                    text = mealTypeTitle.uppercase(),
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryGreen
+                    color = PrimaryGreen,
+                    letterSpacing = 0.5.sp
                 )
+                Spacer(modifier = Modifier.height(2.dp))
                 SmartMealText(
                     text = meal.recipe_title,
-                    fontSize = 14.sp,
+                    fontSize = 16.sp,
                     color = TextBlack,
+                    fontWeight = FontWeight.SemiBold,
                     maxLines = 1
                 )
                 SmartMealText(
-                    text = "${meal.per_serving_calories.toInt()} ккал (1 порция)",
-                    fontSize = 12.sp,
-                    color = Color.Gray
+                    text = "${meal.per_serving_calories.toInt()} ккал • 1 порция",
+                    fontSize = 13.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Medium
                 )
             }
 
-            SmartMealText(
-                text = "${meal.cook_time} мин",
-                fontSize = 12.sp,
-                color = Color.Gray
-            )
+            Surface(
+                color = BgLightGray.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                SmartMealText(
+                    text = "${meal.cook_time} мин",
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+            }
         }
     }
 }
+
