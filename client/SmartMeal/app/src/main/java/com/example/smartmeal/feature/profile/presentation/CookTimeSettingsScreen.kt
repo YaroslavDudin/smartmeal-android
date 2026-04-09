@@ -93,7 +93,7 @@ fun CookTimeSettingsScreen(
             // --- 3 Кнопки времен готовки ---
             MEAL_TYPES_3.forEach { meal ->
                 val isSelected = selectedMeal == meal
-                val currentPref = state.mealCookTimes[meal] ?: "any"
+                val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
                 val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
 
                 Surface(
@@ -209,7 +209,7 @@ fun CookTimeSettingsScreen(
     }
 
     if (showEditModal && selectedMeal != null) {
-        val currentApiValue = state.mealCookTimes[selectedMeal] ?: "any"
+        val currentApiValue = state.mealCookTimes[selectedMeal] ?: state.preferredCookTime ?: "any"
 
         CookTimeEditModal(
             mealName = selectedMeal!!,
