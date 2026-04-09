@@ -107,6 +107,11 @@
     @apply badge bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400;
   }
 
+  .badge-light {
+    @apply inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-medium border border-gray-200 text-gray-700;
+    background-color: #f4f4f4;
+  }
+
   .checkbox {
     @apply h-4 w-4 rounded border-[var(--border-color)] text-primary-600 focus:ring-primary-500;
   }

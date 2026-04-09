@@ -46,7 +46,7 @@ import java.util.Locale
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 
-private val CardYellow = Color(0xFFF5F5F5)
+private val CardYellow = Color(0xFFF4F4F4)
 private val LogoutRed = Color(0xFFE53935)
 private val AvatarFallbackBg = Color(0xFFEEEEEE)
 

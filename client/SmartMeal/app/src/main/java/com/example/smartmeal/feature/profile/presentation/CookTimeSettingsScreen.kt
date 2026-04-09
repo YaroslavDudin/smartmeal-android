@@ -20,6 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.ui.platform.LocalConfiguration
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.theme.*
@@ -94,20 +96,18 @@ fun CookTimeSettingsScreen(
                 val currentPref = state.mealCookTimes[meal] ?: "any"
                 val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
 
-                Card(
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 6.dp)
                         .clickable { selectedMeal = if (isSelected) null else meal },
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (isSelected) PrimaryGreen else Color.White
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 4.dp else 2.dp)
+                    shape = RoundedCornerShape(16.dp),
+                    color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
+                    border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(20.dp)
+                            .padding(horizontal = 16.dp, vertical = 18.dp)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
@@ -115,24 +115,22 @@ fun CookTimeSettingsScreen(
                         Column {
                             SmartMealText(
                                 text = meal,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isSelected) Color.White else Color.Black
+                                fontSize = 17.sp,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                color = if (isSelected) PrimaryGreen else Color.Black
                             )
                             SmartMealText(
                                 text = displayPref,
-                                fontSize = 14.sp,
-                                color = if (isSelected) Color.White.copy(alpha = 0.8f) else Color.Gray
+                                fontSize = 13.sp,
+                                color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
                             )
                         }
-                        if (isSelected) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
+                        Icon(
+                            imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                            contentDescription = null,
+                            tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
+                            modifier = Modifier.size(22.dp)
+                        )
                     }
                 }
             }
@@ -141,63 +139,69 @@ fun CookTimeSettingsScreen(
         }
 
         // --- Кнопки действий внизу ---
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .navigationBarsPadding()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.White,
+            shadowElevation = 8.dp
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // --- Кнопка Изменить ---
-                Button(
-                    onClick = { showEditModal = true },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp),
-                    enabled = selectedMeal != null && !state.isSaving,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = CardYellow,
-                        contentColor = Color.Black,
-                        disabledContainerColor = Color.LightGray.copy(alpha = 0.3f)
-                    ),
-                    shape = RoundedCornerShape(16.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    SmartMealText(
-                        text = "Изменить",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                // --- Кнопка Подтвердить ---
-                Button(
-                    onClick = { 
-                        viewModel.confirmCookTimes()
-                        onBack()
-                    },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp),
-                    enabled = !state.isRegenerating,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryGreen,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    if (state.isRegenerating) {
-                        CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
-                    } else {
+                    // --- Кнопка Изменить ---
+                    androidx.compose.material3.OutlinedButton(
+                        onClick = { showEditModal = true },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(52.dp),
+                        enabled = selectedMeal != null && !state.isSaving,
+                        shape = RoundedCornerShape(14.dp),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, if (selectedMeal != null) PrimaryGreen else Color.LightGray.copy(alpha = 0.5f)),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = PrimaryGreen,
+                            disabledContentColor = Color.LightGray
+                        )
+                    ) {
                         SmartMealText(
-                            text = "Подтвердить",
-                            fontSize = 16.sp,
+                            text = "Изменить",
+                            fontSize = 15.sp,
                             fontWeight = FontWeight.Bold
                         )
+                    }
+
+                    // --- Кнопка Подтвердить ---
+                    androidx.compose.material3.Button(
+                        onClick = {
+                            viewModel.confirmCookTimes()
+                            onBack()
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(52.dp),
+                        enabled = !state.isRegenerating,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = PrimaryGreen,
+                            contentColor = Color.White,
+                            disabledContainerColor = Color.LightGray
+                        ),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        if (state.isRegenerating) {
+                            CircularProgressIndicator(color = Color.White, modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                        } else {
+                            SmartMealText(
+                                text = "Сохранить",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }

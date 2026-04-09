@@ -185,23 +185,20 @@ private fun DietCard(
     isChecked: Boolean,
     onClick: () -> Unit
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        border = androidx.compose.foundation.BorderStroke(
-            width = if (isChecked) 2.dp else 1.dp,
-            color = if (isChecked) PrimaryGreen else BorderGray.copy(alpha = 0.5f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (isChecked) 0.dp else 2.dp)
+        color = if (isChecked) Color(0xFFF4F9F4) else Color.White,
+        border = if (isChecked)
+            androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen)
+        else
+            androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -209,14 +206,14 @@ private fun DietCard(
             SmartMealText(
                 text = diet.name,
                 fontSize = 16.sp,
-                fontWeight = if (isChecked) FontWeight.Bold else FontWeight.Medium,
+                fontWeight = if (isChecked) FontWeight.SemiBold else FontWeight.Medium,
                 color = if (isChecked) PrimaryGreen else TextBlack
             )
             Icon(
                 imageVector = if (isChecked) Icons.Filled.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
                 contentDescription = null,
-                tint = if (isChecked) PrimaryGreen else Color.LightGray,
-                modifier = Modifier.size(24.dp)
+                tint = if (isChecked) PrimaryGreen else Color(0xFFE0E0E0),
+                modifier = Modifier.size(22.dp)
             )
         }
     }

@@ -197,23 +197,20 @@ private fun AllergyCard(
     isChecked: Boolean,
     onClick: () -> Unit
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        border = androidx.compose.foundation.BorderStroke(
-            width = if (isChecked) 2.dp else 1.dp,
-            color = if (isChecked) PrimaryGreen else BorderGray.copy(alpha = 0.5f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (isChecked) 0.dp else 2.dp)
+        color = if (isChecked) Color(0xFFF4F9F4) else Color.White,
+        border = if (isChecked)
+            androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen)
+        else
+            androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -221,14 +218,14 @@ private fun AllergyCard(
             SmartMealText(
                 text = allergy.name,
                 fontSize = 16.sp,
-                fontWeight = if (isChecked) FontWeight.Bold else FontWeight.Medium,
+                fontWeight = if (isChecked) FontWeight.SemiBold else FontWeight.Medium,
                 color = if (isChecked) PrimaryGreen else TextBlack
             )
             Icon(
                 imageVector = if (isChecked) Icons.Filled.CheckCircle else Icons.Outlined.RadioButtonUnchecked,
                 contentDescription = null,
-                tint = if (isChecked) PrimaryGreen else Color.LightGray,
-                modifier = Modifier.size(24.dp)
+                tint = if (isChecked) PrimaryGreen else Color(0xFFE0E0E0),
+                modifier = Modifier.size(22.dp)
             )
         }
     }
@@ -237,14 +234,15 @@ private fun AllergyCard(
 @Composable
 private fun AllergyChip(name: String) {
     Surface(
-        color = PrimaryGreen,
-        shape = RoundedCornerShape(10.dp)
+        color = Color(0xFFFFF5F5),
+        shape = RoundedCornerShape(12.dp),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFFFC1C1).copy(alpha = 0.5f))
     ) {
         SmartMealText(
             text = name,
-            color = Color.White,
+            color = Color(0xFFD32F2F),
             fontSize = 13.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
         )
     }
