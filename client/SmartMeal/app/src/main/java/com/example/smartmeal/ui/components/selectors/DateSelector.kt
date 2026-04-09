@@ -46,6 +46,7 @@ fun DateSelector(
     selectedEndId: String? = null,
     onItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isSmallScreen: Boolean = false
 ) {
     val listState = rememberLazyListState()
 
@@ -66,7 +67,10 @@ fun DateSelector(
     LazyRow(
         state = listState,
         modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 12.dp),
+        contentPadding = PaddingValues(
+            horizontal = 10.dp, 
+            vertical = if (isSmallScreen) 6.dp else 12.dp
+        ),
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
     ) {
         itemsIndexed(items, key = { _, item -> item.id }) { index, item ->
@@ -80,6 +84,7 @@ fun DateSelector(
                 isSelected = isSelected,
                 isRangeInterior = isRangeInterior,
                 onClick = { onItemClick(item.id) },
+                isSmallScreen = isSmallScreen,
                 modifier = Modifier.testTag("date_chip_$index")
             )
         }
@@ -92,6 +97,7 @@ private fun DateChip(
     isSelected: Boolean,
     isRangeInterior: Boolean,
     onClick: () -> Unit,
+    isSmallScreen: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val chipShape = RoundedCornerShape(18.dp)
@@ -118,19 +124,22 @@ private fun DateChip(
             .background(backgroundColor)
             .border(width = 1.dp, color = borderColor, shape = chipShape)
             .clickable(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 10.dp),
+            .padding(
+                horizontal = if (isSmallScreen) 10.dp else 14.dp, 
+                vertical = if (isSmallScreen) 6.dp else 10.dp
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         SmartMealText(
             text = item.weekdayLabel,
-            style = MaterialTheme.typography.labelMedium,
+            style = if (isSmallScreen) MaterialTheme.typography.labelSmall else MaterialTheme.typography.labelMedium,
             color = contentColor,
             fontWeight = FontWeight.Medium,
         )
         SmartMealText(
             text = item.dayLabel,
-            style = MaterialTheme.typography.bodyMedium,
+            style = if (isSmallScreen) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyMedium,
             color = contentColor,
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
         )

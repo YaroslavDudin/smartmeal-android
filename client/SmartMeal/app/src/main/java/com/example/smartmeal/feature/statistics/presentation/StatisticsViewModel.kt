@@ -64,6 +64,11 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                 updateSelectedIndexForDate(date)
             }
         }
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.MenuUpdateManager.menuUpdates.collect {
+                loadStatistics()
+            }
+        }
     }
 
     private fun updateSelectedIndexForDate(date: Date) {
@@ -128,8 +133,9 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                     val dateKey = apiDateFormatter.format(currentDate)
                     val itemsForDay = itemsByDate[dateKey] ?: emptyList()
                     
-                    // ДЕДУПЛИКАЦИЯ: завтрак, обед, ужин
-                    val uniqueItemsForDay = itemsForDay.distinctBy { it.meal_type.lowercase(Locale.US) }
+                    // ДЕДУПЛИКАЦИЯ: оставляем только самое свежее блюдо (с макс. ID) для каждого типа приема пищи
+                    val uniqueItemsForDay = itemsForDay.sortedByDescending { it.id }
+                        .distinctBy { it.meal_type.lowercase(Locale.US) }
                     
                     var dayCalories = 0.0
                     var dayProteins = 0.0
@@ -167,6 +173,11 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                     targetIndex = statsList.indexOfFirst { normalizeDate(it.date).time == today.time }
                     if (targetIndex == -1) targetIndex = 0
                 }
+
+                _uiState.update { it.copy(
+                    isLoading = false,
+                    dailyStats = emptyList() // Сначала очищаем, чтобы гарантировать рекомпозицию
+                ) }
 
                 _uiState.update { it.copy(
                     isLoading = false,

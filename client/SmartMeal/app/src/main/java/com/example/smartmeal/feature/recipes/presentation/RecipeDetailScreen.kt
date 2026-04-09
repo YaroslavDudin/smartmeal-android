@@ -330,14 +330,14 @@ fun RecipePlusButton(
 ) {
     IconButton(
         onClick = onClick,
-        modifier = Modifier.size(48.dp)
+        modifier = Modifier.size(40.dp)
     ) {
         Icon(
             painter = painterResource(
                 id = if (isActive) R.drawable.ic_plus_active else R.drawable.ic_plus_inactive
             ),
             contentDescription = "Add to menu",
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(40.dp),
             tint = Color.Unspecified
         )
     }

@@ -78,11 +78,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-private val ReplaceDialogYellow = Color(0xFFFFF4C2)
-private val ReplaceDialogRed = Color(0xFFE53935)
 private val ModalBackground = Color(0xFFF4F4F4)
-private val ModalBorderColor = Color(0xFFF4F4F4) 
-private val ButtonBackgroundColor = Color(0xFFE4C871)
+private val ReplaceButtonBackground = Color(0xFFF5F5F5)
 
 @Composable
 fun HomeScreen(
@@ -580,7 +577,7 @@ private fun ReplaceMealConfirmDialog(
                         .fillMaxWidth()
                         .height(54.dp)
                         .testTag("home_replace_confirm_button"),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF4CAF50), // Зеленый
                         contentColor = Color.White
@@ -607,7 +604,7 @@ private fun ReplaceMealConfirmDialog(
                         .fillMaxWidth()
                         .height(54.dp)
                         .testTag("home_replace_cancel_button"),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFE53935), // Красный
                         contentColor = Color.White
@@ -693,7 +690,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     }
 
     fun reloadMenu() {
-        viewModelScope.launch { refreshMenu() }
+        viewModelScope.launch { 
+            refreshMenu() 
+            com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
+        }
     }
 
     fun regenerateMenuForCurrentPlan() {
@@ -867,6 +867,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     }
 
                     refreshMenu()
+                    com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 } else {
                     val errorBody = response.errorBody()?.string()
                     val message = try {

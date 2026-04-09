@@ -173,8 +173,14 @@ fun StatisticsScreen() {
                 pageSpacing = 16.dp,
                 verticalAlignment = Alignment.Top
             ) { page ->
-                val stats = uiState.dailyStats[page]
-                DailyStatsContent(stats = stats)
+                val stats = uiState.dailyStats.getOrNull(page)
+                if (stats != null) {
+                    // Используем ключ, который меняется при изменении состава блюд
+                    val contentKey = remember(stats.meals) { stats.meals.joinToString { "${it.id}-${it.recipe}" } }
+                    key(contentKey) {
+                        DailyStatsContent(stats = stats)
+                    }
+                }
             }
         }
     } else {

@@ -134,6 +134,9 @@ fun ProductListScreen(
     val listState = rememberLazyListState()
     val hasSingleAvailableDate = availableDates.size == 1
     
+    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+    val isSmallScreen = configuration.screenHeightDp < 640 || configuration.screenWidthDp < 360
+    
     val contentState: ProductContentState = when {
         isLoading -> ProductContentState.Loading
         hasNoAvailableDays -> ProductContentState.Expired
@@ -163,11 +166,16 @@ fun ProductListScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
+                    .padding(
+                        start = if (isSmallScreen) 16.dp else 24.dp,
+                        end = if (isSmallScreen) 16.dp else 24.dp,
+                        top = if (isSmallScreen) 4.dp else 8.dp,
+                        bottom = if (isSmallScreen) 4.dp else 12.dp
+                    )
             ) {
                 SmartMealText(
                     text = "Продукты",
-                    fontSize = 24.sp,
+                    fontSize = if (isSmallScreen) 20.sp else 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextBlack,
                     modifier = Modifier.align(Alignment.CenterStart).testTag("title")
@@ -178,16 +186,16 @@ fun ProductListScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = if (isSmallScreen) 8.dp else 16.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .background(Color.White)
-                    .padding(vertical = 12.dp)
+                    .padding(vertical = if (isSmallScreen) 4.dp else 12.dp)
             ) {
                 if (availableDates.isNotEmpty()) {
                     if (hasSingleAvailableDate) {
                         SmartMealText(
                             text = formatSelectedDateLabel(availableDates.first()),
-                            fontSize = 15.sp,
+                            fontSize = if (isSmallScreen) 14.sp else 15.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = PrimaryGreen,
                             modifier = Modifier.padding(horizontal = 12.dp)
@@ -196,17 +204,18 @@ fun ProductListScreen(
                         if (monthYearLabel.isNotBlank()) {
                             SmartMealText(
                                 text = monthYearLabel,
-                                fontSize = 13.sp,
+                                fontSize = if (isSmallScreen) 12.sp else 13.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Gray,
-                                modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = 8.dp)
+                                modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = if (isSmallScreen) 2.dp else 8.dp)
                             )
                         }
                         DateSelector(
                             items = dateSelectorItems,
                             selectedStartId = selectedStartDateKey,
                             selectedEndId = selectedEndDateKey,
-                            onItemClick = onDateSelected
+                            onItemClick = onDateSelected,
+                            isSmallScreen = isSmallScreen
                         )
                     }
                 }
@@ -214,7 +223,7 @@ fun ProductListScreen(
                 if (customPlan != null) {
                     if (availableDates.isNotEmpty()) {
                         HorizontalDivider(
-                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 12.dp),
+                            modifier = Modifier.padding(vertical = if (isSmallScreen) 4.dp else 12.dp, horizontal = 12.dp),
                             thickness = 1.dp,
                             color = BgLightGray
                         )
@@ -234,7 +243,7 @@ fun ProductListScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(if (isSmallScreen) 4.dp else 16.dp))
 
             // --- Контент списка ---
             AnimatedContent<ProductContentState>(

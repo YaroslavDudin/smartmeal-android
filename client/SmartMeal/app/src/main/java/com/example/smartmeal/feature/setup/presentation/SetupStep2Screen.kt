@@ -36,7 +36,6 @@ import com.example.smartmeal.ui.components.calendar.SmartMealCalendar
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
 import java.util.Calendar
-
 internal const val MAX_PLAN_SELECTION_DAYS = 256
 
 /**
@@ -75,14 +74,14 @@ fun SetupStep2Content(
     onNextMonth: () -> Unit,
 ) {
     val configuration = LocalConfiguration.current
+    val isWideScreen = configuration.screenWidthDp >= 600
+    val shouldScroll = true
     val today = createNormalizedTodayCalendar()
     val isCompactHeight = configuration.screenHeightDp < 640
     val isCompactWidth = configuration.screenWidthDp < 360
-    val isWideScreen = configuration.screenWidthDp >= 600
     val useCompactCalendar = isCompactHeight || isCompactWidth
-    val shouldScroll = isCompactHeight || isCompactWidth
-    val horizontalPadding = if (isCompactHeight || isCompactWidth) 16.dp else 24.dp
-    val verticalPadding = if (isCompactHeight) 16.dp else 28.dp
+    val horizontalPadding = if (isCompactWidth) 8.dp else if (isCompactHeight) 12.dp else 24.dp
+    val verticalPadding = if (isCompactHeight) 12.dp else 28.dp
     val sectionSpacing = if (isCompactHeight) 12.dp else 24.dp
     val chipRowSpacing = if (isCompactHeight) 10.dp else 12.dp
     val calendarPadding = if (isCompactHeight) 12.dp else 16.dp

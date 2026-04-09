@@ -92,13 +92,13 @@ fun SmartMealCalendar(
         }.timeInMillis
     }
 
-    val headerTextStyle = if (compact) MaterialTheme.typography.titleMedium else MaterialTheme.typography.titleLarge
+    val headerTextStyle = if (compact) MaterialTheme.typography.titleSmall else MaterialTheme.typography.titleLarge
     val dayLabelStyle = if (compact) MaterialTheme.typography.labelSmall else MaterialTheme.typography.bodySmall
-    val cellTextSize = if (compact) 12.sp else 14.sp
-    val circleSize = if (compact) 30.dp else 36.dp
-    val headerSpacing = if (compact) 4.dp else 6.dp
-    val labelSpacing = if (compact) 2.dp else 4.dp
-    val iconSize = if (compact) 32.dp else 40.dp
+    val cellTextSize = if (compact) 10.sp else 14.sp
+    val circleSize = if (compact) 26.dp else 36.dp
+    val headerSpacing = if (compact) 2.dp else 6.dp
+    val labelSpacing = if (compact) 1.dp else 4.dp
+    val iconSize = if (compact) 28.dp else 40.dp
 
     val calendarAlpha = if (enabled) 1f else 0.38f
 
