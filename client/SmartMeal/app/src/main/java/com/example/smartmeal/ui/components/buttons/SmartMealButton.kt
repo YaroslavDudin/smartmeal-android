@@ -47,7 +47,7 @@ fun SmartMealButton(
     fullWidth: Boolean = true
 ) {
     val containerColor = when (color) {
-        SmartMealButtonColor.GREEN -> MainGreen
+        SmartMealButtonColor.GREEN -> PrimaryGreen
         SmartMealButtonColor.ORANGE -> AccentOrange
     }
 

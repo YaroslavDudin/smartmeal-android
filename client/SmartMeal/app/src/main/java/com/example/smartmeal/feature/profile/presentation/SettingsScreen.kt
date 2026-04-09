@@ -1,6 +1,7 @@
 package com.example.smartmeal.feature.profile.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +24,9 @@ import androidx.compose.ui.platform.LocalContext
 import android.content.res.Configuration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import coil.compose.AsyncImage
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
@@ -33,8 +38,8 @@ import com.example.smartmeal.ui.theme.PrimaryGreen
 import java.text.SimpleDateFormat
 import java.util.*
 
-private val AvatarYellow = Color(0xFFFFF4C2)
-private val GenderSelectedBg = Color(0xFFFFC107) // Gold
+private val AvatarGray = Color(0xFFEEEEEE)
+private val GenderSelectedBg = PrimaryGreen
 private val GenderUnselectedBg = Color(0xFFEEEEEE)
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,6 +49,24 @@ fun SettingsScreen(
     onBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let {
+            val contentResolver = context.contentResolver
+            try {
+                val inputStream = contentResolver.openInputStream(it)
+                if (inputStream != null) {
+                    val fileName = "avatar_${System.currentTimeMillis()}.jpg"
+                    viewModel.updateAvatar(inputStream, fileName)
+                }
+            } catch (e: Exception) {
+                // Обработка ошибки открытия потока
+            }
+        }
+    }
     
     var showDatePicker by remember { mutableStateOf(false) }
     
@@ -93,22 +116,73 @@ fun SettingsScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 4.dp),
+                .padding(top = 16.dp, bottom = 12.dp),
             contentAlignment = Alignment.Center
         ) {
             Box(
-                modifier = Modifier
-                    .size(90.dp)
-                    .clip(CircleShape)
-                    .background(AvatarYellow),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.size(104.dp)
             ) {
-                SmartMealText(
-                    text = state.userName.take(1).uppercase(),
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
+                // Основной круг аватара
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .background(AvatarGray)
+                        .border(2.dp, Color.White, CircleShape)
+                        .clickable { photoPickerLauncher.launch("image/*") },
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (!state.avatarUrl.isNullOrBlank()) {
+                        AsyncImage(
+                            model = state.avatarUrl,
+                            contentDescription = "Аватар",
+                            modifier = Modifier.fillMaxSize().clip(CircleShape),
+                            contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                        )
+                    } else {
+                        SmartMealText(
+                            text = state.userName.take(1).uppercase(),
+                            fontSize = 36.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+                        )
+                    }
+                    
+                    if (state.isSaving && state.avatarUrl == null) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(30.dp),
+                            color = PrimaryGreen,
+                            strokeWidth = 3.dp
+                        )
+                    }
+                }
+
+                // Иконка камеры поверх
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .size(32.dp)
+                        .offset(x = (-4).dp, y = (-4).dp),
+                    shape = CircleShape,
+                    color = PrimaryGreen,
+                    tonalElevation = 2.dp,
+                    shadowElevation = 2.dp,
+                    border = androidx.compose.foundation.BorderStroke(2.dp, Color.White)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable { photoPickerLauncher.launch("image/*") },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CameraAlt,
+                            contentDescription = "Изменить фото",
+                            modifier = Modifier.size(16.dp),
+                            tint = Color.White
+                        )
+                    }
+                }
             }
         }
 
@@ -186,6 +260,7 @@ fun SettingsScreen(
                 .height(56.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(Color.White)
+                .border(1.dp, BorderGray, RoundedCornerShape(12.dp))
                 .clickable { showDatePicker = true }
                 .padding(horizontal = 16.dp),
             contentAlignment = Alignment.CenterStart
@@ -373,7 +448,7 @@ private fun GenderButton(
     modifier: Modifier = Modifier
 ) {
     val bgColor = if (isSelected) GenderSelectedBg else GenderUnselectedBg
-    val contentColor = if (isSelected) Color.Black else Color.Gray
+    val contentColor = if (isSelected) Color.White else Color.Gray
     val fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
 
     Surface(

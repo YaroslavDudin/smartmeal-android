@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -42,8 +43,12 @@ import com.example.smartmeal.ui.theme.PrimaryGreen
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-private val CardYellow = Color(0xFFFFF4C2)
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
+
+private val CardYellow = Color(0xFFF5F5F5)
 private val LogoutRed = Color(0xFFE53935)
+private val AvatarFallbackBg = Color(0xFFEEEEEE)
 
 // Подэкраны внутри вкладки профиля
 enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME }
@@ -132,59 +137,85 @@ fun ProfileScreen(
                     }
 
                     // ── Аватар + имя + "Настройки >" ───────────────────────
-                    Row(
+                    Surface(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp, vertical = 8.dp)
+                            .clip(RoundedCornerShape(20.dp))
                             .clickable { subScreen = ProfileSubScreen.SETTINGS },
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        color = CardYellow
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(56.dp)
-                                .clip(CircleShape)
-                                .background(CardYellow)
-                        )
-                        Column {
-                            SmartMealText(
-                                text = state.userName,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                            if (state.userEmail.isNotBlank()) {
-                                SmartMealText(
-                                    text = state.userEmail,
-                                    fontSize = 13.sp,
-                                    color = HintGray
-                                )
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .clip(CircleShape)
+                                    .background(if (state.avatarUrl.isNullOrBlank()) AvatarFallbackBg else Color.White),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                if (!state.avatarUrl.isNullOrBlank()) {
+                                    AsyncImage(
+                                        model = state.avatarUrl,
+                                        contentDescription = "Аватар",
+                                        modifier = Modifier.fillMaxSize().clip(CircleShape),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                } else {
+                                    SmartMealText(
+                                        text = state.userName.take(1).uppercase(),
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Black
+                                    )
+                                }
                             }
-                            SmartMealText(text = "Настройки >", fontSize = 13.sp, color = HintGray)
+                            Column(modifier = Modifier.weight(1f)) {
+                                SmartMealText(
+                                    text = state.userName,
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                if (state.userEmail.isNotBlank()) {
+                                    SmartMealText(
+                                        text = state.userEmail,
+                                        fontSize = 14.sp,
+                                        color = Color.Gray
+                                    )
+                                }
+                            }
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = Color.LightGray
+                            )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                    // ── Кнопки меню ────────────────────────────────────────
+                    // ── Группа "Питание" ──────────────────────────────────
+                    ProfileSectionHeader("ПИТАНИЕ")
+                    
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        val allergyLabel = if (state.currentAllergyNames.isNotEmpty())
-                            "Мои аллергии:\n${state.currentAllergyNames.joinToString(", ")}"
-                        else "Мои аллергии"
+                        val allergySub = if (state.currentAllergyNames.isNotEmpty())
+                            state.currentAllergyNames.joinToString(", ")
+                        else "Нет ограничений"
 
-                        ProfileMenuCard(emoji = "🍽️", label = allergyLabel) {
+                        ProfileMenuCard(title = "Мои аллергии", subtitle = allergySub) {
                             subScreen = ProfileSubScreen.ALLERGIES
                         }
 
-                        val dietLabel = if (state.currentDietTypeName != null)
-                            "Мой рацион:\n${state.currentDietTypeName}"
-                        else "Мой рацион"
-
-                        ProfileMenuCard(emoji = "🌿", label = dietLabel) {
+                        val dietSub = state.currentDietTypeName ?: "Не выбран"
+                        ProfileMenuCard(title = "Мой рацион", subtitle = dietSub) {
                             subScreen = ProfileSubScreen.DIET
                         }
 
@@ -195,16 +226,26 @@ fun ProfileScreen(
                             onIncrement = { viewModel.incrementPortion() },
                             onSave = { viewModel.savePortion() }
                         )
+                    }
 
-                        ProfileMenuCard(emoji = "⏱️", label = "Изменить время готовки") { 
+                    // ── Группа "Настройки" ────────────────────────────────
+                    ProfileSectionHeader("НАСТРОЙКИ ПЛАНА")
+                    
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        ProfileMenuCard(title = "Время готовки", subtitle = "Настроить тайминги приемов пищи") { 
                             subScreen = ProfileSubScreen.COOK_TIME
                         }
 
-                        ProfileMenuCard(emoji = "🛒", label = "Заказать продукты") {
+                        ProfileMenuCard(title = "Заказать продукты", subtitle = "Сформировать корзину в магазин") {
                             onGoToProducts(true)
                         }
 
-                        ProfileMenuCard(emoji = "⭐", label = "Избранное") {
+                        ProfileMenuCard(title = "Избранное", subtitle = "Ваши сохраненные рецепты") {
                             viewModel.loadFavorites()
                             subScreen = ProfileSubScreen.FAVORITES
                         }
@@ -216,16 +257,17 @@ fun ProfileScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp)
-                            .clip(RoundedCornerShape(14.dp))
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(CardYellow)
                             .clickable { showLogoutDialog = true },
                         contentAlignment = Alignment.Center
                     ) {
                         SmartMealText(
-                            text = "Выйти",
+                            text = "Выйти из аккаунта",
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.SemiBold,
                             color = LogoutRed,
-                            modifier = Modifier.padding(vertical = 14.dp)
+                            modifier = Modifier.padding(vertical = 16.dp)
                         )
                     }
 
@@ -248,25 +290,56 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileMenuCard(emoji: String, label: String, onClick: () -> Unit) {
+private fun ProfileSectionHeader(text: String) {
+    SmartMealText(
+        text = text,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.Gray,
+        modifier = Modifier.padding(start = 24.dp, top = 16.dp, bottom = 8.dp),
+        letterSpacing = 0.5.sp
+    )
+}
+
+@Composable
+private fun ProfileMenuCard(
+    title: String,
+    subtitle: String? = null,
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(CardYellow)
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 14.dp)
+            .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            SmartMealText(text = emoji, fontSize = 20.sp)
-            SmartMealText(
-                text = label,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.weight(1f)
+            Column(modifier = Modifier.weight(1f)) {
+                SmartMealText(
+                    text = title,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black
+                )
+                if (!subtitle.isNullOrBlank()) {
+                    SmartMealText(
+                        text = subtitle,
+                        fontSize = 13.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(top = 2.dp)
+                    )
+                }
+            }
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null,
+                tint = Color.LightGray,
+                modifier = Modifier.size(24.dp)
             )
         }
     }
@@ -283,7 +356,7 @@ private fun PortionStepperCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(CardYellow)
             .padding(horizontal = 16.dp, vertical = 14.dp)
     ) {
@@ -349,7 +422,7 @@ private fun LogoutConfirmDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(20.dp))
-                .background(CardYellow)
+                .background(Color.White)
                 .padding(24.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {

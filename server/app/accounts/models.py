@@ -42,6 +42,7 @@ class CookTimeRange(models.TextChoices):
 
 class User(AbstractUser):
     email = models.EmailField(unique=True, max_length=255)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name="Аватар")
     portion_size = models.IntegerField(default=1)
     birth_date = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
     gender = models.CharField(
