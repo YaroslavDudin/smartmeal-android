@@ -68,7 +68,9 @@ fun StatisticsScreen() {
     }
 
     LaunchedEffect(Unit) {
-        viewModel.refresh()
+        if (uiState.dailyStats.isEmpty()) {
+            viewModel.refresh()
+        }
     }
     
     if (uiState.dailyStats.isNotEmpty()) {

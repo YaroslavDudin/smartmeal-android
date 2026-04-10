@@ -693,6 +693,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     }
 
     private fun loadCurrentMenu() {
+        if (_uiState.value.currentMenu != null || _uiState.value.isLoading) return
         viewModelScope.launch { refreshMenu() }
     }
 
@@ -723,10 +724,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     }
 
     private suspend fun refreshMenu(): MenuDto? {
+        if (_uiState.value.isLoading) return _uiState.value.currentMenu
         _uiState.update { it.copy(isLoading = true, error = null) }
         return try {
-            val allItemsResponse = menuApi.getMenuItems()
-            val allItems = if (allItemsResponse.isSuccessful) allItemsResponse.body() ?: emptyList() else emptyList()
+            val allItems = menuRepository.getMenuItems()
 
             val planType = preferences.getPlanType()
             val planRange = preferences.getCustomPlanRange()
