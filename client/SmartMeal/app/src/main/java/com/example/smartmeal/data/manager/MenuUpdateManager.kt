@@ -14,6 +14,7 @@ object MenuUpdateManager {
      * Вызывать при любом изменении состава меню на сервере.
      */
     fun notifyMenuChanged() {
+        com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
         _menuUpdates.tryEmit(Unit)
     }
 }

@@ -831,6 +831,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         mealCalories: Map<String, Int>? = null
     ) {
         viewModelScope.launch {
+            com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val type = planType ?: SetupPreferences.PLAN_TYPE_WEEKLY

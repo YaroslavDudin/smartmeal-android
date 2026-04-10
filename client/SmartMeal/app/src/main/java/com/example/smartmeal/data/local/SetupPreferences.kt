@@ -294,6 +294,17 @@ class SetupPreferences(context: Context) {
         return prefs.getInt(scopedKey(KEY_CALORIE_MARGIN), 100)
     }
 
+    fun setGender(gender: String?) {
+        if (gender == null) prefs.edit().remove(scopedKey(KEY_GENDER)).apply()
+        else prefs.edit().putString(scopedKey(KEY_GENDER), gender).apply()
+    }
+
+    fun getGender(): String? {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return null
+        return prefs.getString(scopedKey(KEY_GENDER), null)
+    }
+
     companion object {
         const val PLAN_TYPE_DAILY = "daily"
         const val PLAN_TYPE_WEEKLY = "weekly"
@@ -309,6 +320,7 @@ class SetupPreferences(context: Context) {
         private const val KEY_PORTION_SIZE = "portion_size"
         private const val KEY_PENDING_PLAN_REGENERATION = "pending_plan_regeneration"
         private const val KEY_BIRTH_DATE = "birth_date"
+        private const val KEY_GENDER = "gender"
         private const val KEY_MEAL_COOK_TIME = "meal_cook_time"
         private const val KEY_DIET_TYPE = "diet_type"
         private const val KEY_ALLERGIES = "allergies"

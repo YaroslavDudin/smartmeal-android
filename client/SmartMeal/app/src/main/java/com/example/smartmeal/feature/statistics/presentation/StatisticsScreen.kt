@@ -2,6 +2,7 @@ package com.example.smartmeal.feature.statistics.presentation
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,8 +19,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -54,7 +59,6 @@ fun StatisticsScreen() {
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
 
-    // Кастомный план
     val planType = preferences.getPlanType()
     val planRange = preferences.getCustomPlanRange()
     val customPlan = if (planType == SetupPreferences.PLAN_TYPE_CUSTOM) {
@@ -63,26 +67,22 @@ fun StatisticsScreen() {
         null
     }
 
-    // Обновляем данные при каждом входе на экран статистики
     LaunchedEffect(Unit) {
         viewModel.refresh()
     }
     
-    // Пейджер создается с начальной страницей из ViewModel (индекс сегодняшнего дня)
     if (uiState.dailyStats.isNotEmpty()) {
         val pagerState = rememberPagerState(
             initialPage = uiState.selectedIndex,
             pageCount = { uiState.dailyStats.size }
         )
 
-        // Синхронизация: если индекс изменился во ViewModel (например, при загрузке), скроллим пейджер
         LaunchedEffect(uiState.selectedIndex) {
             if (pagerState.currentPage != uiState.selectedIndex) {
                 pagerState.scrollToPage(uiState.selectedIndex)
             }
         }
 
-        // Синхронизация в обратную сторону: если пользователь листает пейджер, обновляем индекс в VM
         LaunchedEffect(pagerState.currentPage) {
             if (uiState.selectedIndex != pagerState.currentPage) {
                 viewModel.setSelectedIndex(pagerState.currentPage)
@@ -94,7 +94,6 @@ fun StatisticsScreen() {
                 .fillMaxSize()
                 .background(BgLightGray)
         ) {
-            // --- Элегантная шапка (как в продуктах) ---
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -109,7 +108,6 @@ fun StatisticsScreen() {
                 )
             }
 
-            // Секция "Мой план" (календарик), теперь в белой карточке (зона контекста)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -145,7 +143,6 @@ fun StatisticsScreen() {
                     )
                 }
 
-                // Заголовок навигации внутри зоны контекста
                 DateNavigationHeader(
                     currentDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date ?: Date(),
                     showArrows = uiState.dailyStats.size > 1,
@@ -175,10 +172,15 @@ fun StatisticsScreen() {
             ) { page ->
                 val stats = uiState.dailyStats.getOrNull(page)
                 if (stats != null) {
-                    // Используем ключ, который меняется при изменении состава блюд
                     val contentKey = remember(stats.meals) { stats.meals.joinToString { "${it.id}-${it.recipe}" } }
                     key(contentKey) {
-                        DailyStatsContent(stats = stats)
+                        DailyStatsContent(
+                            stats = stats,
+                            targetCalories = uiState.targetCalories,
+                            targetProteins = uiState.targetProteins,
+                            targetFats = uiState.targetFats,
+                            targetCarbs = uiState.targetCarbs
+                        )
                     }
                 }
             }
@@ -251,14 +253,26 @@ fun DateNavigationHeader(
 }
 
 @Composable
-fun DailyStatsContent(stats: DailyStats) {
+fun DailyStatsContent(
+    stats: DailyStats,
+    targetCalories: Double,
+    targetProteins: Double,
+    targetFats: Double,
+    targetCarbs: Double
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(bottom = 24.dp)
     ) {
         item {
-            DailyNutritionCard(stats = stats)
+            DailyNutritionCard(
+                stats = stats,
+                targetCalories = targetCalories,
+                targetProteins = targetProteins,
+                targetFats = targetFats,
+                targetCarbs = targetCarbs
+            )
         }
 
         item {
@@ -279,66 +293,126 @@ fun DailyStatsContent(stats: DailyStats) {
 }
 
 @Composable
-fun DailyNutritionCard(stats: DailyStats) {
-    val targetCalories = 2000.0
-    val calorieProgress = (stats.totalCalories / targetCalories).toFloat().coerceIn(0f, 1f)
+fun DailyNutritionCard(
+    stats: DailyStats,
+    targetCalories: Double,
+    targetProteins: Double,
+    targetFats: Double,
+    targetCarbs: Double
+) {
+    val progressP = (stats.totalProteins * 4 / targetCalories).toFloat()
+    val progressF = (stats.totalFats * 9 / targetCalories).toFloat()
+    val progressC = (stats.totalCarbs * 4 / targetCalories).toFloat()
     
-    val animatedProgress by animateFloatAsState(
-        targetValue = calorieProgress,
-        animationSpec = tween(durationMillis = 1000),
-        label = "CalorieProgress"
-    )
+    val animatedP by animateFloatAsState(targetValue = progressP, animationSpec = tween(1500), label = "P")
+    val animatedF by animateFloatAsState(targetValue = progressF, animationSpec = tween(1500), label = "F")
+    val animatedC by animateFloatAsState(targetValue = progressC, animationSpec = tween(1500), label = "C")
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(32.dp),
         color = Color.White,
-        border = BorderStroke(1.dp, Color(0xFFF0F0F0))
+        border = BorderStroke(1.dp, Color(0xFFF8F8F8)),
+        shadowElevation = 4.dp
     ) {
         Column(
-            modifier = Modifier.padding(24.dp),
+            modifier = Modifier.padding(vertical = 36.dp, horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.size(170.dp)) {
-                CircularProgressIndicator(
-                    progress = { 1f },
-                    modifier = Modifier.fillMaxSize(),
-                    color = BgLightGray.copy(alpha = 0.5f),
-                    strokeWidth = 14.dp,
-                    strokeCap = StrokeCap.Round,
-                )
-                CircularProgressIndicator(
-                    progress = { animatedProgress },
-                    modifier = Modifier.fillMaxSize(),
-                    color = PrimaryGreen,
-                    strokeWidth = 14.dp,
-                    strokeCap = StrokeCap.Round,
-                )
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.size(210.dp)) {
+                Canvas(modifier = Modifier.fillMaxSize()) {
+                    val strokeWidth = 20.dp.toPx()
+                    val gap = 2.5f
+                    
+                    // Яркие неоновые градиенты
+                    val brushP = Brush.linearGradient(listOf(Color(0xFF00E676), Color(0xFF00C853)))
+                    val brushF = Brush.linearGradient(listOf(Color(0xFFFFD600), Color(0xFFFFAB00)))
+                    val brushC = Brush.linearGradient(listOf(Color(0xFF00B0FF), Color(0xFF0091EA)))
+                    
+                    // Фоновый трек (недобор) с мягким градиентом
+                    drawArc(
+                        brush = Brush.sweepGradient(listOf(Color(0xFFF0F0F0), Color(0xFFFAFAFA), Color(0xFFF0F0F0))),
+                        startAngle = -90f,
+                        sweepAngle = 360f,
+                        useCenter = false,
+                        style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                    )
+
+                    val sweepP = (animatedP * 360f).coerceIn(0f, 360f)
+                    val sweepF = (animatedF * 360f).coerceIn(0f, 360f - sweepP)
+                    val sweepC = (animatedC * 360f).coerceIn(0f, 360f - sweepP - sweepF)
+
+                    // Отрисовка сегментов со свечением
+                    if (sweepP > 1f) {
+                        drawArc(
+                            brush = brushP,
+                            startAngle = -90f + gap,
+                            sweepAngle = (sweepP - gap).coerceAtLeast(0.1f),
+                            useCenter = false,
+                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                        )
+                    }
+                    if (sweepF > 1f) {
+                        drawArc(
+                            brush = brushF,
+                            startAngle = -90f + sweepP + gap,
+                            sweepAngle = (sweepF - gap).coerceAtLeast(0.1f),
+                            useCenter = false,
+                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                        )
+                    }
+                    if (sweepC > 1f) {
+                        drawArc(
+                            brush = brushC,
+                            startAngle = -90f + sweepP + sweepF + gap,
+                            sweepAngle = (sweepC - gap).coerceAtLeast(0.1f),
+                            useCenter = false,
+                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                        )
+                    }
+                }
+
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     SmartMealText(
                         text = stats.totalCalories.toInt().toString(),
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextBlack
+                        fontSize = 48.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = TextBlack,
+                        letterSpacing = (-1.5).sp
                     )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        SmartMealText(
+                            text = "из ",
+                            fontSize = 20.sp,
+                            color = Color.Gray,
+                            fontWeight = FontWeight.Medium
+                        )
+                        SmartMealText(
+                            text = "${targetCalories.toInt()}",
+                            fontSize = 22.sp,
+                            color = TextBlack.copy(alpha = 0.8f),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                     SmartMealText(
-                        text = "ккал",
-                        fontSize = 15.sp,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Medium
+                        text = "ккал сегодня",
+                        fontSize = 13.sp,
+                        color = Color.Gray.copy(alpha = 0.7f),
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(top = 2.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(44.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MacroNutrientItem("Белки", stats.totalProteins, Color(0xFF4CAF50))
-                MacroNutrientItem("Жиры", stats.totalFats, Color(0xFFFFC107))
-                MacroNutrientItem("Углеводы", stats.totalCarbs, Color(0xFF2196F3))
+                MacroNutrientItem("Белки", stats.totalProteins, Color(0xFF00C853))
+                MacroNutrientItem("Жиры", stats.totalFats, Color(0xFFFFAB00))
+                MacroNutrientItem("Углеводы", stats.totalCarbs, Color(0xFF0091EA))
             }
         }
     }
@@ -346,26 +420,31 @@ fun DailyNutritionCard(stats: DailyStats) {
 
 @Composable
 fun MacroNutrientItem(label: String, value: Double, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.width(90.dp)
+    ) {
         SmartMealText(
             text = "${value.toInt()}г",
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 19.sp,
             color = TextBlack
         )
         SmartMealText(
             text = label,
-            fontSize = 12.sp,
+            fontSize = 13.sp,
             color = Color.Gray,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.SemiBold
         )
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Box(
             modifier = Modifier
-                .width(36.dp)
-                .height(4.dp)
+                .fillMaxWidth(0.75f)
+                .height(7.dp)
                 .clip(CircleShape)
-                .background(color.copy(alpha = 0.8f))
+                .background(
+                    Brush.linearGradient(listOf(color, color.copy(alpha = 0.7f)))
+                )
         )
     }
 }
@@ -381,9 +460,9 @@ fun MealNutritionRow(meal: MenuItemDto) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(18.dp),
         color = Color.White,
-        border = BorderStroke(1.dp, Color(0xFFF0F0F0))
+        border = BorderStroke(1.dp, Color(0xFFF5F5F5))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -429,4 +508,3 @@ fun MealNutritionRow(meal: MenuItemDto) {
         }
     }
 }
-

@@ -122,16 +122,6 @@ class ProfileViewModel(
         val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(date)
         val recipeIds = com.example.smartmeal.data.manager.MenuSyncManager.getRecipeIdsForDate(dateStr)
         _state.update { it.copy(recipeIdsInMenuOnSelectedDay = recipeIds) }
-        
-        viewModelScope.launch {
-            try {
-                val response = menuApi.getMenuItems()
-                if (response.isSuccessful) {
-                    val items = response.body()?.filter { it.actual_date == dateStr } ?: emptyList()
-                    _state.update { it.copy(menuItemsOnSelectedDay = items) }
-                }
-            } catch (e: Exception) {}
-        }
     }
 
     fun addToMenu(recipeId: Int) {
@@ -246,6 +236,7 @@ class ProfileViewModel(
                 user?.portion_size?.let { preferences.setPortionSize(it) }
                 preferences.setDietType(user?.diet_type)
                 preferences.setAllergies(user?.allergies ?: emptyList())
+                preferences.setGender(user?.gender)
             } catch (e: Exception) {
                 _state.update { it.copy(isLoading = false, error = "Ошибка загрузки: ${e.message}") }
             }

@@ -208,13 +208,19 @@ class ProductListViewModel(
     }
 
     fun generateProductsFromMenuItems(menuItems: List<MenuItemDto>) {
+        val menuSignature = buildMenuSignature(menuItems)
+        if (menuSignature == lastMenuSignature && products.isNotEmpty()) return
+
         viewModelScope.launch {
-            if (isLoading) return@launch
+            if (isLoading) {
+                pendingProductsRefresh = true
+                lastMenuItems = menuItems
+                return@launch
+            }
             isLoading = true
             errorMessage = null
             lastMenuItems = menuItems
             try {
-                val menuSignature = buildMenuSignature(menuItems)
                 if (menuSignature != lastMenuSignature) {
                     recipeCache.clear()
                     lastMenuSignature = menuSignature

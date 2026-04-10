@@ -31,7 +31,11 @@ data class StatisticsUiState(
     val isLoading: Boolean = false,
     val dailyStats: List<DailyStats> = emptyList(),
     val error: String? = null,
-    val selectedIndex: Int = 0
+    val selectedIndex: Int = 0,
+    val targetCalories: Double = 2000.0,
+    val targetProteins: Double = 100.0,
+    val targetFats: Double = 67.0,
+    val targetCarbs: Double = 250.0
 )
 
 internal fun sortMealsForStatistics(items: List<MenuItemDto>): List<MenuItemDto> {
@@ -174,9 +178,30 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                     if (targetIndex == -1) targetIndex = 0
                 }
 
+                // Расчет норм БЖУ
+                val totalCals = preferences.getTotalCalories().toDouble()
+                val gender = preferences.getGender() ?: "male"
+
+                // Базовые пропорции (Белки/Жиры/Углеводы в % от калорий)
+                // Для мужчин: 25% белки, 25% жиры, 50% углеводы (атлетичный уклон)
+                // Для женщин: 20% белки, 30% жиры, 50% углеводы (сбалансированный уклон)
+                val (pPerc, fPerc, cPerc) = if (gender == "female") {
+                    Triple(0.20, 0.30, 0.50)
+                } else {
+                    Triple(0.25, 0.25, 0.50)
+                }
+
+                val targetProteins = (totalCals * pPerc) / 4.0
+                val targetFats = (totalCals * fPerc) / 9.0
+                val targetCarbs = (totalCals * cPerc) / 4.0
+
                 _uiState.update { it.copy(
                     isLoading = false,
-                    dailyStats = emptyList() // Сначала очищаем, чтобы гарантировать рекомпозицию
+                    dailyStats = emptyList(), // Сначала очищаем, чтобы гарантировать рекомпозицию
+                    targetCalories = totalCals,
+                    targetProteins = targetProteins,
+                    targetFats = targetFats,
+                    targetCarbs = targetCarbs
                 ) }
 
                 _uiState.update { it.copy(

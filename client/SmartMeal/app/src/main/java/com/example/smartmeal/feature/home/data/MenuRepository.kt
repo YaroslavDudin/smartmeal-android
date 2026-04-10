@@ -32,14 +32,33 @@ class MenuRepository(private val api: MenuApi) {
         return response.isSuccessful
     }
 
+    companion object {
+        private var menuItemsCache: List<MenuItemDto>? = null
+        private var lastCacheTime: Long = 0
+        private const val CACHE_DURATION = 3000L // 3 секунды кэша для синхронных вызовов
+        
+        fun clearCache() {
+            menuItemsCache = null
+            lastCacheTime = 0
+        }
+    }
+
     /** Получает все элементы меню пользователя. */
     suspend fun getMenuItems(): List<MenuItemDto> {
+        val now = System.currentTimeMillis()
+        if (menuItemsCache != null && now - lastCacheTime < CACHE_DURATION) {
+            return menuItemsCache!!
+        }
+
         val response = api.getMenuItems()
         if (!response.isSuccessful) {
             val errorBody = response.errorBody()?.string()
             throw Exception("Ошибка загрузки меню: ${response.code()} ${errorBody ?: ""}".trim())
         }
-        return response.body() ?: emptyList()
+        val items = response.body() ?: emptyList()
+        menuItemsCache = items
+        lastCacheTime = now
+        return items
     }
 
     /** Получает рецепт по id. */
