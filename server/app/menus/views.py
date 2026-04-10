@@ -333,6 +333,7 @@ class MenuItemViewSet(viewsets.ModelViewSet):
         # 4. Фильтр по калориям
         total_calories = request.query_params.get('total_calories')
         meal_calories = request.query_params.get('meal_calories')
+        calorie_margin = request.query_params.get('calorie_margin')
         
         target = None
         if total_calories:
@@ -350,7 +351,11 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             except: pass
 
         if target:
-            margin = 50
+            try:
+                margin = int(calorie_margin) if calorie_margin else 100
+            except:
+                margin = 100
+            
             qs = qs.with_prefetched_ingredients()
             valid_ids = []
             for r in qs:

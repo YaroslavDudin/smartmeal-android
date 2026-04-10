@@ -20,8 +20,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -197,7 +198,7 @@ fun ProfileScreen(
                                 }
                             }
                             Icon(
-                                imageVector = Icons.Default.KeyboardArrowRight,
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 contentDescription = null,
                                 tint = Color.LightGray
                             )
@@ -228,7 +229,11 @@ fun ProfileScreen(
                             subScreen = ProfileSubScreen.DIET
                         }
 
-                        ProfileMenuCard(title = "Целевая калорийность", subtitle = "${state.totalCalories} ккал/день") {
+                        val calorieSub = if (viewModel.isCaloriesEnabled()) 
+                            "${state.totalCalories} ккал/день" 
+                        else "Любая"
+                        
+                        ProfileMenuCard(title = "Целевая калорийность", subtitle = calorieSub) {
                             subScreen = ProfileSubScreen.CALORIES
                         }
 
@@ -349,7 +354,7 @@ private fun ProfileMenuCard(
                 }
             }
             Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
                 tint = Color.LightGray,
                 modifier = Modifier.size(24.dp)

@@ -75,13 +75,14 @@ class MenuRepository(private val api: MenuApi) {
         menuItemId: Int, 
         cookTimeRange: String? = null,
         totalCalories: Int? = null,
-        mealCalories: Map<String, Int>? = null
+        mealCalories: Map<String, Int>? = null,
+        calorieMargin: Int? = null
     ): MenuItemDto? {
         val mealCalsJson = mealCalories?.let { 
             val entries = it.map { (k, v) -> "\"$k\":$v" }.joinToString(",")
             "{$entries}"
         }
-        val response = api.replaceMenuItem(menuItemId, cookTimeRange, totalCalories, mealCalsJson)
+        val response = api.replaceMenuItem(menuItemId, cookTimeRange, totalCalories, mealCalsJson, calorieMargin)
         if (response.isSuccessful) {
             return response.body()
         } else {

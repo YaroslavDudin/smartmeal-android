@@ -35,7 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -1035,14 +1035,17 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     else -> mealType
                 }
                 val cookTimeRange = preferences.getMealCookTime(russianMealName).takeIf { it != "any" }
-                val totalCalories = preferences.getTotalCalories()
-                val mealCalories = preferences.getAllMealCalories()
+                val caloriesEnabled = preferences.isCaloriesEnabled()
+                val totalCalories = if (caloriesEnabled) preferences.getTotalCalories() else null
+                val mealCalories = if (caloriesEnabled) preferences.getAllMealCalories() else null
+                val calorieMargin = if (caloriesEnabled) preferences.getCalorieMargin() else null
 
                 val updatedItem = menuRepository.replaceMenuItem(
                     menuItemId = mealId, 
                     cookTimeRange = cookTimeRange,
                     totalCalories = totalCalories,
-                    mealCalories = mealCalories
+                    mealCalories = mealCalories,
+                    calorieMargin = calorieMargin
                 )
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
