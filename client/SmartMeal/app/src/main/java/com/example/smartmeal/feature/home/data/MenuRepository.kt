@@ -71,8 +71,17 @@ class MenuRepository(private val api: MenuApi) {
     }
 
     /** Заменяет блюдо в меню на другое подходящее. */
-    suspend fun replaceMenuItem(menuItemId: Int, cookTimeRange: String? = null): MenuItemDto? {
-        val response = api.replaceMenuItem(menuItemId, cookTimeRange)
+    suspend fun replaceMenuItem(
+        menuItemId: Int, 
+        cookTimeRange: String? = null,
+        totalCalories: Int? = null,
+        mealCalories: Map<String, Int>? = null
+    ): MenuItemDto? {
+        val mealCalsJson = mealCalories?.let { 
+            val entries = it.map { (k, v) -> "\"$k\":$v" }.joinToString(",")
+            "{$entries}"
+        }
+        val response = api.replaceMenuItem(menuItemId, cookTimeRange, totalCalories, mealCalsJson)
         if (response.isSuccessful) {
             return response.body()
         } else {

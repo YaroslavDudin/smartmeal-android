@@ -51,7 +51,7 @@ private val LogoutRed = Color(0xFFE53935)
 private val AvatarFallbackBg = Color(0xFFEEEEEE)
 
 // Подэкраны внутри вкладки профиля
-enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME }
+enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME, CALORIES }
 
 @Composable
 fun ProfileScreen(
@@ -99,7 +99,16 @@ fun ProfileScreen(
             CookTimeSettingsScreen(
                 viewModel = viewModel,
                 onBack = { 
-                    subScreen = ProfileSubScreen.NONE 
+                    subScreen = ProfileSubScreen.SETTINGS 
+                    onProfileUpdatedSuccessfully()
+                }
+            )
+
+        ProfileSubScreen.CALORIES ->
+            CalorieSettingsScreen(
+                viewModel = viewModel,
+                onBack = {
+                    subScreen = ProfileSubScreen.SETTINGS
                     onProfileUpdatedSuccessfully()
                 }
             )
@@ -217,6 +226,10 @@ fun ProfileScreen(
                         val dietSub = state.currentDietTypeName ?: "Не выбран"
                         ProfileMenuCard(title = "Мой рацион", subtitle = dietSub) {
                             subScreen = ProfileSubScreen.DIET
+                        }
+
+                        ProfileMenuCard(title = "Целевая калорийность", subtitle = "${state.totalCalories} ккал/день") {
+                            subScreen = ProfileSubScreen.CALORIES
                         }
 
                         PortionStepperCard(

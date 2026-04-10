@@ -20,7 +20,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.Slider
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,6 +38,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -816,7 +823,13 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         }
     }
 
-    fun generateMenu(planType: String?, selectedPlanDate: Date?, customDays: Int? = null) {
+    fun generateMenu(
+        planType: String?,
+        selectedPlanDate: Date?,
+        customDays: Int? = null,
+        totalCalories: Int? = null,
+        mealCalories: Map<String, Int>? = null
+    ) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
@@ -843,6 +856,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 // Получаем диету и аллергии
                 val dietType = preferences.getDietType()
                 val allergies = preferences.getAllergies()
+                val caloriesEnabled = preferences.isCaloriesEnabled()
 
                 val response = generatorApi.autoGenerate(
                     AutoGenerateRequest(
@@ -851,7 +865,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                         days = customDays,
                         diet_type = dietType,
                         exclude_allergies = allergies,
-                        cook_times = if (cookTimesMap.isEmpty()) null else cookTimesMap
+                        cook_times = if (cookTimesMap.isEmpty()) null else cookTimesMap,
+                        total_calories = if (caloriesEnabled) totalCalories ?: preferences.getTotalCalories() else null,
+                        calorie_margin = if (caloriesEnabled) preferences.getCalorieMargin() else null,
+                        meal_calories = if (caloriesEnabled) mealCalories ?: preferences.getAllMealCalories() else null
                     )
                 )
                 if (response.isSuccessful) {
@@ -1018,8 +1035,15 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     else -> mealType
                 }
                 val cookTimeRange = preferences.getMealCookTime(russianMealName).takeIf { it != "any" }
+                val totalCalories = preferences.getTotalCalories()
+                val mealCalories = preferences.getAllMealCalories()
 
-                val updatedItem = menuRepository.replaceMenuItem(mealId, cookTimeRange)
+                val updatedItem = menuRepository.replaceMenuItem(
+                    menuItemId = mealId, 
+                    cookTimeRange = cookTimeRange,
+                    totalCalories = totalCalories,
+                    mealCalories = mealCalories
+                )
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
 
@@ -1193,5 +1217,171 @@ class ProfileViewModelFactory(
             return ProfileViewModel(api, preferences, onProfileSettingsChanged, onMenuManualChanged) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+@Composable
+private fun GenerationSettingsDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (Int, Map<String, Int>) -> Unit
+) {
+    var totalCalories by remember { mutableIntStateOf(2000) }
+    var breakfastCals by remember { mutableStateOf("600") }
+    var lunchCals by remember { mutableStateOf("800") }
+    var dinnerCals by remember { mutableStateOf("600") }
+
+    // Sync logic: Slider -> Meals
+    val updateMealsFromTotal = { total: Int ->
+        breakfastCals = (total * 0.3).toInt().toString()
+        lunchCals = (total * 0.4).toInt().toString()
+        dinnerCals = (total * 0.3).toInt().toString()
+    }
+
+    // Sync logic: Meals -> Total
+    val updateTotalFromMeals = {
+        val b = breakfastCals.toIntOrNull() ?: 0
+        val l = lunchCals.toIntOrNull() ?: 0
+        val d = dinnerCals.toIntOrNull() ?: 0
+        totalCalories = b + l + d
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+            color = ModalBackground,
+            shadowElevation = 8.dp
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SmartMealText(
+                    text = "Настройка рациона",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                SmartMealText(
+                    text = "Общая цель: $totalCalories ккал",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Black
+                )
+                
+                Slider(
+                    value = totalCalories.toFloat(),
+                    onValueChange = { 
+                        val newValue = it.toInt()
+                        totalCalories = newValue
+                        updateMealsFromTotal(newValue)
+                    },
+                    valueRange = 0f..4000f,
+                    steps = 40,
+                    colors = SliderDefaults.colors(
+                        thumbColor = PrimaryGreen,
+                        activeTrackColor = PrimaryGreen,
+                        inactiveTrackColor = Color.LightGray
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(), 
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    CalorieInput(
+                        label = "Завтрак", 
+                        value = breakfastCals, 
+                        onValueChange = { 
+                            breakfastCals = it
+                            updateTotalFromMeals()
+                        }, 
+                        modifier = Modifier.weight(1f)
+                    )
+                    CalorieInput(
+                        label = "Обед", 
+                        value = lunchCals, 
+                        onValueChange = { 
+                            lunchCals = it
+                            updateTotalFromMeals()
+                        }, 
+                        modifier = Modifier.weight(1f)
+                    )
+                    CalorieInput(
+                        label = "Ужин", 
+                        value = dinnerCals, 
+                        onValueChange = { 
+                            dinnerCals = it
+                            updateTotalFromMeals()
+                        }, 
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Button(
+                    onClick = { 
+                        val meals = mapOf(
+                            "Завтрак" to (breakfastCals.toIntOrNull() ?: 0),
+                            "Обед" to (lunchCals.toIntOrNull() ?: 0),
+                            "Ужин" to (dinnerCals.toIntOrNull() ?: 0)
+                        )
+                        onConfirm(totalCalories, meals) 
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(54.dp),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+                ) {
+                    SmartMealText("Сгенерировать", color = Color.White, fontSize = 18.sp)
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                androidx.compose.material3.TextButton(onClick = onDismiss) {
+                    SmartMealText("Отмена", color = Color.Gray)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CalorieInput(
+    label: String, 
+    value: String, 
+    onValueChange: (String) -> Unit, 
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        SmartMealText(label, fontSize = 14.sp, color = Color.Gray)
+        Spacer(modifier = Modifier.height(4.dp))
+        OutlinedTextField(
+            value = value,
+            onValueChange = { 
+                if (it.length <= 4 && it.all { char -> char.isDigit() }) {
+                    onValueChange(it)
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = androidx.compose.ui.text.TextStyle(textAlign = TextAlign.Center, fontSize = 16.sp),
+            colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = PrimaryGreen,
+                unfocusedBorderColor = Color.LightGray,
+                cursorColor = PrimaryGreen
+            )
+        )
     }
 }

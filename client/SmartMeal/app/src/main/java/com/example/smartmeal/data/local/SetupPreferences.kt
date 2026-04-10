@@ -233,6 +233,67 @@ class SetupPreferences(context: Context) {
         return map
     }
 
+    fun setCaloriesEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(scopedKey(KEY_CALORIES_ENABLED), enabled).apply()
+    }
+
+    fun isCaloriesEnabled(): Boolean {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return false
+        return prefs.getBoolean(scopedKey(KEY_CALORIES_ENABLED), false)
+    }
+
+    fun setTotalCalories(calories: Int) {
+        prefs.edit().putInt(scopedKey(KEY_TOTAL_CALORIES), calories).apply()
+    }
+
+    fun getTotalCalories(): Int {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return 2000
+        return prefs.getInt(scopedKey(KEY_TOTAL_CALORIES), 2000)
+    }
+
+    fun setMealCalories(mealType: String, calories: Int) {
+        prefs.edit().putInt(scopedKey("${KEY_MEAL_CALORIES}_$mealType"), calories).apply()
+    }
+
+    fun getMealCalories(mealType: String): Int {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) {
+            return when (mealType) {
+                "Завтрак" -> 600
+                "Обед" -> 800
+                "Ужин" -> 600
+                else -> 0
+            }
+        }
+        val default = when (mealType) {
+            "Завтрак" -> 600
+            "Обед" -> 800
+            "Ужин" -> 600
+            else -> 0
+        }
+        return prefs.getInt(scopedKey("${KEY_MEAL_CALORIES}_$mealType"), default)
+    }
+
+    fun getAllMealCalories(): Map<String, Int> {
+        return mapOf(
+            "Завтрак" to getMealCalories("Завтрак"),
+            "Обед" to getMealCalories("Обед"),
+            "Ужин" to getMealCalories("Ужин")
+        )
+    }
+
+    fun setCalorieMargin(margin: Int) {
+        prefs.edit().putInt(scopedKey(KEY_CALORIE_MARGIN), margin).apply()
+    }
+
+    fun getCalorieMargin(): Int {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return 100
+        return prefs.getInt(scopedKey(KEY_CALORIE_MARGIN), 100)
+    }
+
     companion object {
         const val PLAN_TYPE_DAILY = "daily"
         const val PLAN_TYPE_WEEKLY = "weekly"
@@ -251,5 +312,9 @@ class SetupPreferences(context: Context) {
         private const val KEY_MEAL_COOK_TIME = "meal_cook_time"
         private const val KEY_DIET_TYPE = "diet_type"
         private const val KEY_ALLERGIES = "allergies"
+        private const val KEY_TOTAL_CALORIES = "total_calories"
+        private const val KEY_MEAL_CALORIES = "meal_calories"
+        private const val KEY_CALORIES_ENABLED = "calories_enabled"
+        private const val KEY_CALORIE_MARGIN = "calorie_margin"
     }
 }

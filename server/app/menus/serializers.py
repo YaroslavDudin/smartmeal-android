@@ -55,6 +55,15 @@ class GenerateMenuSerializer(serializers.Serializer):
     )
     # Максимальное время приготовления в минутах (30 = «до 30 минут», null = без ограничения)
     max_cook_time = serializers.IntegerField(required=False, allow_null=True, min_value=1)
+    # Калорийность
+    total_calories = serializers.IntegerField(required=False, allow_null=True, min_value=0, max_value=10000)
+    calorie_margin = serializers.IntegerField(required=False, default=100, min_value=50, max_value=500)
+    meal_calories = serializers.DictField(
+        child=serializers.IntegerField(min_value=0, max_value=10000),
+        required=False,
+        allow_null=True,
+        help_text='Словарь: {"Завтрак": 500, "Обед": 800, "Ужин": 700}'
+    )
     # Зарезервировано на будущее — исключение аллергенов
     exclude_allergies = serializers.ListField(
         child=serializers.IntegerField(min_value=1),

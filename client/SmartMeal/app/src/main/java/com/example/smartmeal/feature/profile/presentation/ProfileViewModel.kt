@@ -58,7 +58,11 @@ data class ProfileState(
     // Избранное
     val favorites: List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto> = emptyList(),
     val recipeIdsInMenuOnSelectedDay: Set<Int> = emptySet(),
-    val menuItemsOnSelectedDay: List<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = emptyList()
+    val menuItemsOnSelectedDay: List<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = emptyList(),
+    
+    // Калорийность
+    val totalCalories: Int = 2000,
+    val mealCalories: Map<String, Int> = emptyMap()
 )
 
 fun ProfileState.getGroupedFavorites(): Map<String, List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>> {
@@ -234,7 +238,9 @@ class ProfileViewModel(
                         pendingPortionSize = user?.portion_size ?: 1,
                         pendingUserName = user?.username ?: "",
                         pendingBirthDate = user?.birth_date,
-                        pendingGender = user?.gender
+                        pendingGender = user?.gender,
+                        totalCalories = preferences.getTotalCalories(),
+                        mealCalories = preferences.getAllMealCalories()
                     )
                 }
                 user?.portion_size?.let { preferences.setPortionSize(it) }
@@ -522,6 +528,22 @@ class ProfileViewModel(
             } catch (e: Exception) {
                 _state.update { it.copy(isSaving = false, error = e.message) }
             }
+        }
+    }
+
+    fun isCaloriesEnabled(): Boolean = preferences.isCaloriesEnabled()
+    fun getCalorieMargin(): Int = preferences.getCalorieMargin()
+
+    fun saveCalorieSettings(enabled: Boolean, total: Int, margin: Int, meals: Map<String, Int>) {
+        viewModelScope.launch {
+            preferences.setCaloriesEnabled(enabled)
+            preferences.setTotalCalories(total)
+            preferences.setCalorieMargin(margin)
+            meals.forEach { (type, cals) ->
+                preferences.setMealCalories(type, cals)
+            }
+            _state.update { it.copy(totalCalories = total, mealCalories = meals) }
+            onProfileSettingsChanged()
         }
     }
 
