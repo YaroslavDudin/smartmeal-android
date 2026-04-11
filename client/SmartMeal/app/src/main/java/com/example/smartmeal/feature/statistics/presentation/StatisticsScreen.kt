@@ -2,6 +2,10 @@ package com.example.smartmeal.feature.statistics.presentation
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -178,6 +182,7 @@ fun StatisticsScreen() {
                     key(contentKey) {
                         DailyStatsContent(
                             stats = stats,
+                            isCaloriesEnabled = uiState.isCaloriesEnabled,
                             targetCalories = uiState.targetCalories,
                             targetProteins = uiState.targetProteins,
                             targetFats = uiState.targetFats,
@@ -257,6 +262,7 @@ fun DateNavigationHeader(
 @Composable
 fun DailyStatsContent(
     stats: DailyStats,
+    isCaloriesEnabled: Boolean,
     targetCalories: Double,
     targetProteins: Double,
     targetFats: Double,
@@ -270,6 +276,7 @@ fun DailyStatsContent(
         item {
             DailyNutritionCard(
                 stats = stats,
+                isCaloriesEnabled = isCaloriesEnabled,
                 targetCalories = targetCalories,
                 targetProteins = targetProteins,
                 targetFats = targetFats,
@@ -297,18 +304,31 @@ fun DailyStatsContent(
 @Composable
 fun DailyNutritionCard(
     stats: DailyStats,
+    isCaloriesEnabled: Boolean,
     targetCalories: Double,
     targetProteins: Double,
     targetFats: Double,
     targetCarbs: Double
 ) {
-    val progressP = (stats.totalProteins * 4 / targetCalories).toFloat()
-    val progressF = (stats.totalFats * 9 / targetCalories).toFloat()
-    val progressC = (stats.totalCarbs * 4 / targetCalories).toFloat()
+    // РЕЖИМ 1: Растянуто на 360 (Любая калорийность)
+    val totalCalsConsumed = (stats.totalProteins * 4 + stats.totalFats * 9 + stats.totalCarbs * 4).coerceAtLeast(1.0)
+    val ratioP_any = (stats.totalProteins * 4 / totalCalsConsumed).toFloat()
+    val ratioF_any = (stats.totalFats * 9 / totalCalsConsumed).toFloat()
+    val ratioC_any = (stats.totalCarbs * 4 / totalCalsConsumed).toFloat()
+
+    // РЕЖИМ 2: Относительно цели (Целевая калорийность)
+    val ratioP_target = (stats.totalProteins * 4 / targetCalories).toFloat()
+    val ratioF_target = (stats.totalFats * 9 / targetCalories).toFloat()
+    val ratioC_target = (stats.totalCarbs * 4 / targetCalories).toFloat()
+
+    // Выбираем финальные доли в зависимости от режима
+    val finalRatioP = if (isCaloriesEnabled) ratioP_target else ratioP_any
+    val finalRatioF = if (isCaloriesEnabled) ratioF_target else ratioF_any
+    val finalRatioC = if (isCaloriesEnabled) ratioC_target else ratioC_any
     
-    val animatedP by animateFloatAsState(targetValue = progressP, animationSpec = tween(1500), label = "P")
-    val animatedF by animateFloatAsState(targetValue = progressF, animationSpec = tween(1500), label = "F")
-    val animatedC by animateFloatAsState(targetValue = progressC, animationSpec = tween(1500), label = "C")
+    val animatedP by animateFloatAsState(targetValue = finalRatioP, animationSpec = tween(1500), label = "P")
+    val animatedF by animateFloatAsState(targetValue = finalRatioF, animationSpec = tween(1500), label = "F")
+    val animatedC by animateFloatAsState(targetValue = finalRatioC, animationSpec = tween(1500), label = "C")
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -326,12 +346,11 @@ fun DailyNutritionCard(
                     val strokeWidth = 20.dp.toPx()
                     val gap = 2.5f
                     
-                    // Яркие неоновые градиенты
                     val brushP = Brush.linearGradient(listOf(Color(0xFF00E676), Color(0xFF00C853)))
                     val brushF = Brush.linearGradient(listOf(Color(0xFFFFD600), Color(0xFFFFAB00)))
                     val brushC = Brush.linearGradient(listOf(Color(0xFF00B0FF), Color(0xFF0091EA)))
                     
-                    // Фоновый трек (недобор) с мягким градиентом
+                    // Фоновая дорожка (недобор) - всегда рисуем
                     drawArc(
                         brush = Brush.sweepGradient(listOf(Color(0xFFF0F0F0), Color(0xFFFAFAFA), Color(0xFFF0F0F0))),
                         startAngle = -90f,
@@ -340,37 +359,45 @@ fun DailyNutritionCard(
                         style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
                     )
 
-                    val sweepP = (animatedP * 360f).coerceIn(0f, 360f)
-                    val sweepF = (animatedF * 360f).coerceIn(0f, 360f - sweepP)
-                    val sweepC = (animatedC * 360f).coerceIn(0f, 360f - sweepP - sweepF)
+                    if (stats.totalCalories > 0) {
+                        // Суммарный угол заполнения
+                        val sweepP = (animatedP * 360f).coerceIn(0f, 360f)
+                        val sweepF = (animatedF * 360f).coerceIn(0f, 360f - sweepP)
+                        
+                        // В режиме "Любая" - Углеводы добирают до 360. В режиме "Цель" - до своего лимита.
+                        val sweepC = if (isCaloriesEnabled) {
+                            (animatedC * 360f).coerceIn(0f, 360f - sweepP - sweepF)
+                        } else {
+                            (360f - sweepP - sweepF).coerceAtLeast(0f)
+                        }
 
-                    // Отрисовка сегментов со свечением
-                    if (sweepP > 1f) {
-                        drawArc(
-                            brush = brushP,
-                            startAngle = -90f + gap,
-                            sweepAngle = (sweepP - gap).coerceAtLeast(0.1f),
-                            useCenter = false,
-                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-                        )
-                    }
-                    if (sweepF > 1f) {
-                        drawArc(
-                            brush = brushF,
-                            startAngle = -90f + sweepP + gap,
-                            sweepAngle = (sweepF - gap).coerceAtLeast(0.1f),
-                            useCenter = false,
-                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-                        )
-                    }
-                    if (sweepC > 1f) {
-                        drawArc(
-                            brush = brushC,
-                            startAngle = -90f + sweepP + sweepF + gap,
-                            sweepAngle = (sweepC - gap).coerceAtLeast(0.1f),
-                            useCenter = false,
-                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-                        )
+                        if (sweepP > 1f) {
+                            drawArc(
+                                brush = brushP,
+                                startAngle = -90f + gap,
+                                sweepAngle = (sweepP - gap).coerceAtLeast(0.1f),
+                                useCenter = false,
+                                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                            )
+                        }
+                        if (sweepF > 1f) {
+                            drawArc(
+                                brush = brushF,
+                                startAngle = -90f + sweepP + gap,
+                                sweepAngle = (sweepF - gap).coerceAtLeast(0.1f),
+                                useCenter = false,
+                                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                            )
+                        }
+                        if (sweepC > 1f) {
+                            drawArc(
+                                brush = brushC,
+                                startAngle = -90f + sweepP + sweepF + gap,
+                                sweepAngle = (sweepC - gap).coerceAtLeast(0.1f),
+                                useCenter = false,
+                                style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                            )
+                        }
                     }
                 }
 
@@ -382,19 +409,11 @@ fun DailyNutritionCard(
                         color = TextBlack,
                         letterSpacing = (-1.5).sp
                     )
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        SmartMealText(
-                            text = "из ",
-                            fontSize = 20.sp,
-                            color = Color.Gray,
-                            fontWeight = FontWeight.Medium
-                        )
-                        SmartMealText(
-                            text = "${targetCalories.toInt()}",
-                            fontSize = 22.sp,
-                            color = TextBlack.copy(alpha = 0.8f),
-                            fontWeight = FontWeight.Bold
-                        )
+                    if (isCaloriesEnabled) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            SmartMealText(text = "из ", fontSize = 20.sp, color = Color.Gray, fontWeight = FontWeight.Medium)
+                            SmartMealText(text = "${targetCalories.toInt()}", fontSize = 22.sp, color = TextBlack.copy(alpha = 0.8f), fontWeight = FontWeight.Bold)
+                        }
                     }
                     SmartMealText(
                         text = "ккал сегодня",
@@ -412,16 +431,16 @@ fun DailyNutritionCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                MacroNutrientItem("Белки", stats.totalProteins, Color(0xFF00C853))
-                MacroNutrientItem("Жиры", stats.totalFats, Color(0xFFFFAB00))
-                MacroNutrientItem("Углеводы", stats.totalCarbs, Color(0xFF0091EA))
+                MacroNutrientItem("Белки", stats.totalProteins, Color(0xFF00C853), isCaloriesEnabled)
+                MacroNutrientItem("Жиры", stats.totalFats, Color(0xFFFFAB00), isCaloriesEnabled)
+                MacroNutrientItem("Углеводы", stats.totalCarbs, Color(0xFF0091EA), isCaloriesEnabled)
             }
         }
     }
 }
 
 @Composable
-fun MacroNutrientItem(label: String, value: Double, color: Color) {
+fun MacroNutrientItem(label: String, value: Double, color: Color, isCaloriesEnabled: Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(90.dp)

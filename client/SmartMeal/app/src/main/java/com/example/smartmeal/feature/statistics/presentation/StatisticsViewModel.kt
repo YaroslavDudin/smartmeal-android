@@ -32,6 +32,7 @@ data class StatisticsUiState(
     val dailyStats: List<DailyStats> = emptyList(),
     val error: String? = null,
     val selectedIndex: Int = 0,
+    val isCaloriesEnabled: Boolean = false,
     val targetCalories: Double = 2000.0,
     val targetProteins: Double = 100.0,
     val targetFats: Double = 67.0,
@@ -178,13 +179,12 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
                     if (targetIndex == -1) targetIndex = 0
                 }
 
-                // Расчет норм БЖУ
-                val totalCals = preferences.getTotalCalories().toDouble()
+                // Читаем настройку включенности калорий
+                val isCaloriesEnabled = preferences.isCaloriesEnabled()
+                val totalCals = if (isCaloriesEnabled) preferences.getTotalCalories().toDouble() else 0.0
                 val gender = preferences.getGender() ?: "male"
 
                 // Базовые пропорции (Белки/Жиры/Углеводы в % от калорий)
-                // Для мужчин: 25% белки, 25% жиры, 50% углеводы (атлетичный уклон)
-                // Для женщин: 20% белки, 30% жиры, 50% углеводы (сбалансированный уклон)
                 val (pPerc, fPerc, cPerc) = if (gender == "female") {
                     Triple(0.20, 0.30, 0.50)
                 } else {
@@ -197,7 +197,8 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
 
                 _uiState.update { it.copy(
                     isLoading = false,
-                    dailyStats = emptyList(), // Сначала очищаем, чтобы гарантировать рекомпозицию
+                    dailyStats = emptyList(),
+                    isCaloriesEnabled = isCaloriesEnabled,
                     targetCalories = totalCals,
                     targetProteins = targetProteins,
                     targetFats = targetFats,
