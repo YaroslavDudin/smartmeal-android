@@ -1,5 +1,8 @@
 package com.example.smartmeal.feature.profile.presentation
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -39,6 +42,12 @@ fun CalorieSettingsScreen(
     var lunchCals by remember { mutableStateOf(state.mealCalories["Обед"]?.toString() ?: "800") }
     var dinnerCals by remember { mutableStateOf(state.mealCalories["Ужин"]?.toString() ?: "600") }
 
+    val animatedDisplayCalories by animateIntAsState(
+        targetValue = totalCalories,
+        animationSpec = tween(durationMillis = 200),
+        label = "CaloriesAnimation"
+    )
+
     // Sync logic: Slider -> Meals
     val updateMealsFromTotal = { total: Int ->
         breakfastCals = (total * 0.3).toInt().toString()
@@ -59,7 +68,6 @@ fun CalorieSettingsScreen(
             .fillMaxSize()
             .background(BgLightGray)
     ) {
-        // --- Шапка ---
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -88,7 +96,6 @@ fun CalorieSettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp)
         ) {
-            // --- Переключатель включения ---
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
@@ -100,13 +107,9 @@ fun CalorieSettingsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
+                        SmartMealText(text = "Планировать по калориям", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                         SmartMealText(
-                            text = "Планировать по калориям",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        SmartMealText(
-                            text = if (isEnabled) "Активно" else "Выключено (классический режим)",
+                            text = if (isEnabled) "Активно" else "Выключено",
                             fontSize = 13.sp,
                             color = if (isEnabled) PrimaryGreen else Color.Gray
                         )
@@ -115,14 +118,9 @@ fun CalorieSettingsScreen(
                         checked = isEnabled,
                         onCheckedChange = { 
                             isEnabled = it
-                            if (it) calorieMargin = 100 // Автоматически ставим 100 при включении
+                            if (it) calorieMargin = 100 
                         },
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = Color.White,
-                            checkedTrackColor = PrimaryGreen,
-                            uncheckedThumbColor = Color.White,
-                            uncheckedTrackColor = Color.LightGray
-                        )
+                        colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = PrimaryGreen)
                     )
                 }
             }
@@ -130,7 +128,6 @@ fun CalorieSettingsScreen(
             if (isEnabled) {
                 Spacer(modifier = Modifier.height(20.dp))
                 
-                // --- Основные настройки ---
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(24.dp),
@@ -142,7 +139,7 @@ fun CalorieSettingsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         SmartMealText(
-                            text = "Общая цель: $totalCalories ккал",
+                            text = "Общая цель: $animatedDisplayCalories ккал",
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             color = PrimaryGreen
@@ -150,15 +147,21 @@ fun CalorieSettingsScreen(
                         
                         Spacer(modifier = Modifier.height(16.dp))
                         
+                        // Анимированное значение для плавного движения самого ползунка слайдера
+                        val animatedSliderValue by animateFloatAsState(
+                            targetValue = totalCalories.toFloat(),
+                            animationSpec = tween(durationMillis = 250), // Быстрее, но всё еще плавно
+                            label = "SliderSmoothMovement"
+                        )
+
                         Slider(
-                            value = totalCalories.toFloat(),
+                            value = animatedSliderValue,
                             onValueChange = { 
                                 val newValue = it.toInt()
                                 totalCalories = newValue
                                 updateMealsFromTotal(newValue)
                             },
                             valueRange = 800f..4000f,
-                            steps = 32,
                             colors = SliderDefaults.colors(
                                 thumbColor = PrimaryGreen,
                                 activeTrackColor = PrimaryGreen,
@@ -166,115 +169,72 @@ fun CalorieSettingsScreen(
                             ),
                             modifier = Modifier.fillMaxWidth()
                         )
+
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 4.dp, end = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            SmartMealText("800", fontSize = 14.sp, color = Color.Gray.copy(alpha = 0.6f), fontWeight = FontWeight.ExtraBold)
+                            SmartMealText("4000", fontSize = 14.sp, color = Color.Gray.copy(alpha = 0.6f), fontWeight = FontWeight.ExtraBold)
+                        }
                     }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // --- Выбор разброса (Margin) ---
-                SmartMealText(
-                    text = "Допустимый разброс (± ккал)",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(start = 4.dp, bottom = 12.dp)
-                )
+                SmartMealText(text = "Допустимый разброс (± ккал)", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = 4.dp, bottom = 12.dp))
                 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     listOf(100, 150, 200).forEach { margin ->
                         FilterChip(
                             selected = calorieMargin == margin,
                             onClick = { calorieMargin = margin },
                             label = { SmartMealText("±$margin", fontSize = 14.sp) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = PrimaryGreen,
-                                selectedLabelColor = Color.White,
-                                containerColor = Color.White,
-                                labelColor = Color.Gray
-                            ),
-                            border = FilterChipDefaults.filterChipBorder(
-                                borderColor = if (calorieMargin == margin) PrimaryGreen else Color(0xFFE0E0E0),
-                                borderWidth = 1.dp,
-                                enabled = true,
-                                selected = calorieMargin == margin
-                            ),
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = PrimaryGreen, selectedLabelColor = Color.White),
                             modifier = Modifier.weight(1f)
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-                // --- Приемы пищи ---
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     CalorieInputBox(
                         label = "Завтрак",
                         value = breakfastCals,
-                        onValueChange = { 
-                            breakfastCals = it
-                            updateTotalFromMeals()
-                        },
+                        onValueChange = { breakfastCals = it; updateTotalFromMeals() },
                         modifier = Modifier.weight(1f)
                     )
                     CalorieInputBox(
                         label = "Обед",
                         value = lunchCals,
-                        onValueChange = { 
-                            lunchCals = it
-                            updateTotalFromMeals()
-                        },
+                        onValueChange = { lunchCals = it; updateTotalFromMeals() },
                         modifier = Modifier.weight(1f)
                     )
                     CalorieInputBox(
                         label = "Ужин",
                         value = dinnerCals,
-                        onValueChange = { 
-                            dinnerCals = it
-                            updateTotalFromMeals()
-                        },
+                        onValueChange = { dinnerCals = it; updateTotalFromMeals() },
                         modifier = Modifier.weight(1f)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // --- Кнопка сброса ---
+            Spacer(modifier = Modifier.height(40.dp))
             OutlinedButton(
-                onClick = {
-                    isEnabled = false
-                    totalCalories = 2000
-                    calorieMargin = 100
-                    updateMealsFromTotal(2000)
-                },
+                onClick = { isEnabled = false; totalCalories = 2000; calorieMargin = 100; updateMealsFromTotal(2000) },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray),
                 border = androidx.compose.foundation.BorderStroke(1.dp, Color.LightGray)
             ) {
-                SmartMealText("Сбросить (По умолчанию)")
+                SmartMealText("Сбросить по умолчанию", color = Color.Gray)
             }
-            
             Spacer(modifier = Modifier.height(32.dp))
         }
 
-        // --- Кнопка Сохранить ---
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.White,
-            shadowElevation = 8.dp
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .navigationBarsPadding()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
-            ) {
+        Surface(modifier = Modifier.fillMaxWidth(), color = Color.White, shadowElevation = 8.dp) {
+            Box(modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 20.dp, vertical = 16.dp)) {
                 Button(
                     onClick = {
                         val meals = mapOf(
@@ -285,18 +245,11 @@ fun CalorieSettingsScreen(
                         viewModel.saveCalorieSettings(isEnabled, totalCalories, calorieMargin, meals)
                         onBack()
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen),
                     shape = RoundedCornerShape(16.dp)
                 ) {
-                    SmartMealText(
-                        text = "Сохранить настройки",
-                        color = Color.White,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    SmartMealText("Сохранить настройки", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
