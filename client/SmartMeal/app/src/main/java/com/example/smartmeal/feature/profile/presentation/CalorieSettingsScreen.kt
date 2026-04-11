@@ -113,7 +113,10 @@ fun CalorieSettingsScreen(
                     }
                     Switch(
                         checked = isEnabled,
-                        onCheckedChange = { isEnabled = it },
+                        onCheckedChange = { 
+                            isEnabled = it
+                            if (it) calorieMargin = 100 // Автоматически ставим 100 при включении
+                        },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = Color.White,
                             checkedTrackColor = PrimaryGreen,

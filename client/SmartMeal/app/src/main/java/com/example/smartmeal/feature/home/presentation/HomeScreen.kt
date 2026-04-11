@@ -693,7 +693,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     }
 
     private fun loadCurrentMenu() {
-        if (_uiState.value.currentMenu != null || _uiState.value.isLoading) return
+        if (_uiState.value.currentMenu != null) return
         viewModelScope.launch { refreshMenu() }
     }
 
@@ -724,7 +724,6 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     }
 
     private suspend fun refreshMenu(): MenuDto? {
-        if (_uiState.value.isLoading) return _uiState.value.currentMenu
         _uiState.update { it.copy(isLoading = true, error = null) }
         return try {
             val allItems = menuRepository.getMenuItems()
@@ -1022,14 +1021,17 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
     fun replaceMeal(mealId: Int) {
         val state = _uiState.value
-        val menuItem = state.allMenuItems.find { it.id == mealId } ?: return
+        // Ищем блюдо везде, где оно может быть
+        val menuItem = state.allMenuItems.find { it.id == mealId } 
+            ?: state.currentMenu?.items?.find { it.id == mealId }
+            ?: return
+            
         val oldRecipeId = menuItem.recipe
         val mealType = menuItem.meal_type
         val dateStr = menuItem.actual_date
 
         viewModelScope.launch {
             try {
-                // Получаем настройку времени именно для этого типа блюда
                 val russianMealName = when (mealType.lowercase(Locale.US)) {
                     "breakfast", "завтрак" -> "Завтрак"
                     "lunch", "обед" -> "Обед"
@@ -1052,12 +1054,17 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
 
-                    // СИНХРОНИЗАЦИЯ: Оптимистично обновляем менеджер!
                     com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
                         dateStr, oldRecipeId, updatedItem.recipe
                     )
 
-                    _uiState.update { currentState -> mergeUpdatedMenuItemIntoState(currentState, updatedItem) }
+                    _uiState.update { currentState ->
+                        val updatedCurrentMenu = currentState.currentMenu?.copy(
+                            items = currentState.currentMenu.items?.map { if (it.id == mealId) updatedItem else it }
+                        )
+                        val updatedAllMenuItems = currentState.allMenuItems.map { if (it.id == mealId) updatedItem else it }
+                        currentState.copy(currentMenu = updatedCurrentMenu, allMenuItems = updatedAllMenuItems)
+                    }
                     updateMealSections()
                     com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 }
