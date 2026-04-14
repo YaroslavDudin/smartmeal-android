@@ -8,6 +8,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.smartmeal.data.local.SetupPreferences
+import com.example.smartmeal.feature.home.data.api.ExportCartRequest
 import com.example.smartmeal.feature.home.data.api.MenuApi
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
@@ -303,7 +304,7 @@ class ProductListViewModel(
                                 fallbackAmount = ingredient.amount,
                                 fallbackUnit = ingredient.unit_name
                             )
-                            formatWeightDisplay(normalizedAmountInGrams)
+                            formatWeightDisplay(normalizedAmountInGrams, ingredient.ingredient_name)
                         }
 
                         val occurrenceId = buildOccurrenceId(
@@ -423,65 +424,45 @@ class ProductListViewModel(
 
     fun exportCheckedProducts(onSuccess: (String) -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
-            if (isLoading) return@launch
-            isLoading = true
             try {
-                val startKey = selectedStartDateKey
-                val endKey = selectedEndDateKey ?: startKey
+                val checkedProducts = products.filter { it.checked }
 
-                val checkedProductsRaw = products.filter { product ->
-                    val isChecked = product.checked
-                    
-                    val isInDateRange = if (startKey != null && endKey != null) {
-                        product.actualDates.any { date -> date in startKey..endKey }
-                    } else {
-                        true
-                    }
-                    
-                    isChecked && isInDateRange
-                }
-                
-                if (checkedProductsRaw.isEmpty()) {
-                    onError("Вы не выбрали ни одного продукта для заказа в эти дни!")
+                if (checkedProducts.isEmpty()) {
+                    onError("Выберите хотя бы один продукт")
                     return@launch
                 }
 
-                val aggregatedCheckedProducts = aggregateProductsForDisplay(checkedProductsRaw)
+                val aggregated = checkedProducts.groupBy {
+                    Triple(it.name.trim().lowercase(Locale("ru")), it.categoryName, it.checked)
+                }.values.map { grouped ->
+                    val first = grouped.first()
+                    val isPiece = first.amount.contains("шт")
+                    val totalValue = grouped.sumOf { parseWeightToGrams(it.amount) }
+
+                    val finalAmountString = if (isPiece) {
+                        val formatted = if (totalValue % 1.0 == 0.0) totalValue.toInt().toString() else totalValue.toString()
+                        "$formatted шт"
+                    } else {
+                        formatWeightDisplay(totalValue, first.name)
+                    }
+
+                    first.copy(amount = finalAmountString)
+                }
+
+                val groupedByCategory = aggregated.groupBy { it.categoryName }
 
                 val sb = StringBuilder()
-                val grouped = aggregatedCheckedProducts.groupBy { it.categoryName }
-
-                grouped.forEach { (category, items) ->
-                    sb.append("$category:\n")
-                    items.forEach { item ->
-                        sb.append("\t- ${item.name}: ${item.amount}\n")
+                groupedByCategory.forEach { (category, items) ->
+                    sb.append(category).append(":\n")
+                    items.sortedBy { it.name.lowercase(Locale("ru")) }.forEach { item ->
+                        sb.append("\t- ").append(item.name).append(": ").append(item.amount).append("\n")
                     }
                     sb.append("\n")
                 }
 
-                val finalTxt = sb.toString().trimEnd()
-
-                val itemServings = mutableMapOf<String, Int>()
-                lastMenuItems.forEach { item ->
-                    val servings = preferences.getMenuItemServings(item.id)
-                    if (servings > 0) itemServings[item.id.toString()] = servings
-                }
-                menuApi.recalculateCart(
-                    com.example.smartmeal.feature.home.data.api.RecalculateCartRequest(
-                        start_date = selectedStartDateKey,
-                        end_date = selectedEndDateKey,
-                        item_servings = itemServings,
-                        global_servings = preferences.getPortionSize()
-                    )
-                )
-
-                onSuccess(finalTxt)
-
+                onSuccess(sb.toString().trim())
             } catch (e: Exception) {
-                e.printStackTrace()
-                onError(e.localizedMessage ?: "Произошла ошибка")
-            } finally {
-                isLoading = false
+                onError("Ошибка формирования списка")
             }
         }
     }
@@ -537,23 +518,20 @@ internal fun resolveAmountInGrams(
     }
 }
 
-internal fun formatWeightDisplay(amountInGrams: Double): String {
+internal fun formatWeightDisplay(amountInGrams: Double, ingredientName: String = ""): String {
+    val liquidKeywords = listOf("молок", "кефир", "сок", "сливк", "бульон", "ряженк",
+        "растительное", "оливковое", "подсолнечное", "кунжутное",
+        "соус", "уксус", "сироп")
+    val isLiquid = liquidKeywords.any { ingredientName.trim().lowercase(Locale("ru")).contains(it) }
+
     val roundedGrams = kotlin.math.round(amountInGrams * 10) / 10.0
     return if (roundedGrams >= 1000.0) {
         val kilograms = roundedGrams / 1000.0
-        val formatted = if (kilograms % 1.0 == 0.0) {
-            kilograms.toInt().toString()
-        } else {
-            String.format(Locale.US, "%.1f", kilograms)
-        }
-        "$formatted кг"
+        val formatted = if (kilograms % 1.0 == 0.0) kilograms.toInt().toString() else String.format(Locale.US, "%.1f", kilograms)
+        if (isLiquid) "$formatted л" else "$formatted кг"
     } else {
-        val formatted = if (roundedGrams % 1.0 == 0.0) {
-            roundedGrams.toInt().toString()
-        } else {
-            String.format(Locale.US, "%.1f", roundedGrams)
-        }
-        "$formatted г"
+        val formatted = if (roundedGrams % 1.0 == 0.0) roundedGrams.toInt().toString() else String.format(Locale.US, "%.1f", roundedGrams)
+        if (isLiquid) "$formatted мл" else "$formatted г"
     }
 }
 
@@ -561,7 +539,7 @@ internal fun parseWeightToGrams(amount: String): Double {
     val value = amount.substringBeforeLast(' ').replace(',', '.').toDoubleOrNull() ?: 0.0
     val unit = amount.substringAfterLast(' ').trim().lowercase()
     return when (unit) {
-        "кг" -> value * 1000
+        "кг", "л" -> value * 1000
         else -> value
     }
 }
