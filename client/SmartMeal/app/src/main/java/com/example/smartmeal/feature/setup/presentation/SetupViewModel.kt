@@ -144,7 +144,39 @@ class SetupViewModel(
 
     fun selectDay(year: Int, month: Int, day: Int) {
         val s = _state.value
-        val selectedDateMillis = createDateMillis(year, month, day)
+        var selectedDateMillis = createDateMillis(year, month, day)
+        
+        // КОРРЕКЦИЯ ДЛЯ НЕДЕЛЬНОГО ПЛАНА
+        if (s.periodType == PeriodType.WEEKLY) {
+            val today = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            
+            // Максимально допустимый день (сегодня + 255 дней = всего 256)
+            val maxSelectableDate = (today.clone() as Calendar).apply {
+                add(Calendar.DAY_OF_YEAR, 255) 
+            }
+            
+            val selectedCal = Calendar.getInstance().apply { timeInMillis = selectedDateMillis }
+            val weekEndCal = (selectedCal.clone() as Calendar).apply { add(Calendar.DAY_OF_YEAR, 6) }
+            
+            // Если конец недели выходит за лимит, сдвигаем начало недели назад
+            if (weekEndCal.after(maxSelectableDate)) {
+                val correctedStartCal = (maxSelectableDate.clone() as Calendar).apply {
+                    add(Calendar.DAY_OF_YEAR, -6)
+                }
+                // Но не раньше чем сегодня
+                if (correctedStartCal.before(today)) {
+                    selectedDateMillis = today.timeInMillis
+                } else {
+                    selectedDateMillis = correctedStartCal.timeInMillis
+                }
+            }
+        }
+
         if (s.periodType == PeriodType.CUSTOM) {
             when {
                 s.selectedStartDateMillis == null -> {
