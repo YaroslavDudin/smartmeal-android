@@ -1,50 +1,33 @@
-﻿package com.example.smartmeal.feature.auth.presentation
+package com.example.smartmeal.feature.auth.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -56,13 +39,7 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.SmartMealButton
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
-import com.example.smartmeal.ui.theme.BgLightGray
-import com.example.smartmeal.ui.theme.BorderGray
-import com.example.smartmeal.ui.theme.HintGray
-import com.example.smartmeal.ui.theme.IconSize
-import com.example.smartmeal.ui.theme.Padding
-import com.example.smartmeal.ui.theme.PrimaryGreen
-import com.example.smartmeal.ui.theme.SurfaceGray
+import com.example.smartmeal.ui.theme.*
 
 @Composable
 fun LoginRegisterForm(
@@ -102,7 +79,9 @@ fun LoginRegisterFormContent(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isConfirmPasswordVisible by remember { mutableStateOf(false) }
 
-    // Наблюдатель за успешной авторизацией
+    val focusManager = LocalFocusManager.current
+    val (emailFocus, usernameFocus, passwordFocus, confirmFocus) = remember { FocusRequester.createRefs() }
+
     LaunchedEffect(authState) {
         if (authState is AuthState.Success) {
             onAuthSuccess()
@@ -123,7 +102,6 @@ fun LoginRegisterFormContent(
         ) {
             Spacer(modifier = Modifier.height(40.dp))
 
-            // 1. Иллюстрация сверху
             Image(
                 painter = painterResource(id = R.drawable.food),
                 contentDescription = "Food logo",
@@ -136,7 +114,6 @@ fun LoginRegisterFormContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 2. Заголовок
             SmartMealText(
                 text = if (isLoginMode) "Вход" else "Регистрация",
                 fontSize = 28.sp,
@@ -147,22 +124,26 @@ fun LoginRegisterFormContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 3. Кастомный переключатель (Tabs)
             AuthToggleSwitch(
                 isLoginMode = isLoginMode,
-                onToggle = { isLoginMode = it }
+                onToggle = { 
+                    isLoginMode = it 
+                    focusManager.clearFocus()
+                }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // 4. Поля ввода
             if (!isLoginMode) {
                 CustomTextField(
                     value = username,
                     onValueChange = { username = it },
                     label = "Имя",
+                    imeAction = ImeAction.Next,
+                    keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                     modifier = Modifier
                         .fillMaxWidth()
+                        .focusRequester(usernameFocus)
                         .testTag("auth_username")
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -173,8 +154,11 @@ fun LoginRegisterFormContent(
                 onValueChange = { email = it },
                 label = "Электронная почта",
                 keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next,
+                keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .focusRequester(emailFocus)
                     .testTag("auth_email")
             )
 
@@ -188,8 +172,17 @@ fun LoginRegisterFormContent(
                 isPassword = true,
                 isPasswordVisible = isPasswordVisible,
                 onPasswordVisibilityChange = { isPasswordVisible = !isPasswordVisible },
+                imeAction = if (isLoginMode) ImeAction.Done else ImeAction.Next,
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) },
+                    onDone = { 
+                        focusManager.clearFocus()
+                        if (isLoginMode) onLogin(email, password)
+                    }
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .focusRequester(passwordFocus)
                     .testTag("auth_password")
             )
 
@@ -203,13 +196,18 @@ fun LoginRegisterFormContent(
                     isPassword = true,
                     isPasswordVisible = isConfirmPasswordVisible,
                     onPasswordVisibilityChange = { isConfirmPasswordVisible = !isConfirmPasswordVisible },
+                    imeAction = ImeAction.Done,
+                    keyboardActions = KeyboardActions(onDone = { 
+                        focusManager.clearFocus()
+                        onRegister(username, email, password, confirmPassword)
+                    }),
                     modifier = Modifier
                         .fillMaxWidth()
+                        .focusRequester(confirmFocus)
                         .testTag("auth_confirm_password")
                 )
             }
 
-            // 5. Забыли пароль? (только для входа)
             if (isLoginMode) {
                 Spacer(modifier = Modifier.height(12.dp))
                 SmartMealText(
@@ -225,7 +223,6 @@ fun LoginRegisterFormContent(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // 6. Ошибки
             if (authState is AuthState.Error) {
                 SmartMealText(
                     text = authState.message,
@@ -237,7 +234,6 @@ fun LoginRegisterFormContent(
                 )
             }
 
-            // 7. Кнопка действия
             if (authState is AuthState.Loading) {
                 CircularProgressIndicator(
                     color = PrimaryGreen,
@@ -262,15 +258,6 @@ fun LoginRegisterFormContent(
             }
 
             Spacer(modifier = Modifier.height(40.dp))
-
-/*
-            TextButton(
-                onClick = onNavigateToSandbox,
-                modifier = Modifier.padding(bottom = 16.dp)
-            ) {
-                SmartMealText("Перейти в Sandbox", color = PrimaryGreen)
-            }
-*/
         }
     }
 }
@@ -288,7 +275,6 @@ fun AuthToggleSwitch(
             .padding(4.dp)
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
-            // Кнопка "Вход"
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -306,7 +292,6 @@ fun AuthToggleSwitch(
                     fontWeight = if (isLoginMode) FontWeight.Medium else FontWeight.Normal
                 )
             }
-            // Кнопка "Регистрация"
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -336,6 +321,8 @@ fun CustomTextField(
     label: String,
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     isPassword: Boolean = false,
     isPasswordVisible: Boolean = false,
     onPasswordVisibilityChange: () -> Unit = {}
@@ -361,7 +348,11 @@ fun CustomTextField(
             focusedContainerColor = Color.White
         ),
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        ),
+        keyboardActions = keyboardActions,
         visualTransformation = if (isPassword && !isPasswordVisible) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = {
             if (isPassword) {
