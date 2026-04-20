@@ -6,6 +6,7 @@ import com.example.smartmeal.feature.home.data.menu.CartCategoryDto
 import com.example.smartmeal.feature.home.data.menu.MenuDto
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.data.menu.RecipeDetailDto
+import kotlinx.coroutines.sync.withLock
 
 class MenuRepository(private val api: MenuApi) {
 
@@ -32,14 +33,54 @@ class MenuRepository(private val api: MenuApi) {
         return response.isSuccessful
     }
 
+    companion object {
+        private val mutex = kotlinx.coroutines.sync.Mutex()
+        private var menuItemsCache: List<MenuItemDto>? = null
+        private var latestMenuCache: MenuDto? = null
+        private val menuByIdCache = mutableMapOf<Int, MenuDto>()
+        private var lastCacheTime: Long = 0
+        private const val CACHE_DURATION = 60000L // Увеличим до 60 секунд, так как мы будем обновлять кэш вручную
+        
+        fun clearCache() {
+            menuItemsCache = null
+            latestMenuCache = null
+            menuByIdCache.clear()
+            lastCacheTime = 0
+        }
+
+        /** Установить кэш элементов меню вручную (например, после загрузки в HomeViewModel) */
+        fun setMenuItemsCache(items: List<MenuItemDto>) {
+            menuItemsCache = items
+            lastCacheTime = System.currentTimeMillis()
+        }
+
+        /** Обновить один элемент в кэше (например, после замены блюда) */
+        fun updateMenuItemInCache(updatedItem: MenuItemDto) {
+            menuItemsCache = menuItemsCache?.map { 
+                if (it.id == updatedItem.id) updatedItem else it 
+            }
+            lastCacheTime = System.currentTimeMillis()
+        }
+    }
+
     /** Получает все элементы меню пользователя. */
     suspend fun getMenuItems(): List<MenuItemDto> {
-        val response = api.getMenuItems()
-        if (!response.isSuccessful) {
-            val errorBody = response.errorBody()?.string()
-            throw Exception("Ошибка загрузки меню: ${response.code()} ${errorBody ?: ""}".trim())
+        return mutex.withLock {
+            val now = System.currentTimeMillis()
+            if (menuItemsCache != null && now - lastCacheTime < CACHE_DURATION) {
+                return@withLock menuItemsCache!!
+            }
+
+            val response = api.getMenuItems()
+            if (!response.isSuccessful) {
+                val errorBody = response.errorBody()?.string()
+                throw Exception("Ошибка загрузки меню: ${response.code()} ${errorBody ?: ""}".trim())
+            }
+            val items = response.body() ?: emptyList()
+            menuItemsCache = items
+            lastCacheTime = now
+            items
         }
-        return response.body() ?: emptyList()
     }
 
     /** Получает рецепт по id. */
@@ -50,29 +91,59 @@ class MenuRepository(private val api: MenuApi) {
 
     /** Получает последнее актуальное меню пользователя. */
     suspend fun getLatestMenu(): MenuDto? {
-        val response = api.getMenus()
-        if (response.isSuccessful) {
-            val menus = response.body()
-            if (!menus.isNullOrEmpty()) {
-                val lastId = menus.maxOf { it.id }
-                return getMenuById(lastId)
+        return mutex.withLock {
+            val now = System.currentTimeMillis()
+            if (latestMenuCache != null && now - lastCacheTime < CACHE_DURATION) {
+                return@withLock latestMenuCache
             }
+
+            val response = api.getMenus()
+            if (response.isSuccessful) {
+                val menus = response.body()
+                if (!menus.isNullOrEmpty()) {
+                    val lastId = menus.maxOf { it.id }
+                    val menu = getMenuByIdInternal(lastId)
+                    latestMenuCache = menu
+                    lastCacheTime = now
+                    return@withLock menu
+                }
+            }
+            null
         }
-        return null
+    }
+
+    /** Внутренний метод получения меню без блокировки (вызывается внутри withLock) */
+    private suspend fun getMenuByIdInternal(id: Int): MenuDto? {
+        if (menuByIdCache.containsKey(id)) return menuByIdCache[id]
+        
+        val response = api.getMenu(id)
+        return if (response.isSuccessful) {
+            val menu = response.body()
+            if (menu != null) menuByIdCache[id] = menu
+            menu
+        } else null
     }
 
     /** Получает детали конкретного меню со всеми блюдами. */
     suspend fun getMenuById(id: Int): MenuDto? {
-        val response = api.getMenu(id)
-        if (response.isSuccessful) {
-            return response.body()
+        return mutex.withLock {
+            getMenuByIdInternal(id)
         }
-        return null
     }
 
     /** Заменяет блюдо в меню на другое подходящее. */
-    suspend fun replaceMenuItem(menuItemId: Int, cookTimeRange: String? = null): MenuItemDto? {
-        val response = api.replaceMenuItem(menuItemId, cookTimeRange)
+    suspend fun replaceMenuItem(
+        menuItemId: Int, 
+        cookTimeRange: String? = null,
+        totalCalories: Int? = null,
+        mealCalories: Map<String, Int>? = null,
+        calorieMargin: Int? = null
+    ): MenuItemDto? {
+        val mealCalsJson = mealCalories?.let { 
+            val entries = it.map { (k, v) -> "\"$k\":$v" }.joinToString(",")
+            "{$entries}"
+        }
+        val response = api.replaceMenuItem(menuItemId, cookTimeRange, totalCalories, mealCalsJson, calorieMargin)
         if (response.isSuccessful) {
             return response.body()
         } else {

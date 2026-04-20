@@ -528,7 +528,7 @@ internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<P
             val formatted = if (totalValue % 1.0 == 0.0) totalValue.toInt().toString() else totalValue.toString()
             "$formatted шт"
         } else {
-            formatWeightDisplay(totalValue)
+            formatWeightDisplay(totalValue, first.name)
         }
 
         first.copy(

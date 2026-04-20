@@ -45,7 +45,10 @@ interface MenuApi {
     @POST("api/menus/items/{id}/replace/")
     suspend fun replaceMenuItem(
         @Path("id") id: Int,
-        @Query("cook_time_range") cookTimeRange: String? = null
+        @Query("cook_time_range") cookTimeRange: String? = null,
+        @Query("total_calories") totalCalories: Int? = null,
+        @Query("meal_calories") mealCalories: String? = null,
+        @Query("calorie_margin") calorieMargin: Int? = null
     ): Response<MenuItemDto>
 
     // ─── Рецепты ────────────────────────────────────────────────────────────

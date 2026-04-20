@@ -20,8 +20,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -51,7 +52,7 @@ private val LogoutRed = Color(0xFFE53935)
 private val AvatarFallbackBg = Color(0xFFEEEEEE)
 
 // Подэкраны внутри вкладки профиля
-enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME }
+enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME, CALORIES }
 
 @Composable
 fun ProfileScreen(
@@ -92,14 +93,23 @@ fun ProfileScreen(
                 onBack = { subScreen = ProfileSubScreen.NONE },
                 onRecipeClick = onRecipeClick,
                 onFavoriteClick = { viewModel.toggleFavorite(it) },
-                onPlusClick = { viewModel.addToMenu(it) }
+                onPlusClick = { recipeId, type -> viewModel.addToMenu(recipeId, type) }
             )
 
         ProfileSubScreen.COOK_TIME ->
             CookTimeSettingsScreen(
                 viewModel = viewModel,
                 onBack = { 
-                    subScreen = ProfileSubScreen.NONE 
+                    subScreen = ProfileSubScreen.SETTINGS 
+                    onProfileUpdatedSuccessfully()
+                }
+            )
+
+        ProfileSubScreen.CALORIES ->
+            CalorieSettingsScreen(
+                viewModel = viewModel,
+                onBack = {
+                    subScreen = ProfileSubScreen.SETTINGS
                     onProfileUpdatedSuccessfully()
                 }
             )
@@ -188,7 +198,7 @@ fun ProfileScreen(
                                 }
                             }
                             Icon(
-                                imageVector = Icons.Default.KeyboardArrowRight,
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                 contentDescription = null,
                                 tint = Color.LightGray
                             )
@@ -217,6 +227,14 @@ fun ProfileScreen(
                         val dietSub = state.currentDietTypeName ?: "Не выбран"
                         ProfileMenuCard(title = "Мой рацион", subtitle = dietSub) {
                             subScreen = ProfileSubScreen.DIET
+                        }
+
+                        val calorieSub = if (viewModel.isCaloriesEnabled()) 
+                            "${state.totalCalories} ккал/день" 
+                        else "Любая"
+                        
+                        ProfileMenuCard(title = "Целевая калорийность", subtitle = calorieSub) {
+                            subScreen = ProfileSubScreen.CALORIES
                         }
 
                         PortionStepperCard(
@@ -336,7 +354,7 @@ private fun ProfileMenuCard(
                 }
             }
             Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
                 tint = Color.LightGray,
                 modifier = Modifier.size(24.dp)
@@ -479,7 +497,7 @@ fun FavoritesScreen(
     onBack: () -> Unit,
     onRecipeClick: (Int) -> Unit,
     onFavoriteClick: (Int) -> Unit,
-    onPlusClick: (Int) -> Unit
+    onPlusClick: (Int, String?) -> Unit
 ) {
     val recentlyRemoved = remember { mutableStateListOf<UserFavoriteDto>() }
     val groupedFavorites = remember(state.favorites) { state.getGroupedFavorites() }
@@ -546,7 +564,7 @@ fun FavoritesScreen(
                                 onFavoriteClick(favorite.recipe)
                             },
                             isInMenu = favorite.recipe in recipeIdsInMenu,
-                            onPlusClick = { onPlusClick(favorite.recipe) },
+                            onPlusClick = { onPlusClick(favorite.recipe, category) },
                             modifier = Modifier
                                 .animateItem()
                                 .clickable { onRecipeClick(favorite.recipe) }

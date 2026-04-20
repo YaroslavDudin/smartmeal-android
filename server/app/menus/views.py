@@ -70,6 +70,8 @@ class MenuViewSet(viewsets.ModelViewSet):
         cook_time_range = data.get('cook_time_range') or request.user.preferred_cook_time
         cook_times_dict = data.get('cook_times') or {}
         max_cook_time = data.get('max_cook_time')
+        total_calories = data.get('total_calories')
+        meal_calories_dict = data.get('meal_calories') or {}
 
         meal_types = list(MealType.objects.all().order_by('order'))
         if not meal_types:
@@ -78,7 +80,26 @@ class MenuViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        qs = Recipe.objects.all().order_by('id')
+        # Распределение калорий по умолчанию (если задана только общая цель)
+        DEFAULT_RATIOS = {
+            'Завтрак': 0.3,
+            'Обед': 0.4,
+            'Ужин': 0.3
+        }
+
+        # Определяем целевые калории для каждого типа приема пищи
+        meal_targets = {}
+        if total_calories:
+            for mt in meal_types:
+                ratio = DEFAULT_RATIOS.get(mt.name, 1.0 / len(meal_types))
+                meal_targets[mt.id] = float(total_calories) * ratio
+        
+        # Перекрываем индивидуальными настройками, если они есть
+        for mt in meal_types:
+            if mt.name in meal_calories_dict:
+                meal_targets[mt.id] = float(meal_calories_dict[mt.name])
+
+        qs = Recipe.objects.with_prefetched_ingredients().order_by('id')
         if diet_type_id:
             qs = qs.filter(diet_types__id=diet_type_id)
    
@@ -97,15 +118,32 @@ class MenuViewSet(viewsets.ModelViewSet):
             mt_cook_times[mt.id] = current_mt_cook_time
             # Применяем фильтр по времени строго
             if max_cook_time:
-                qs = qs.filter(cook_time__lte=max_cook_time)
+                mt_qs = mt_qs.filter(cook_time__lte=max_cook_time)
 
             if current_mt_cook_time and current_mt_cook_time != 'any':
                 mt_qs = filter_recipes_by_cook_time(mt_qs, current_mt_cook_time)
 
-            valid_recipes = list(mt_qs.values_list('id', flat=True))
+            # Фильтрация по калориям (в Python, так как это property)
+            target = meal_targets.get(mt.id)
+            if target:
+                margin = data.get('calorie_margin', 100) # Допуск из запроса
+                valid_recipes_objs = []
+                for r in mt_qs:
+
+                    try:
+                        cal = float(r.per_serving_calories)
+                        if (target - margin) <= cal <= (target + margin):
+                            valid_recipes_objs.append(r.id)
+                    except (ValueError, TypeError, ZeroDivisionError):
+                        continue
+                valid_recipes = valid_recipes_objs
+            else:
+                valid_recipes = list(mt_qs.values_list('id', flat=True))
+
             if not valid_recipes:
+                cal_info = f" (~{meal_targets[mt.id]} ккал)" if mt.id in meal_targets else ""
                 return Response(
-                    {'detail': f'Для приема пищи "{mt.name}" нет рецептов, подходящих под ваши фильтры времени или диеты.'},
+                    {'detail': f'Для приема пищи "{mt.name}"{cal_info} нет рецептов, подходящих под ваши фильтры.'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -291,6 +329,44 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             qs = filter_recipes_by_cook_time(qs, target_cook_time)
             if not qs.exists():
                 return Response({'detail': f'Невозможно обновить блюдо, так как нет рецептов, подходящих под ваше время приготовления ({user.get_preferred_cook_time_display()}).'}, status=status.HTTP_404_NOT_FOUND)
+
+        # 4. Фильтр по калориям
+        total_calories = request.query_params.get('total_calories')
+        meal_calories = request.query_params.get('meal_calories')
+        calorie_margin = request.query_params.get('calorie_margin')
+        
+        target = None
+        if total_calories:
+            ratios = {'Завтрак': 0.3, 'Обед': 0.4, 'Ужин': 0.3}
+            ratio = ratios.get(menu_item.meal_type.name, 0.33)
+            target = float(total_calories) * ratio
+        
+        if meal_calories:
+            # Если передано конкретное значение для этого приема
+            try:
+                import json
+                meals_dict = json.loads(meal_calories)
+                if menu_item.meal_type.name in meals_dict:
+                    target = float(meals_dict[menu_item.meal_type.name])
+            except: pass
+
+        if target:
+            try:
+                margin = int(calorie_margin) if calorie_margin else 100
+            except:
+                margin = 100
+            
+            qs = qs.with_prefetched_ingredients()
+            valid_ids = []
+            for r in qs:
+                try:
+                    cal = float(r.per_serving_calories)
+                    if (target - margin) <= cal <= (target + margin):
+                        valid_ids.append(r.id)
+                except: continue
+            qs = qs.filter(id__in=valid_ids)
+            if not qs.exists():
+                return Response({'detail': f'Не удалось найти подходящее по калориям блюдо (~{int(target)} ккал).'}, status=status.HTTP_404_NOT_FOUND)
         
         # Пытаемся выбрать без совпадений с другими рецептами этого дня
         new_recipe = qs.exclude(id__in=other_today_recipes_ids).order_by('?').first()

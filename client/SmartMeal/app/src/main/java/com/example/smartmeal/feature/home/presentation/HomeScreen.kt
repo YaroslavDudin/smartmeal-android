@@ -20,7 +20,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material3.Slider
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,9 +35,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -109,7 +116,8 @@ fun HomeScreen(
             ProfileViewModelFactory(
                 api = setupApi,
                 preferences = setupPreferences,
-                onProfileSettingsChanged = { viewModel.regenerateMenuForCurrentPlan() },
+                onCriticalSettingsChanged = { viewModel.regenerateMenuForCurrentPlan() },
+                onSimpleSettingsChanged = { viewModel.reloadMenu() },
                 onMenuManualChanged = { viewModel.reloadMenu() }
             )
         }
@@ -215,6 +223,8 @@ fun HomeScreen(
                 ) {
                     HomeContent(
                         uiState = uiState,
+                        onDismissError = { viewModel.dismissError() },
+                        onSetActiveSlot = { viewModel.setActiveSlot(it) },
                         onDateSelected = { viewModel.selectDate(it, visibleCustomPlan) },
                         onGenerateMenu = {
                             val storedPlanType = setupPreferences.getPlanType()
@@ -304,6 +314,8 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     uiState: HomeUiState,
+    onDismissError: () -> Unit,
+    onSetActiveSlot: (String) -> Unit,
     onDateSelected: (Date) -> Unit,
     onGenerateMenu: () -> Unit,
     onReplaceMeal: (Int) -> Unit,
@@ -326,7 +338,11 @@ fun HomeContent(
     val hasAvailableDates = availableDates.isNotEmpty()
     var pendingReplacement by remember(uiState.mealSections) { mutableStateOf<MealSection?>(null) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp)) {
+    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp).clickable(
+        onClick = onDismissError,
+        indication = null,
+        interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+    )) {
         SmartMealText(
             text = "Меню",
             style = MaterialTheme.typography.headlineMedium,
@@ -445,6 +461,7 @@ fun HomeContent(
                         sectionId = section.id,
                         title = section.title,
                         meal = section.meal,
+                        onSetActiveSlot = onSetActiveSlot,
                         onReplaceClick = { pendingReplacement = section },
                         onFavoriteClick = { onToggleFavorite(section.meal.id) },
                         onRecipeClick = onRecipeClick
@@ -480,6 +497,7 @@ fun MealSection(
     sectionId: String,
     title: String,
     meal: MenuItemDto,
+    onSetActiveSlot: (String) -> Unit,
     onReplaceClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
@@ -518,13 +536,17 @@ fun MealSection(
         ) { item ->
             Box(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                    .clickable { onRecipeClick(item.recipe, item.id) }
+                    .clickable { 
+                        onSetActiveSlot(item.meal_type)
+                        onRecipeClick(item.recipe, item.id) 
+                    }
             ) {
                 MealCard(
                     title = item.recipe_title,
                     cookTime = "${item.cook_time} мин",
                     imageUrl = item.image_url,
                     isFavorite = item.is_favorite,
+                    isActive = item.is_active,
                     onFavoriteClick = onFavoriteClick
                 )
             }
@@ -665,6 +687,11 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 }
             }
         }
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.MealSlotManager.activeMealType.collect {
+                updateMealSections()
+            }
+        }
     }
 
     private fun updateFavoriteInState(recipeId: Int, isFavorite: Boolean) {
@@ -686,14 +713,20 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     }
 
     private fun loadCurrentMenu() {
+        if (_uiState.value.currentMenu != null) return
         viewModelScope.launch { refreshMenu() }
     }
 
     fun reloadMenu() {
         viewModelScope.launch { 
+            com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
             refreshMenu() 
             com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
         }
+    }
+
+    fun setActiveSlot(mealType: String) {
+        com.example.smartmeal.data.manager.MealSlotManager.setActiveMealType(mealType)
     }
 
     fun regenerateMenuForCurrentPlan() {
@@ -718,8 +751,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     private suspend fun refreshMenu(): MenuDto? {
         _uiState.update { it.copy(isLoading = true, error = null) }
         return try {
-            val allItemsResponse = menuApi.getMenuItems()
-            val allItems = if (allItemsResponse.isSuccessful) allItemsResponse.body() ?: emptyList() else emptyList()
+            val allItems = menuRepository.getMenuItems()
 
             val planType = preferences.getPlanType()
             val planRange = preferences.getCustomPlanRange()
@@ -764,6 +796,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
             if (hasMenuForPlan && currentMenuToDisplay != null) {
                 val menuItems = currentMenuToDisplay.items ?: emptyList()
+                
+                // СИНХРОНИЗАЦИЯ: Обновляем кэш репозитория, чтобы статистика могла взять его мгновенно
+                MenuRepository.setMenuItemsCache(allItems)
+
                 val menuStart = apiDateFormatter.parse(currentMenuToDisplay.start_date) ?: Date()
                 val maxOffset = menuItems.maxOfOrNull { it.day_offset } ?: 0
                 val menuEnd = Calendar.getInstance().apply {
@@ -816,8 +852,15 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         }
     }
 
-    fun generateMenu(planType: String?, selectedPlanDate: Date?, customDays: Int? = null) {
+    fun generateMenu(
+        planType: String?,
+        selectedPlanDate: Date?,
+        customDays: Int? = null,
+        totalCalories: Int? = null,
+        mealCalories: Map<String, Int>? = null
+    ) {
         viewModelScope.launch {
+            com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val type = planType ?: SetupPreferences.PLAN_TYPE_WEEKLY
@@ -843,6 +886,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 // Получаем диету и аллергии
                 val dietType = preferences.getDietType()
                 val allergies = preferences.getAllergies()
+                val caloriesEnabled = preferences.isCaloriesEnabled()
 
                 val response = generatorApi.autoGenerate(
                     AutoGenerateRequest(
@@ -851,7 +895,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                         days = customDays,
                         diet_type = dietType,
                         exclude_allergies = allergies,
-                        cook_times = if (cookTimesMap.isEmpty()) null else cookTimesMap
+                        cook_times = if (cookTimesMap.isEmpty()) null else cookTimesMap,
+                        total_calories = if (caloriesEnabled) totalCalories ?: preferences.getTotalCalories() else null,
+                        calorie_margin = if (caloriesEnabled) preferences.getCalorieMargin() else null,
+                        meal_calories = if (caloriesEnabled) mealCalories ?: preferences.getAllMealCalories() else null
                     )
                 )
                 if (response.isSuccessful) {
@@ -866,7 +913,9 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                         }
                     }
 
-                    refreshMenu()
+                    val updatedMenu = refreshMenu()
+                    // После генерации и обновления меню в refreshMenu, кэш уже должен быть заполнен,
+                    // но мы вызываем notifyMenuChanged, чтобы StatisticsViewModel перечитала его.
                     com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -913,6 +962,8 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 uniqueItems
             } else emptyList()
 
+            val activeMealType = com.example.smartmeal.data.manager.MealSlotManager.getActiveMealType()
+
             val mealSections = itemsForDay.map { item ->
                 val title = when (item.meal_type.lowercase(Locale.US)) {
                     "breakfast", "завтрак" -> "Завтрак"
@@ -920,7 +971,8 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     "dinner", "ужин" -> "Ужин"
                     else -> item.meal_type.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                 }
-                MealSection(id = item.meal_type, title = title, meal = item)
+                val updatedItem = item.copy(is_active = item.meal_type.lowercase(Locale.US) == activeMealType?.lowercase(Locale.US))
+                MealSection(id = item.meal_type, title = title, meal = updatedItem)
             }.sortedBy { section ->
                 when(section.id.lowercase(Locale.US)) {
                     "breakfast", "завтрак" -> 1
@@ -979,6 +1031,9 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             Calendar.THURSDAY -> 3; Calendar.FRIDAY -> 4; Calendar.SATURDAY -> 5
             Calendar.SUNDAY -> 6; else -> 0
         }
+        if (com.example.smartmeal.data.manager.MealSlotManager.getActiveMealType() == null) {
+            com.example.smartmeal.data.manager.MealSlotManager.setActiveMealType("breakfast")
+        }
         _uiState.update { it.copy(selectedDay = dayNames[dayIndex], selectedDate = normalized, selectedDateFromPlan = customPlan != null) }
         updateMealSections()
 
@@ -1003,14 +1058,19 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
     fun replaceMeal(mealId: Int) {
         val state = _uiState.value
-        val menuItem = state.allMenuItems.find { it.id == mealId } ?: return
+        // Ищем блюдо везде, где оно может быть
+        val menuItem = state.allMenuItems.find { it.id == mealId } 
+            ?: state.currentMenu?.items?.find { it.id == mealId }
+            ?: return
+            
         val oldRecipeId = menuItem.recipe
         val mealType = menuItem.meal_type
         val dateStr = menuItem.actual_date
+        
+        com.example.smartmeal.data.manager.MealSlotManager.setActiveMealType(mealType)
 
         viewModelScope.launch {
             try {
-                // Получаем настройку времени именно для этого типа блюда
                 val russianMealName = when (mealType.lowercase(Locale.US)) {
                     "breakfast", "завтрак" -> "Завтрак"
                     "lunch", "обед" -> "Обед"
@@ -1018,17 +1078,36 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     else -> mealType
                 }
                 val cookTimeRange = preferences.getMealCookTime(russianMealName).takeIf { it != "any" }
+                val caloriesEnabled = preferences.isCaloriesEnabled()
+                val totalCalories = if (caloriesEnabled) preferences.getTotalCalories() else null
+                val mealCalories = if (caloriesEnabled) preferences.getAllMealCalories() else null
+                val calorieMargin = if (caloriesEnabled) preferences.getCalorieMargin() else null
 
-                val updatedItem = menuRepository.replaceMenuItem(mealId, cookTimeRange)
+                val updatedItem = menuRepository.replaceMenuItem(
+                    menuItemId = mealId, 
+                    cookTimeRange = cookTimeRange,
+                    totalCalories = totalCalories,
+                    mealCalories = mealCalories,
+                    calorieMargin = calorieMargin
+                )
                 if (updatedItem != null) {
                     preferences.clearMenuItemServings(updatedItem.id)
 
-                    // СИНХРОНИЗАЦИЯ: Оптимистично обновляем менеджер!
                     com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
                         dateStr, oldRecipeId, updatedItem.recipe
                     )
 
-                    _uiState.update { currentState -> mergeUpdatedMenuItemIntoState(currentState, updatedItem) }
+                    _uiState.update { currentState ->
+                        val updatedCurrentMenu = currentState.currentMenu?.copy(
+                            items = currentState.currentMenu.items?.map { if (it.id == mealId) updatedItem else it }
+                        )
+                        val updatedAllMenuItems = currentState.allMenuItems.map { if (it.id == mealId) updatedItem else it }
+                        currentState.copy(currentMenu = updatedCurrentMenu, allMenuItems = updatedAllMenuItems)
+                    }
+                    
+                    // СИНХРОНИЗАЦИЯ: Обновляем кэш репозитория для мгновенного обновления статистики
+                    MenuRepository.updateMenuItemInCache(updatedItem)
+                    
                     updateMealSections()
                     com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 }
@@ -1184,14 +1263,181 @@ private class ProductListViewModelFactory(private val menuApi: MenuApi, private 
 class ProfileViewModelFactory(
     private val api: SetupApi,
     private val preferences: SetupPreferences,
-    private val onProfileSettingsChanged: () -> Unit,
+    private val onCriticalSettingsChanged: () -> Unit,
+    private val onSimpleSettingsChanged: () -> Unit,
     private val onMenuManualChanged: () -> Unit
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ProfileViewModel(api, preferences, onProfileSettingsChanged, onMenuManualChanged) as T
+            return ProfileViewModel(api, preferences, onCriticalSettingsChanged, onSimpleSettingsChanged, onMenuManualChanged) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+@Composable
+private fun GenerationSettingsDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (Int, Map<String, Int>) -> Unit
+) {
+    var totalCalories by remember { mutableIntStateOf(2000) }
+    var breakfastCals by remember { mutableStateOf("600") }
+    var lunchCals by remember { mutableStateOf("800") }
+    var dinnerCals by remember { mutableStateOf("600") }
+
+    // Sync logic: Slider -> Meals
+    val updateMealsFromTotal = { total: Int ->
+        breakfastCals = (total * 0.3).toInt().toString()
+        lunchCals = (total * 0.4).toInt().toString()
+        dinnerCals = (total * 0.3).toInt().toString()
+    }
+
+    // Sync logic: Meals -> Total
+    val updateTotalFromMeals = {
+        val b = breakfastCals.toIntOrNull() ?: 0
+        val l = lunchCals.toIntOrNull() ?: 0
+        val d = dinnerCals.toIntOrNull() ?: 0
+        totalCalories = b + l + d
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+            color = ModalBackground,
+            shadowElevation = 8.dp
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                SmartMealText(
+                    text = "Настройка рациона",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Black
+                )
+                
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                SmartMealText(
+                    text = "Общая цель: $totalCalories ккал",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Black
+                )
+                
+                Slider(
+                    value = totalCalories.toFloat(),
+                    onValueChange = { 
+                        val newValue = it.toInt()
+                        totalCalories = newValue
+                        updateMealsFromTotal(newValue)
+                    },
+                    valueRange = 0f..4000f,
+                    steps = 40,
+                    colors = SliderDefaults.colors(
+                        thumbColor = PrimaryGreen,
+                        activeTrackColor = PrimaryGreen,
+                        inactiveTrackColor = Color.LightGray
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(), 
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    CalorieInput(
+                        label = "Завтрак", 
+                        value = breakfastCals, 
+                        onValueChange = { 
+                            breakfastCals = it
+                            updateTotalFromMeals()
+                        }, 
+                        modifier = Modifier.weight(1f)
+                    )
+                    CalorieInput(
+                        label = "Обед", 
+                        value = lunchCals, 
+                        onValueChange = { 
+                            lunchCals = it
+                            updateTotalFromMeals()
+                        }, 
+                        modifier = Modifier.weight(1f)
+                    )
+                    CalorieInput(
+                        label = "Ужин", 
+                        value = dinnerCals, 
+                        onValueChange = { 
+                            dinnerCals = it
+                            updateTotalFromMeals()
+                        }, 
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Button(
+                    onClick = { 
+                        val meals = mapOf(
+                            "Завтрак" to (breakfastCals.toIntOrNull() ?: 0),
+                            "Обед" to (lunchCals.toIntOrNull() ?: 0),
+                            "Ужин" to (dinnerCals.toIntOrNull() ?: 0)
+                        )
+                        onConfirm(totalCalories, meals) 
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(54.dp),
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+                ) {
+                    SmartMealText("Сгенерировать", color = Color.White, fontSize = 18.sp)
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                androidx.compose.material3.TextButton(onClick = onDismiss) {
+                    SmartMealText("Отмена", color = Color.Gray)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CalorieInput(
+    label: String, 
+    value: String, 
+    onValueChange: (String) -> Unit, 
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        SmartMealText(label, fontSize = 14.sp, color = Color.Gray)
+        Spacer(modifier = Modifier.height(4.dp))
+        OutlinedTextField(
+            value = value,
+            onValueChange = { 
+                if (it.length <= 4 && it.all { char -> char.isDigit() }) {
+                    onValueChange(it)
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = androidx.compose.ui.text.TextStyle(textAlign = TextAlign.Center, fontSize = 16.sp),
+            colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = PrimaryGreen,
+                unfocusedBorderColor = Color.LightGray,
+                cursorColor = PrimaryGreen
+            )
+        )
     }
 }
