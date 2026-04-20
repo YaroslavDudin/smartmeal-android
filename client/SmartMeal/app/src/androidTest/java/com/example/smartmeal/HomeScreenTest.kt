@@ -1,4 +1,4 @@
-﻿package com.example.smartmeal
+package com.example.smartmeal
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertCountEquals
@@ -36,6 +36,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -61,6 +63,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = { clicked = true },
                     onReplaceMeal = {},
@@ -107,6 +111,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -145,6 +151,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state.value,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = { id ->
@@ -203,6 +211,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = { selected = dateFormatter.format(it) },
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -231,6 +241,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -258,6 +270,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -287,6 +301,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -317,6 +333,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -349,6 +367,8 @@ class HomeScreenTest {
             SmartMealTheme {
                 HomeContent(
                     uiState = state,
+                    onDismissError = {},
+                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
@@ -402,4 +422,3 @@ class HomeScreenTest {
         )
     }
 }
-

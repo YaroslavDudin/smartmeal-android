@@ -47,7 +47,13 @@ class ProductListScreenTest {
             override suspend fun deleteMenu(id: Int): Response<Unit> = TODO()
             override suspend fun getMenuItems(): Response<List<com.example.smartmeal.feature.home.data.menu.MenuItemDto>> = TODO()
             override suspend fun deleteMenuItem(id: Int): Response<Unit> = TODO()
-            override suspend fun replaceMenuItem(id: Int, cookTimeRange: String?): Response<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = TODO()
+            override suspend fun replaceMenuItem(
+                id: Int, 
+                cookTimeRange: String?,
+                totalCalories: Int?,
+                mealCalories: String?,
+                calorieMargin: Int?
+            ): Response<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = TODO()
             override suspend fun getRecipes(search: String?): Response<List<com.example.smartmeal.feature.home.data.menu.RecipeShortDto>> = TODO()
             override suspend fun getRecipe(id: Int, servings: Int?): Response<com.example.smartmeal.feature.home.data.menu.RecipeDetailDto> = TODO()
             override suspend fun getCart(): Response<Map<String, List<com.example.smartmeal.feature.home.data.menu.CartItemDto>>> = TODO()

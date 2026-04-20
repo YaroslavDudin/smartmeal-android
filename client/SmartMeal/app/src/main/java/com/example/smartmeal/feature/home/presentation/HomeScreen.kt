@@ -223,7 +223,8 @@ fun HomeScreen(
                 ) {
                     HomeContent(
                         uiState = uiState,
-                        viewModel = viewModel,
+                        onDismissError = { viewModel.dismissError() },
+                        onSetActiveSlot = { viewModel.setActiveSlot(it) },
                         onDateSelected = { viewModel.selectDate(it, visibleCustomPlan) },
                         onGenerateMenu = {
                             val storedPlanType = setupPreferences.getPlanType()
@@ -313,7 +314,8 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     uiState: HomeUiState,
-    viewModel: HomeViewModel,
+    onDismissError: () -> Unit,
+    onSetActiveSlot: (String) -> Unit,
     onDateSelected: (Date) -> Unit,
     onGenerateMenu: () -> Unit,
     onReplaceMeal: (Int) -> Unit,
@@ -336,7 +338,11 @@ fun HomeContent(
     val hasAvailableDates = availableDates.isNotEmpty()
     var pendingReplacement by remember(uiState.mealSections) { mutableStateOf<MealSection?>(null) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp)) {
+    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp).clickable(
+        onClick = onDismissError,
+        indication = null,
+        interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+    )) {
         SmartMealText(
             text = "Меню",
             style = MaterialTheme.typography.headlineMedium,
@@ -455,7 +461,7 @@ fun HomeContent(
                         sectionId = section.id,
                         title = section.title,
                         meal = section.meal,
-                        viewModel = viewModel,
+                        onSetActiveSlot = onSetActiveSlot,
                         onReplaceClick = { pendingReplacement = section },
                         onFavoriteClick = { onToggleFavorite(section.meal.id) },
                         onRecipeClick = onRecipeClick
@@ -491,7 +497,7 @@ fun MealSection(
     sectionId: String,
     title: String,
     meal: MenuItemDto,
-    viewModel: HomeViewModel,
+    onSetActiveSlot: (String) -> Unit,
     onReplaceClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
@@ -531,7 +537,7 @@ fun MealSection(
             Box(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                     .clickable { 
-                        viewModel.setActiveSlot(item.meal_type)
+                        onSetActiveSlot(item.meal_type)
                         onRecipeClick(item.recipe, item.id) 
                     }
             ) {
