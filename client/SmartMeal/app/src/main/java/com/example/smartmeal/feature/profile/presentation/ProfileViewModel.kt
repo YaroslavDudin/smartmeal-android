@@ -232,10 +232,6 @@ class ProfileViewModel(
                         
                         // Обновляем состояние "✓" в профиле
                         updateMenuStateForDate(selectedDate)
-                        
-                        try {
-                            menuApi.recalculateCart(com.example.smartmeal.feature.home.data.api.RecalculateCartRequest())
-                        } catch (e: Exception) {}
                     } else {
                         _state.update { it.copy(error = "Ошибка сервера: ${replaceRes.code()}") }
                     }
