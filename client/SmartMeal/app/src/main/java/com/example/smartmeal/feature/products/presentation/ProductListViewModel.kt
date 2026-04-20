@@ -43,7 +43,9 @@ class ProductListViewModel(
         }
         viewModelScope.launch {
             com.example.smartmeal.data.manager.ProfileManager.profileUpdates.collect {
-                recipeCache.clear()
+                // We no longer clear the entire cache here. 
+                // The RecipeCacheKey includes servings, so changed items will miss the cache 
+                // and be re-fetched, while others will hit the cache.
                 if (lastMenuItems.isNotEmpty()) {
                     if (isLoading) {
                         pendingProductsRefresh = true
@@ -223,7 +225,6 @@ class ProductListViewModel(
             lastMenuItems = menuItems
             try {
                 if (menuSignature != lastMenuSignature) {
-                    recipeCache.clear()
                     lastMenuSignature = menuSignature
                 }
 

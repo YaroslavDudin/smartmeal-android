@@ -60,13 +60,6 @@ fun MealCard(
             .fillMaxWidth()
             .height(100.dp)
             .softBottomShadow(shape = RoundedCornerShape(16.dp))
-            .then(
-                if (isActive) Modifier.border(
-                    width = 2.dp,
-                    color = PrimaryGreen,
-                    shape = RoundedCornerShape(16.dp)
-                ) else Modifier
-            )
             .testTag(resolvedCardTag),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
