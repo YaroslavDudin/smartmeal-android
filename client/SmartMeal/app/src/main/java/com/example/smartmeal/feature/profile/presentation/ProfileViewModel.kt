@@ -410,11 +410,12 @@ class ProfileViewModel(
                     preferences.setMealCookTime(meal, "any")
                 }
             }
+            onCriticalSettingsChanged()
         }
     }
 
     fun confirmCookTimes() {
-        onSimpleSettingsChanged()
+        onCriticalSettingsChanged()
     }
 
     fun loadFavorites() {

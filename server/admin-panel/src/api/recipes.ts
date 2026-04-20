@@ -4,6 +4,9 @@ import type { Recipe, RecipeShort, PaginatedResponse } from '@/types'
 export interface RecipeFilters {
   search?: string
   diet_type?: number
+  min_calories?: number
+  max_calories?: number
+  ordering?: string
   page?: number
   page_size?: number
 }
@@ -12,6 +15,9 @@ export async function getRecipes(filters: RecipeFilters = {}) {
   const params = new URLSearchParams()
   if (filters.search) params.set('search', filters.search)
   if (filters.diet_type) params.set('diet_type', String(filters.diet_type))
+  if (filters.min_calories !== undefined) params.set('min_calories', String(filters.min_calories))
+  if (filters.max_calories !== undefined) params.set('max_calories', String(filters.max_calories))
+  if (filters.ordering) params.set('ordering', filters.ordering)
   if (filters.page) params.set('page', String(filters.page))
   if (filters.page_size) params.set('page_size', String(filters.page_size ?? 20))
   const response = await api.get<PaginatedResponse<RecipeShort>>(`/recipes/?${params}`)

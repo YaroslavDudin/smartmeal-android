@@ -31,11 +31,18 @@ class IngredientNutritionInline(admin.StackedInline):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'cook_time', 'total_calories', 'servings')
+    list_display = ('title', 'cook_time', 'per_serving_calories', 'total_calories', 'servings')
     list_filter = ('diet_types', 'cook_time')
     search_fields = ('title',)
     inlines = [RecipeIngredientInline, RecipeStepInline]
-    filter_horizontal = ('diet_types',)
+    filter_horizontal = ('diet_types', 'meal_types')
+    actions = ['recalculate_nutrition']
+
+    @admin.action(description='Пересчитать КБЖУ для выбранных рецептов')
+    def recalculate_nutrition(self, request, queryset):
+        for recipe in queryset:
+            recipe.update_nutrition_cache()
+        self.message_user(request, f"КБЖУ пересчитаны для {queryset.count()} рецептов.")
 
 
 @admin.register(Ingredient)

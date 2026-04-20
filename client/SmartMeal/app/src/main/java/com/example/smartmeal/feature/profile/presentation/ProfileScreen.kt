@@ -292,6 +292,22 @@ fun ProfileScreen(
                     Spacer(modifier = Modifier.height(32.dp))
                 }
 
+                // --- Диалоги ---
+                if (state.error != null) {
+                    androidx.compose.material3.AlertDialog(
+                        onDismissRequest = { viewModel.clearError() },
+                        title = { SmartMealText("Внимание", fontWeight = FontWeight.Bold) },
+                        text = { SmartMealText(state.error!!) },
+                        confirmButton = {
+                            androidx.compose.material3.TextButton(onClick = { viewModel.clearError() }) {
+                                SmartMealText("ОК", color = PrimaryGreen, fontWeight = FontWeight.Bold)
+                            }
+                        },
+                        containerColor = Color.White,
+                        shape = RoundedCornerShape(20.dp)
+                    )
+                }
+
                 if (showLogoutDialog) {
                     LogoutConfirmDialog(
                         onConfirm = {

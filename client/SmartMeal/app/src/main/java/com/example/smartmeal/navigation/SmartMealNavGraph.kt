@@ -39,6 +39,9 @@ import androidx.navigation.navDeepLink
 import com.example.smartmeal.feature.auth.presentation.ForgotPasswordScreen
 import com.example.smartmeal.feature.auth.presentation.ResetPasswordScreen
 
+import com.example.smartmeal.feature.recipes.presentation.RecipeListScreen
+import com.example.smartmeal.feature.recipes.presentation.RecipeListViewModel
+
 /**
  * Главный граф навигации приложения.
  * Принимает [navController], который создается в MainActivity.
@@ -227,6 +230,27 @@ fun SmartMealNavGraph(navController: NavHostController) {
                 onRecipeClick = { recipeId, menuItemId ->
                     val portionSize = setupPreferences.getPortionSize()
                     navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize, menuItemId))
+                },
+                onSearchClick = {
+                    navController.navigate(Screen.RecipeList.route)
+                }
+            )
+        }
+
+        composable(route = Screen.RecipeList.route) {
+            val recipeListViewModel: RecipeListViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    return RecipeListViewModel(recipeApi) as T
+                }
+            })
+
+            RecipeListScreen(
+                viewModel = recipeListViewModel,
+                onBack = { navController.popBackStack() },
+                onRecipeClick = { recipeId ->
+                    val portionSize = setupPreferences.getPortionSize()
+                    navController.navigate(Screen.RecipeDetail.createRoute(recipeId, portionSize, null))
                 }
             )
         }

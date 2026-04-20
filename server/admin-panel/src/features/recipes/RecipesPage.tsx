@@ -22,6 +22,8 @@ export function RecipesPage() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [dietFilter, setDietFilter] = useState<number | undefined>()
+  const [minCalories, setMinCalories] = useState<number | undefined>()
+  const [maxCalories, setMaxCalories] = useState<number | undefined>()
   const [deleteTarget, setDeleteTarget] = useState<RecipeShort | null>(null)
   const [previewId, setPreviewId] = useState<number | null>(null)
 
@@ -33,8 +35,15 @@ export function RecipesPage() {
   })
 
   const { data, isLoading } = useQuery({
-    queryKey: ['recipes', { search, page, dietFilter }],
-    queryFn: () => getRecipes({ search, page, diet_type: dietFilter, page_size: PAGE_SIZE }),
+    queryKey: ['recipes', { search, page, dietFilter, minCalories, maxCalories }],
+    queryFn: () => getRecipes({ 
+      search, 
+      page, 
+      diet_type: dietFilter, 
+      min_calories: minCalories,
+      max_calories: maxCalories,
+      page_size: PAGE_SIZE 
+    }),
   })
 
   const { data: dietTypes } = useQuery({
@@ -93,6 +102,43 @@ export function RecipesPage() {
             <option key={dt.id} value={dt.id}>{dt.name}</option>
           ))}
         </select>
+        <div className="flex items-center gap-2">
+          <input
+            type="number"
+            placeholder="Мин. ккал"
+            className="input w-24"
+            value={minCalories ?? ''}
+            onChange={(e) => {
+              setMinCalories(e.target.value ? Number(e.target.value) : undefined)
+              setPage(1)
+            }}
+          />
+          <span className="text-[var(--text-muted)]">—</span>
+          <input
+            type="number"
+            placeholder="Макс. ккал"
+            className="input w-24"
+            value={maxCalories ?? ''}
+            onChange={(e) => {
+              setMaxCalories(e.target.value ? Number(e.target.value) : undefined)
+              setPage(1)
+            }}
+          />
+        </div>
+        {(search || dietFilter || minCalories || maxCalories) && (
+          <button 
+            className="btn-ghost text-xs"
+            onClick={() => {
+              setSearch('')
+              setDietFilter(undefined)
+              setMinCalories(undefined)
+              setMaxCalories(undefined)
+              setPage(1)
+            }}
+          >
+            Сбросить
+          </button>
+        )}
       </div>
 
       <div className="card overflow-hidden">

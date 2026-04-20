@@ -165,6 +165,24 @@ class Recipe(models.Model):
     diet_types = models.ManyToManyField('accounts.DietType', related_name='recipes')
     meal_types = models.ManyToManyField('menus.MealType', related_name='recipes', blank=True)
 
+    # Денормализованные поля для КБЖУ на порцию
+    per_serving_calories = models.DecimalField(
+        max_digits=8, decimal_places=1, default=0, db_index=True,
+        verbose_name='Калории на порцию'
+    )
+    per_serving_proteins = models.DecimalField(
+        max_digits=8, decimal_places=1, default=0,
+        verbose_name='Белки на порцию'
+    )
+    per_serving_fats = models.DecimalField(
+        max_digits=8, decimal_places=1, default=0,
+        verbose_name='Жиры на порцию'
+    )
+    per_serving_carbs = models.DecimalField(
+        max_digits=8, decimal_places=1, default=0,
+        verbose_name='Углеводы на порцию'
+    )
+
     objects = RecipeQuerySet.as_manager()
 
     class Meta:
@@ -176,6 +194,41 @@ class Recipe(models.Model):
         ]
         ordering = ['title']
 
+    def update_nutrition_cache(self):
+        '''Пересчитывает и сохраняет денормализованные поля КБЖУ.'''
+        protein = fat = carbs = Decimal(0)
+        
+        # Используем .all() — если вызывается из сигнала, 
+        # нужно убедиться, что prefetch не мешает актуальности данных.
+        for ri in self.recipe_ingredients.all():
+            try:
+                p, f, c = ri.get_macros()
+                protein += p
+                fat += f
+                carbs += c
+            except (ValueError, AttributeError):
+                # Пропускаем ингредиенты без КБЖУ или конвертации
+                continue
+        
+        if self.servings > 0:
+            self.per_serving_proteins = protein / self.servings
+            self.per_serving_fats = fat / self.servings
+            self.per_serving_carbs = carbs / self.servings
+            self.per_serving_calories = (
+                self.per_serving_proteins * CALORIES_PER_GRAM['protein']
+                + self.per_serving_carbs * CALORIES_PER_GRAM['carbs']
+                + self.per_serving_fats * CALORIES_PER_GRAM['fat']
+            )
+        else:
+            self.per_serving_proteins = self.per_serving_fats = \
+            self.per_serving_carbs = self.per_serving_calories = Decimal(0)
+
+        # Сохраняем только измененные поля, чтобы не зациклить save()
+        self.save(update_fields=[
+            'per_serving_proteins', 'per_serving_fats', 
+            'per_serving_carbs', 'per_serving_calories'
+        ])
+
     def _get_nutrition_totals(self):
         '''
         Итерирует recipe_ingredients ровно один раз и кэширует результат на экземпляре.
@@ -183,18 +236,18 @@ class Recipe(models.Model):
         Для списков рецептов предпочтительнее использовать with_prefetched_ingredients().
         '''
         if not hasattr(self, '_nutrition_cache'):
-            protein = fat = carbs = Decimal(0)
-            for ri in self.recipe_ingredients.all():
-                p, f, c = ri.get_macros()
-                protein += p
-                fat += f
-                carbs += c
-            calories = (
-                protein * CALORIES_PER_GRAM['protein']
-                + carbs * CALORIES_PER_GRAM['carbs']
-                + fat * CALORIES_PER_GRAM['fat']
-            )
-            self._nutrition_cache = {'protein': protein, 'fat': fat, 'carbs': carbs, 'calories': calories}
+            # Используем уже посчитанные денормализованные данные для итогов
+            protein = self.per_serving_proteins * self.servings
+            fat = self.per_serving_fats * self.servings
+            carbs = self.per_serving_carbs * self.servings
+            calories = self.per_serving_calories * self.servings
+            
+            self._nutrition_cache = {
+                'protein': protein, 
+                'fat': fat, 
+                'carbs': carbs, 
+                'calories': calories
+            }
         return self._nutrition_cache
 
     @property
@@ -217,26 +270,26 @@ class Recipe(models.Model):
         '''Общая калорийность рецепта (ккал)'''
         return self._get_nutrition_totals()['calories']
 
-    @property
-    def per_serving_proteins(self):
-        return self.total_proteins / self.servings
-
-    @property
-    def per_serving_fats(self):
-        return self.total_fats / self.servings
-
-    @property
-    def per_serving_carbs(self):
-        return self.total_carbs / self.servings
-
-    @property
-    def per_serving_calories(self):
-        return self.total_calories / self.servings
-
     def save(self, *args, **kwargs):
         if hasattr(self, '_nutrition_cache'):
             delattr(self, '_nutrition_cache')
+        
+        is_new = self.pk is None
+        old_servings = None
+        if not is_new:
+            try:
+                old_servings = Recipe.objects.get(pk=self.pk).servings
+            except Recipe.DoesNotExist:
+                pass
+
         super().save(*args, **kwargs)
+        
+        # Если количество порций изменилось, нужно обновить кэш КБЖУ на порцию
+        if not is_new and old_servings != self.servings:
+            # Но только если мы не сохраняем только определенные поля (чтобы избежать рекурсии от update_nutrition_cache)
+            update_fields = kwargs.get('update_fields')
+            if update_fields is None or 'servings' in update_fields:
+                self.update_nutrition_cache()
 
     def refresh_from_db(self, *args, **kwargs):
         super().refresh_from_db(*args, **kwargs)

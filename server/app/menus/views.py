@@ -18,17 +18,17 @@ def filter_recipes_by_cook_time(qs, cook_time_range):
     """
     if not cook_time_range or cook_time_range == 'any':
         return qs
-        
+
     if cook_time_range == 'short':
+        # До 30 минут включительно
         return qs.filter(cook_time__lte=30)
     elif cook_time_range == 'medium':
-        # От 30 до 60 (исключая границы 30 и 60, так как они в short и long)
+        # От 30 до 60 минут (не включая границы)
         return qs.filter(cook_time__gt=30, cook_time__lt=60)
     elif cook_time_range == 'long':
         # 60 минут и более
         return qs.filter(cook_time__gte=60)
     return qs
-
 
 class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
@@ -123,27 +123,22 @@ class MenuViewSet(viewsets.ModelViewSet):
             if current_mt_cook_time and current_mt_cook_time != 'any':
                 mt_qs = filter_recipes_by_cook_time(mt_qs, current_mt_cook_time)
 
-            # Фильтрация по калориям (в Python, так как это property)
+            # Фильтрация по калориям (строго по допуску пользователя)
             target = meal_targets.get(mt.id)
             if target:
                 margin = data.get('calorie_margin', 100) # Допуск из запроса
-                valid_recipes_objs = []
-                for r in mt_qs:
-
-                    try:
-                        cal = float(r.per_serving_calories)
-                        if (target - margin) <= cal <= (target + margin):
-                            valid_recipes_objs.append(r.id)
-                    except (ValueError, TypeError, ZeroDivisionError):
-                        continue
-                valid_recipes = valid_recipes_objs
-            else:
-                valid_recipes = list(mt_qs.values_list('id', flat=True))
+                mt_qs = mt_qs.filter(
+                    per_serving_calories__gte=target - margin,
+                    per_serving_calories__lte=target + margin
+                )
+            
+            valid_recipes = list(mt_qs.values_list('id', flat=True))
 
             if not valid_recipes:
                 cal_info = f" (~{meal_targets[mt.id]} ккал)" if mt.id in meal_targets else ""
+                time_info = f" и временем {current_mt_cook_time}" if current_mt_cook_time and current_mt_cook_time != 'any' else ""
                 return Response(
-                    {'detail': f'Для приема пищи "{mt.name}"{cal_info} нет рецептов, подходящих под ваши фильтры.'},
+                    {'detail': f'Для приема пищи "{mt.name}"{cal_info}{time_info} нет рецептов, подходящих под ваши фильтры (диета, аллергии, время).'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
@@ -356,15 +351,10 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             except:
                 margin = 100
             
-            qs = qs.with_prefetched_ingredients()
-            valid_ids = []
-            for r in qs:
-                try:
-                    cal = float(r.per_serving_calories)
-                    if (target - margin) <= cal <= (target + margin):
-                        valid_ids.append(r.id)
-                except: continue
-            qs = qs.filter(id__in=valid_ids)
+            qs = qs.filter(
+                per_serving_calories__gte=target - margin,
+                per_serving_calories__lte=target + margin
+            )
             if not qs.exists():
                 return Response({'detail': f'Не удалось найти подходящее по калориям блюдо (~{int(target)} ккал).'}, status=status.HTTP_404_NOT_FOUND)
         

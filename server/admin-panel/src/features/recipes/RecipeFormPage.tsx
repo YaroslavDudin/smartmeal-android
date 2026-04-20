@@ -95,7 +95,6 @@ export function RecipeFormPage() {
     handleSubmit,
     setValue,
     watch,
-    setError,
     formState: { errors, isSubmitting },
   } = useForm<RecipeFormData>({
     resolver: zodResolver(recipeSchema),

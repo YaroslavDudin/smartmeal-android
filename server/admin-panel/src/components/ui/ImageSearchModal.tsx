@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Search, X, Check, Loader2, ImageOff, AlertTriangle } from 'lucide-react'
+import { Search, X, Check, Loader2, ImageOff } from 'lucide-react'
 import { searchImages, ImageSearchRateLimitError } from '@/api/auth'
 import type { ImageSearchResult } from '@/api/auth'
 

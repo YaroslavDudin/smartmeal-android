@@ -80,6 +80,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Icon
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -95,6 +99,7 @@ fun HomeScreen(
     onLogoutSuccess: () -> Unit,
     onReselectPlan: () -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
+    onSearchClick: () -> Unit,
 ) {
     val menuApi = remember { RetrofitClient.createService(MenuApi::class.java) }
     val setupApi = remember { RetrofitClient.createService(SetupApi::class.java) }
@@ -254,6 +259,7 @@ fun HomeScreen(
                         onReplaceMeal = { viewModel.replaceMeal(it) },
                         onToggleFavorite = { viewModel.toggleFavorite(it) },
                         onRecipeClick = onRecipeClick,
+                        onSearchClick = onSearchClick,
                         onDateSelectedFromPlan = { viewModel.selectDate(it, visibleCustomPlan) },
                         onReselectPlan = onReselectPlan,
                         customPlan = visibleCustomPlan,
@@ -321,6 +327,7 @@ fun HomeContent(
     onReplaceMeal: (Int) -> Unit,
     onToggleFavorite: (Int) -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
+    onSearchClick: () -> Unit,
     onDateSelectedFromPlan: (Date) -> Unit,
     onReselectPlan: () -> Unit,
     customPlan: CustomPlan?,
@@ -343,16 +350,26 @@ fun HomeContent(
         indication = null,
         interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
     )) {
-        SmartMealText(
-            text = "Меню",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 8.dp)
-                .testTag("home_title"),
-            color = MaterialTheme.colorScheme.onBackground,
-            textAlign = TextAlign.Center
-        )
+        Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp)) {
+            SmartMealText(
+                text = "Меню",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.align(Alignment.Center).testTag("home_title"),
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Center
+            )
+            
+            androidx.compose.material3.IconButton(
+                onClick = onSearchClick,
+                modifier = Modifier.align(Alignment.CenterEnd).padding(end = 8.dp)
+            ) {
+                androidx.compose.material3.Icon(
+                    imageVector = androidx.compose.material.icons.Icons.Default.Search,
+                    contentDescription = "Search",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }
 
         val monthYearLabel = availableDates.firstOrNull()?.let {
             formatMonthYearForSelector(uiState.selectedDate ?: it)
@@ -912,10 +929,12 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                             e.printStackTrace()
                         }
                     }
-
-                    val updatedMenu = refreshMenu()
-                    // После генерации и обновления меню в refreshMenu, кэш уже должен быть заполнен,
-                    // но мы вызываем notifyMenuChanged, чтобы StatisticsViewModel перечитала его.
+                    
+                    // Сбрасываем кэш и дату, чтобы приложение увидело НОВОЕ меню моментально
+                    com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
+                    preferences.clearSelectedPlanDate() 
+                    
+                    loadCurrentMenu() // Принудительная загрузка новых данных
                     com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 } else {
                     val errorBody = response.errorBody()?.string()

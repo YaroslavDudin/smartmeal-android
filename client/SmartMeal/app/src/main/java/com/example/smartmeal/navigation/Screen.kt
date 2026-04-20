@@ -13,6 +13,7 @@ sealed class Screen(val route: String) {
         fun createRoute(uid: String, token: String): String = "reset-password?uid=$uid&token=$token"
     }
     object Home : Screen("home_screen")
+    object RecipeList : Screen("recipe_list")
 
     // Флоу первоначальной настройки профиля (показывается после авторизации, если профиль не настроен)
     object SetupIntro : Screen("setup_intro")
