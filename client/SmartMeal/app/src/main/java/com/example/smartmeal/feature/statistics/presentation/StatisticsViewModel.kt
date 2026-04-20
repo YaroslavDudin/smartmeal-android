@@ -197,18 +197,13 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
 
                 _uiState.update { it.copy(
                     isLoading = false,
-                    dailyStats = emptyList(),
+                    dailyStats = statsList,
+                    selectedIndex = targetIndex.coerceIn(0, maxOf(0, statsList.size - 1)),
                     isCaloriesEnabled = isCaloriesEnabled,
                     targetCalories = totalCals,
                     targetProteins = targetProteins,
                     targetFats = targetFats,
                     targetCarbs = targetCarbs
-                ) }
-
-                _uiState.update { it.copy(
-                    isLoading = false,
-                    dailyStats = statsList,
-                    selectedIndex = targetIndex.coerceIn(0, maxOf(0, statsList.size - 1))
                 ) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = "Ошибка: ${e.localizedMessage}") }

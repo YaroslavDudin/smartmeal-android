@@ -790,6 +790,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
             if (hasMenuForPlan && currentMenuToDisplay != null) {
                 val menuItems = currentMenuToDisplay.items ?: emptyList()
+                
+                // СИНХРОНИЗАЦИЯ: Обновляем кэш репозитория, чтобы статистика могла взять его мгновенно
+                MenuRepository.setMenuItemsCache(allItems)
+
                 val menuStart = apiDateFormatter.parse(currentMenuToDisplay.start_date) ?: Date()
                 val maxOffset = menuItems.maxOfOrNull { it.day_offset } ?: 0
                 val menuEnd = Calendar.getInstance().apply {
@@ -903,7 +907,9 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                         }
                     }
 
-                    refreshMenu()
+                    val updatedMenu = refreshMenu()
+                    // После генерации и обновления меню в refreshMenu, кэш уже должен быть заполнен,
+                    // но мы вызываем notifyMenuChanged, чтобы StatisticsViewModel перечитала его.
                     com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -1092,6 +1098,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                         val updatedAllMenuItems = currentState.allMenuItems.map { if (it.id == mealId) updatedItem else it }
                         currentState.copy(currentMenu = updatedCurrentMenu, allMenuItems = updatedAllMenuItems)
                     }
+                    
+                    // СИНХРОНИЗАЦИЯ: Обновляем кэш репозитория для мгновенного обновления статистики
+                    MenuRepository.updateMenuItemInCache(updatedItem)
+                    
                     updateMealSections()
                     com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 }

@@ -14,7 +14,8 @@ object MenuUpdateManager {
      * Вызывать при любом изменении состава меню на сервере.
      */
     fun notifyMenuChanged() {
-        com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
+        // Мы больше не очищаем кэш здесь, так как HomeViewModel обновляет его вручную
+        // перед вызовом этого метода. Это позволяет StatisticsViewModel брать данные из кэша.
         _menuUpdates.tryEmit(Unit)
     }
 }

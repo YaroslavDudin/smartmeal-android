@@ -39,13 +39,27 @@ class MenuRepository(private val api: MenuApi) {
         private var latestMenuCache: MenuDto? = null
         private val menuByIdCache = mutableMapOf<Int, MenuDto>()
         private var lastCacheTime: Long = 0
-        private const val CACHE_DURATION = 15000L // 15 секунд кэша
+        private const val CACHE_DURATION = 60000L // Увеличим до 60 секунд, так как мы будем обновлять кэш вручную
         
         fun clearCache() {
             menuItemsCache = null
             latestMenuCache = null
             menuByIdCache.clear()
             lastCacheTime = 0
+        }
+
+        /** Установить кэш элементов меню вручную (например, после загрузки в HomeViewModel) */
+        fun setMenuItemsCache(items: List<MenuItemDto>) {
+            menuItemsCache = items
+            lastCacheTime = System.currentTimeMillis()
+        }
+
+        /** Обновить один элемент в кэше (например, после замены блюда) */
+        fun updateMenuItemInCache(updatedItem: MenuItemDto) {
+            menuItemsCache = menuItemsCache?.map { 
+                if (it.id == updatedItem.id) updatedItem else it 
+            }
+            lastCacheTime = System.currentTimeMillis()
         }
     }
 
