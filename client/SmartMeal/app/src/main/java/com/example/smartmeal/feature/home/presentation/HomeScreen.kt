@@ -116,7 +116,8 @@ fun HomeScreen(
             ProfileViewModelFactory(
                 api = setupApi,
                 preferences = setupPreferences,
-                onProfileSettingsChanged = { viewModel.regenerateMenuForCurrentPlan() },
+                onCriticalSettingsChanged = { viewModel.regenerateMenuForCurrentPlan() },
+                onSimpleSettingsChanged = { viewModel.reloadMenu() },
                 onMenuManualChanged = { viewModel.reloadMenu() }
             )
         }
@@ -222,6 +223,7 @@ fun HomeScreen(
                 ) {
                     HomeContent(
                         uiState = uiState,
+                        viewModel = viewModel,
                         onDateSelected = { viewModel.selectDate(it, visibleCustomPlan) },
                         onGenerateMenu = {
                             val storedPlanType = setupPreferences.getPlanType()
@@ -311,6 +313,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     uiState: HomeUiState,
+    viewModel: HomeViewModel,
     onDateSelected: (Date) -> Unit,
     onGenerateMenu: () -> Unit,
     onReplaceMeal: (Int) -> Unit,
@@ -452,6 +455,7 @@ fun HomeContent(
                         sectionId = section.id,
                         title = section.title,
                         meal = section.meal,
+                        viewModel = viewModel,
                         onReplaceClick = { pendingReplacement = section },
                         onFavoriteClick = { onToggleFavorite(section.meal.id) },
                         onRecipeClick = onRecipeClick
@@ -487,6 +491,7 @@ fun MealSection(
     sectionId: String,
     title: String,
     meal: MenuItemDto,
+    viewModel: HomeViewModel,
     onReplaceClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     onRecipeClick: (Int, Int?) -> Unit,
@@ -525,13 +530,17 @@ fun MealSection(
         ) { item ->
             Box(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                    .clickable { onRecipeClick(item.recipe, item.id) }
+                    .clickable { 
+                        viewModel.setActiveSlot(item.meal_type)
+                        onRecipeClick(item.recipe, item.id) 
+                    }
             ) {
                 MealCard(
                     title = item.recipe_title,
                     cookTime = "${item.cook_time} мин",
                     imageUrl = item.image_url,
                     isFavorite = item.is_favorite,
+                    isActive = item.is_active,
                     onFavoriteClick = onFavoriteClick
                 )
             }
@@ -672,6 +681,11 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 }
             }
         }
+        viewModelScope.launch {
+            com.example.smartmeal.data.manager.MealSlotManager.activeMealType.collect {
+                updateMealSections()
+            }
+        }
     }
 
     private fun updateFavoriteInState(recipeId: Int, isFavorite: Boolean) {
@@ -699,9 +713,14 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
     fun reloadMenu() {
         viewModelScope.launch { 
+            com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
             refreshMenu() 
             com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
         }
+    }
+
+    fun setActiveSlot(mealType: String) {
+        com.example.smartmeal.data.manager.MealSlotManager.setActiveMealType(mealType)
     }
 
     fun regenerateMenuForCurrentPlan() {
@@ -931,6 +950,8 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 uniqueItems
             } else emptyList()
 
+            val activeMealType = com.example.smartmeal.data.manager.MealSlotManager.getActiveMealType()
+
             val mealSections = itemsForDay.map { item ->
                 val title = when (item.meal_type.lowercase(Locale.US)) {
                     "breakfast", "завтрак" -> "Завтрак"
@@ -938,7 +959,8 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     "dinner", "ужин" -> "Ужин"
                     else -> item.meal_type.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
                 }
-                MealSection(id = item.meal_type, title = title, meal = item)
+                val updatedItem = item.copy(is_active = item.meal_type.lowercase(Locale.US) == activeMealType?.lowercase(Locale.US))
+                MealSection(id = item.meal_type, title = title, meal = updatedItem)
             }.sortedBy { section ->
                 when(section.id.lowercase(Locale.US)) {
                     "breakfast", "завтрак" -> 1
@@ -997,6 +1019,9 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             Calendar.THURSDAY -> 3; Calendar.FRIDAY -> 4; Calendar.SATURDAY -> 5
             Calendar.SUNDAY -> 6; else -> 0
         }
+        if (com.example.smartmeal.data.manager.MealSlotManager.getActiveMealType() == null) {
+            com.example.smartmeal.data.manager.MealSlotManager.setActiveMealType("breakfast")
+        }
         _uiState.update { it.copy(selectedDay = dayNames[dayIndex], selectedDate = normalized, selectedDateFromPlan = customPlan != null) }
         updateMealSections()
 
@@ -1029,6 +1054,8 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         val oldRecipeId = menuItem.recipe
         val mealType = menuItem.meal_type
         val dateStr = menuItem.actual_date
+        
+        com.example.smartmeal.data.manager.MealSlotManager.setActiveMealType(mealType)
 
         viewModelScope.launch {
             try {
@@ -1220,13 +1247,14 @@ private class ProductListViewModelFactory(private val menuApi: MenuApi, private 
 class ProfileViewModelFactory(
     private val api: SetupApi,
     private val preferences: SetupPreferences,
-    private val onProfileSettingsChanged: () -> Unit,
+    private val onCriticalSettingsChanged: () -> Unit,
+    private val onSimpleSettingsChanged: () -> Unit,
     private val onMenuManualChanged: () -> Unit
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ProfileViewModel(api, preferences, onProfileSettingsChanged, onMenuManualChanged) as T
+            return ProfileViewModel(api, preferences, onCriticalSettingsChanged, onSimpleSettingsChanged, onMenuManualChanged) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

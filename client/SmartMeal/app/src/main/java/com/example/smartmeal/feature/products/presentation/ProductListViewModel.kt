@@ -209,7 +209,7 @@ class ProductListViewModel(
     }
 
     fun generateProductsFromMenuItems(menuItems: List<MenuItemDto>) {
-        val menuSignature = buildMenuSignature(menuItems)
+        val menuSignature = buildMenuSignature(menuItems, preferences)
         if (menuSignature == lastMenuSignature && products.isNotEmpty()) return
 
         viewModelScope.launch {
@@ -468,10 +468,13 @@ class ProductListViewModel(
     }
 }
 
-internal fun buildMenuSignature(menuItems: List<MenuItemDto>): String {
-    return menuItems.joinToString("|") { item ->
-        "${item.id}:${item.recipe}:${item.actual_date}:${item.meal_type}"
+internal fun buildMenuSignature(menuItems: List<MenuItemDto>, preferences: SetupPreferences): String {
+    val globalPortions = preferences.getPortionSize()
+    val itemsSignature = menuItems.joinToString("|") { item ->
+        val customServings = preferences.getMenuItemServings(item.id)
+        "${item.id}:${item.recipe}:${item.actual_date}:${item.meal_type}:$customServings"
     }
+    return "$globalPortions|$itemsSignature"
 }
 
 internal fun parseApiDate(value: String): Date? {

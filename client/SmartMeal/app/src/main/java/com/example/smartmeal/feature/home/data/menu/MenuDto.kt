@@ -24,6 +24,7 @@ data class MenuItemDto(
     val per_serving_proteins: Double = 0.0,
     val per_serving_fats: Double = 0.0,
     val per_serving_carbs: Double = 0.0,
+    val is_active: Boolean = false
 )
 
 data class RecipeShortDto(

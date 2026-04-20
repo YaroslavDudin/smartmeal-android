@@ -86,7 +86,8 @@ fun ProfileState.getGroupedFavorites(): Map<String, List<com.example.smartmeal.f
 class ProfileViewModel(
     private val api: SetupApi,
     private val preferences: SetupPreferences,
-    private val onProfileSettingsChanged: () -> Unit = {},
+    private val onCriticalSettingsChanged: () -> Unit = {},
+    private val onSimpleSettingsChanged: () -> Unit = {},
     private val onMenuManualChanged: () -> Unit = {}
 ) : ViewModel() {
 
@@ -124,7 +125,7 @@ class ProfileViewModel(
         _state.update { it.copy(recipeIdsInMenuOnSelectedDay = recipeIds) }
     }
 
-    fun addToMenu(recipeId: Int) {
+    fun addToMenu(recipeId: Int, preferredMealType: String? = null) {
         val selectedDate = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate() ?: return
         val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(selectedDate)
 
@@ -136,51 +137,106 @@ class ProfileViewModel(
                     return@launch
                 }
                 
-                val allItemsOnDate = itemsRes.body()?.filter { it.actual_date == dateStr } ?: emptyList()
-                if (allItemsOnDate.isEmpty()) {
-                    _state.update { it.copy(error = "На $dateStr нет приемов пищи в плане") }
+                val allItems = itemsRes.body() ?: emptyList()
+                if (allItems.isEmpty()) {
+                    _state.update { it.copy(error = "У вас еще нет блюд в плане") }
                     return@launch
+                }
+
+                // Находим ID последнего меню, чтобы обновлять только актуальные слоты
+                val latestMenuId = allItems.maxOfOrNull { it.menu ?: 0 } ?: 0
+                
+                // Фильтруем: только текущая дата И только последнее меню
+                val allItemsOnDate = allItems.filter { it.actual_date == dateStr && (it.menu ?: 0) == latestMenuId }
+                    .sortedByDescending { it.id }
+                    .distinctBy { it.meal_type.lowercase(java.util.Locale.US) }
+                
+                if (allItemsOnDate.isEmpty()) {
+                    // Если в последнем меню нет слотов на эту дату, пробуем просто по дате
+                    val fallbackItems = allItems.filter { it.actual_date == dateStr }
+                        .sortedByDescending { it.id }
+                        .distinctBy { it.meal_type.lowercase(java.util.Locale.US) }
+                    
+                    if (fallbackItems.isEmpty()) {
+                        _state.update { it.copy(error = "На $dateStr нет приемов пищи в плане") }
+                        return@launch
+                    }
                 }
 
                 val favorite = _state.value.favorites.find { it.recipe == recipeId } ?: return@launch
                 val recipeMealTypes = favorite.meal_types.map { it.lowercase(java.util.Locale.US) }
                 
-                var targetSlot = allItemsOnDate.sortedByDescending { it.id }.find { item ->
-                    val slotType = item.meal_type.lowercase(java.util.Locale.US)
-                    recipeMealTypes.any { rt -> 
-                        slotType.contains(rt) || rt.contains(slotType) ||
-                        (slotType == "lunch" && rt.contains("обед")) ||
-                        (slotType == "breakfast" && rt.contains("завтрак")) ||
-                        (slotType == "dinner" && rt.contains("ужин"))
+                // 1. Сначала пытаемся найти слот, соответствующий ПРЕДПОЧТИТЕЛЬНОМУ типу (из раздела избранного)
+                var targetSlot = if (preferredMealType != null) {
+                    val pref = preferredMealType.lowercase(java.util.Locale.US)
+                    allItemsOnDate.find { item ->
+                        val slotType = item.meal_type.lowercase(java.util.Locale.US)
+                        // Проверяем совпадение слота с предпочтением
+                        val matchesPref = slotType == pref || 
+                                         (slotType == "lunch" && (pref == "обед" || pref == "lunch")) ||
+                                         (slotType == "breakfast" && (pref == "завтрак" || pref == "breakfast")) ||
+                                         (slotType == "dinner" && (pref == "ужин" || pref == "dinner"))
+                        
+                        // Если слот совпадает с предпочтением, берем его (даже если типы рецепта не совсем сходятся)
+                        matchesPref
+                    }
+                } else null
+
+                // 2. Если не нашли по предпочтению, ищем по АКТИВНОМУ слоту
+                if (targetSlot == null) {
+                    val activeType = com.example.smartmeal.data.manager.MealSlotManager.getActiveMealType()
+                    targetSlot = allItemsOnDate.find { item ->
+                        val slotType = item.meal_type.lowercase(java.util.Locale.US)
+                        slotType == activeType
+                    }
+                }
+
+                // 3. Если все еще не нашли, ищем любой подходящий по типам блюда
+                if (targetSlot == null) {
+                    targetSlot = allItemsOnDate.find { item ->
+                        val slotType = item.meal_type.lowercase(java.util.Locale.US)
+                        recipeMealTypes.any { rt -> 
+                            slotType.contains(rt) || rt.contains(slotType) ||
+                            (slotType == "lunch" && rt.contains("обед")) ||
+                            (slotType == "breakfast" && rt.contains("завтрак")) ||
+                            (slotType == "dinner" && rt.contains("ужин"))
+                        }
                     }
                 }
                 
+                // 4. Совсем крайний случай - берем первый попавшийся слот на эту дату
                 if (targetSlot == null) {
-                    targetSlot = allItemsOnDate.maxByOrNull { it.id }
+                    targetSlot = allItemsOnDate.firstOrNull()
                 }
                 
                 if (targetSlot != null) {
                     val oldRecipeId = targetSlot.recipe
-                    com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
-                        dateStr, oldRecipeId, recipeId
-                    )
-
+                    
                     val replaceRes = menuApi.setRecipeToMenuItem(
                         targetSlot.id, 
                         com.example.smartmeal.feature.home.data.api.SetRecipeRequest(recipeId)
                     )
                     
                     if (replaceRes.isSuccessful) {
+                        // Сначала обновляем локальный стейт синхронизации
+                        com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
+                            dateStr, oldRecipeId, recipeId
+                        )
                         preferences.clearMenuItemServings(targetSlot.id)
+                        
+                        // Принудительно очищаем кэш репозитория
+                        com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
+                        
+                        // Уведомляем главный экран о необходимости обновления
                         onMenuManualChanged() 
+                        
+                        // Обновляем состояние "✓" в профиле
                         updateMenuStateForDate(selectedDate)
+                        
                         try {
                             menuApi.recalculateCart(com.example.smartmeal.feature.home.data.api.RecalculateCartRequest())
                         } catch (e: Exception) {}
                     } else {
-                        com.example.smartmeal.data.manager.MenuSyncManager.replaceRecipeInState(
-                            dateStr, recipeId, oldRecipeId
-                        )
                         _state.update { it.copy(error = "Ошибка сервера: ${replaceRes.code()}") }
                     }
                 }
@@ -362,7 +418,7 @@ class ProfileViewModel(
     }
 
     fun confirmCookTimes() {
-        onProfileSettingsChanged()
+        onSimpleSettingsChanged()
     }
 
     fun loadFavorites() {
@@ -426,7 +482,7 @@ class ProfileViewModel(
                         dietTypeId = s.currentDietTypeId,
                         allergyIds = s.pendingAllergyIds
                     )
-                    onProfileSettingsChanged()
+                    onCriticalSettingsChanged()
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }
@@ -471,7 +527,7 @@ class ProfileViewModel(
                         dietTypeId = s.pendingDietTypeId,
                         allergyIds = s.currentAllergyIds
                     )
-                    onProfileSettingsChanged()
+                    onCriticalSettingsChanged()
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }
@@ -512,7 +568,7 @@ class ProfileViewModel(
                         dietTypeId = s.currentDietTypeId,
                         allergyIds = s.currentAllergyIds
                     )
-                    onProfileSettingsChanged()
+                    onSimpleSettingsChanged()
                 } else {
                     _state.update { it.copy(isSaving = false, error = "Ошибка сервера: ${resp.code()}") }
                 }
@@ -534,7 +590,7 @@ class ProfileViewModel(
                 preferences.setMealCalories(type, cals)
             }
             _state.update { it.copy(totalCalories = total, mealCalories = meals) }
-            onProfileSettingsChanged()
+            onSimpleSettingsChanged()
         }
     }
 

@@ -93,7 +93,7 @@ fun ProfileScreen(
                 onBack = { subScreen = ProfileSubScreen.NONE },
                 onRecipeClick = onRecipeClick,
                 onFavoriteClick = { viewModel.toggleFavorite(it) },
-                onPlusClick = { viewModel.addToMenu(it) }
+                onPlusClick = { recipeId, type -> viewModel.addToMenu(recipeId, type) }
             )
 
         ProfileSubScreen.COOK_TIME ->
@@ -497,7 +497,7 @@ fun FavoritesScreen(
     onBack: () -> Unit,
     onRecipeClick: (Int) -> Unit,
     onFavoriteClick: (Int) -> Unit,
-    onPlusClick: (Int) -> Unit
+    onPlusClick: (Int, String?) -> Unit
 ) {
     val recentlyRemoved = remember { mutableStateListOf<UserFavoriteDto>() }
     val groupedFavorites = remember(state.favorites) { state.getGroupedFavorites() }
@@ -564,7 +564,7 @@ fun FavoritesScreen(
                                 onFavoriteClick(favorite.recipe)
                             },
                             isInMenu = favorite.recipe in recipeIdsInMenu,
-                            onPlusClick = { onPlusClick(favorite.recipe) },
+                            onPlusClick = { onPlusClick(favorite.recipe, category) },
                             modifier = Modifier
                                 .animateItem()
                                 .clickable { onRecipeClick(favorite.recipe) }

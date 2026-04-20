@@ -31,6 +31,9 @@ import com.example.smartmeal.utils.softBottomShadow
 
 import androidx.compose.material3.IconButton
 
+import androidx.compose.foundation.border
+import com.example.smartmeal.ui.theme.PrimaryGreen
+
 @Composable
 fun MealCard(
     modifier: Modifier = Modifier,
@@ -40,6 +43,7 @@ fun MealCard(
     imageUrl: String? = null,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
+    isActive: Boolean = false,
     isInMenu: Boolean = false,
     onPlusClick: (() -> Unit)? = null,
     cardTag: String? = null,
@@ -56,6 +60,13 @@ fun MealCard(
             .fillMaxWidth()
             .height(100.dp)
             .softBottomShadow(shape = RoundedCornerShape(16.dp))
+            .then(
+                if (isActive) Modifier.border(
+                    width = 2.dp,
+                    color = PrimaryGreen,
+                    shape = RoundedCornerShape(16.dp)
+                ) else Modifier
+            )
             .testTag(resolvedCardTag),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),

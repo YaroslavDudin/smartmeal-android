@@ -161,6 +161,16 @@ class RecipeDetailViewModel(
     fun changeServings(servings: Int) {
         // Сохраняем индивидуальную настройку для конкретного блюда
         currentMenuItemId?.let { preferences?.setMenuItemServings(it, servings) }
+        
+        // СИНХРОНИЗАЦИЯ: Уведомляем другие экраны (например, Продукты), что настройки изменились
+        if (preferences != null) {
+            com.example.smartmeal.data.manager.ProfileManager.notifyProfileChanged(
+                portionSize = preferences.getPortionSize(),
+                dietTypeId = preferences.getDietType(),
+                allergyIds = preferences.getAllergies().toSet()
+            )
+        }
+        
         loadRecipe(currentRecipeId, currentMenuItemId, servings)
     }
 
