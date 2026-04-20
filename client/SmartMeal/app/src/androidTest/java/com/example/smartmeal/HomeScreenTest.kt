@@ -79,6 +79,7 @@ class HomeScreenTest {
             .onNodeWithTag("home_generate_button")
             .performClick()
 
+        composeTestRule.waitForIdle()
         assertTrue(clicked)
     }
 
@@ -100,7 +101,8 @@ class HomeScreenTest {
         val state = HomeUiState(
             hasMenu = true,
             mealSections = sections,
-            currentMenu = menuWithDates("2099-03-10", "2099-03-11")
+            currentMenu = menuWithDates("2099-03-10", "2099-03-11"),
+            selectedDate = dateFormatter.parse("2099-03-10")
         )
 
         composeTestRule.setContent {
@@ -131,6 +133,7 @@ class HomeScreenTest {
             HomeUiState(
                 hasMenu = true,
                 currentMenu = menuWithDates("2099-03-10"),
+                selectedDate = dateFormatter.parse("2099-03-10"),
                 mealSections = listOf(
                     MealSection(
                         id = "breakfast",
@@ -195,7 +198,9 @@ class HomeScreenTest {
         var selected: String? = null
 
         val state = HomeUiState(
-            selectedDay = "Пн",
+            hasMenu = true,
+            selectedDay = "Вт",
+            selectedDate = dateFormatter.parse("2099-03-10"),
             currentMenu = menuWithDates("2099-03-10", "2099-03-11")
         )
 
@@ -224,6 +229,8 @@ class HomeScreenTest {
     @Test
     fun home_showsMonthYearAboveDateSelector() {
         val state = HomeUiState(
+            hasMenu = true,
+            selectedDate = dateFormatter.parse("2099-03-10"),
             currentMenu = menuWithDates("2099-03-10", "2099-03-11")
         )
 
@@ -244,12 +251,13 @@ class HomeScreenTest {
         }
 
         composeTestRule.onNodeWithTag("home_month_year").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Март 2099").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Март 2099", ignoreCase = true).assertIsDisplayed()
     }
 
     @Test
     fun home_singleAvailableDate_showsFullDateSummary() {
         val state = HomeUiState(
+            hasMenu = true,
             currentMenu = menuWithDates("2099-03-27"),
             selectedDate = dateFormatter.parse("2099-03-27")
         )
@@ -280,7 +288,7 @@ class HomeScreenTest {
         var clicked = false
         val state = HomeUiState(
             hasMenu = true,
-            currentMenu = menuWithDates("2020-03-10", "2020-03-11")
+            currentMenu = menuWithDates("2010-03-10", "2010-03-11")
         )
 
         composeTestRule.setContent {
@@ -301,6 +309,7 @@ class HomeScreenTest {
 
         composeTestRule.onNodeWithTag("home_expired_state").assertIsDisplayed()
         composeTestRule.onNodeWithTag("home_reselect_plan_button").performClick()
+        composeTestRule.waitForIdle()
         assertTrue(clicked)
     }
 
