@@ -30,6 +30,7 @@ class RecipeDetailViewModel(
 
     private var currentRecipeId: Int = -1
     private var currentMenuItemId: Int? = null
+    private var currentMealType: String? = null
 
     init {
         viewModelScope.launch {
@@ -65,6 +66,16 @@ class RecipeDetailViewModel(
         currentRecipeId = recipeId
         currentMenuItemId = menuItemId
         
+        // Пытаемся найти тип приема пищи, если передан ID элемента меню
+        if (menuItemId != null) {
+            viewModelScope.launch {
+                try {
+                    val items = com.example.smartmeal.feature.home.data.MenuRepository.getMenuItemsCache()
+                    currentMealType = items.find { it.id == menuItemId }?.meal_type
+                } catch (e: Exception) {}
+            }
+        }
+
         // ПРИОРИТЕТ: 
         // 1. Сначала проверяем сохраненное переопределение для этого конкретного приема пищи
         // 2. Если его нет, берем переданный servings (глобальный portionSize из навигации)
@@ -178,7 +189,10 @@ class RecipeDetailViewModel(
         val recipe = _state.value.recipe ?: return
         viewModelScope.launch {
             try {
-                val response = api.toggleFavorite(com.example.smartmeal.feature.recipes.data.api.ToggleFavoriteRequest(recipe.id))
+                val response = api.toggleFavorite(com.example.smartmeal.feature.recipes.data.api.ToggleFavoriteRequest(
+                    recipe = recipe.id,
+                    meal_type = currentMealType
+                ))
                 if (response.isSuccessful) {
                     val isFavorite = response.body()?.is_favorite ?: false
                     _state.update { it.copy(

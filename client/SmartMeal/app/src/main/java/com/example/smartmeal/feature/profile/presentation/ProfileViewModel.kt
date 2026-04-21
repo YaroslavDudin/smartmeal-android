@@ -70,7 +70,13 @@ fun ProfileState.getGroupedFavorites(): Map<String, List<com.example.smartmeal.f
     val grouped = mutableMapOf<String, MutableList<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>>()
     
     favorites.forEach { fav ->
-        val type = order.find { type -> 
+        // Сначала пытаемся сгруппировать по конкретному типу из записи избранного
+        val specificType = fav.meal_type_name?.let { name ->
+            order.find { it.equals(name, ignoreCase = true) || name.contains(it, ignoreCase = true) }
+        }
+        
+        // Если в записи нет конкретного типа, ищем первый подходящий из типов самого рецепта
+        val type = specificType ?: order.find { type -> 
             fav.meal_types.any { it.equals(type, ignoreCase = true) || it.contains(type, ignoreCase = true) } 
         } ?: "Другое"
         
@@ -429,10 +435,17 @@ class ProfileViewModel(
         }
     }
 
-    fun toggleFavorite(recipeId: Int) {
+    fun toggleFavorite(recipeId: Int, mealType: String? = null) {
+        // Если mealType не передан (например, нажали в общем списке), 
+        // пробуем найти уже существующую запись избранного для этого рецепта
+        val resolvedMealType = mealType ?: _state.value.favorites.find { it.recipe == recipeId }?.meal_type_name
+        
         viewModelScope.launch {
             try {
-                val response = api.toggleFavorite(com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest(recipeId))
+                val response = api.toggleFavorite(com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest(
+                    recipe = recipeId,
+                    meal_type = resolvedMealType
+                ))
                 if (response.isSuccessful) {
                     val isFavorite = response.body()?.is_favorite ?: false
                     loadFavorites()

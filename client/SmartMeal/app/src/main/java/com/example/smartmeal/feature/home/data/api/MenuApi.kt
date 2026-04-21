@@ -119,7 +119,8 @@ data class UpdateCartItemRequest(
 )
 
 data class ToggleFavoriteRequest(
-    val recipe: Int
+    val recipe: Int,
+    val meal_type: String? = null
 )
 
 data class ToggleFavoriteResponse(
@@ -132,6 +133,8 @@ data class UserFavoriteDto(
     val recipe_title: String,
     val recipe_image_url: String?,
     val recipe_cook_time: Int,
+    val meal_type: Int? = null,
+    val meal_type_name: String? = null,
     val meal_types: List<String> = emptyList()
 )
 

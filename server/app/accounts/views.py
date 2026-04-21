@@ -190,7 +190,11 @@ class UserFavoriteViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return UserFavorite.objects.filter(user=self.request.user).select_related('recipe')
+        return (
+            UserFavorite.objects
+            .filter(user=self.request.user)
+            .select_related('recipe', 'meal_type')
+        )
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -198,15 +202,39 @@ class UserFavoriteViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def toggle(self, request):
         recipe_id = request.data.get('recipe')
+        meal_type_raw = request.data.get('meal_type')
         if not recipe_id:
             return Response({"error": "Recipe ID is required"}, status=status.HTTP_400_BAD_REQUEST)
         
-        favorite = UserFavorite.objects.filter(user=request.user, recipe_id=recipe_id).first()
-        if favorite:
-            favorite.delete()
+        meal_type_id = None
+        if meal_type_raw:
+            try:
+                # Пытаемся распарсить как ID
+                meal_type_id = int(meal_type_raw)
+            except (ValueError, TypeError):
+                # Если не число, ищем по имени
+                from app.menus.models import MealType
+                mt = MealType.objects.filter(name__iexact=meal_type_raw).first()
+                if mt:
+                    meal_type_id = mt.id
+        
+        # Ищем по паре пользователь+рецепт+тип_приема
+        # Если meal_type_id не передан, ищем любую запись этого рецепта в избранном
+        filters = {"user": request.user, "recipe_id": recipe_id}
+        if meal_type_id:
+            filters["meal_type_id"] = meal_type_id
+            
+        favorites = UserFavorite.objects.filter(**filters)
+        
+        if favorites.exists():
+            favorites.delete()
             return Response({"is_favorite": False}, status=status.HTTP_200_OK)
         else:
-            UserFavorite.objects.create(user=request.user, recipe_id=recipe_id)
+            UserFavorite.objects.create(
+                user=request.user, 
+                recipe_id=recipe_id, 
+                meal_type_id=meal_type_id
+            )
             return Response({"is_favorite": True}, status=status.HTTP_201_CREATED)
 
 

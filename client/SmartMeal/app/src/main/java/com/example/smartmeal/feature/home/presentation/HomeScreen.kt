@@ -1010,10 +1010,14 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             ?: return
 
         val recipeId = menuItem.recipe
+        val mealType = menuItem.meal_type
 
         viewModelScope.launch {
             try {
-                val response = menuApi.toggleFavorite(com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest(recipeId))
+                val response = menuApi.toggleFavorite(com.example.smartmeal.feature.home.data.api.ToggleFavoriteRequest(
+                    recipe = recipeId,
+                    meal_type = mealType
+                ))
                 if (response.isSuccessful) {
                     val isFavorite = response.body()?.is_favorite ?: false
 

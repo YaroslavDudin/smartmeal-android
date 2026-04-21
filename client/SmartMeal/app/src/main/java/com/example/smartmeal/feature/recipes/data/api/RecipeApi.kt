@@ -29,7 +29,8 @@ interface RecipeApi {
 }
 
 data class ToggleFavoriteRequest(
-    val recipe: Int
+    val recipe: Int,
+    val meal_type: String? = null
 )
 
 data class ToggleFavoriteResponse(

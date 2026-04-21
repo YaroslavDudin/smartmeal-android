@@ -79,6 +79,7 @@ class User(AbstractUser):
 class UserFavorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
     recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE, related_name='favorited_by')
+    meal_type = models.ForeignKey('menus.MealType', on_delete=models.SET_NULL, null=True, blank=True, related_name='favorited_as')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -90,11 +91,11 @@ class UserFavorite(models.Model):
             models.Index(fields=['user', 'created_at']),
         ]
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'], name='unique_user_favorite_recipe')
+            models.UniqueConstraint(fields=['user', 'recipe', 'meal_type'], name='unique_user_recipe_meal_favorite')
         ]
 
     def __str__(self):
-        return f'User ID: {self.user_id} - Recipe ID: {self.recipe_id}'
+        return f'User ID: {self.user_id} - Recipe ID: {self.recipe_id} (MT: {self.meal_type_id})'
 
 
 class UserStock(models.Model):
