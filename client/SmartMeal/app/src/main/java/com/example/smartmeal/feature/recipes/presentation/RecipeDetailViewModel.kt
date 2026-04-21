@@ -71,7 +71,7 @@ class RecipeDetailViewModel(
             viewModelScope.launch {
                 try {
                     val items = com.example.smartmeal.feature.home.data.MenuRepository.getMenuItemsCache()
-                    currentMealType = items.find { it.id == menuItemId }?.meal_type
+                    currentMealType = items?.find { it.id == menuItemId }?.meal_type
                 } catch (e: Exception) {}
             }
         }

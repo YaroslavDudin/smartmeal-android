@@ -48,6 +48,9 @@ class MenuRepository(private val api: MenuApi) {
             lastCacheTime = 0
         }
 
+        /** Получить кэшированные элементы меню */
+        fun getMenuItemsCache(): List<MenuItemDto>? = menuItemsCache
+
         /** Установить кэш элементов меню вручную (например, после загрузки в HomeViewModel) */
         fun setMenuItemsCache(items: List<MenuItemDto>) {
             menuItemsCache = items
