@@ -358,17 +358,6 @@ fun HomeContent(
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
-            
-            androidx.compose.material3.IconButton(
-                onClick = onSearchClick,
-                modifier = Modifier.align(Alignment.CenterEnd).padding(end = 8.dp)
-            ) {
-                androidx.compose.material3.Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Default.Search,
-                    contentDescription = "Search",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
         }
 
         val monthYearLabel = availableDates.firstOrNull()?.let {
@@ -730,7 +719,6 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
     }
 
     private fun loadCurrentMenu() {
-        if (_uiState.value.currentMenu != null) return
         viewModelScope.launch { refreshMenu() }
     }
 
@@ -765,7 +753,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         )
     }
 
-    private suspend fun refreshMenu(): MenuDto? {
+    private suspend fun refreshMenu(forceRefresh: Boolean = false): MenuDto? {
         _uiState.update { it.copy(isLoading = true, error = null) }
         return try {
             val allItems = menuRepository.getMenuItems()
@@ -797,24 +785,27 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             }
 
             val latestMenu = menuRepository.getLatestMenu()
-            var hasMenuForPlan = false
+            var hasMenuToDisplay = false
             var currentMenuToDisplay: MenuDto? = null
 
-            if (latestMenu != null && planStart != null && planEnd != null) {
-                val menuStart = apiDateFormatter.parse(latestMenu.start_date) ?: Date(0)
-                if (!menuStart.before(normalizeDate(planStart)) && !menuStart.after(normalizeDate(planEnd))) {
-                    hasMenuForPlan = true
+            if (latestMenu != null) {
+                if (forceRefresh) {
+                    hasMenuToDisplay = true
+                    currentMenuToDisplay = latestMenu
+                } else if (planStart != null && planEnd != null) {
+                    val menuStart = apiDateFormatter.parse(latestMenu.start_date) ?: Date(0)
+                    if (!menuStart.before(normalizeDate(planStart)) && !menuStart.after(normalizeDate(planEnd))) {
+                        hasMenuToDisplay = true
+                        currentMenuToDisplay = latestMenu
+                    }
+                } else if (planType == null) {
+                    hasMenuToDisplay = true
                     currentMenuToDisplay = latestMenu
                 }
-            } else if (latestMenu != null && planType == null) {
-                hasMenuForPlan = true
-                currentMenuToDisplay = latestMenu
             }
 
-            if (hasMenuForPlan && currentMenuToDisplay != null) {
+            if (hasMenuToDisplay && currentMenuToDisplay != null) {
                 val menuItems = currentMenuToDisplay.items ?: emptyList()
-                
-                // СИНХРОНИЗАЦИЯ: Обновляем кэш репозитория, чтобы статистика могла взять его мгновенно
                 MenuRepository.setMenuItemsCache(allItems)
 
                 val menuStart = apiDateFormatter.parse(currentMenuToDisplay.start_date) ?: Date()
@@ -827,8 +818,6 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 _uiState.update {
                     val today = normalizeDate(Date())
                     val availableDates = buildAvailableDates(menuItems, CustomPlan(menuStart, menuEnd))
-
-                    // СИНХРОНИЗАЦИЯ: Приоритет дате из менеджера
                     val lastSelected = com.example.smartmeal.data.manager.DateManager.getLastSelectedDate()
                     val resolvedSelectedDate = if (lastSelected != null && availableDates.any { it.time == normalizeDate(lastSelected).time }) {
                         normalizeDate(lastSelected)
@@ -849,7 +838,6 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                         selectedDateFromPlan = false
                     )
                 }
-                updateMealSections()
             } else {
                 _uiState.update {
                     it.copy(
@@ -862,7 +850,8 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     )
                 }
             }
-            currentMenuToDisplay
+            updateMealSections()
+            _uiState.value.currentMenu
         } catch (e: Exception) {
             _uiState.update { it.copy(isLoading = false, error = "Ошибка: ${e.localizedMessage}") }
             null
@@ -877,7 +866,6 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
         mealCalories: Map<String, Int>? = null
     ) {
         viewModelScope.launch {
-            com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val type = planType ?: SetupPreferences.PLAN_TYPE_WEEKLY
@@ -890,7 +878,6 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                     formatter = apiDateFormatter, selectedPlanDate = selectedPlanDate
                 )
 
-                // Получаем индивидуальные настройки времени для каждого приема пищи
                 val breakfastTime = preferences.getMealCookTime("Завтрак")
                 val lunchTime = preferences.getMealCookTime("Обед")
                 val dinnerTime = preferences.getMealCookTime("Ужин")
@@ -900,7 +887,6 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 if (lunchTime != null && lunchTime != "any") cookTimesMap["Обед"] = lunchTime
                 if (dinnerTime != null && dinnerTime != "any") cookTimesMap["Ужин"] = dinnerTime
 
-                // Получаем диету и аллергии
                 val dietType = preferences.getDietType()
                 val allergies = preferences.getAllergies()
                 val caloriesEnabled = preferences.isCaloriesEnabled()
@@ -925,16 +911,11 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                             menuApi.recalculateCart(
                                 com.example.smartmeal.feature.home.data.api.RecalculateCartRequest(menu_id = newMenuId)
                             )
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
+                        } catch (e: Exception) {}
                     }
                     
-                    // Сбрасываем кэш и дату, чтобы приложение увидело НОВОЕ меню моментально
                     com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
-                    preferences.clearSelectedPlanDate() 
-                    
-                    loadCurrentMenu() // Принудительная загрузка новых данных
+                    refreshMenu(forceRefresh = true) 
                     com.example.smartmeal.data.manager.MenuUpdateManager.notifyMenuChanged()
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -942,12 +923,10 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                         val json = org.json.JSONObject(errorBody ?: "{}")
                         json.optString("detail", "Ошибка генерации")
                     } catch (e: Exception) { "Ошибка сервера: ${response.code()}" }
-                    _uiState.update { it.copy(error = message) }
+                    _uiState.update { it.copy(isLoading = false, error = message) }
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.localizedMessage) }
-            } finally {
-                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
@@ -965,12 +944,25 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
 
             val itemsForDay = if (resolvedDate != null) {
                 val selectedDateStr = apiDateFormatter.format(resolvedDate)
-                val sourceItems = if (state.selectedDateFromPlan) state.allMenuItems.filter { it.actual_date == selectedDateStr }
-                                 else menu.items?.filter { it.actual_date == selectedDateStr } ?: emptyList()
+                
+                // Приоритет всегда отдаем текущему меню. 
+                // allMenuItems используем только для дат, которых нет в текущем меню.
+                val currentMenuItems = menu.items?.filter { it.actual_date == selectedDateStr } ?: emptyList()
+                
+                val sourceItems = if (currentMenuItems.isNotEmpty()) {
+                    currentMenuItems
+                } else if (state.selectedDateFromPlan) {
+                    state.allMenuItems.filter { it.actual_date == selectedDateStr }
+                } else {
+                    emptyList()
+                }
 
-                // Дедупликация: оставляем только самое свежее блюдо (с макс. ID) для каждого типа приема пищи
-                val uniqueItems = sourceItems.sortedByDescending { it.id }
-                    .distinctBy { it.meal_type.lowercase(Locale.US) }
+                // Дедупликация: оставляем только блюда из САМОГО НОВОГО меню (макс ID меню) 
+                // и с самым большим ID самого элемента для каждой категории.
+                val uniqueItems = sourceItems.sortedWith(
+                    compareByDescending<MenuItemDto> { it.menu ?: 0 }
+                        .thenByDescending { it.id }
+                ).distinctBy { it.meal_type.lowercase(Locale.US) }
 
                 // СИНХРОНИЗАЦИЯ: Обновляем глобальный менеджер для этой даты
                 com.example.smartmeal.data.manager.MenuSyncManager.updateMenuForDate(

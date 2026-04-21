@@ -587,7 +587,7 @@ class ProfileViewModel(
                 preferences.setMealCalories(type, cals)
             }
             _state.update { it.copy(totalCalories = total, mealCalories = meals) }
-            onSimpleSettingsChanged()
+            onCriticalSettingsChanged()
         }
     }
 

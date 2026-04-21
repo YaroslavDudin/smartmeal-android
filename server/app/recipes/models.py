@@ -198,26 +198,32 @@ class Recipe(models.Model):
         '''Пересчитывает и сохраняет денормализованные поля КБЖУ.'''
         protein = fat = carbs = Decimal(0)
         
-        # Используем .all() — если вызывается из сигнала, 
-        # нужно убедиться, что prefetch не мешает актуальности данных.
-        for ri in self.recipe_ingredients.all():
+        # Используем менеджер напрямую, чтобы избежать проблем с закэшированными данными (prefetch_related)
+        # Это гарантирует, что мы получим актуальный список ингредиентов из базы.
+        from app.recipes.models import RecipeIngredient
+        ingredients = RecipeIngredient.objects.filter(recipe=self).select_related(
+            'ingredient__ingredient_nutrition__base_unit',
+            'unit'
+        )
+        
+        for ri in ingredients:
             try:
                 p, f, c = ri.get_macros()
                 protein += p
                 fat += f
                 carbs += c
             except (ValueError, AttributeError):
-                # Пропускаем ингредиенты без КБЖУ или конвертации
                 continue
         
         if self.servings > 0:
             self.per_serving_proteins = protein / self.servings
             self.per_serving_fats = fat / self.servings
             self.per_serving_carbs = carbs / self.servings
+            # Считаем калории на порцию по стандартной формуле 4-9-4
             self.per_serving_calories = (
                 self.per_serving_proteins * CALORIES_PER_GRAM['protein']
-                + self.per_serving_carbs * CALORIES_PER_GRAM['carbs']
                 + self.per_serving_fats * CALORIES_PER_GRAM['fat']
+                + self.per_serving_carbs * CALORIES_PER_GRAM['carbs']
             )
         else:
             self.per_serving_proteins = self.per_serving_fats = \

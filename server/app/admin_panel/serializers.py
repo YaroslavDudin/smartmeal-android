@@ -195,7 +195,7 @@ class AdminRecipeShortSerializer(serializers.ModelSerializer):
         return list(obj.diet_types.values_list('name', flat=True))
 
     def get_total_calories(self, obj):
-        float(obj.total_calories)
+        return float(obj.total_calories)
 
 
 class AdminRecipeSerializer(serializers.ModelSerializer):
