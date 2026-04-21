@@ -34,6 +34,18 @@ class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def _get_menu_items_queryset(self):
+        """Возвращает оптимизированный QuerySet для элементов меню."""
+        return MenuItem.objects.select_related('recipe', 'meal_type').prefetch_related(
+            'recipe__recipe_ingredients__ingredient__ingredient_nutrition__base_unit',
+            'recipe__recipe_ingredients__ingredient__unit_conversions__from_unit',
+            'recipe__recipe_ingredients__ingredient__unit_conversions__to_unit',
+            'recipe__recipe_ingredients__ingredient__allergies',
+            'recipe__recipe_ingredients__unit',
+            'recipe__steps',
+            'recipe__diet_types',
+        )
+
     def get_queryset(self):
         return (
             Menu.objects
@@ -41,7 +53,7 @@ class MenuViewSet(viewsets.ModelViewSet):
             .prefetch_related(
                 Prefetch(
                     'items',
-                    queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+                    queryset=self._get_menu_items_queryset(),
                 )
             )
         )
@@ -190,7 +202,7 @@ class MenuViewSet(viewsets.ModelViewSet):
             .prefetch_related(
                 Prefetch(
                     'items',
-                    queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+                    queryset=self._get_menu_items_queryset(),
                 )
             )
             .get(id=menu.id)
@@ -256,9 +268,11 @@ class MenuViewSet(viewsets.ModelViewSet):
                         .values_list('recipe_id', flat=True)
                     )
                     qs = qs.exclude(id__in=other_today_recipes_ids)
-                    new_recipe = qs.order_by('?').first()
-                    if new_recipe:
-                        item.recipe = new_recipe
+                    
+                    # Оптимизация: выбор случайного ID через Python вместо order_by('?') в БД
+                    valid_ids = list(qs.values_list('id', flat=True))
+                    if valid_ids:
+                        item.recipe_id = random.choice(valid_ids)
 
                 item.save()
 
@@ -267,7 +281,7 @@ class MenuViewSet(viewsets.ModelViewSet):
             .prefetch_related(
                 Prefetch(
                     'items',
-                    queryset=MenuItem.objects.select_related('recipe', 'meal_type'),
+                    queryset=self._get_menu_items_queryset(),
                 )
             )
             .get(id=menu.id)
@@ -284,6 +298,15 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             MenuItem.objects
             .filter(menu__user=self.request.user)
             .select_related('recipe', 'menu', 'meal_type')
+            .prefetch_related(
+                'recipe__recipe_ingredients__ingredient__ingredient_nutrition__base_unit',
+                'recipe__recipe_ingredients__ingredient__unit_conversions__from_unit',
+                'recipe__recipe_ingredients__ingredient__unit_conversions__to_unit',
+                'recipe__recipe_ingredients__ingredient__allergies',
+                'recipe__recipe_ingredients__unit',
+                'recipe__steps',
+                'recipe__diet_types',
+            )
         )
 
     @action(detail=True, methods=['post'], url_path='replace')
@@ -359,13 +382,14 @@ class MenuItemViewSet(viewsets.ModelViewSet):
                 return Response({'detail': f'Не удалось найти подходящее по калориям блюдо (~{int(target)} ккал).'}, status=status.HTTP_404_NOT_FOUND)
         
         # Пытаемся выбрать без совпадений с другими рецептами этого дня
-        new_recipe = qs.exclude(id__in=other_today_recipes_ids).order_by('?').first()
+        valid_ids = list(qs.exclude(id__in=other_today_recipes_ids).values_list('id', flat=True))
+        
+        if not valid_ids:
+            valid_ids = list(qs.values_list('id', flat=True))
 
-        if not new_recipe:
-            new_recipe = qs.order_by('?').first()
-
-        menu_item.recipe = new_recipe
-        menu_item.save()
+        if valid_ids:
+            menu_item.recipe_id = random.choice(valid_ids)
+            menu_item.save()
 
         serializer = self.get_serializer(menu_item)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -25,7 +25,10 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ['name']
 
     def get_queryset(self):
-        return Ingredient.objects.select_related('category', 'ingredient_nutrition').all()
+        return Ingredient.objects.select_related(
+            'category', 
+            'ingredient_nutrition__base_unit'
+        ).all()
 
 
 class RecipeViewSet(viewsets.ReadOnlyModelViewSet):
