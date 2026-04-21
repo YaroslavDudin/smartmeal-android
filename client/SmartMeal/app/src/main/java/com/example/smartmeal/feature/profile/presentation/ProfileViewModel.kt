@@ -57,7 +57,7 @@ data class ProfileState(
 
     // Избранное
     val favorites: List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto> = emptyList(),
-    val recipeIdsInMenuOnSelectedDay: Set<Int> = emptySet(),
+    val recipesInMenuOnSelectedDay: Set<com.example.smartmeal.data.manager.RecipeInMenu> = emptySet(),
     val menuItemsOnSelectedDay: List<com.example.smartmeal.feature.home.data.menu.MenuItemDto> = emptyList(),
     
     // Калорийность
@@ -127,8 +127,8 @@ class ProfileViewModel(
 
     private fun updateMenuStateForDate(date: java.util.Date) {
         val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(date)
-        val recipeIds = com.example.smartmeal.data.manager.MenuSyncManager.getRecipeIdsForDate(dateStr)
-        _state.update { it.copy(recipeIdsInMenuOnSelectedDay = recipeIds) }
+        val recipes = com.example.smartmeal.data.manager.MenuSyncManager.getRecipesForDate(dateStr)
+        _state.update { it.copy(recipesInMenuOnSelectedDay = recipes) }
     }
 
     fun addToMenu(recipeId: Int, preferredMealType: String? = null) {

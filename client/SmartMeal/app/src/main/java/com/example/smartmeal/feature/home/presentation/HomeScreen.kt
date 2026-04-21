@@ -967,7 +967,7 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
                 // СИНХРОНИЗАЦИЯ: Обновляем глобальный менеджер для этой даты
                 com.example.smartmeal.data.manager.MenuSyncManager.updateMenuForDate(
                     selectedDateStr,
-                    uniqueItems.map { it.recipe }.toSet()
+                    uniqueItems.map { com.example.smartmeal.data.manager.RecipeInMenu(it.recipe, it.meal_type) }.toSet()
                 )
 
                 uniqueItems

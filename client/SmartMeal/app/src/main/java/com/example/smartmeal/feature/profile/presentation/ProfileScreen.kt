@@ -89,7 +89,7 @@ fun ProfileScreen(
         ProfileSubScreen.FAVORITES ->
             FavoritesScreen(
                 state = state,
-                recipeIdsInMenu = state.recipeIdsInMenuOnSelectedDay,
+                recipesInMenu = state.recipesInMenuOnSelectedDay,
                 onBack = { subScreen = ProfileSubScreen.NONE },
                 onRecipeClick = onRecipeClick,
                 onFavoriteClick = { recipeId, mealType -> viewModel.toggleFavorite(recipeId, mealType) },
@@ -509,14 +509,27 @@ private fun personLabel(n: Int): String = when {
 @Composable
 fun FavoritesScreen(
     state: ProfileState,
-    recipeIdsInMenu: Set<Int>,
+    recipesInMenu: Set<com.example.smartmeal.data.manager.RecipeInMenu>,
     onBack: () -> Unit,
     onRecipeClick: (Int) -> Unit,
     onFavoriteClick: (Int, String?) -> Unit,
     onPlusClick: (Int, String?) -> Unit
 ) {
-    val recentlyRemoved = remember { mutableStateListOf<UserFavoriteDto>() }
+    val recentlyRemoved = remember { mutableStateListOf<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>() }
     val groupedFavorites = remember(state.favorites) { state.getGroupedFavorites() }
+
+    fun isRecipeInMenuSlot(recipeId: Int, category: String): Boolean {
+        val normalizedCategory = category.lowercase(java.util.Locale.US)
+        return recipesInMenu.any { inMenu ->
+            inMenu.recipeId == recipeId && (
+                inMenu.mealType.lowercase(java.util.Locale.US).contains(normalizedCategory) ||
+                normalizedCategory.contains(inMenu.mealType.lowercase(java.util.Locale.US)) ||
+                (inMenu.mealType.lowercase(java.util.Locale.US) == "lunch" && (normalizedCategory == "обед" || normalizedCategory == "lunch")) ||
+                (inMenu.mealType.lowercase(java.util.Locale.US) == "breakfast" && (normalizedCategory == "завтрак" || normalizedCategory == "breakfast")) ||
+                (inMenu.mealType.lowercase(java.util.Locale.US) == "dinner" && (normalizedCategory == "ужин" || normalizedCategory == "dinner"))
+            )
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -579,7 +592,7 @@ fun FavoritesScreen(
                                 recentlyRemoved.add(favorite)
                                 onFavoriteClick(favorite.recipe, favorite.meal_type_name)
                             },
-                            isInMenu = favorite.recipe in recipeIdsInMenu,
+                            isInMenu = isRecipeInMenuSlot(favorite.recipe, category),
                             onPlusClick = { onPlusClick(favorite.recipe, category) },
                             modifier = Modifier
                                 .animateItem()
