@@ -43,6 +43,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
@@ -50,7 +51,7 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_loading").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_loading", useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
@@ -70,6 +71,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
@@ -77,10 +79,10 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_empty_state").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_empty_state", useUnmergedTree = true).assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithTag("home_generate_button")
+            .onNodeWithTag("home_generate_button", useUnmergedTree = true)
             .performClick()
 
         assertTrue(clicked)
@@ -118,6 +120,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
@@ -125,10 +128,10 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_meal_list").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_meal_list", useUnmergedTree = true).assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag("home_replace_breakfast").assertExists()
-        composeTestRule.onNodeWithTag("home_replace_dinner").assertExists()
+        composeTestRule.onNodeWithTag("home_replace_breakfast", useUnmergedTree = true).assertExists()
+        composeTestRule.onNodeWithTag("home_replace_dinner", useUnmergedTree = true).assertExists()
     }
 
     @Test
@@ -170,6 +173,7 @@ class HomeScreenTest {
                     },
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
@@ -178,23 +182,23 @@ class HomeScreenTest {
         }
 
         composeTestRule
-            .onNodeWithTag("home_replace_breakfast")
+            .onNodeWithTag("home_replace_breakfast", useUnmergedTree = true)
             .performClick()
 
         composeTestRule.waitForIdle()
 
         composeTestRule
-            .onNodeWithTag("home_replace_confirm_dialog")
+            .onNodeWithTag("home_replace_confirm_dialog", useUnmergedTree = true)
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithTag("home_replace_confirm_button")
+            .onNodeWithTag("home_replace_confirm_button", useUnmergedTree = true)
             .performClick()
 
         composeTestRule.waitForIdle()
 
         composeTestRule
-            .onNodeWithText("Обновлено")
+            .onNodeWithText("Обновлено", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
@@ -218,6 +222,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
@@ -225,8 +230,8 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_day_selector").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("date_chip_1").performClick()
+        composeTestRule.onNodeWithTag("home_day_selector", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("date_chip_1", useUnmergedTree = true).performClick()
 
         assertEquals("2099-03-11", selected)
     }
@@ -248,6 +253,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
@@ -255,8 +261,8 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_month_year").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Март 2099").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_month_year", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Март 2099", useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
@@ -277,6 +283,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
@@ -284,9 +291,9 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_selected_date_summary").assertIsDisplayed()
-        composeTestRule.onAllNodesWithTag("home_month_year").assertCountEquals(0)
-        composeTestRule.onAllNodesWithTag("date_chip_0").assertCountEquals(0)
+        composeTestRule.onNodeWithTag("home_selected_date_summary", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onAllNodesWithTag("home_month_year", useUnmergedTree = true).assertCountEquals(0)
+        composeTestRule.onAllNodesWithTag("date_chip_0", useUnmergedTree = true).assertCountEquals(0)
     }
 
     @Test
@@ -308,6 +315,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = { clicked = true },
                     customPlan = null
@@ -315,8 +323,8 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_expired_state").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("home_reselect_plan_button").performClick()
+        composeTestRule.onNodeWithTag("home_expired_state", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_reselect_plan_button", useUnmergedTree = true).performClick()
         assertTrue(clicked)
     }
 
@@ -340,6 +348,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = com.example.smartmeal.feature.home.presentation.CustomPlan(
@@ -351,7 +360,7 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onAllNodesWithTag("home_my_plan").assertCountEquals(0)
+        composeTestRule.onAllNodesWithTag("home_my_plan", useUnmergedTree = true).assertCountEquals(0)
     }
 
     @Test
@@ -374,6 +383,7 @@ class HomeScreenTest {
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
+                    onSearchClick = {},
                     onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = com.example.smartmeal.feature.home.presentation.CustomPlan(
@@ -385,7 +395,7 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_my_plan").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_my_plan", useUnmergedTree = true).assertIsDisplayed()
     }
 
     private fun fakeMeal(
