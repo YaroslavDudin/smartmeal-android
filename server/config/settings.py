@@ -65,6 +65,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     # CorsMiddleware должен стоять как можно выше — до CommonMiddleware.
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,12 +79,16 @@ MIDDLEWARE = [
 # CORS — нужен для браузерных запросов и WebView в Android.
 # Эмулятор Android обращается к серверу через 10.0.2.2 (это localhost хост-машины).
 # На реальном устройстве используй IP компьютера в локальной сети.
-CORS_ALLOWED_ORIGINS = [
+_default_cors = [
     'http://10.0.2.2:8000',
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://localhost:5173',
 ]
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS').split(',') if os.getenv('CORS_ALLOWED_ORIGINS') else _default_cors
+
+# CSRF — критично для HTTPS в продакшене
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split(',') if os.getenv('CSRF_TRUSTED_ORIGINS') else ['http://localhost:8000', 'http://127.0.0.1:8000']
 if DEBUG:
     # В DEBUG открываем все origins — удобно при тестировании с физического телефона.
     CORS_ALLOW_ALL_ORIGINS = True
@@ -106,6 +111,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+# Безопасность за прокси (Nginx/LoadBalancer)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Authentication
 REST_FRAMEWORK = {
@@ -188,6 +196,16 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # нужно для `python manage.py collectstatic` в production
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
+
+# Оптимизация WhiteNoise для продакшена
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Поиск изображений - бесплатный ключ: https://pixabay.com/api/docs/
 PIXABAY_API_KEY = os.getenv('PIXABAY_API_KEY', '')

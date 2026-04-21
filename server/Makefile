@@ -37,11 +37,13 @@ help:
 	@echo make docker_env          - создать .env файл из .env.example для Docker (проверьте DB_HOST=db)
 	@echo make docker_secret_key   - сгенерировать SECRET_KEY для Docker (нужен только докер)
 	@echo make docker_up           - запустить докер контейнер
+	@echo make docker_up_build     - принудительно пересобрать и запустить докер контейнер
+	@echo make docker_down         - остановить и удалить контейнеры
 	@echo make docker_tables       - посмотреть список таблиц из бд
 	@echo make docker_migrate      - применить миграции (если автоматически не применились)
 	@echo make docker_load_data    - загрузить все фикстуры (из папки fixtures) в Docker
 	@echo make docker_save_data    - выгрузить текущие данные из Docker в фикстуры (папка fixtures)
-	@echo make docker_del          - удалить докер контейнер (с удалением томов)
+	@echo make docker_del          - удалить докер контейнер (с удалением томов и локальных образов)
 	@echo
 	@echo Управление данными базы данных:
 	@echo make gen_10_users        - генерирует 10 тестовых пользователей и избранные для них
@@ -118,22 +120,28 @@ docker_load_data:
 	docker-compose exec web python manage.py loaddata fixtures/cart_data.json
 
 docker_save_data:
-	$(call dump_to_file,accounts_static,accounts.Allergy accounts.DietType)
-	$(call dump_to_file,meal_types_data,menus.MealType)
-	$(call dump_to_file,recipes_data,recipes)
-	$(call dump_to_file,accounts_users,accounts.User accounts.UserFavorite accounts.UserStock)
-	$(call dump_to_file,menus_data,menus.Menu menus.MenuItem)
-	$(call dump_to_file,cart_data,cart)
-	docker-compose exec web rm /tmp/accounts_static.json /tmp/accounts_users.json /tmp/cart_data.json /tmp/menus_data.json /tmp/recipes_data.json
+	$(call docker_dump_to_file,accounts_static,accounts.Allergy accounts.DietType)
+	$(call docker_dump_to_file,meal_types_data,menus.MealType)
+	$(call docker_dump_to_file,recipes_data,recipes)
+	$(call docker_dump_to_file,accounts_users,accounts.User accounts.UserFavorite accounts.UserStock)
+	$(call docker_dump_to_file,menus_data,menus.Menu menus.MenuItem)
+	$(call docker_dump_to_file,cart_data,cart)
+	docker-compose exec web rm /tmp/accounts_static.json /tmp/accounts_users.json /tmp/cart_data.json /tmp/menus_data.json /tmp/recipes_data.json /tmp/meal_types_data.json
 
 docker_up:
 	docker-compose up
+
+docker_up_build:
+	docker-compose up --build
+
+docker_down:
+	docker-compose down
 
 docker_tables:
 	docker exec -it smartmeal_db psql -U postgres -d smart_meal_db -c "\dt"
 
 docker_del:
-	docker-compose down -v
+	docker-compose down -v --rmi local
 
 
 # Тестовые пользователи:

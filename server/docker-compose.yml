@@ -1,9 +1,11 @@
 services:
   # Сервис базы данных
   db:
-    image: postgres:15
+    image: postgres:17
     container_name: smartmeal_db
     restart: always
+    env_file:
+      - .env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -23,26 +25,23 @@ services:
   web:
     build: .
     container_name: smartmeal_web
+    # Используем exec для корректной передачи сигналов (PID 1)
     command: >
       sh -c "python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+             python manage.py collectstatic --noinput &&
+             exec gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 5 --preload"
     volumes:
       - .:/app
+      - media_data:/app/media
     ports:
       - "8000:8000"
-    environment:
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      SECRET_KEY: ${SECRET_KEY}
-      DEBUG: ${DEBUG}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
 
-# Том для хранения данных PostgreSQL
+# Тома для хранения данных
 volumes:
   postgres_data:
+  media_data:

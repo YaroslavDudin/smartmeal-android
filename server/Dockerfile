@@ -1,26 +1,36 @@
-# Используем официальный образ Python
-FROM python:3.12-slim
+# Stage 1: Builder
+FROM python:3.12-slim AS builder
 
-# Устанавливаем рабочую директорию внутри контейнера
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Устанавливаем системные зависимости (для psycopg2)
-RUN apt-get update && apt-get install -y \
-    gcc \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Копируем файл зависимостей
 COPY requirements.txt .
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# Устанавливаем Python-зависимости
-RUN pip install --no-cache-dir -r requirements.txt
+# Stage 2: Final
+FROM python:3.12-slim
 
-# Копируем весь код проекта в контейнер
-COPY . .
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Открываем порт 8000
+RUN useradd -m appuser
+
+WORKDIR /app
+
+# Копируем зависимости
+COPY --from=builder /install /usr/local
+
+# Создаем папки для статики и медиа и даем права пользователю
+RUN mkdir -p /app/staticfiles /app/media && chown -R appuser:appuser /app/staticfiles /app/media
+
+# Копируем код
+COPY --chown=appuser:appuser . .
+
+USER appuser
+
 EXPOSE 8000
 
-# Команда для запуска сервера разработки
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# --preload экономит память и ускоряет запуск
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "5", "--preload"]
