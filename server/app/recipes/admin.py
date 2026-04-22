@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.management import call_command
 from .models import (
     IngredientCategory, Unit, UnitConversion,
     Ingredient, IngredientNutrition,
@@ -43,6 +44,12 @@ class RecipeAdmin(admin.ModelAdmin):
         for recipe in queryset:
             recipe.update_nutrition_cache()
         self.message_user(request, f"КБЖУ пересчитаны для {queryset.count()} рецептов.")
+
+    def save_related(self, request, form, formsets, change):
+        is_new = not change
+        super().save_related(request, form, formsets, change)
+        if is_new:
+            call_command('update_calories')
 
 
 @admin.register(Ingredient)
