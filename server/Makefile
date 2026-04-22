@@ -78,6 +78,7 @@ load_data:
 	$(VENV_PYTHON) manage.py loaddata fixtures/accounts_users.json
 	$(VENV_PYTHON) manage.py loaddata fixtures/menus_data.json
 	$(VENV_PYTHON) manage.py loaddata fixtures/cart_data.json
+	$(VENV_PYTHON) manage.py update_calories
 
 run:
 	$(VENV_PYTHON) manage.py runserver
