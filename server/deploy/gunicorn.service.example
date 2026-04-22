@@ -1,0 +1,18 @@
+[Unit]
+Description=gunicorn daemon for SmartMeal
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+# Путь к папке, где лежит manage.py (на сервере будет так)
+WorkingDirectory=/root/smartmeal-android/server
+# Путь к твоему виртуальному окружению
+EnvironmentFile=/root/smartmeal-android/server/.env
+ExecStart=/root/smartmeal-android/server/venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/root/smartmeal-android/server/smartmeal.sock \
+    config.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
