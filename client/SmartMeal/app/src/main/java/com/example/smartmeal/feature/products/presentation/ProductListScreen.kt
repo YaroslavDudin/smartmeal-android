@@ -49,7 +49,22 @@ import java.util.Locale
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.clip
+import kotlinx.coroutines.launch
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+
+// Порядок категорий для отображения
+private val categoryOrder = listOf(
+    "Фрукты и ягоды", "Овощи и фрукты", "Овощи, зелень и грибы",
+    "Мясо и мясная продукция", "Рыба и морепродукты", "Мясо и рыба",
+    "Молочные продукты и яйца", "Молочные продукты", "Бобовые",
+    "Консервированные продукты", "Пасты", "Бакалея и молочные продукты",
+    "Мука и мучные изделия", "Приправы и специи", "Специи", "Соусы",
+    "Орехи и семена", "Добавки для приготовления блюд", "Масла",
+    "Напитки", "Зерновые", "Сладости", "Разное", "Покупки"
+)
 
 // Переносим модель данных сюда, так как она используется в UI
 data class ProductUiModel(
@@ -134,11 +149,35 @@ fun ProductListScreen(
     
     val allVisibleChecked = filteredProducts.isNotEmpty() && filteredProducts.all { it.checked }
     val listState = rememberLazyListState()
-    val hasSingleAvailableDate = availableDates.size == 1
+    val scope = rememberCoroutineScope()
     
     val configuration = androidx.compose.ui.platform.LocalConfiguration.current
     val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
     val isSmallScreen = configuration.screenHeightDp < 640 || configuration.screenWidthDp < 360
+
+    // Вычисляем индекс начала секции "Покупки" для прокрутки
+    val itemsBeforePurchased = remember(aggregatedProducts, isLandscape) {
+        val regularCategoriesList = aggregatedProducts
+            .filterNot { it.checked }
+            .groupBy { it.categoryName }
+            .toList()
+            .sortedBy { (categoryName, _) ->
+                categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
+            }
+
+        var count = 3 // Title (0), Dates zone (1), Spacer (2)
+        regularCategoriesList.forEach { (_, productsInCategory) ->
+            count += 1 // Header
+            count += if (isLandscape) {
+                (productsInCategory.size + 1) / 2
+            } else {
+                productsInCategory.size
+            }
+        }
+        count
+    }
+
+    val hasSingleAvailableDate = availableDates.size == 1
     
     val contentState: ProductContentState = when {
         isLoading -> ProductContentState.Loading
@@ -353,6 +392,39 @@ fun ProductListScreen(
                                 fontWeight = FontWeight.SemiBold,
                                 color = TextBlack
                             )
+                        }
+
+                        // Кнопка Корзина (Посередине)
+                        if (checkedCount > 0) {
+                            androidx.compose.material3.TextButton(
+                                onClick = {
+                                    scope.launch {
+                                        // Прокрутка с небольшим смещением (-25) для "мягкого" эффекта
+                                        listState.animateScrollToItem(
+                                            index = itemsBeforePurchased,
+                                            scrollOffset = -25
+                                        )
+                                    }
+                                },
+                                modifier = Modifier.height(if (isLandscape) 38.dp else 44.dp),
+                                contentPadding = PaddingValues(horizontal = 12.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.ShoppingCart,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                        tint = PrimaryGreen
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    SmartMealText(
+                                        text = "Корзина",
+                                        fontSize = 13.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = PrimaryGreen
+                                    )
+                                }
+                            }
                         }
 
                         // Кнопка Заказать
