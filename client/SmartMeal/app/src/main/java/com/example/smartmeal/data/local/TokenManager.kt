@@ -1,8 +1,10 @@
 package com.example.smartmeal.data.local
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import java.security.GeneralSecurityException
 
 class TokenManager(context: Context) {
     private val appContext = context.applicationContext
@@ -13,8 +15,20 @@ class TokenManager(context: Context) {
             .build()
     }
 
-    private val sharedPreferences by lazy {
-        EncryptedSharedPreferences.create(
+    private val sharedPreferences: SharedPreferences by lazy {
+        try {
+            createEncryptedPrefs()
+        } catch (e: Exception) {
+            // Если произошла ошибка расшифровки (например, после бэкапа)
+            // Удаляем сломанный файл настроек
+            appContext.deleteSharedPreferences("secure_tokens")
+            // И пробуем создать заново чистый файл
+            createEncryptedPrefs()
+        }
+    }
+
+    private fun createEncryptedPrefs(): SharedPreferences {
+        return EncryptedSharedPreferences.create(
             appContext,
             "secure_tokens",
             masterKey,

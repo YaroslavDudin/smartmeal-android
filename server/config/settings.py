@@ -196,3 +196,6 @@ PIXABAY_API_KEY = os.getenv('PIXABAY_API_KEY', '')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'SmartMeal <noreply@smartmeal.app>'
 FRONTEND_URL = 'smartmeal://reset-password/'  # For mobile deep links
+CSRF_TRUSTED_ORIGINS = [
+    'https://approximate-restaurant-syracuse-york.trycloudflare.com'
+]
