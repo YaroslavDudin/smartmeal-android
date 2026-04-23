@@ -1,6 +1,8 @@
 package com.example.smartmeal.ui.components.cards
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.BarChart
@@ -14,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.smartmeal.ui.components.SmartMealText
 
 val SoftGreen = Color(0xFF66BB6A)
@@ -23,6 +27,9 @@ fun BottomNavigationBar(
     selectedItem: Int = 0,
     onItemSelected: (Int) -> Unit = {}
 ) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
     val items = listOf(
         NavigationItem("Меню", Icons.AutoMirrored.Filled.MenuBook),
         NavigationItem("Продукты", Icons.Default.ShoppingCart),
@@ -31,8 +38,11 @@ fun BottomNavigationBar(
     )
 
     NavigationBar(
-        modifier = Modifier.fillMaxWidth(),
-        containerColor = Color.White
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(if (isLandscape) Modifier.height(56.dp) else Modifier),
+        containerColor = Color.White,
+        tonalElevation = 8.dp
     ) {
         items.forEachIndexed { index, item ->
             val isSelected = selectedItem == index
@@ -44,15 +54,19 @@ fun BottomNavigationBar(
                     Icon(
                         item.icon,
                         contentDescription = item.title,
-                        tint = if (isSelected) SoftGreen else Color.Gray
+                        tint = if (isSelected) SoftGreen else Color.Gray,
+                        modifier = if (isLandscape) Modifier.size(20.dp) else Modifier.size(24.dp)
                     )
                 },
-                label = {
-                    SmartMealText(
-                        text = item.title,
-                        color = if (isSelected) SoftGreen else Color.Gray
-                    )
+                label = if (isLandscape) null else {
+                    {
+                        SmartMealText(
+                            text = item.title,
+                            color = if (isSelected) SoftGreen else Color.Gray
+                        )
+                    }
                 },
+                alwaysShowLabel = !isLandscape,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = SoftGreen,
                     selectedTextColor = SoftGreen,

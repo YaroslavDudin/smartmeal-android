@@ -91,6 +91,9 @@ fun AllergiesScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp)
         ) {
+            val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+            val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
             if (state.isLoading) {
                 Box(
                     modifier = Modifier
@@ -127,13 +130,36 @@ fun AllergiesScreen(
                         )
                     }
                 } else {
-                    state.allAllergies.forEach { allergy ->
-                        AllergyCard(
-                            allergy = allergy,
-                            isChecked = allergy.id in state.pendingAllergyIds,
-                            onClick = { viewModel.togglePendingAllergy(allergy.id) }
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
+                    if (isLandscape) {
+                        // ЛАНДШАФТ: Две колонки для аллергий
+                        state.allAllergies.chunked(2).forEach { rowAllergies ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                rowAllergies.forEach { allergy ->
+                                    Box(modifier = Modifier.weight(1f)) {
+                                        AllergyCard(
+                                            allergy = allergy,
+                                            isChecked = allergy.id in state.pendingAllergyIds,
+                                            onClick = { viewModel.togglePendingAllergy(allergy.id) }
+                                        )
+                                    }
+                                }
+                                if (rowAllergies.size == 1) Spacer(modifier = Modifier.weight(1f))
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    } else {
+                        // ПОРТРЕТ: Обычный список
+                        state.allAllergies.forEach { allergy ->
+                            AllergyCard(
+                                allergy = allergy,
+                                isChecked = allergy.id in state.pendingAllergyIds,
+                                onClick = { viewModel.togglePendingAllergy(allergy.id) }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                     }
                 }
 

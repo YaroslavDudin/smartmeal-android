@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -79,9 +80,12 @@ fun SetupStep1Content(
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
 ) {
+    val scrollState = androidx.compose.foundation.rememberScrollState()
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState) // ЛАНДШАФТ: добавляем прокрутку
             .padding(horizontal = 24.dp, vertical = 32.dp),
     ) {
         Row(
@@ -143,22 +147,32 @@ fun SetupStep1Content(
         if (state.dietTypes.isEmpty()) {
             SmartMealText(text = "Загрузка...", color = Color.Gray)
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .testTag("setup_step1_diet_grid"),
+            // ЛАНДШАФТ: заменяем LazyVerticalGrid на обычный Column с Row, 
+            // так как мы находимся внутри verticalScroll
+            val chunkedDietTypes = state.dietTypes.chunked(2)
+            Column(
+                modifier = Modifier.fillMaxWidth().testTag("setup_step1_diet_grid"),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(state.dietTypes) { dietType ->
-                    val isSelected = state.selectedDietTypeId == dietType.id
-                    DietTypeChip(
-                        label = dietType.name,
-                        isSelected = isSelected,
-                        onClick = { onDietTypeClick(dietType.id) },
-                        modifier = Modifier.testTag("setup_step1_diet_${dietType.id}")
-                    )
+                chunkedDietTypes.forEach { rowItems ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        rowItems.forEach { dietType ->
+                            val isSelected = state.selectedDietTypeId == dietType.id
+                            DietTypeChip(
+                                label = dietType.name,
+                                isSelected = isSelected,
+                                onClick = { onDietTypeClick(dietType.id) },
+                                modifier = Modifier.weight(1f).testTag("setup_step1_diet_${dietType.id}")
+                            )
+                        }
+                        // Если в ряду только один элемент, добавляем пустой Spacer для выравнивания
+                        if (rowItems.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
                 }
             }
         }

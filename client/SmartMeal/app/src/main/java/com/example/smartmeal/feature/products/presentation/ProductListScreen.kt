@@ -135,6 +135,7 @@ fun ProductListScreen(
     val hasSingleAvailableDate = availableDates.size == 1
     
     val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
     val isSmallScreen = configuration.screenHeightDp < 640 || configuration.screenWidthDp < 360
     
     val contentState: ProductContentState = when {
@@ -161,119 +162,126 @@ fun ProductListScreen(
     }
 
     Box(modifier = modifier.fillMaxSize().background(BgLightGray)) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        // ЛАНДШАФТ: Используем единый LazyColumn для всего экрана
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = if (isLandscape) 70.dp else 100.dp)
+        ) {
             // --- Элегантная шапка ---
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = if (isSmallScreen) 16.dp else 24.dp,
-                        end = if (isSmallScreen) 16.dp else 24.dp,
-                        top = if (isSmallScreen) 4.dp else 8.dp,
-                        bottom = if (isSmallScreen) 4.dp else 12.dp
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = if (isSmallScreen) 16.dp else 24.dp,
+                            end = if (isSmallScreen) 16.dp else 24.dp,
+                            top = if (isSmallScreen) 4.dp else 16.dp,
+                            bottom = if (isSmallScreen) 4.dp else 12.dp
+                        )
+                ) {
+                    SmartMealText(
+                        text = "Продукты",
+                        fontSize = if (isSmallScreen) 20.sp else 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextBlack,
+                        modifier = Modifier.align(Alignment.CenterStart).testTag("title")
                     )
-            ) {
-                SmartMealText(
-                    text = "Продукты",
-                    fontSize = if (isSmallScreen) 20.sp else 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = TextBlack,
-                    modifier = Modifier.align(Alignment.CenterStart).testTag("title")
-                )
+                }
             }
 
             // --- Зона Контекста (Даты + План) ---
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = if (isSmallScreen) 8.dp else 16.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color.White)
-                    .padding(vertical = if (isSmallScreen) 4.dp else 12.dp)
-            ) {
-                if (availableDates.isNotEmpty()) {
-                    if (hasSingleAvailableDate) {
-                        SmartMealText(
-                            text = formatSelectedDateLabel(availableDates.first()),
-                            fontSize = if (isSmallScreen) 14.sp else 15.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = PrimaryGreen,
-                            modifier = Modifier.padding(horizontal = 12.dp)
-                        )
-                    } else {
-                        if (monthYearLabel.isNotBlank()) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = if (isSmallScreen) 8.dp else 16.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color.White)
+                        .padding(vertical = if (isSmallScreen) 4.dp else 12.dp)
+                ) {
+                    if (availableDates.isNotEmpty()) {
+                        if (hasSingleAvailableDate) {
                             SmartMealText(
-                                text = monthYearLabel,
-                                fontSize = if (isSmallScreen) 12.sp else 13.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Gray,
-                                modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = if (isSmallScreen) 2.dp else 8.dp)
+                                text = formatSelectedDateLabel(availableDates.first()),
+                                fontSize = if (isSmallScreen) 14.sp else 15.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = PrimaryGreen,
+                                modifier = Modifier.padding(horizontal = 12.dp)
+                            )
+                        } else {
+                            if (monthYearLabel.isNotBlank()) {
+                                SmartMealText(
+                                    text = monthYearLabel,
+                                    fontSize = if (isSmallScreen) 12.sp else 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Gray,
+                                    modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = if (isSmallScreen) 2.dp else 8.dp)
+                                )
+                            }
+                            DateSelector(
+                                items = dateSelectorItems,
+                                selectedStartId = selectedStartDateKey,
+                                selectedEndId = selectedEndDateKey,
+                                onItemClick = onDateSelected,
+                                isSmallScreen = isSmallScreen
                             )
                         }
-                        DateSelector(
-                            items = dateSelectorItems,
-                            selectedStartId = selectedStartDateKey,
-                            selectedEndId = selectedEndDateKey,
-                            onItemClick = onDateSelected,
-                            isSmallScreen = isSmallScreen
-                        )
                     }
-                }
 
-                if (customPlan != null) {
-                    if (availableDates.isNotEmpty()) {
-                        HorizontalDivider(
-                            modifier = Modifier.padding(vertical = if (isSmallScreen) 4.dp else 12.dp, horizontal = 12.dp),
-                            thickness = 1.dp,
-                            color = BgLightGray
+                    if (customPlan != null) {
+                        if (availableDates.isNotEmpty()) {
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = if (isSmallScreen) 4.dp else 12.dp, horizontal = 12.dp),
+                                thickness = 1.dp,
+                                color = BgLightGray
+                            )
+                        }
+                        val apiFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        MyPlanSection(
+                            customPlan = customPlan,
+                            selectedDate = selectedStartDateKey?.let { parseApiDate(it) },
+                            isRangeSelection = true,
+                            onDateSelectedFromPlan = { /* Не используется */ },
+                            onRangeSelected = { start, end ->
+                                onDateSelected(apiFormatter.format(start))
+                                onDateSelected(apiFormatter.format(end))
+                            },
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
                         )
                     }
-                    val apiFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                    MyPlanSection(
-                        customPlan = customPlan,
-                        selectedDate = selectedStartDateKey?.let { parseApiDate(it) },
-                        isRangeSelection = true,
-                        onDateSelectedFromPlan = { /* Не используется */ },
-                        onRangeSelected = { start, end ->
-                            onDateSelected(apiFormatter.format(start))
-                            onDateSelected(apiFormatter.format(end))
-                        },
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(if (isSmallScreen) 4.dp else 16.dp))
+            item { Spacer(modifier = Modifier.height(if (isSmallScreen) 4.dp else 16.dp)) }
 
             // --- Контент списка ---
-            AnimatedContent<ProductContentState>(
-                targetState = contentState,
-                transitionSpec = {
-                    (fadeIn(animationSpec = tween(220)) + scaleIn(initialScale = 0.985f)) togetherWith
-                        (fadeOut(animationSpec = tween(180)) + scaleOut(targetScale = 0.985f))
-                },
-                modifier = Modifier.weight(1f),
-                label = "ProductContentState"
-            ) { state ->
-                when (state) {
-                    ProductContentState.Loading -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            when (contentState) {
+                ProductContentState.Loading -> {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
                             CircularProgressIndicator(color = PrimaryGreen)
                         }
                     }
-                    ProductContentState.Error -> {
-                        Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+                }
+                ProductContentState.Error -> {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
                             SmartMealText(text = errorMessage.orEmpty(), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
                         }
                     }
-                    ProductContentState.Empty -> {
-                        Box(modifier = Modifier.fillMaxSize().padding(32.dp), contentAlignment = Alignment.Center) {
+                }
+                ProductContentState.Empty -> {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
                             SmartMealText(text = "Список продуктов пуст", color = Color.Gray)
                         }
                     }
-                    ProductContentState.Expired -> {
+                }
+                ProductContentState.Expired -> {
+                    item {
                         Column(
-                            modifier = Modifier.fillMaxSize().padding(24.dp),
+                            modifier = Modifier.fillMaxWidth().padding(24.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -282,13 +290,13 @@ fun ProductListScreen(
                             Button(onClick = onReselectPlan) { SmartMealText("Выбрать заново") }
                         }
                     }
-                    ProductContentState.List -> {
-                        ProductCategoryList(
-                            aggregatedProducts = aggregatedProducts,
-                            listState = listState,
-                            onProductChecked = onProductChecked
-                        )
-                    }
+                }
+                ProductContentState.List -> {
+                    productCategoryItems(
+                        aggregatedProducts = aggregatedProducts,
+                        onProductChecked = onProductChecked,
+                        isLandscape = isLandscape
+                    )
                 }
             }
         }
@@ -307,7 +315,10 @@ fun ProductListScreen(
                 Row(
                     modifier = Modifier
                         .navigationBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 12.dp),
+                        .padding(
+                            horizontal = if (isLandscape) 40.dp else 20.dp, 
+                            vertical = if (isLandscape) 8.dp else 12.dp
+                        ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -341,7 +352,7 @@ fun ProductListScreen(
                             containerColor = PrimaryGreen,
                             contentColor = Color.White
                         ),
-                        modifier = Modifier.height(48.dp)
+                        modifier = Modifier.height(if (isLandscape) 40.dp else 48.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             SmartMealText(
@@ -372,11 +383,10 @@ fun ProductListScreen(
     }
 }
 
-@Composable
-private fun ProductCategoryList(
+private fun androidx.compose.foundation.lazy.LazyListScope.productCategoryItems(
     aggregatedProducts: List<ProductUiModel>,
-    listState: LazyListState,
-    onProductChecked: (Collection<String>, Boolean) -> Unit
+    onProductChecked: (Collection<String>, Boolean) -> Unit,
+    isLandscape: Boolean
 ) {
     val categoryOrder = listOf(
         "Фрукты и ягоды", "Овощи и фрукты", "Овощи, зелень и грибы",
@@ -388,70 +398,99 @@ private fun ProductCategoryList(
         "Напитки", "Зерновые", "Сладости", "Разное", "Покупки"
     )
 
-    val regularCategories = remember(aggregatedProducts) {
-        aggregatedProducts
-            .filterNot { it.checked }
-            .groupBy { it.categoryName }
-            .toList()
-            .sortedBy { (categoryName, _) ->
-                categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
+    val regularCategories = aggregatedProducts
+        .filterNot { it.checked }
+        .groupBy { it.categoryName }
+        .toList()
+        .sortedBy { (categoryName, _) ->
+            categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
+        }
+
+    val purchasedCategories = aggregatedProducts
+        .filter { it.checked }
+        .groupBy { it.categoryName }
+        .toList()
+        .sortedBy { (categoryName, _) ->
+            categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
+        }
+
+    regularCategories.forEachIndexed { index, entry ->
+        val categoryName = entry.first
+        val productsInCategory = entry.second
+        item {
+            ProductCategoryHeader(
+                title = categoryName,
+                icon = productsInCategory.firstOrNull()?.categoryIcon.orEmpty(),
+                modifier = Modifier.padding(top = if (index == 0) 6.dp else 14.dp, bottom = 6.dp, start = if (isLandscape) 24.dp else 8.dp),
+                testTag = "category-$categoryName"
+            )
+        }
+        
+        val items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) }
+        if (isLandscape) {
+            // В ландшафте отображаем в две колонки
+            items.chunked(2).forEach { rowItems ->
+                item {
+                    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+                        rowItems.forEach { product ->
+                            Box(modifier = Modifier.weight(1f)) {
+                                ProductRowItem(product = product, onProductChecked = onProductChecked)
+                            }
+                            if (rowItems.size == 1) Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
+                }
             }
+        } else {
+            items(items = items, key = { it.id }) { product ->
+                Box(modifier = Modifier.padding(horizontal = 8.dp)) {
+                    ProductRowItem(product = product, onProductChecked = onProductChecked)
+                }
+            }
+        }
     }
 
-    val purchasedCategories = remember(aggregatedProducts) {
-        aggregatedProducts
-            .filter { it.checked }
-            .groupBy { it.categoryName }
-            .toList()
-            .sortedBy { (categoryName, _) ->
-                categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
-            }
-    }
-
-    LazyColumn(
-        state = listState,
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 80.dp)
-    ) {
-        regularCategories.forEachIndexed { index, entry ->
+    if (purchasedCategories.isNotEmpty()) {
+        item {
+            ProductCategoryHeader(
+                title = "Покупки",
+                icon = "🛒",
+                modifier = Modifier.padding(top = 18.dp, bottom = 6.dp, start = if (isLandscape) 24.dp else 8.dp),
+                testTag = "category-Покупки"
+            )
+        }
+        purchasedCategories.forEach { entry ->
             val categoryName = entry.first
             val productsInCategory = entry.second
             item {
                 ProductCategoryHeader(
                     title = categoryName,
                     icon = productsInCategory.firstOrNull()?.categoryIcon.orEmpty(),
-                    modifier = Modifier.padding(top = if (index == 0) 6.dp else 14.dp, bottom = 6.dp),
-                    testTag = "category-$categoryName"
+                    modifier = Modifier.padding(top = 4.dp, bottom = 4.dp, start = if (isLandscape) 32.dp else 16.dp),
+                    testTag = "purchased-category-$categoryName",
+                    textStyle = MaterialTheme.typography.titleSmall
                 )
             }
-            items(items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) }, key = { it.id }) { product ->
-                ProductRowItem(product = product, onProductChecked = onProductChecked)
-            }
-        }
-
-        if (purchasedCategories.isNotEmpty()) {
-            item {
-                ProductCategoryHeader(
-                    title = "Покупки",
-                    icon = "🛒",
-                    modifier = Modifier.padding(top = 18.dp, bottom = 6.dp),
-                    testTag = "category-Покупки"
-                )
-            }
-            purchasedCategories.forEach { entry ->
-                val categoryName = entry.first
-                val productsInCategory = entry.second
-                item {
-                    ProductCategoryHeader(
-                        title = categoryName,
-                        icon = productsInCategory.firstOrNull()?.categoryIcon.orEmpty(),
-                        modifier = Modifier.padding(top = 4.dp, bottom = 4.dp, start = 8.dp),
-                        testTag = "purchased-category-$categoryName",
-                        textStyle = MaterialTheme.typography.titleSmall
-                    )
+            
+            val items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) }
+            if (isLandscape) {
+                items.chunked(2).forEach { rowItems ->
+                    item {
+                        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+                            rowItems.forEach { product ->
+                                Box(modifier = Modifier.weight(1f)) {
+                                    ProductRowItem(product = product, onProductChecked = onProductChecked)
+                                }
+                                if (rowItems.size == 1) Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
+                    }
                 }
-                items(items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) }, key = { it.id }) { product ->
-                    ProductRowItem(product = product, onProductChecked = onProductChecked)
+            } else {
+                items(items = items, key = { it.id }) { product ->
+                    Box(modifier = Modifier.padding(horizontal = 8.dp)) {
+                        ProductRowItem(product = product, onProductChecked = onProductChecked)
+                    }
                 }
             }
         }

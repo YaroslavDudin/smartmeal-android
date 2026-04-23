@@ -7,30 +7,15 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.material3.Slider
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -139,27 +124,29 @@ fun HomeScreen(
     val customPlan = remember(planType, planRange, selectedPlanDateMillis) {
         when (planType) {
             SetupPreferences.PLAN_TYPE_CUSTOM -> {
-                planRange?.let { (start, end) -> CustomPlan(Date(start), Date(end)) }
+                planRange?.let { range: Pair<Long, Long> -> 
+                    CustomPlan(Date(range.first), Date(range.second)) 
+                }
             }
             SetupPreferences.PLAN_TYPE_WEEKLY -> {
-                selectedPlanDateMillis?.let { start ->
-                    val end = Calendar.getInstance().apply {
-                        time = Date(start)
+                selectedPlanDateMillis?.let { startMillis: Long ->
+                    val endMillis = Calendar.getInstance().apply {
+                        time = Date(startMillis)
                         add(Calendar.DATE, 6)
                     }.timeInMillis
-                    CustomPlan(Date(start), Date(end))
+                    CustomPlan(Date(startMillis), Date(endMillis))
                 }
             }
             SetupPreferences.PLAN_TYPE_DAILY -> {
-                selectedPlanDateMillis?.let { start ->
-                    CustomPlan(Date(start), Date(start))
+                selectedPlanDateMillis?.let { startMillis: Long ->
+                    CustomPlan(Date(startMillis), Date(startMillis))
                 }
             }
             else -> null
         }
     }
 
-    val visibleCustomPlan = remember(customPlan?.startDate?.time, customPlan?.endDate?.time) {
+    val visibleCustomPlan = remember(customPlan) {
         trimCustomPlanToToday(customPlan)
     }
 
@@ -191,8 +178,8 @@ fun HomeScreen(
         }
     }
 
-    var selectedNavItem by remember { mutableIntStateOf(0) }
-    var shouldOpenOrderModal by remember { mutableStateOf(false) }
+    var selectedNavItem: Int by rememberSaveable { mutableIntStateOf(0) }
+    var shouldOpenOrderModal: Boolean by remember { mutableStateOf(false) }
 
     LaunchedEffect(selectedNavItem, uiState.currentMenu) {
         if (selectedNavItem == 1) {
@@ -214,8 +201,16 @@ fun HomeScreen(
             )
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
-            when (selectedNavItem) {
+        // ПЛАВНОСТЬ: Используем AnimatedContent для переключения экранов
+        androidx.compose.animation.AnimatedContent(
+            targetState = selectedNavItem,
+            modifier = Modifier.padding(innerPadding).fillMaxSize(),
+            transitionSpec = {
+                fadeIn(animationSpec = tween(300)) togetherWith fadeOut(animationSpec = tween(300))
+            },
+            label = "ScreenSwitchAnimation"
+        ) { targetIndex ->
+            when (targetIndex) {
                 // ── ГЛАВНАЯ (ТВОЯ ЛОГИКА С БАГФИКСАМИ) ─────────────────────
                 0 -> Box(
                     modifier = Modifier
@@ -345,19 +340,22 @@ fun HomeContent(
     val hasAvailableDates = availableDates.isNotEmpty()
     var pendingReplacement by remember(uiState.mealSections) { mutableStateOf<MealSection?>(null) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp).clickable(
-        onClick = onDismissError,
-        indication = null,
-        interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
-    )) {
-        Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp)) {
-            SmartMealText(
-                text = "Меню",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.align(Alignment.Center).testTag("home_title"),
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center
-            )
+    // ЛАНДШАФТ: Используем LazyColumn для ВСЕГО контента, чтобы он прокручивался целиком
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(bottom = 16.dp)
+    ) {
+        item {
+            Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp)) {
+                SmartMealText(
+                    text = "Меню",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.align(Alignment.Center).testTag("home_title"),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
         val monthYearLabel = availableDates.firstOrNull()?.let {
@@ -365,136 +363,142 @@ fun HomeContent(
         }.orEmpty()
 
         if (monthYearLabel.isNotBlank() && !hasSingleAvailableDate) {
-            SmartMealText(
-                text = monthYearLabel,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp).testTag("home_month_year"),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center
-            )
+            item {
+                SmartMealText(
+                    text = monthYearLabel,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp).testTag("home_month_year"),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
-        // ТАБЛЕТКИ КАЛЕНДАРЯ (С БАГФИКСОМ ДЕНИСА)
+        // ТАБЛЕТКИ КАЛЕНДАРЯ
         if (hasAvailableDates) {
-            Box(modifier = Modifier.testTag("home_day_selector")) {
-                if (hasSingleAvailableDate) {
-                    SmartMealText(
-                        text = formatSelectedDateLabel(availableDates.first()),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 14.dp)
-                            .testTag("home_selected_date_summary"),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
-                    )
-                } else {
-                    DateSelector(
-                        items = dateSelectorItems,
-                        selectedStartId = selectedDateId,
-                        onItemClick = { dateId ->
-                            availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
-                        }
-                    )
+            item {
+                Box(modifier = Modifier.testTag("home_day_selector")) {
+                    if (hasSingleAvailableDate) {
+                        SmartMealText(
+                            text = formatSelectedDateLabel(availableDates.first()),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 14.dp)
+                                .testTag("home_selected_date_summary"),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center
+                        )
+                    } else {
+                        DateSelector(
+                            items = dateSelectorItems,
+                            selectedStartId = selectedDateId,
+                            onItemClick = { dateId ->
+                                availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
+                            }
+                        )
+                    }
                 }
             }
         }
 
         if (showMyPlanSection && customPlan != null && hasAvailableDates) {
-            MyPlanSection(
-                customPlan = customPlan,
-                selectedDate = uiState.selectedDate,
-                onDateSelectedFromPlan = onDateSelectedFromPlan,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).testTag("home_my_plan")
-            )
+            item {
+                MyPlanSection(
+                    customPlan = customPlan,
+                    selectedDate = uiState.selectedDate,
+                    onDateSelectedFromPlan = onDateSelectedFromPlan,
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).testTag("home_my_plan")
+                )
+            }
         }
 
         if (uiState.isLoading && !uiState.hasMenu) {
-            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(modifier = Modifier.testTag("home_loading"))
+            item {
+                Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(modifier = Modifier.testTag("home_loading"))
+                }
             }
         } else if (!uiState.hasMenu) {
-            Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.testTag("home_empty_state")
-                ) {
-                    SmartMealText("У вас еще нет меню на эту неделю")
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(
-                        onClick = onGenerateMenu,
-                        modifier = Modifier.testTag("home_generate_button"),
-                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp, pressedElevation = 2.dp)
+            item {
+                Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.testTag("home_empty_state")
                     ) {
-                        SmartMealText("Сгенерировать меню")
+                        SmartMealText("У вас еще нет меню на эту неделю")
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = onGenerateMenu,
+                            modifier = Modifier.testTag("home_generate_button"),
+                            elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp, pressedElevation = 2.dp)
+                        ) {
+                            SmartMealText("Сгенерировать меню")
+                        }
                     }
                 }
             }
         } else if (!hasAvailableDates) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.testTag("home_expired_state")
+            item {
+                Box(
+                    modifier = Modifier.fillMaxWidth().height(200.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    SmartMealText(
-                        "Доступные дни закончились. Выберите план и дату заново",
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(
-                        onClick = onReselectPlan,
-                        modifier = Modifier.testTag("home_reselect_plan_button"),
-                        elevation = ButtonDefaults.buttonElevation(
-                            defaultElevation = 6.dp,
-                            pressedElevation = 2.dp
-                        )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.testTag("home_expired_state")
                     ) {
-                        SmartMealText("Выбрать план и дату")
+                        SmartMealText(
+                            "Доступные дни закончились. Выберите план и дату заново",
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(
+                            onClick = onReselectPlan,
+                            modifier = Modifier.testTag("home_reselect_plan_button"),
+                            elevation = ButtonDefaults.buttonElevation(
+                                defaultElevation = 6.dp,
+                                pressedElevation = 2.dp
+                            )
+                        ) {
+                            SmartMealText("Выбрать план и дату")
+                        }
                     }
                 }
             }
         } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(bottom = 8.dp),
-                modifier = Modifier.weight(1f).testTag("home_meal_list")
-            ) {
-                items(uiState.mealSections, key = { it.meal.id }) { section ->
-                    MealSection(
-                        sectionId = section.id,
-                        title = section.title,
-                        meal = section.meal,
-                        onSetActiveSlot = onSetActiveSlot,
-                        onReplaceClick = { pendingReplacement = section },
-                        onFavoriteClick = { onToggleFavorite(section.meal.id) },
-                        onRecipeClick = onRecipeClick
-                    )
-                }
+            items(uiState.mealSections, key = { it.meal.id }) { section ->
+                MealSection(
+                    sectionId = section.id,
+                    title = section.title,
+                    meal = section.meal,
+                    onSetActiveSlot = onSetActiveSlot,
+                    onReplaceClick = { pendingReplacement = section },
+                    onFavoriteClick = { onToggleFavorite(section.meal.id) },
+                    onRecipeClick = onRecipeClick
+                )
             }
         }
 
         if (uiState.error != null) {
-            SmartMealText(
-                text = uiState.error ?: "",
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(8.dp)
-            )
+            item {
+                SmartMealText(
+                    text = uiState.error ?: "",
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
         }
+    }
 
-        pendingReplacement?.let { section ->
-            ReplaceMealConfirmDialog(
-                mealTitle = section.meal.recipe_title,
-                onConfirm = {
-                    val mealId = section.meal.id
-                    pendingReplacement = null
-                    onReplaceMeal(mealId)
-                },
-                onDismiss = { pendingReplacement = null }
-            )
-        }
+    pendingReplacement?.let { section ->
+        ReplaceMealConfirmDialog(
+            mealTitle = section.meal.recipe_title,
+            onConfirm = {
+                val mealId = section.meal.id
+                pendingReplacement = null
+                onReplaceMeal(mealId)
+            },
+            onDismiss = { pendingReplacement = null }
+        )
     }
 }
 
@@ -577,7 +581,9 @@ private fun ReplaceMealConfirmDialog(
             shadowElevation = 8.dp
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
+                modifier = Modifier
+                    .padding(horizontal = 24.dp, vertical = 24.dp)
+                    .verticalScroll(rememberScrollState()), // Добавлена возможность скролла
                 horizontalAlignment = Alignment.Start // Выравнивание по левому краю
             ) {
                 SmartMealText(

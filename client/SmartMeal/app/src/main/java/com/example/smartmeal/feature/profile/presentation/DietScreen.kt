@@ -123,13 +123,39 @@ fun DietScreen(
                         )
                     }
                 } else {
-                    state.allDietTypes.forEach { diet ->
-                        DietCard(
-                            diet = diet,
-                            isChecked = state.pendingDietTypeId == diet.id,
-                            onClick = { viewModel.selectPendingDiet(diet.id) }
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
+                    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+                    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
+                    if (isLandscape) {
+                        // ЛАНДШАФТ: Две колонки
+                        state.allDietTypes.chunked(2).forEach { rowItems ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                rowItems.forEach { diet ->
+                                    Box(modifier = Modifier.weight(1f)) {
+                                        DietCard(
+                                            diet = diet,
+                                            isChecked = state.pendingDietTypeId == diet.id,
+                                            onClick = { viewModel.selectPendingDiet(diet.id) }
+                                        )
+                                    }
+                                }
+                                if (rowItems.size == 1) Spacer(modifier = Modifier.weight(1f))
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    } else {
+                        // ПОРТРЕТ: Один за другим
+                        state.allDietTypes.forEach { diet ->
+                            DietCard(
+                                diet = diet,
+                                isChecked = state.pendingDietTypeId == diet.id,
+                                onClick = { viewModel.selectPendingDiet(diet.id) }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                     }
                 }
 

@@ -153,31 +153,46 @@ fun SetupStep3Content(
         if (state.allergies.isEmpty()) {
             SmartMealText(text = "Загрузка...", color = Color.Gray)
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(((state.allergies.size / 2 + 1) * 60).dp)
-                    .testTag("setup_step3_allergy_grid"),
+            // ЛАНДШАФТ: заменяем LazyVerticalGrid на обычный Column с Row, 
+            // так как мы находимся внутри verticalScroll
+            val allChipData = state.allergies.map { allergy ->
+                AllergyChipData(
+                    label = allergy.name,
+                    isSelected = allergy.id in state.selectedAllergyIds,
+                    onClick = { onToggleAllergy(allergy.id) },
+                    tag = "setup_step3_allergy_${allergy.id}"
+                )
+            } + AllergyChipData(
+                label = "Ем всё",
+                isSelected = state.eatAll,
+                onClick = { onSetEatAll(!state.eatAll) },
+                tag = "setup_step3_allergy_all"
+            )
+
+            val chunkedChips = allChipData.chunked(2)
+            Column(
+                modifier = Modifier.fillMaxWidth().testTag("setup_step3_allergy_grid"),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(state.allergies) { allergy ->
-                    val isSelected = allergy.id in state.selectedAllergyIds
-                    SelectableChip(
-                        label = allergy.name,
-                        isSelected = isSelected,
-                        onClick = { onToggleAllergy(allergy.id) },
-                        modifier = Modifier.testTag("setup_step3_allergy_${allergy.id}")
-                    )
-                }
-                item {
-                    SelectableChip(
-                        label = "Ем всё",
-                        isSelected = state.eatAll,
-                        onClick = { onSetEatAll(!state.eatAll) },
-                        modifier = Modifier.testTag("setup_step3_allergy_all")
-                    )
+                chunkedChips.forEach { rowChips ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        rowChips.forEach { chipData ->
+                            androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
+                                SelectableChip(
+                                    label = chipData.label,
+                                    isSelected = chipData.isSelected,
+                                    onClick = chipData.onClick,
+                                    modifier = Modifier.testTag(chipData.tag)
+                                )
+                            }
+                        }
+                        if (rowChips.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
                 }
             }
         }
@@ -304,3 +319,10 @@ private fun SelectableChip(
         )
     }
 }
+
+private data class AllergyChipData(
+    val label: String,
+    val isSelected: Boolean,
+    val onClick: () -> Unit,
+    val tag: String
+)

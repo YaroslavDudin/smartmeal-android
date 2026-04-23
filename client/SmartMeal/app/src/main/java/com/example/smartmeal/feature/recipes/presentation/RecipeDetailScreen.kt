@@ -114,6 +114,8 @@ fun RecipeDetailScreen(
             } else {
                 state.recipe?.let { recipe ->
                     val totalWeight = recipe.total_weight ?: 0.0
+                    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+                    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
                     Column(
                         modifier = Modifier
@@ -129,7 +131,7 @@ fun RecipeDetailScreen(
                             contentDescription = recipe.title,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(200.dp)
+                                .height(if (isLandscape) 160.dp else 240.dp) // ЛАНДШАФТ: уменьшаем высоту фото
                                 .clip(RoundedCornerShape(16.dp)),
                             contentScale = ContentScale.Crop
                         )

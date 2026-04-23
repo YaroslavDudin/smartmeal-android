@@ -27,6 +27,13 @@ import com.example.smartmeal.ui.theme.HintGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import java.util.Locale
 
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.ui.platform.LocalConfiguration
+import android.content.res.Configuration
+
 private val CardYellow = Color(0xFFF4F4F4)
 
 @Composable
@@ -71,6 +78,9 @@ fun FavoritesScreen(
         }
     }
 
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,7 +90,7 @@ fun FavoritesScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .padding(horizontal = 16.dp, vertical = if (isLandscape) 8.dp else 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
@@ -102,7 +112,7 @@ fun FavoritesScreen(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
+                .padding(bottom = if (isLandscape) 8.dp else 16.dp),
             contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -160,10 +170,12 @@ fun FavoritesScreen(
                 }
             }
         } else {
-            LazyColumn(
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(if (isLandscape) 2 else 1),
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 32.dp, start = 20.dp, end = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 val displayData = if (selectedCategory == "Все") {
                     groupedFavorites
@@ -174,7 +186,10 @@ fun FavoritesScreen(
                 displayData.forEach { (category, items) ->
                     if (items.isNotEmpty()) {
                         if (selectedCategory == "Все") {
-                            item(key = "header_$category") {
+                            item(
+                                key = "header_$category",
+                                span = { GridItemSpan(maxLineSpan) }
+                            ) {
                                 SmartMealText(
                                     text = category,
                                     fontSize = 18.sp,
@@ -210,7 +225,10 @@ fun FavoritesScreen(
 
                 // Недавно удаленные (только во вкладке "Все")
                 if (selectedCategory == "Все" && recentlyRemoved.isNotEmpty()) {
-                    item(key = "recently_removed_header") {
+                    item(
+                        key = "recently_removed_header",
+                        span = { GridItemSpan(maxLineSpan) }
+                    ) {
                         Column(modifier = Modifier.animateItem()) {
                             Spacer(modifier = Modifier.height(24.dp))
                             SmartMealText(

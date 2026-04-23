@@ -3,11 +3,7 @@ package com.example.smartmeal.ui.components.selectors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -54,12 +50,14 @@ fun DateSelector(
         buildSelectionRange(items, selectedStartId, selectedEndId)
     }
 
-    
-    LaunchedEffect(selectedStartId, items) {
+    // Удаляем LaunchedEffect с animateScrollToItem, чтобы чипы не прыгали при клике.
+    // Если нужно проскроллить к текущей дате только при первой загрузке, 
+    // это можно сделать один раз.
+    LaunchedEffect(items) {
         if (selectedStartId != null && items.isNotEmpty()) {
             val index = items.indexOfFirst { it.id == selectedStartId }
             if (index != -1) {
-                listState.animateScrollToItem(maxOf(0, index - 2))
+                listState.scrollToItem(maxOf(0, index - 2))
             }
         }
     }
@@ -118,14 +116,17 @@ private fun DateChip(
         else -> PrimaryGreen.copy(alpha = 0.28f)
     }
 
+    // Фиксированная ширина для "таблетки", чтобы текст не дергался при смене на Bold
+    val chipWidth = if (isSmallScreen) 64.dp else 72.dp
+
     Column(
         modifier = modifier
+            .width(chipWidth) // СТАБИЛЬНОСТЬ: фиксируем ширину
             .clip(chipShape)
             .background(backgroundColor)
             .border(width = 1.dp, color = borderColor, shape = chipShape)
             .clickable(onClick = onClick)
             .padding(
-                horizontal = if (isSmallScreen) 10.dp else 14.dp, 
                 vertical = if (isSmallScreen) 6.dp else 10.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -90,47 +90,107 @@ fun CookTimeSettingsScreen(
                 textAlign = TextAlign.Center
             )
 
-            // --- 3 Кнопки времен готовки ---
-            MEAL_TYPES_3.forEach { meal ->
-                val isSelected = selectedMeal == meal
-                val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
-                val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
+            val configuration = LocalConfiguration.current
+            val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp)
-                        .clickable { selectedMeal = if (isSelected) null else meal },
-                    shape = RoundedCornerShape(16.dp),
-                    color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
-                    border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
-                ) {
+            if (isLandscape) {
+                // ЛАНДШАФТ: Две колонки
+                MEAL_TYPES_3.chunked(2).forEach { rowMeals ->
                     Row(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 18.dp)
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Column {
-                            SmartMealText(
-                                text = meal,
-                                fontSize = 17.sp,
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
-                                color = if (isSelected) PrimaryGreen else Color.Black
-                            )
-                            SmartMealText(
-                                text = displayPref,
-                                fontSize = 13.sp,
-                                color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
+                        rowMeals.forEach { meal ->
+                            Box(modifier = Modifier.weight(1f)) {
+                                val isSelected = selectedMeal == meal
+                                val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
+                                val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
+
+                                Surface(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 6.dp)
+                                        .clickable { selectedMeal = if (isSelected) null else meal },
+                                    shape = RoundedCornerShape(16.dp),
+                                    color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
+                                    border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp, vertical = 18.dp)
+                                            .fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Column {
+                                            SmartMealText(
+                                                text = meal,
+                                                fontSize = 17.sp,
+                                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                                color = if (isSelected) PrimaryGreen else Color.Black
+                                            )
+                                            SmartMealText(
+                                                text = displayPref,
+                                                fontSize = 13.sp,
+                                                color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
+                                            )
+                                        }
+                                        Icon(
+                                            imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                            contentDescription = null,
+                                            tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
+                                            modifier = Modifier.size(22.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        if (rowMeals.size == 1) Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+            } else {
+                // ПОРТРЕТ: Один за другим
+                MEAL_TYPES_3.forEach { meal ->
+                    val isSelected = selectedMeal == meal
+                    val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
+                    val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
+
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp)
+                            .clickable { selectedMeal = if (isSelected) null else meal },
+                        shape = RoundedCornerShape(16.dp),
+                        color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
+                        border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 18.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                SmartMealText(
+                                    text = meal,
+                                    fontSize = 17.sp,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                    color = if (isSelected) PrimaryGreen else Color.Black
+                                )
+                                SmartMealText(
+                                    text = displayPref,
+                                    fontSize = 13.sp,
+                                    color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
+                                )
+                            }
+                            Icon(
+                                imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                contentDescription = null,
+                                tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
+                                modifier = Modifier.size(22.dp)
                             )
                         }
-                        Icon(
-                            imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
-                            contentDescription = null,
-                            tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
-                            modifier = Modifier.size(22.dp)
-                        )
                     }
                 }
             }

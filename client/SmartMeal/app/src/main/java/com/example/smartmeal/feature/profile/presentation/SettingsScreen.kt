@@ -430,13 +430,138 @@ fun SettingsScreen(
 }
 
 @Composable
+private fun UserNameField(state: ProfileState, viewModel: ProfileViewModel) {
+    Column {
+        OutlinedTextField(
+            value = state.pendingUserName,
+            onValueChange = { viewModel.updatePendingUserName(it) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.dp else 20.dp),
+            shape = RoundedCornerShape(12.dp),
+            isError = state.usernameError != null,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = BorderGray,
+                focusedBorderColor = PrimaryGreen,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
+                errorBorderColor = Color.Red,
+                errorContainerColor = Color.White
+            ),
+            singleLine = true
+        )
+        if (state.usernameError != null) {
+            SmartMealText(
+                text = state.usernameError!!,
+                color = Color.Red,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(start = 4.dp, top = 4.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmailField(state: ProfileState) {
+    OutlinedTextField(
+        value = state.userEmail,
+        onValueChange = { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.dp else 20.dp),
+        shape = RoundedCornerShape(12.dp),
+        enabled = false,
+        colors = OutlinedTextFieldDefaults.colors(
+            disabledBorderColor = BorderGray,
+            disabledContainerColor = Color(0xFFF5F5F5),
+            disabledTextColor = Color.Gray
+        ),
+        singleLine = true
+    )
+}
+
+@Composable
+private fun BirthDateField(
+    state: ProfileState,
+    dateFormatter: SimpleDateFormat,
+    displayDateFormatter: SimpleDateFormat,
+    onClick: () -> Unit
+) {
+    val displayDate = remember(state.pendingBirthDate) {
+        if (state.pendingBirthDate.isNullOrBlank()) "Не указана"
+        else {
+            try {
+                val date = dateFormatter.parse(state.pendingBirthDate!!)
+                date?.let { displayDateFormatter.format(it) } ?: "Не указана"
+            } catch (e: Exception) {
+                state.pendingBirthDate ?: "Не указана"
+            }
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.dp else 20.dp)
+            .height(56.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color.White)
+            .border(1.dp, BorderGray, RoundedCornerShape(12.dp))
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        SmartMealText(
+            text = displayDate,
+            color = if (state.pendingBirthDate.isNullOrBlank()) HintGray else Color.Black,
+            fontSize = 16.sp
+        )
+    }
+}
+
+@Composable
+private fun GenderRow(state: ProfileState, viewModel: ProfileViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.dp else 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        GenderButton(
+            text = "Мужской",
+            isSelected = state.pendingGender == "male",
+            onClick = { viewModel.updatePendingGender("male") },
+            modifier = Modifier.weight(1f)
+        )
+        GenderButton(
+            text = "Женский",
+            isSelected = state.pendingGender == "female",
+            onClick = { viewModel.updatePendingGender("female") },
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+private fun SaveButton(state: ProfileState, viewModel: ProfileViewModel) {
+    SmartMealButton(
+        text = if (state.isSaving) "Сохранение..." else "Сохранить",
+        onClick = { viewModel.savePersonalData() },
+        variant = SmartMealButtonVariant.PRIMARY,
+        color = SmartMealButtonColor.GREEN,
+        modifier = Modifier.padding(horizontal = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.dp else 20.dp),
+        enabled = !state.isSaving
+    )
+}
+
+@Composable
 private fun SettingsFieldLabel(label: String) {
     SmartMealText(
         text = label,
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         color = Color.Gray,
-        modifier = Modifier.padding(start = 24.dp, bottom = 4.dp)
+        modifier = Modifier.padding(start = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 4.dp else 24.dp, bottom = 4.dp)
     )
 }
 

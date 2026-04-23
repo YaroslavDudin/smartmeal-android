@@ -119,11 +119,14 @@ fun ProfileScreen(
                         .background(BgLightGray)
                         .verticalScroll(rememberScrollState())
                 ) {
+                    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+                    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
                     // ── Шапка ──────────────────────────────────────────────
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 16.dp)
+                            .padding(horizontal = 20.dp, vertical = if (isLandscape) 8.dp else 16.dp)
                     ) {
                         SmartMealText(
                             text = "Профиль",
@@ -136,7 +139,7 @@ fun ProfileScreen(
                     // ── Загрузка ───────────────────────────────────────────
                     if (state.isLoading) {
                         Box(
-                            modifier = Modifier.fillMaxWidth().padding(32.dp),
+                            modifier = Modifier.fillMaxWidth().padding(if (isLandscape) 16.dp else 32.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             CircularProgressIndicator(color = PrimaryGreen)
@@ -153,13 +156,13 @@ fun ProfileScreen(
                         color = CardYellow
                     ) {
                         Row(
-                            modifier = Modifier.padding(16.dp),
+                            modifier = Modifier.padding(if (isLandscape) 12.dp else 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .size(64.dp)
+                                    .size(if (isLandscape) 48.dp else 64.dp)
                                     .clip(CircleShape)
                                     .background(if (state.avatarUrl.isNullOrBlank()) AvatarFallbackBg else Color.White),
                                 contentAlignment = Alignment.Center
@@ -174,7 +177,7 @@ fun ProfileScreen(
                                 } else {
                                     SmartMealText(
                                         text = state.userName.take(1).uppercase(),
-                                        fontSize = 24.sp,
+                                        fontSize = if (isLandscape) 18.sp else 24.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.Black
                                     )
@@ -183,13 +186,13 @@ fun ProfileScreen(
                             Column(modifier = Modifier.weight(1f)) {
                                 SmartMealText(
                                     text = state.userName,
-                                    fontSize = 20.sp,
+                                    fontSize = if (isLandscape) 18.sp else 20.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                                 if (state.userEmail.isNotBlank()) {
                                     SmartMealText(
                                         text = state.userEmail,
-                                        fontSize = 14.sp,
+                                        fontSize = 13.sp,
                                         color = Color.Gray
                                     )
                                 }
@@ -202,67 +205,112 @@ fun ProfileScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // ── Группа "Питание" ──────────────────────────────────
-                    ProfileSectionHeader("ПИТАНИЕ")
-                    
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
+                    if (isLandscape) {
+                        // ЛАНДШАФТ: Группируем настройки в сетку
+                        ProfileSectionHeader("ПИТАНИЕ И НАСТРОЙКИ")
+                        
                         val allergySub = if (state.currentAllergyNames.isNotEmpty())
                             state.currentAllergyNames.joinToString(", ")
                         else "Нет ограничений"
-
-                        ProfileMenuCard(title = "Мои аллергии", subtitle = allergySub) {
-                            subScreen = ProfileSubScreen.ALLERGIES
-                        }
-
                         val dietSub = state.currentDietTypeName ?: "Не выбран"
-                        ProfileMenuCard(title = "Мой рацион", subtitle = dietSub) {
-                            subScreen = ProfileSubScreen.DIET
-                        }
-
                         val calorieSub = if (viewModel.isCaloriesEnabled()) 
                             "${state.totalCalories} ккал/день" 
                         else "Любая"
-                        
-                        ProfileMenuCard(title = "Целевая калорийность", subtitle = calorieSub) {
-                            subScreen = ProfileSubScreen.CALORIES
-                        }
 
-                        PortionStepperCard(
-                            count = state.pendingPortionSize,
-                            isSaving = state.isSaving,
-                            onDecrement = { viewModel.decrementPortion() },
-                            onIncrement = { viewModel.incrementPortion() },
-                            onSave = { viewModel.savePortion() }
+                        val items = listOf(
+                            Triple("Мои аллергии", allergySub) { subScreen = ProfileSubScreen.ALLERGIES },
+                            Triple("Мой рацион", dietSub) { subScreen = ProfileSubScreen.DIET },
+                            Triple("Целевая калорийность", calorieSub) { subScreen = ProfileSubScreen.CALORIES },
+                            Triple("Время готовки", "Тайминги приемов пищи") { subScreen = ProfileSubScreen.COOK_TIME },
+                            Triple("Заказать продукты", "Сформировать корзину") { onGoToProducts(true) },
+                            Triple("Избранное", "Ваши рецепты") { 
+                                viewModel.loadFavorites()
+                                subScreen = ProfileSubScreen.FAVORITES 
+                            }
                         )
-                    }
 
-                    // ── Группа "Настройки" ────────────────────────────────
-                    ProfileSectionHeader("НАСТРОЙКИ ПЛАНА")
-                    
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        ProfileMenuCard(title = "Время готовки", subtitle = "Настроить тайминги приемов пищи") { 
-                            subScreen = ProfileSubScreen.COOK_TIME
+                        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+                            items.chunked(2).forEach { rowItems ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    rowItems.forEach { (title, sub, action) ->
+                                        Box(modifier = Modifier.weight(1f)) {
+                                            ProfileMenuCard(title = title, subtitle = sub, onClick = action)
+                                        }
+                                    }
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(10.dp))
+                            PortionStepperCard(
+                                count = state.pendingPortionSize,
+                                isSaving = state.isSaving,
+                                onDecrement = { viewModel.decrementPortion() },
+                                onIncrement = { viewModel.incrementPortion() },
+                                onSave = { viewModel.savePortion() }
+                            )
+                        }
+                    } else {
+                        // ПОРТРЕТ: Обычный список
+                        ProfileSectionHeader("ПИТАНИЕ")
+                        
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            val allergySub = if (state.currentAllergyNames.isNotEmpty())
+                                state.currentAllergyNames.joinToString(", ")
+                            else "Нет ограничений"
+
+                            ProfileMenuCard(title = "Мои аллергии", subtitle = allergySub) {
+                                subScreen = ProfileSubScreen.ALLERGIES
+                            }
+
+                            val dietSub = state.currentDietTypeName ?: "Не выбран"
+                            ProfileMenuCard(title = "Мой рацион", subtitle = dietSub) {
+                                subScreen = ProfileSubScreen.DIET
+                            }
+
+                            val calorieSub = if (viewModel.isCaloriesEnabled()) 
+                                "${state.totalCalories} ккал/день" 
+                            else "Любая"
+                            
+                            ProfileMenuCard(title = "Целевая калорийность", subtitle = calorieSub) {
+                                subScreen = ProfileSubScreen.CALORIES
+                            }
+
+                            PortionStepperCard(
+                                count = state.pendingPortionSize,
+                                isSaving = state.isSaving,
+                                onDecrement = { viewModel.decrementPortion() },
+                                onIncrement = { viewModel.incrementPortion() },
+                                onSave = { viewModel.savePortion() }
+                            )
                         }
 
-                        ProfileMenuCard(title = "Заказать продукты", subtitle = "Сформировать корзину в магазин") {
-                            onGoToProducts(true)
-                        }
+                        ProfileSectionHeader("НАСТРОЙКИ ПЛАНА")
+                        
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            ProfileMenuCard(title = "Время готовки", subtitle = "Настроить тайминги приемов пищи") { 
+                                subScreen = ProfileSubScreen.COOK_TIME
+                            }
 
-                        ProfileMenuCard(title = "Избранное", subtitle = "Ваши сохраненные рецепты") {
-                            viewModel.loadFavorites()
-                            subScreen = ProfileSubScreen.FAVORITES
+                            ProfileMenuCard(title = "Заказать продукты", subtitle = "Сформировать корзину в магазин") {
+                                onGoToProducts(true)
+                            }
+
+                            ProfileMenuCard(title = "Избранное", subtitle = "Ваши сохраненные рецепты") {
+                                viewModel.loadFavorites()
+                                subScreen = ProfileSubScreen.FAVORITES
+                            }
                         }
                     }
 

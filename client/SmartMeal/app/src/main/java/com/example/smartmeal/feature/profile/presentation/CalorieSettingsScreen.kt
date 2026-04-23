@@ -16,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -96,132 +97,202 @@ fun CalorieSettingsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp)
         ) {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
-                color = Color.White
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+            val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+            val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
+            if (isLandscape) {
+                // ЛАНДШАФТ: Компактная сетка
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    // Левая колонка: Основной переключатель и Слайдер
                     Column(modifier = Modifier.weight(1f)) {
-                        SmartMealText(text = "Планировать по калориям", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                        SmartMealText(
-                            text = if (isEnabled) "Активно" else "Выключено",
-                            fontSize = 13.sp,
-                            color = if (isEnabled) PrimaryGreen else Color.Gray
-                        )
-                    }
-                    Switch(
-                        checked = isEnabled,
-                        onCheckedChange = { 
-                            isEnabled = it
-                            if (it) calorieMargin = 100 
-                        },
-                        colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = PrimaryGreen)
-                    )
-                }
-            }
-
-            if (isEnabled) {
-                Spacer(modifier = Modifier.height(20.dp))
-                
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(24.dp),
-                    color = Color.White,
-                    shadowElevation = 2.dp
-                ) {
-                    Column(
-                        modifier = Modifier.padding(24.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        SmartMealText(
-                            text = "Общая цель: $animatedDisplayCalories ккал",
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = PrimaryGreen
-                        )
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        // Анимированное значение для плавного движения самого ползунка слайдера
-                        val animatedSliderValue by animateFloatAsState(
-                            targetValue = totalCalories.toFloat(),
-                            animationSpec = tween(durationMillis = 250), // Быстрее, но всё еще плавно
-                            label = "SliderSmoothMovement"
-                        )
-
-                        Slider(
-                            value = animatedSliderValue,
-                            onValueChange = { 
-                                val newValue = it.toInt()
-                                totalCalories = newValue
-                                updateMealsFromTotal(newValue)
-                            },
-                            valueRange = 800f..4000f,
-                            colors = SliderDefaults.colors(
-                                thumbColor = PrimaryGreen,
-                                activeTrackColor = PrimaryGreen,
-                                inactiveTrackColor = Color(0xFFE0E0E0)
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 4.dp, end = 4.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                        Surface(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(20.dp),
+                            color = Color.White
                         ) {
-                            SmartMealText("800", fontSize = 14.sp, color = Color.Gray.copy(alpha = 0.6f), fontWeight = FontWeight.ExtraBold)
-                            SmartMealText("4000", fontSize = 14.sp, color = Color.Gray.copy(alpha = 0.6f), fontWeight = FontWeight.ExtraBold)
+                            Row(
+                                modifier = Modifier.padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    SmartMealText(text = "Планировать по калориям", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                                    SmartMealText(
+                                        text = if (isEnabled) "Активно" else "Выключено",
+                                        fontSize = 12.sp,
+                                        color = if (isEnabled) PrimaryGreen else Color.Gray
+                                    )
+                                }
+                                Switch(
+                                    checked = isEnabled,
+                                    onCheckedChange = { 
+                                        isEnabled = it
+                                        if (it) calorieMargin = 100 
+                                    },
+                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = PrimaryGreen),
+                                    modifier = Modifier.scale(0.8f)
+                                )
+                            }
+                        }
+
+                        if (isEnabled) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Surface(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(24.dp),
+                                color = Color.White,
+                                shadowElevation = 1.dp
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                    SmartMealText(
+                                        text = "Цель: $animatedDisplayCalories ккал",
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = PrimaryGreen
+                                    )
+                                    val animatedSliderValue by animateFloatAsState(
+                                        targetValue = totalCalories.toFloat(),
+                                        animationSpec = tween(durationMillis = 250),
+                                        label = "SliderSmoothMovement"
+                                    )
+                                    Slider(
+                                        value = animatedSliderValue,
+                                        onValueChange = { 
+                                            val newValue = it.toInt()
+                                            totalCalories = newValue
+                                            updateMealsFromTotal(newValue)
+                                        },
+                                        valueRange = 800f..4000f,
+                                        colors = SliderDefaults.colors(thumbColor = PrimaryGreen, activeTrackColor = PrimaryGreen),
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    // Правая колонка: Разброс и Вводы
+                    if (isEnabled) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            SmartMealText(text = "Разброс (± ккал)", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = 4.dp, bottom = 8.dp))
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                listOf(100, 150, 200).forEach { margin ->
+                                    FilterChip(
+                                        selected = calorieMargin == margin,
+                                        onClick = { calorieMargin = margin },
+                                        label = { SmartMealText("±$margin", fontSize = 12.sp) },
+                                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = PrimaryGreen, selectedLabelColor = Color.White),
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                CalorieInputBox(label = "Завтрак", value = breakfastCals, onValueChange = { breakfastCals = it; updateTotalFromMeals() }, modifier = Modifier.weight(1f))
+                                CalorieInputBox(label = "Обед", value = lunchCals, onValueChange = { lunchCals = it; updateTotalFromMeals() }, modifier = Modifier.weight(1f))
+                                CalorieInputBox(label = "Ужин", value = dinnerCals, onValueChange = { dinnerCals = it; updateTotalFromMeals() }, modifier = Modifier.weight(1f))
+                            }
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                SmartMealText(text = "Допустимый разброс (± ккал)", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = 4.dp, bottom = 12.dp))
-                
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf(100, 150, 200).forEach { margin ->
-                        FilterChip(
-                            selected = calorieMargin == margin,
-                            onClick = { calorieMargin = margin },
-                            label = { SmartMealText("±$margin", fontSize = 14.sp) },
-                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = PrimaryGreen, selectedLabelColor = Color.White),
-                            modifier = Modifier.weight(1f)
+            } else {
+                // ПОРТРЕТ: Вертикальный список (существующая логика)
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    color = Color.White
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            SmartMealText(text = "Планировать по калориям", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                            SmartMealText(
+                                text = if (isEnabled) "Активно" else "Выключено",
+                                fontSize = 13.sp,
+                                color = if (isEnabled) PrimaryGreen else Color.Gray
+                            )
+                        }
+                        Switch(
+                            checked = isEnabled,
+                            onCheckedChange = { 
+                                isEnabled = it
+                                if (it) calorieMargin = 100 
+                            },
+                            colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = PrimaryGreen)
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                if (isEnabled) {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(24.dp),
+                        color = Color.White,
+                        shadowElevation = 2.dp
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(24.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            SmartMealText(
+                                text = "Общая цель: $animatedDisplayCalories ккал",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = PrimaryGreen
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            val animatedSliderValue by animateFloatAsState(
+                                targetValue = totalCalories.toFloat(),
+                                animationSpec = tween(durationMillis = 250),
+                                label = "SliderSmoothMovement"
+                            )
+                            Slider(
+                                value = animatedSliderValue,
+                                onValueChange = { 
+                                    val newValue = it.toInt()
+                                    totalCalories = newValue
+                                    updateMealsFromTotal(newValue)
+                                },
+                                valueRange = 800f..4000f,
+                                colors = SliderDefaults.colors(thumbColor = PrimaryGreen, activeTrackColor = PrimaryGreen, inactiveTrackColor = Color(0xFFE0E0E0)),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Row(modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 4.dp, end = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                                SmartMealText("800", fontSize = 14.sp, color = Color.Gray.copy(alpha = 0.6f), fontWeight = FontWeight.ExtraBold)
+                                SmartMealText("4000", fontSize = 14.sp, color = Color.Gray.copy(alpha = 0.6f), fontWeight = FontWeight.ExtraBold)
+                            }
+                        }
+                    }
 
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    CalorieInputBox(
-                        label = "Завтрак",
-                        value = breakfastCals,
-                        onValueChange = { breakfastCals = it; updateTotalFromMeals() },
-                        modifier = Modifier.weight(1f)
-                    )
-                    CalorieInputBox(
-                        label = "Обед",
-                        value = lunchCals,
-                        onValueChange = { lunchCals = it; updateTotalFromMeals() },
-                        modifier = Modifier.weight(1f)
-                    )
-                    CalorieInputBox(
-                        label = "Ужин",
-                        value = dinnerCals,
-                        onValueChange = { dinnerCals = it; updateTotalFromMeals() },
-                        modifier = Modifier.weight(1f)
-                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    SmartMealText(text = "Допустимый разброс (± ккал)", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = 4.dp, bottom = 12.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        listOf(100, 150, 200).forEach { margin ->
+                            FilterChip(
+                                selected = calorieMargin == margin,
+                                onClick = { calorieMargin = margin },
+                                label = { SmartMealText("±$margin", fontSize = 14.sp) },
+                                colors = FilterChipDefaults.filterChipColors(selectedContainerColor = PrimaryGreen, selectedLabelColor = Color.White),
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        CalorieInputBox(label = "Завтрак", value = breakfastCals, onValueChange = { breakfastCals = it; updateTotalFromMeals() }, modifier = Modifier.weight(1f))
+                        CalorieInputBox(label = "Обед", value = lunchCals, onValueChange = { lunchCals = it; updateTotalFromMeals() }, modifier = Modifier.weight(1f))
+                        CalorieInputBox(label = "Ужин", value = dinnerCals, onValueChange = { dinnerCals = it; updateTotalFromMeals() }, modifier = Modifier.weight(1f))
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(if (isLandscape) 16.dp else 40.dp))
             OutlinedButton(
                 onClick = { isEnabled = false; totalCalories = 2000; calorieMargin = 100; updateMealsFromTotal(2000) },
                 modifier = Modifier.fillMaxWidth().height(50.dp),
