@@ -467,6 +467,7 @@ private fun SelectableChip(
 
     Surface(
         modifier = modifier
+            .fillMaxWidth()
             .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW)
             .border(1.dp, borderColor, RoundedCornerShape(12.dp))
             .clickable(
@@ -479,10 +480,13 @@ private fun SelectableChip(
     ) {
         SmartMealText(
             text = label,
-            modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp, horizontal = 4.dp),
             color = textColor,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
     }
 }

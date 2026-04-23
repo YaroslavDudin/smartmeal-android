@@ -68,7 +68,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(subtitleSpacing))
 
             SmartMealText(
-                text = "SmartMeal",
+                text = "Гибкий Рацион",
                 fontSize = titleSize,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,

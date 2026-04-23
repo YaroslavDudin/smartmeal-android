@@ -101,7 +101,7 @@ fun SetupIntroContent(
 
                 // Заголовок
                 SmartMealText(
-                    text = "SmartMeal",
+                    text = "Гибкий Рацион",
                     fontSize = TextSize.HERO,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,

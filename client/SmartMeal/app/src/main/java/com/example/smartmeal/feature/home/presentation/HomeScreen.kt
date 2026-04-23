@@ -343,11 +343,11 @@ fun HomeContent(
     // ЛАНДШАФТ: Используем LazyColumn для ВСЕГО контента, чтобы он прокручивался целиком
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(bottom = 16.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(bottom = 8.dp)
     ) {
         item {
-            Box(modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp)) {
+            Box(modifier = Modifier.fillMaxWidth().padding(top = 0.dp, bottom = 0.dp)) {
                 SmartMealText(
                     text = "Меню",
                     style = MaterialTheme.typography.headlineMedium,

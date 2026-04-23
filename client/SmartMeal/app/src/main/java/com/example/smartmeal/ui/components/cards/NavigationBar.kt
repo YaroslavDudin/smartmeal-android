@@ -1,5 +1,6 @@
 package com.example.smartmeal.ui.components.cards
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
 
 val SoftGreen = Color(0xFF66BB6A)
@@ -42,7 +44,8 @@ fun BottomNavigationBar(
             .fillMaxWidth()
             .then(if (isLandscape) Modifier.height(56.dp) else Modifier),
         containerColor = Color.White,
-        tonalElevation = 8.dp
+        tonalElevation = 8.dp,
+        windowInsets = WindowInsets(0, 0, 0, 0)
     ) {
         items.forEachIndexed { index, item ->
             val isSelected = selectedItem == index
