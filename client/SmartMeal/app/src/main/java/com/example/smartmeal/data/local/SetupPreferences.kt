@@ -305,6 +305,10 @@ class SetupPreferences(context: Context) {
         return prefs.getString(scopedKey(KEY_GENDER), null)
     }
 
+    fun clearAll() {
+        prefs.edit().clear().apply()
+    }
+
     companion object {
         const val PLAN_TYPE_DAILY = "daily"
         const val PLAN_TYPE_WEEKLY = "weekly"

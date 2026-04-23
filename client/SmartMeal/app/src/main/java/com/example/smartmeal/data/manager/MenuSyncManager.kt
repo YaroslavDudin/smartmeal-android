@@ -72,4 +72,8 @@ object MenuSyncManager {
     fun getRecipesForDate(date: String): Set<RecipeInMenu> {
         return _menuState.value[date] ?: emptySet()
     }
+
+    fun clear() {
+        _menuState.value = emptyMap()
+    }
 }

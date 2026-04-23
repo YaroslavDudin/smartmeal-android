@@ -23,7 +23,8 @@ sealed class AuthState {
 
 class AuthViewModel(
     private val authApi: AuthApi,
-    private val tokenManager: TokenManager
+    private val tokenManager: TokenManager,
+    private val setupPreferences: com.example.smartmeal.data.local.SetupPreferences
 ) : ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState
@@ -226,6 +227,15 @@ class AuthViewModel(
     fun logout() {
         _authState.value = AuthState.Idle
         val refreshToken = tokenManager.getRefreshToken()
+        
+        // Глобальная очистка всех данных
+        setupPreferences.clearAll()
+        com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
+        com.example.smartmeal.data.manager.DateManager.clear()
+        com.example.smartmeal.data.manager.MenuSyncManager.clear()
+        com.example.smartmeal.data.manager.FavoritesManager.clear()
+        com.example.smartmeal.data.manager.MealSlotManager.clear()
+        
         if (refreshToken != null) {
             viewModelScope.launch {
                 try {

@@ -22,4 +22,9 @@ object DateManager {
 
     fun getLastSelectedDate(): Date? = lastSelectedDate
     fun getLastSelectedEndDate(): Date? = lastSelectedEndDate
+
+    fun clear() {
+        lastSelectedDate = null
+        lastSelectedEndDate = null
+    }
 }

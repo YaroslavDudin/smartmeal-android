@@ -289,7 +289,7 @@ fun HomeScreen(
                 }
 
                 // ── СТАТИСТИКА ─────────────────────────────────────────────
-                2 -> StatisticsScreen()
+                2 -> StatisticsScreen(preferences = setupPreferences)
 
                 // ── ПРОФИЛЬ (АЛЕКСАНДР) ────────────────────────────────────
                 3 -> {

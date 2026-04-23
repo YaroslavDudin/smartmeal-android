@@ -17,4 +17,8 @@ object MealSlotManager {
     }
 
     fun getActiveMealType(): String? = _activeMealType.value
+
+    fun clear() {
+        _activeMealType.value = "breakfast"
+    }
 }

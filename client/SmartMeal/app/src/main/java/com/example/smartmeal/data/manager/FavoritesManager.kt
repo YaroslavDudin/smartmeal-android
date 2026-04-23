@@ -15,4 +15,9 @@ object FavoritesManager {
     fun notifyFavoriteChanged(recipeId: Int, isFavorite: Boolean) {
         _favoriteUpdates.tryEmit(FavoriteUpdate(recipeId, isFavorite))
     }
+
+    fun clear() {
+        // SharedFlow не хранит стейт, но мы можем отправить сигнал о сбросе, если бы это был StateFlow.
+        // Здесь пока просто заглушка для консистентности.
+    }
 }

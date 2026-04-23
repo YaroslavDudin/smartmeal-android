@@ -1,11 +1,14 @@
 package com.example.smartmeal.feature.auth.presentation
 
 import com.example.smartmeal.data.local.TokenManager
+import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.data.models.PasswordResetConfirmRequest
 import com.example.smartmeal.feature.auth.data.models.PasswordResetRequest
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import okhttp3.MediaType.Companion.toMediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,6 +25,7 @@ class AuthViewModelTest {
 
     private val authApi = mockk<AuthApi>()
     private val tokenManager = mockk<TokenManager>(relaxed = true)
+    private val setupPreferences = mockk<SetupPreferences>(relaxed = true)
     private lateinit var viewModel: AuthViewModel
     
     private val testDispatcher = StandardTestDispatcher()
@@ -29,7 +33,7 @@ class AuthViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = AuthViewModel(authApi, tokenManager)
+        viewModel = AuthViewModel(authApi, tokenManager, setupPreferences)
     }
 
     @After
@@ -81,5 +85,17 @@ class AuthViewModelTest {
 
         assertTrue(viewModel.authState.value is AuthState.PasswordResetConfirmed)
         assertEquals("Password changed", (viewModel.authState.value as AuthState.PasswordResetConfirmed).message)
+    }
+
+    @Test
+    fun `logout clears all data`() = runTest {
+        every { tokenManager.getRefreshToken() } returns "fake_refresh_token"
+        coEvery { authApi.logout(any()) } returns Response.success(Unit)
+
+        viewModel.logout()
+        advanceUntilIdle()
+
+        verify { setupPreferences.clearAll() }
+        verify { tokenManager.clearTokens() }
     }
 }

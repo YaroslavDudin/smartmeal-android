@@ -46,9 +46,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.foundation.BorderStroke
 
 @Composable
-fun StatisticsScreen() {
-    val context = LocalContext.current
-    val preferences = remember { SetupPreferences(context) }
+fun StatisticsScreen(preferences: SetupPreferences) {
     val viewModel: StatisticsViewModel = viewModel(factory = StatisticsViewModelFactory(preferences))
     
     val uiState by viewModel.uiState.collectAsState()
@@ -104,7 +102,7 @@ fun StatisticsScreen() {
                     SmartMealText(
                         text = "Статистика",
                         fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.SemiBold,
                         color = TextBlack,
                         modifier = Modifier.align(Alignment.CenterStart)
                     )
@@ -241,7 +239,7 @@ fun DateNavigationHeader(
         SmartMealText(
             text = dateStr,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center,
             color = TextBlack
@@ -459,14 +457,14 @@ private fun NutritionCircle(
         SmartMealText(
             text = stats.totalCalories.toInt().toString(),
             fontSize = if (targetCalories > 0) 36.sp else 48.sp,
-            fontWeight = FontWeight.ExtraBold,
+            fontWeight = FontWeight.Medium,
             color = TextBlack,
             letterSpacing = (-1.5).sp
         )
         if (isCaloriesEnabled) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 SmartMealText(text = "из ", fontSize = 16.sp, color = Color.Gray, fontWeight = FontWeight.Medium)
-                SmartMealText(text = "${targetCalories.toInt()}", fontSize = 18.sp, color = TextBlack.copy(alpha = 0.8f), fontWeight = FontWeight.Bold)
+                SmartMealText(text = "${targetCalories.toInt()}", fontSize = 18.sp, color = TextBlack.copy(alpha = 0.8f), fontWeight = FontWeight.SemiBold)
             }
         }
         SmartMealText(
@@ -486,7 +484,7 @@ fun MacroNutrientItem(label: String, value: Double, color: Color) {
     ) {
         SmartMealText(
             text = "${value.toInt()}г",
-            fontWeight = FontWeight.ExtraBold,
+            fontWeight = FontWeight.SemiBold,
             fontSize = 19.sp,
             color = TextBlack
         )
@@ -494,7 +492,7 @@ fun MacroNutrientItem(label: String, value: Double, color: Color) {
             text = label,
             fontSize = 13.sp,
             color = Color.Gray,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.Medium
         )
         Spacer(modifier = Modifier.height(12.dp))
         Box(

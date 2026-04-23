@@ -101,6 +101,7 @@ fun ProductListScreen(
     openOrderModal: Boolean = false,
     onOrderModalConsumed: () -> Unit = {}
 ) {
+    val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
     val availableDates = remember(products, customPlan) {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val rawDateStrings = products
@@ -224,7 +225,7 @@ fun ProductListScreen(
                     SmartMealText(
                         text = "Продукты",
                         fontSize = if (isSmallScreen) 20.sp else 24.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.SemiBold,
                         color = TextBlack,
                         modifier = Modifier.align(Alignment.CenterStart).testTag("title")
                     )
@@ -399,10 +400,19 @@ fun ProductListScreen(
                             androidx.compose.material3.TextButton(
                                 onClick = {
                                     scope.launch {
-                                        // Прокрутка с небольшим смещением (-25) для "мягкого" эффекта
+                                        val targetIndex = itemsBeforePurchased
+                                        val currentIndex = listState.firstVisibleItemIndex
+                                        
+                                        // Если расстояние до цели большое (> 25 элементов), 
+                                        // делаем мгновенный прыжок ближе к цели, чтобы анимация была плавной.
+                                        if (kotlin.math.abs(targetIndex - currentIndex) > 25) {
+                                            listState.scrollToItem(if (targetIndex > currentIndex) targetIndex - 10 else targetIndex + 10)
+                                        }
+
+                                        // Плавная доводка до цели
                                         listState.animateScrollToItem(
-                                            index = itemsBeforePurchased,
-                                            scrollOffset = -25
+                                            index = targetIndex,
+                                            scrollOffset = -100
                                         )
                                     }
                                 },

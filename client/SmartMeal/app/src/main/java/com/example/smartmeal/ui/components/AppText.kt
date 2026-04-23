@@ -111,8 +111,7 @@ fun buildSmartMealString(text: String): AnnotatedString {
         digitRegex.findAll(text).forEach { matchResult ->
             addStyle(
                 style = SpanStyle(
-                    fontFamily = MallannaFontFamily,
-                    fontWeight = FontWeight.Normal
+                    fontFamily = MallannaFontFamily
                 ),
                 start = matchResult.range.first,
                 end = matchResult.range.last + 1
@@ -143,8 +142,7 @@ fun applySmartStylesToAnnotatedString(text: AnnotatedString): AnnotatedString {
             if (existingStyles.isEmpty()) {
                 addStyle(
                     style = SpanStyle(
-                        fontFamily = MallannaFontFamily,
-                        fontWeight = FontWeight.Normal
+                        fontFamily = MallannaFontFamily
                     ),
                     start = start,
                     end = end
