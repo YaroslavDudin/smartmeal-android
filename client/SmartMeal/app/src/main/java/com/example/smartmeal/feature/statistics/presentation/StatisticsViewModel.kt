@@ -221,7 +221,7 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
         if (customPlan != null) {
             val dates = mutableListOf<Date>()
             val cal = Calendar.getInstance().apply { 
-                time = if (normalizeDate(customPlan.startDate).before(normalizedToday)) normalizedToday else normalizeDate(customPlan.startDate)
+                time = normalizeDate(customPlan.startDate)
             }
             val end = normalizeDate(customPlan.endDate)
 
@@ -237,7 +237,6 @@ class StatisticsViewModel(private val preferences: SetupPreferences) : ViewModel
         return menuItems
             .mapNotNull { item -> try { apiDateFormatter.parse(item.actual_date) } catch(e: Exception) { null } }
             .map { normalizeDate(it) }
-            .filter { !it.before(normalizedToday) }
             .distinct()
             .sorted()
     }

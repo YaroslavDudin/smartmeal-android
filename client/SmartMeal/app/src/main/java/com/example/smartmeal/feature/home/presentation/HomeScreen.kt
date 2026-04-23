@@ -869,9 +869,9 @@ class HomeViewModel(private val preferences: SetupPreferences) : ViewModel() {
             _uiState.update { it.copy(isLoading = true, error = null) }
             try {
                 val type = planType ?: SetupPreferences.PLAN_TYPE_WEEKLY
-                val periodStr = when {
-                    customDays != null -> "custom"
-                    type == SetupPreferences.PLAN_TYPE_DAILY -> "day"
+                val periodStr = when (type) {
+                    SetupPreferences.PLAN_TYPE_CUSTOM -> "custom"
+                    SetupPreferences.PLAN_TYPE_DAILY -> "day"
                     else -> "week"
                 }
                 val startDateStr = resolveGenerationStartDateString(

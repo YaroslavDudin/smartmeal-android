@@ -18,7 +18,7 @@ import java.util.Calendar
 enum class PeriodType(val apiValue: String, val label: String) {
     DAILY("day", "Дневной план"),
     WEEKLY("week", "Недельный план"),
-    CUSTOM("day", "Свой план"),
+    CUSTOM("custom", "Свой план"),
 }
 
 data class SetupState(

@@ -208,7 +208,10 @@ fun SmartMealNavGraph(navController: NavHostController) {
             SetupStep3Screen(
                 viewModel = setupViewModel,
                 onBack = { navController.popBackStack() },
-                onComplete = { navigateToHomeClearingOnboardingStack() },
+                onComplete = {
+                    setupPreferences.setPendingPlanRegeneration(true)
+                    navigateToHomeClearingOnboardingStack()
+                },
             )
         }
 
