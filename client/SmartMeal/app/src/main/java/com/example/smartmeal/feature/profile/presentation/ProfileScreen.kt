@@ -21,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -34,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.activity.compose.BackHandler
 import com.example.smartmeal.feature.home.data.api.UserFavoriteDto
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.cards.MealCard
@@ -67,6 +67,11 @@ fun ProfileScreen(
     var subScreen by remember { mutableStateOf(ProfileSubScreen.NONE) }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
+    // Обработка системной кнопки "Назад": если не в корне, возвращаемся в корень профиля
+    BackHandler(enabled = subScreen != ProfileSubScreen.NONE) {
+        subScreen = ProfileSubScreen.NONE
+    }
+
     when (subScreen) {
         ProfileSubScreen.SETTINGS ->
             SettingsScreen(
@@ -96,19 +101,13 @@ fun ProfileScreen(
         ProfileSubScreen.COOK_TIME ->
             CookTimeSettingsScreen(
                 viewModel = viewModel,
-                onBack = { 
-                    subScreen = ProfileSubScreen.SETTINGS 
-                    onProfileUpdatedSuccessfully()
-                }
+                onBack = { subScreen = ProfileSubScreen.NONE }
             )
 
         ProfileSubScreen.CALORIES ->
             CalorieSettingsScreen(
                 viewModel = viewModel,
-                onBack = {
-                    subScreen = ProfileSubScreen.SETTINGS
-                    onProfileUpdatedSuccessfully()
-                }
+                onBack = { subScreen = ProfileSubScreen.NONE }
             )
 
         ProfileSubScreen.NONE -> {

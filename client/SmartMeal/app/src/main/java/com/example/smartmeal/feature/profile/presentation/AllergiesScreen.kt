@@ -20,6 +20,8 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -85,134 +87,137 @@ fun AllergiesScreen(
             )
         }
 
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
-        ) {
-            val configuration = androidx.compose.ui.platform.LocalConfiguration.current
-            val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+        // --- Основная область с плавающей кнопкой ---
+        val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+        val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = PrimaryGreen)
-                }
-            } else {
-                Spacer(modifier = Modifier.height(8.dp))
-
-                SmartMealText(
-                    text = "Настройте список ваших аллергий",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = TextBlack,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-
-                SmartMealText(
-                    text = "Мы будем исключать рецепты с этими ингредиентами из вашего плана питания.",
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-
-                if (state.allAllergies.isEmpty()) {
-                    Box(modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp), contentAlignment = Alignment.Center) {
-                        SmartMealText(
-                            text = "Список аллергенов пока недоступен",
-                            fontSize = 14.sp,
-                            color = Color.Gray
-                        )
+        Box(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp)
+            ) {
+                if (state.isLoading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = PrimaryGreen)
                     }
                 } else {
-                    if (isLandscape) {
-                        // ЛАНДШАФТ: Две колонки для аллергий
-                        state.allAllergies.chunked(2).forEach { rowAllergies ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                rowAllergies.forEach { allergy ->
-                                    Box(modifier = Modifier.weight(1f)) {
-                                        AllergyCard(
-                                            allergy = allergy,
-                                            isChecked = allergy.id in state.pendingAllergyIds,
-                                            onClick = { viewModel.togglePendingAllergy(allergy.id) }
-                                        )
-                                    }
-                                }
-                                if (rowAllergies.size == 1) Spacer(modifier = Modifier.weight(1f))
-                            }
-                            Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    SmartMealText(
+                        text = "Настройте список ваших аллергий",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = TextBlack,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+
+                    SmartMealText(
+                        text = "Мы будем исключать рецепты с этими ингредиентами из вашего плана питания.",
+                        fontSize = 13.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    if (state.allAllergies.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp), contentAlignment = Alignment.Center) {
+                            SmartMealText(
+                                text = "Список аллергенов пока недоступен",
+                                fontSize = 14.sp,
+                                color = Color.Gray
+                            )
                         }
                     } else {
-                        // ПОРТРЕТ: Обычный список
-                        state.allAllergies.forEach { allergy ->
-                            AllergyCard(
-                                allergy = allergy,
-                                isChecked = allergy.id in state.pendingAllergyIds,
-                                onClick = { viewModel.togglePendingAllergy(allergy.id) }
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
+                        if (isLandscape) {
+                            // ЛАНДШАФТ: Две колонки для аллергий
+                            state.allAllergies.chunked(2).forEach { rowAllergies ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    rowAllergies.forEach { allergy ->
+                                        Box(modifier = Modifier.weight(1f)) {
+                                            AllergyCard(
+                                                allergy = allergy,
+                                                isChecked = allergy.id in state.pendingAllergyIds,
+                                                onClick = { viewModel.togglePendingAllergy(allergy.id) }
+                                            )
+                                        }
+                                    }
+                                    if (rowAllergies.size == 1) Spacer(modifier = Modifier.weight(1f))
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        } else {
+                            // ПОРТРЕТ: Обычный список
+                            state.allAllergies.forEach { allergy ->
+                                AllergyCard(
+                                    allergy = allergy,
+                                    isChecked = allergy.id in state.pendingAllergyIds,
+                                    onClick = { viewModel.togglePendingAllergy(allergy.id) }
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
                         }
                     }
-                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                val selectedAllergies = state.allAllergies.filter { it.id in state.pendingAllergyIds }
+                    val selectedAllergies = state.allAllergies.filter { it.id in state.pendingAllergyIds }
 
-                SmartMealText(
-                    text = if (selectedAllergies.isEmpty()) "Аллергии не выбраны" else "Выбрано:",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = TextBlack,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                    SmartMealText(
+                        text = if (selectedAllergies.isEmpty()) "Аллергии не выбраны" else "Выбрано:",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextBlack,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
 
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    selectedAllergies.forEach { allergy ->
-                        AllergyChip(name = allergy.name)
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        selectedAllergies.forEach { allergy ->
+                            AllergyChip(name = allergy.name)
+                        }
+                    }
+
+                    if (state.error != null) {
+                        SmartMealText(
+                            text = state.error!!,
+                            color = Color.Red,
+                            fontSize = 13.sp,
+                            modifier = Modifier.padding(top = 16.dp)
+                        )
+                    }
+
+                    // --- Кнопка в конце списка (не фиксированная) ---
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        SmartMealButton(
+                            text = if (state.isSaving) "..." else "Подтвердить",
+                            onClick = { viewModel.saveAllergies() },
+                            variant = SmartMealButtonVariant.PRIMARY,
+                            color = SmartMealButtonColor.GREEN,
+                            enabled = !state.isSaving,
+                            modifier = if (isLandscape) Modifier.width(200.dp).height(42.dp)
+                                       else Modifier.fillMaxWidth().height(48.dp)
+                        )
                     }
                 }
-
-                if (state.error != null) {
-                    SmartMealText(
-                        text = state.error!!,
-                        color = Color.Red,
-                        fontSize = 13.sp,
-                        modifier = Modifier.padding(top = 16.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(32.dp))
             }
-        }
-
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.White,
-            shadowElevation = 8.dp
-        ) {
-            SmartMealButton(
-                text = if (state.isSaving) "Сохранение..." else "Подтвердить",
-                onClick = { viewModel.saveAllergies() },
-                variant = SmartMealButtonVariant.PRIMARY,
-                color = SmartMealButtonColor.GREEN,
-                enabled = !state.isSaving,
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
-            )
         }
     }
 }

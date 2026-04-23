@@ -1,5 +1,6 @@
-﻿package com.example.smartmeal.feature.setup.presentation
+package com.example.smartmeal.feature.setup.presentation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
@@ -80,133 +83,253 @@ fun SetupStep1Content(
     onIncrement: () -> Unit,
     onDecrement: () -> Unit,
 ) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val scrollState = androidx.compose.foundation.rememberScrollState()
     
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState) // ЛАНДШАФТ: добавляем прокрутку
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-    ) {
+    if (isLandscape) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp, vertical = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                SmartMealText(
-                    text = "Шаг:",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = PrimaryGreen,
-                    fontWeight = FontWeight.Medium,
-                )
-                SmartMealText(
-                    text = " 1",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = PrimaryGreen,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                SmartMealText(
-                    text = " /3",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFBDBDBD),
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-
-            // Визуал кнопки взят из SetupStep2Screen
-            Surface(
-                modifier = Modifier
-                    .testTag("setup_step1_back")
-                    .clickable(onClick = onBack),
-                shape = RoundedCornerShape(12.dp),
-                color = Color.White,
-                shadowElevation = 8.dp,
-                border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
-            ) {
-                SmartMealText(
-                    text = "Назад",
-                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TextBlack,
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        SmartMealText(
-            text = "Выберите тип питания",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.testTag("setup_step1_title")
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (state.dietTypes.isEmpty()) {
-            SmartMealText(text = "Загрузка...", color = Color.Gray)
-        } else {
-            // ЛАНДШАФТ: заменяем LazyVerticalGrid на обычный Column с Row, 
-            // так как мы находимся внутри verticalScroll
-            val chunkedDietTypes = state.dietTypes.chunked(2)
+            // Левая часть: Статика
             Column(
-                modifier = Modifier.fillMaxWidth().testTag("setup_step1_diet_grid"),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier
+                    .weight(0.4f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                chunkedDietTypes.forEach { rowItems ->
+                Column {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        rowItems.forEach { dietType ->
-                            val isSelected = state.selectedDietTypeId == dietType.id
-                            DietTypeChip(
-                                label = dietType.name,
-                                isSelected = isSelected,
-                                onClick = { onDietTypeClick(dietType.id) },
-                                modifier = Modifier.weight(1f).testTag("setup_step1_diet_${dietType.id}")
-                            )
+                        StepIndicatorLocal(current = 1, total = 3)
+                        BackButtonLocal(onClick = onBack)
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    SmartMealText(
+                        text = "Выберите тип питания",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.testTag("setup_step1_title")
+                    )
+                }
+
+                SmartMealButton(
+                    text = "Дальше",
+                    onClick = onNext,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("setup_step1_next"),
+                    variant = SmartMealButtonVariant.PRIMARY,
+                    color = SmartMealButtonColor.GREEN,
+                    enabled = state.selectedDietTypeId != null,
+                )
+            }
+
+            // Правая часть: Контент
+            Column(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .fillMaxHeight()
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                Column {
+                    SmartMealText(
+                        text = "Предпочтения",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = PrimaryGreen,
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    if (state.dietTypes.isEmpty()) {
+                        SmartMealText(text = "Загрузка...", color = Color.Gray)
+                    } else {
+                        val chunkedDietTypes = state.dietTypes.chunked(2)
+                        Column(
+                            modifier = Modifier.fillMaxWidth().testTag("setup_step1_diet_grid"),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            chunkedDietTypes.forEach { rowItems ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    rowItems.forEach { dietType ->
+                                        val isSelected = state.selectedDietTypeId == dietType.id
+                                        DietTypeChip(
+                                            label = dietType.name,
+                                            isSelected = isSelected,
+                                            onClick = { onDietTypeClick(dietType.id) },
+                                            modifier = Modifier.weight(1f).testTag("setup_step1_diet_${dietType.id}")
+                                        )
+                                    }
+                                    if (rowItems.size == 1) {
+                                        Spacer(modifier = Modifier.weight(1f))
+                                    }
+                                }
+                            }
                         }
-                        // Если в ряду только один элемент, добавляем пустой Spacer для выравнивания
-                        if (rowItems.size == 1) {
-                            Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+
+                Column {
+                    SmartMealText(
+                        text = "Размер семьи",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = PrimaryGreen,
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    PortionStepper(
+                        value = state.portionSize,
+                        onIncrement = onIncrement,
+                        onDecrement = onDecrement,
+                    )
+                }
+            }
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(horizontal = 24.dp, vertical = 32.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                StepIndicatorLocal(current = 1, total = 3)
+                BackButtonLocal(onClick = onBack)
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            SmartMealText(
+                text = "Выберите тип питания",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.testTag("setup_step1_title")
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (state.dietTypes.isEmpty()) {
+                SmartMealText(text = "Загрузка...", color = Color.Gray)
+            } else {
+                val chunkedDietTypes = state.dietTypes.chunked(2)
+                Column(
+                    modifier = Modifier.fillMaxWidth().testTag("setup_step1_diet_grid"),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    chunkedDietTypes.forEach { rowItems ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            rowItems.forEach { dietType ->
+                                val isSelected = state.selectedDietTypeId == dietType.id
+                                DietTypeChip(
+                                    label = dietType.name,
+                                    isSelected = isSelected,
+                                    onClick = { onDietTypeClick(dietType.id) },
+                                    modifier = Modifier.weight(1f).testTag("setup_step1_diet_${dietType.id}")
+                                )
+                            }
+                            if (rowItems.size == 1) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
                         }
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            SmartMealText(
+                text = "Размер семьи",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            PortionStepper(
+                value = state.portionSize,
+                onIncrement = onIncrement,
+                onDecrement = onDecrement,
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
+
+            SmartMealButton(
+                text = "Дальше",
+                onClick = onNext,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("setup_step1_next"),
+                variant = SmartMealButtonVariant.PRIMARY,
+                color = SmartMealButtonColor.GREEN,
+                enabled = state.selectedDietTypeId != null,
+            )
         }
+    }
+}
 
-        Spacer(modifier = Modifier.height(32.dp))
-
+@Composable
+private fun StepIndicatorLocal(current: Int, total: Int) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         SmartMealText(
-            text = "Размер семьи",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
+            text = "Шаг:",
+            style = MaterialTheme.typography.bodyMedium,
+            color = PrimaryGreen,
+            fontWeight = FontWeight.Medium,
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        PortionStepper(
-            value = state.portionSize,
-            onIncrement = onIncrement,
-            onDecrement = onDecrement,
+        SmartMealText(
+            text = " $current",
+            style = MaterialTheme.typography.bodyMedium,
+            color = PrimaryGreen,
+            fontWeight = FontWeight.SemiBold,
         )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        SmartMealButton(
-            text = "Дальше",
-            onClick = onNext,
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("setup_step1_next"),
-            variant = SmartMealButtonVariant.PRIMARY,
-            color = SmartMealButtonColor.GREEN,
-            enabled = state.selectedDietTypeId != null,
+        SmartMealText(
+            text = " /$total",
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color(0xFFBDBDBD),
+            fontWeight = FontWeight.Medium,
         )
     }
 }
+
+@Composable
+private fun BackButtonLocal(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .testTag("setup_step1_back")
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(12.dp),
+        color = Color.White,
+        shadowElevation = 8.dp,
+        border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
+    ) {
+        SmartMealText(
+            text = "Назад",
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextBlack,
+        )
+    }
+}
+
 
 @Composable
 private fun DietTypeChip(

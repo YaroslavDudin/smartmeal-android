@@ -303,7 +303,7 @@ fun HomeScreen(
                         },
                         onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) },
                         onProfileUpdatedSuccessfully = {
-                            selectedNavItem = 0 // ПЕРЕКЛЮЧАЕМ НА ГЛАВНУЮ
+                            // Оставляем пользователя на вкладке профиля
                         }
                     )
                 }

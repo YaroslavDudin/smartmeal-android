@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.smartmeal.feature.home.presentation.CustomPlan
 import com.example.smartmeal.feature.home.presentation.MyPlanSection
 import com.example.smartmeal.ui.components.SmartMealText
@@ -40,7 +41,8 @@ import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -305,74 +307,86 @@ fun ProductListScreen(
         if (contentState == ProductContentState.List) {
             val checkedCount = aggregatedProducts.count { it.checked }
             
-            Surface(
+            // ПРОПОРЦИИ: Делаем панель "плавающей" и не на всю ширину
+            Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .fillMaxWidth(),
-                color = Color.White,
-                shadowElevation = 16.dp
+                    .padding(horizontal = if (isLandscape) 64.dp else 24.dp) // Больше отступы по бокам
+                    .padding(bottom = if (isLandscape) 12.dp else 16.dp) // Отступ от низа
+                    .navigationBarsPadding()
             ) {
-                Row(
+                Surface(
                     modifier = Modifier
-                        .navigationBarsPadding()
-                        .padding(
-                            horizontal = if (isLandscape) 40.dp else 20.dp, 
-                            vertical = if (isLandscape) 8.dp else 12.dp
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .widthIn(max = 500.dp) // Ограничиваем максимальную ширину
+                        .fillMaxWidth(),
+                    color = Color.White,
+                    shape = RoundedCornerShape(20.dp), // Сильнее закругляем
+                    shadowElevation = 12.dp,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
                 ) {
-                    // Выбрать всё
                     Row(
+                        modifier = Modifier
+                            .padding(
+                                horizontal = 16.dp, 
+                                vertical = if (isLandscape) 6.dp else 10.dp 
+                            ),
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable(
-                            interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
-                            indication = null
-                        ) { onCheckAll(allVisibleProductIds, !allVisibleChecked) }
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Checkbox(
-                            checked = allVisibleChecked,
-                            onCheckedChange = { onCheckAll(allVisibleProductIds, it) },
-                            colors = CheckboxDefaults.colors(checkedColor = PrimaryGreen)
-                        )
-                        SmartMealText(
-                            text = "Выбрать всё",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = TextBlack
-                        )
-                    }
-
-                    // Кнопка Заказать
-                    androidx.compose.material3.Button(
-                        onClick = { showOrderModal = true },
-                        enabled = checkedCount > 0,
-                        shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = PrimaryGreen,
-                            contentColor = Color.White
-                        ),
-                        modifier = Modifier.height(if (isLandscape) 40.dp else 48.dp)
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            SmartMealText(
-                                text = "Заказать",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Bold
+                        // Выбрать всё
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                                indication = null
+                            ) { onCheckAll(allVisibleProductIds, !allVisibleChecked) }
+                        ) {
+                            Checkbox(
+                                checked = allVisibleChecked,
+                                onCheckedChange = { onCheckAll(allVisibleProductIds, it) },
+                                colors = CheckboxDefaults.colors(checkedColor = PrimaryGreen),
+                                modifier = Modifier.scale(0.8f)
                             )
-                            if (checkedCount > 0) {
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Surface(
-                                    color = Color.White.copy(alpha = 0.2f),
-                                    shape = RoundedCornerShape(8.dp)
-                                ) {
-                                    SmartMealText(
-                                        text = checkedCount.toString(),
-                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                        fontSize = 12.sp,
-                                        fontWeight = FontWeight.Black,
-                                        color = Color.White
-                                    )
+                            SmartMealText(
+                                text = "Все",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = TextBlack
+                            )
+                        }
+
+                        // Кнопка Заказать
+                        androidx.compose.material3.Button(
+                            onClick = { showOrderModal = true },
+                            enabled = checkedCount > 0,
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = PrimaryGreen,
+                                contentColor = Color.White
+                            ),
+                            modifier = Modifier.height(if (isLandscape) 38.dp else 44.dp),
+                            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 0.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                SmartMealText(
+                                    text = "Заказать",
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                if (checkedCount > 0) {
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Surface(
+                                        color = Color.White.copy(alpha = 0.2f),
+                                        shape = RoundedCornerShape(6.dp)
+                                    ) {
+                                        SmartMealText(
+                                            text = checkedCount.toString(),
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Black,
+                                            color = Color.White
+                                        )
+                                    }
                                 }
                             }
                         }

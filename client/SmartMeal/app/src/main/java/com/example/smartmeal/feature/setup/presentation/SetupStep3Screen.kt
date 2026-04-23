@@ -1,14 +1,17 @@
-﻿package com.example.smartmeal.feature.setup.presentation
+package com.example.smartmeal.feature.setup.presentation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
@@ -88,133 +92,268 @@ fun SetupStep3Content(
     onSetEatAll: (Boolean) -> Unit,
     onSelectCookTime: (String) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-    ) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val scrollState = rememberScrollState()
+
+    if (isLandscape) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp, vertical = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                SmartMealText(
-                    text = "Шаг:",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = PrimaryGreen,
-                    fontWeight = FontWeight.Medium,
-                )
-                SmartMealText(
-                    text = " 3",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = PrimaryGreen,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                SmartMealText(
-                    text = " /3",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFBDBDBD),
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-
-            // Визуал кнопки взят из SetupStep2Screen
-            Surface(
-                modifier = Modifier
-                    .testTag("setup_step3_back")
-                    .clickable(onClick = onBack),
-                shape = RoundedCornerShape(12.dp),
-                color = Color.White,
-                shadowElevation = 8.dp,
-                border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
-            ) {
-                SmartMealText(
-                    text = "Назад",
-                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TextBlack,
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        SmartMealText(
-            text = "Чего бы Вы не хотели\nвидеть в своём рационе?",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.testTag("setup_step3_title")
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (state.allergies.isEmpty()) {
-            SmartMealText(text = "Загрузка...", color = Color.Gray)
-        } else {
-            // ЛАНДШАФТ: заменяем LazyVerticalGrid на обычный Column с Row, 
-            // так как мы находимся внутри verticalScroll
-            val allChipData = state.allergies.map { allergy ->
-                AllergyChipData(
-                    label = allergy.name,
-                    isSelected = allergy.id in state.selectedAllergyIds,
-                    onClick = { onToggleAllergy(allergy.id) },
-                    tag = "setup_step3_allergy_${allergy.id}"
-                )
-            } + AllergyChipData(
-                label = "Ем всё",
-                isSelected = state.eatAll,
-                onClick = { onSetEatAll(!state.eatAll) },
-                tag = "setup_step3_allergy_all"
-            )
-
-            val chunkedChips = allChipData.chunked(2)
+            // Левая часть: Заголовок и Кнопка
             Column(
-                modifier = Modifier.fillMaxWidth().testTag("setup_step3_allergy_grid"),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                modifier = Modifier
+                    .weight(0.4f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                chunkedChips.forEach { rowChips ->
+                Column {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        rowChips.forEach { chipData ->
-                            androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
+                        StepIndicatorLocal(current = 3, total = 3)
+                        BackButtonLocal(onClick = onBack)
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    SmartMealText(
+                        text = "Настройте Ваш рацион",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.testTag("setup_step3_title")
+                    )
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    SmartMealText(
+                        text = "Выберите исключения и сложность блюд",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray
+                    )
+                }
+
+                SmartMealButton(
+                    text = if (state.isLoading) "Сохраняем..." else "Сгенерировать",
+                    onClick = onSubmit,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("setup_step3_submit"),
+                    variant = SmartMealButtonVariant.PRIMARY,
+                    color = SmartMealButtonColor.GREEN,
+                    enabled = !state.isLoading,
+                )
+            }
+
+            // Правая часть: Настройки (скролл)
+            Column(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .fillMaxHeight()
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                // Аллергии
+                Column {
+                    SmartMealText(
+                        text = "Исключить продукты",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = PrimaryGreen
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    if (state.allergies.isEmpty()) {
+                        SmartMealText(text = "Загрузка...", color = Color.Gray)
+                    } else {
+                        val allChipData = state.allergies.map { allergy ->
+                            AllergyChipData(
+                                label = allergy.name,
+                                isSelected = allergy.id in state.selectedAllergyIds,
+                                onClick = { onToggleAllergy(allergy.id) },
+                                tag = "setup_step3_allergy_${allergy.id}"
+                            )
+                        } + AllergyChipData(
+                            label = "Ем всё",
+                            isSelected = state.eatAll,
+                            onClick = { onSetEatAll(!state.eatAll) },
+                            tag = "setup_step3_allergy_all"
+                        )
+
+                        // В ландшафте используем 3 колонки для экономии места
+                        val chunkedChips = allChipData.chunked(3)
+                        Column(
+                            modifier = Modifier.fillMaxWidth().testTag("setup_step3_allergy_grid"),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            chunkedChips.forEach { rowChips ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    rowChips.forEach { chipData ->
+                                        Box(modifier = Modifier.weight(1f)) {
+                                            SelectableChip(
+                                                label = chipData.label,
+                                                isSelected = chipData.isSelected,
+                                                onClick = chipData.onClick,
+                                                modifier = Modifier.testTag(chipData.tag)
+                                            )
+                                        }
+                                    }
+                                    repeat(3 - rowChips.size) {
+                                        Spacer(modifier = Modifier.weight(1f))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Сложность
+                Column {
+                    SmartMealText(
+                        text = "Сложность блюд",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = PrimaryGreen
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
                                 SelectableChip(
-                                    label = chipData.label,
-                                    isSelected = chipData.isSelected,
-                                    onClick = chipData.onClick,
-                                    modifier = Modifier.testTag(chipData.tag)
+                                    label = label,
+                                    isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
+                                    onClick = { onSelectCookTime(key) },
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
                         }
-                        if (rowChips.size == 1) {
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
+                        SelectableChip(
+                            label = COOK_TIME_OPTIONS[2].second,
+                            isSelected = mapApiCookTimeToUi(state.cookTimePreference) == COOK_TIME_OPTIONS[2].first,
+                            onClick = { onSelectCookTime(COOK_TIME_OPTIONS[2].first) },
+                            modifier = Modifier.fillMaxWidth(0.5f)
+                        )
                     }
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        SmartMealText(
-            text = "Насколько сложные блюда\nВы хотите приготовить?",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(horizontal = 24.dp, vertical = 32.dp),
         ) {
-            COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                StepIndicatorLocal(current = 3, total = 3)
+                BackButtonLocal(onClick = onBack)
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            SmartMealText(
+                text = "Чего бы Вы не хотели\nвидеть в своём рационе?",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.testTag("setup_step3_title")
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (state.allergies.isEmpty()) {
+                SmartMealText(text = "Загрузка...", color = Color.Gray)
+            } else {
+                val allChipData = state.allergies.map { allergy ->
+                    AllergyChipData(
+                        label = allergy.name,
+                        isSelected = allergy.id in state.selectedAllergyIds,
+                        onClick = { onToggleAllergy(allergy.id) },
+                        tag = "setup_step3_allergy_${allergy.id}"
+                    )
+                } + AllergyChipData(
+                    label = "Ем всё",
+                    isSelected = state.eatAll,
+                    onClick = { onSetEatAll(!state.eatAll) },
+                    tag = "setup_step3_allergy_all"
+                )
+
+                val chunkedChips = allChipData.chunked(2)
+                Column(
+                    modifier = Modifier.fillMaxWidth().testTag("setup_step3_allergy_grid"),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    chunkedChips.forEach { rowChips ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            rowChips.forEach { chipData ->
+                                androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
+                                    SelectableChip(
+                                        label = chipData.label,
+                                        isSelected = chipData.isSelected,
+                                        onClick = chipData.onClick,
+                                        modifier = Modifier.testTag(chipData.tag)
+                                    )
+                                }
+                            }
+                            if (rowChips.size == 1) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            SmartMealText(
+                text = "Насколько сложные блюда\nВы хотите приготовить?",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
+                    val tag = when (key) {
+                        "under30" -> "setup_step3_cook_under30"
+                        "30to60" -> "setup_step3_cook_30to60"
+                        else -> "setup_step3_cook_other"
+                    }
+                    SelectableChip(
+                        label = label,
+                        isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
+                        onClick = { onSelectCookTime(key) },
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag(tag),
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            COOK_TIME_OPTIONS.drop(2).forEach { (key, label, _) ->
                 val tag = when (key) {
-                    "under30" -> "setup_step3_cook_under30"
-                    "30to60" -> "setup_step3_cook_30to60"
+                    "over60" -> "setup_step3_cook_over60"
                     else -> "setup_step3_cook_other"
                 }
                 SelectableChip(
@@ -222,54 +361,82 @@ fun SetupStep3Content(
                     isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
                     onClick = { onSelectCookTime(key) },
                     modifier = Modifier
-                        .weight(1f)
+                        .fillMaxWidth(0.5f)
+                        .align(Alignment.CenterHorizontally)
                         .testTag(tag),
                 )
             }
-        }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        COOK_TIME_OPTIONS.drop(2).forEach { (key, label, _) ->
-            val tag = when (key) {
-                "over60" -> "setup_step3_cook_over60"
-                else -> "setup_step3_cook_other"
+            if (state.error != null) {
+                Spacer(modifier = Modifier.height(12.dp))
+                SmartMealText(
+                    text = state.error.orEmpty(),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                )
             }
-            SelectableChip(
-                label = label,
-                isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
-                onClick = { onSelectCookTime(key) },
+
+            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
+
+            SmartMealButton(
+                text = if (state.isLoading) "Сохраняем..." else "Сгенерировать",
+                onClick = onSubmit,
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .align(Alignment.CenterHorizontally)
-                    .testTag(tag),
+                    .fillMaxWidth()
+                    .testTag("setup_step3_submit"),
+                variant = SmartMealButtonVariant.PRIMARY,
+                color = SmartMealButtonColor.GREEN,
+                enabled = !state.isLoading,
             )
         }
+    }
+}
 
-        if (state.error != null) {
-            Spacer(modifier = Modifier.height(12.dp))
-            SmartMealText(
-                text = state.error.orEmpty(),
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-            )
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-        Spacer(modifier = Modifier.height(24.dp))
-
-        SmartMealButton(
-            text = if (state.isLoading) "Сохраняем..." else "Сгенерировать",
-            onClick = onSubmit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("setup_step3_submit"),
-            variant = SmartMealButtonVariant.PRIMARY,
-            color = SmartMealButtonColor.GREEN,
-            enabled = !state.isLoading,
+@Composable
+private fun StepIndicatorLocal(current: Int, total: Int) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        SmartMealText(
+            text = "Шаг:",
+            style = MaterialTheme.typography.bodyMedium,
+            color = PrimaryGreen,
+            fontWeight = FontWeight.Medium,
+        )
+        SmartMealText(
+            text = " $current",
+            style = MaterialTheme.typography.bodyMedium,
+            color = PrimaryGreen,
+            fontWeight = FontWeight.SemiBold,
+        )
+        SmartMealText(
+            text = " /$total",
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color(0xFFBDBDBD),
+            fontWeight = FontWeight.Medium,
         )
     }
 }
+
+@Composable
+private fun BackButtonLocal(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .testTag("setup_step3_back")
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(12.dp),
+        color = Color.White,
+        shadowElevation = 8.dp,
+        border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
+    ) {
+        SmartMealText(
+            text = "Назад",
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextBlack,
+        )
+    }
+}
+
 
 private fun mapUiCookTimeToApi(value: String): String = when (value) {
     "under30" -> "short"

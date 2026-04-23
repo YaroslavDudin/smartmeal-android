@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -82,125 +84,128 @@ fun DietScreen(
             )
         }
 
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
-        ) {
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = PrimaryGreen)
-                }
-            } else {
-                Spacer(modifier = Modifier.height(8.dp))
+        // --- Основная область с плавающей кнопкой ---
+        val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+        val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-                SmartMealText(
-                    text = "Мой рацион:",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-
-                SmartMealText(
-                    text = "Нажмите по рациону, чтобы выбрать его или снять выбор.",
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-
-                if (state.allDietTypes.isEmpty()) {
-                    Box(modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp), contentAlignment = Alignment.Center) {
-                        SmartMealText(
-                            text = "Список рационов пока недоступен",
-                            fontSize = 14.sp,
-                            color = Color.Gray
-                        )
+        Box(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp)
+            ) {
+                if (state.isLoading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = PrimaryGreen)
                     }
                 } else {
-                    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
-                    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                    if (isLandscape) {
-                        // ЛАНДШАФТ: Две колонки
-                        state.allDietTypes.chunked(2).forEach { rowItems ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                rowItems.forEach { diet ->
-                                    Box(modifier = Modifier.weight(1f)) {
-                                        DietCard(
-                                            diet = diet,
-                                            isChecked = state.pendingDietTypeId == diet.id,
-                                            onClick = { viewModel.selectPendingDiet(diet.id) }
-                                        )
-                                    }
-                                }
-                                if (rowItems.size == 1) Spacer(modifier = Modifier.weight(1f))
-                            }
-                            Spacer(modifier = Modifier.height(8.dp))
+                    SmartMealText(
+                        text = "Мой рацион:",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    SmartMealText(
+                        text = "Нажмите по рациону, чтобы выбрать его или снять выбор.",
+                        fontSize = 13.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    if (state.allDietTypes.isEmpty()) {
+                        Box(modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp), contentAlignment = Alignment.Center) {
+                            SmartMealText(
+                                text = "Список рационов пока недоступен",
+                                fontSize = 14.sp,
+                                color = Color.Gray
+                            )
                         }
                     } else {
-                        // ПОРТРЕТ: Один за другим
-                        state.allDietTypes.forEach { diet ->
-                            DietCard(
-                                diet = diet,
-                                isChecked = state.pendingDietTypeId == diet.id,
-                                onClick = { viewModel.selectPendingDiet(diet.id) }
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
+                        if (isLandscape) {
+                            // ЛАНДШАФТ: Две колонки
+                            state.allDietTypes.chunked(2).forEach { rowItems ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    rowItems.forEach { diet ->
+                                        Box(modifier = Modifier.weight(1f)) {
+                                            DietCard(
+                                                diet = diet,
+                                                isChecked = state.pendingDietTypeId == diet.id,
+                                                onClick = { viewModel.selectPendingDiet(diet.id) }
+                                            )
+                                        }
+                                    }
+                                    if (rowItems.size == 1) Spacer(modifier = Modifier.weight(1f))
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        } else {
+                            // ПОРТРЕТ: Один за другим
+                            state.allDietTypes.forEach { diet ->
+                                DietCard(
+                                    diet = diet,
+                                    isChecked = state.pendingDietTypeId == diet.id,
+                                    onClick = { viewModel.selectPendingDiet(diet.id) }
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
                         }
                     }
-                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                val selectedDietName = state.allDietTypes
-                    .firstOrNull { it.id == state.pendingDietTypeId }
-                    ?.name
+                    val selectedDietName = state.allDietTypes
+                        .firstOrNull { it.id == state.pendingDietTypeId }
+                        ?.name
 
-                SmartMealText(
-                    text = if (selectedDietName == null) "Рацион не выбран" else "Выбрано: $selectedDietName",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = TextBlack,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-
-                if (state.error != null) {
                     SmartMealText(
-                        text = state.error!!,
-                        color = Color.Red,
-                        fontSize = 13.sp,
-                        modifier = Modifier.padding(top = 16.dp)
+                        text = if (selectedDietName == null) "Рацион не выбран" else "Выбрано: $selectedDietName",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextBlack,
+                        modifier = Modifier.padding(bottom = 4.dp)
                     )
+
+                    if (state.error != null) {
+                        SmartMealText(
+                            text = state.error!!,
+                            color = Color.Red,
+                            fontSize = 13.sp,
+                            modifier = Modifier.padding(top = 16.dp)
+                        )
+                    }
+
+                    // --- Кнопка в конце списка (не фиксированная) ---
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        SmartMealButton(
+                            text = if (state.isSaving) "..." else "Подтвердить",
+                            onClick = { viewModel.saveDiet() },
+                            variant = SmartMealButtonVariant.PRIMARY,
+                            color = SmartMealButtonColor.GREEN,
+                            enabled = !state.isSaving,
+                            modifier = if (isLandscape) Modifier.width(200.dp).height(42.dp)
+                                       else Modifier.fillMaxWidth().height(48.dp)
+                        )
+                    }
                 }
-
-                Spacer(modifier = Modifier.height(32.dp))
             }
-        }
-
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.White,
-            shadowElevation = 8.dp
-        ) {
-            SmartMealButton(
-                text = if (state.isSaving) "Сохранение..." else "Подтвердить",
-                onClick = { viewModel.saveDiet() },
-                variant = SmartMealButtonVariant.PRIMARY,
-                color = SmartMealButtonColor.GREEN,
-                enabled = !state.isSaving,
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
-            )
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -117,132 +118,268 @@ fun RecipeDetailScreen(
                     val configuration = androidx.compose.ui.platform.LocalConfiguration.current
                     val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                            .padding(horizontal = Padding.SCREEN)
-                    ) {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(recipe.image_url)
-                                .crossfade(500)
-                                .build(),
-                            contentDescription = recipe.title,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(if (isLandscape) 160.dp else 240.dp) // ЛАНДШАФТ: уменьшаем высоту фото
-                                .clip(RoundedCornerShape(16.dp)),
-                            contentScale = ContentScale.Crop
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
+                    if (isLandscape) {
                         Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = Padding.SCREEN),
+                            horizontalArrangement = Arrangement.spacedBy(24.dp)
                         ) {
+                            // Левая колонка: Фото и КБЖУ (фиксированно или свой скролл)
+                            Column(
+                                modifier = Modifier
+                                    .weight(0.42f)
+                                    .fillMaxHeight()
+                                    .verticalScroll(rememberScrollState())
+                                    .padding(vertical = 8.dp)
+                            ) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(recipe.image_url)
+                                        .crossfade(500)
+                                        .build(),
+                                    contentDescription = recipe.title,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(180.dp)
+                                        .clip(RoundedCornerShape(20.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                SmartMealText(
+                                    text = recipe.title,
+                                    fontSize = 22.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    lineHeight = 28.sp
+                                )
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    InfoChip(label = "${recipe.cook_time} мин")
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    InfoChip(label = "${recipe.per_serving_calories.toInt()} ккал")
+                                }
+
+                                Spacer(modifier = Modifier.height(20.dp))
+
+                                SmartMealText(
+                                    text = "Пищевая ценность (на 100 г)",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    modifier = Modifier.padding(bottom = 8.dp)
+                                )
+
+                                NutritionCard(
+                                    calories = formatNutritionValue(calculatePer100(recipe.total_calories, totalWeight)),
+                                    proteins = formatNutritionValue(calculatePer100(recipe.total_proteins, totalWeight)),
+                                    fats = formatNutritionValue(calculatePer100(recipe.total_fats, totalWeight)),
+                                    carbs = formatNutritionValue(calculatePer100(recipe.total_carbs, totalWeight))
+                                )
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                SmartMealText(
+                                    text = "Общий вес: ${formatWeightLabel(totalWeight)}",
+                                    fontSize = 14.sp,
+                                    color = TextGreen,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+
+                            // Правая колонка: Ингредиенты и Шаги (скролл)
+                            Column(
+                                modifier = Modifier
+                                    .weight(0.58f)
+                                    .fillMaxHeight()
+                                    .verticalScroll(rememberScrollState())
+                                    .padding(vertical = 8.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    SmartMealText(
+                                        text = "Ингредиенты",
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.Black
+                                    )
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        SmartMealText(
+                                            text = "${state.currentServings} порц.",
+                                            fontSize = 13.sp,
+                                            color = Color.Gray,
+                                            modifier = Modifier.padding(end = 6.dp)
+                                        )
+                                        QuantityStepper(
+                                            quantity = state.currentServings,
+                                            onIncrease = { viewModel.changeServings(state.currentServings + 1) },
+                                            onDecrease = { viewModel.changeServings(state.currentServings - 1) },
+                                            minQuantity = 1,
+                                            maxQuantity = 20
+                                        )
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+                                IngredientsCard(ingredients = recipe.ingredients ?: emptyList())
+
+                                Spacer(modifier = Modifier.height(24.dp))
+
+                                SmartMealText(
+                                    text = "Приготовление",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
+                                )
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                (recipe.steps ?: emptyList()).forEach { step ->
+                                    StepItem(
+                                        number = step.step_number,
+                                        description = step.description,
+                                        imageUrl = step.image_url,
+                                        timeMinutes = step.timer
+                                    )
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                }
+                                Spacer(modifier = Modifier.height(24.dp))
+                            }
+                        }
+                    } else {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .padding(horizontal = Padding.SCREEN)
+                        ) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(recipe.image_url)
+                                    .crossfade(500)
+                                    .build(),
+                                contentDescription = recipe.title,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(240.dp)
+                                    .clip(RoundedCornerShape(16.dp)),
+                                contentScale = ContentScale.Crop
+                            )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                SmartMealText(
+                                    text = recipe.title,
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                SmartMealText(
+                                    text = formatWeightLabel(totalWeight),
+                                    fontSize = 20.sp,
+                                    color = TextGreen
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                InfoChip(label = "${recipe.cook_time} мин")
+                                Spacer(modifier = Modifier.width(8.dp))
+                                InfoChip(
+                                    label = "${recipe.per_serving_calories.toInt()} ккал порция"
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(24.dp))
+
                             SmartMealText(
-                                text = recipe.title,
-                                fontSize = 24.sp,
+                                text = "Пищевая ценность на 100 г",
+                                fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.padding(bottom = 12.dp)
                             )
+
+                            NutritionCard(
+                                calories = formatNutritionValue(calculatePer100(recipe.total_calories, totalWeight)),
+                                proteins = formatNutritionValue(calculatePer100(recipe.total_proteins, totalWeight)),
+                                fats = formatNutritionValue(calculatePer100(recipe.total_fats, totalWeight)),
+                                carbs = formatNutritionValue(calculatePer100(recipe.total_carbs, totalWeight))
+                            )
+
+                            Spacer(modifier = Modifier.height(24.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                SmartMealText(
+                                    text = "Ингредиенты",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
+                                )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    SmartMealText(
+                                        text = "на ${state.currentServings} порц.",
+                                        fontSize = 14.sp,
+                                        color = Color.Gray,
+                                        modifier = Modifier.padding(end = 8.dp)
+                                    )
+                                    QuantityStepper(
+                                        quantity = state.currentServings,
+                                        onIncrease = { viewModel.changeServings(state.currentServings + 1) },
+                                        onDecrease = { viewModel.changeServings(state.currentServings - 1) },
+                                        minQuantity = 1,
+                                        maxQuantity = 20
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            IngredientsCard(ingredients = recipe.ingredients ?: emptyList())
+
+                            Spacer(modifier = Modifier.height(24.dp))
+
                             SmartMealText(
-                                text = formatWeightLabel(totalWeight),
-                                fontSize = 20.sp,
-                                color = TextGreen
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            InfoChip(label = "${recipe.cook_time} мин")
-                            Spacer(modifier = Modifier.width(8.dp))
-                            InfoChip(
-                                label = "${recipe.per_serving_calories.toInt()} ккал порция"
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        SmartMealText(
-                            text = "Пищевая ценность на 100 г",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-
-                        NutritionCard(
-                            calories = formatNutritionValue(calculatePer100(recipe.total_calories, totalWeight)),
-                            proteins = formatNutritionValue(calculatePer100(recipe.total_proteins, totalWeight)),
-                            fats = formatNutritionValue(calculatePer100(recipe.total_fats, totalWeight)),
-                            carbs = formatNutritionValue(calculatePer100(recipe.total_carbs, totalWeight))
-                        )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            SmartMealText(
-                                text = "Ингредиенты",
-                                fontSize = 20.sp,
+                                text = "Пошаговый фото рецепт",
+                                fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black
                             )
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                SmartMealText(
-                                    text = "на ${state.currentServings} порц.",
-                                    fontSize = 14.sp,
-                                    color = Color.Gray,
-                                    modifier = Modifier.padding(end = 8.dp)
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            (recipe.steps ?: emptyList()).forEach { step ->
+                                StepItem(
+                                    number = step.step_number,
+                                    description = step.description,
+                                    imageUrl = step.image_url,
+                                    timeMinutes = step.timer
                                 )
-                                QuantityStepper(
-                                    quantity = state.currentServings,
-                                    onIncrease = { viewModel.changeServings(state.currentServings + 1) },
-                                    onDecrease = { viewModel.changeServings(state.currentServings - 1) },
-                                    minQuantity = 1,
-                                    maxQuantity = 20
-                                )
+                                Spacer(modifier = Modifier.height(24.dp))
                             }
+                            Spacer(modifier = Modifier.height(32.dp))
                         }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        IngredientsCard(ingredients = recipe.ingredients ?: emptyList())
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        SmartMealText(
-                            text = "Пошаговый фото рецепт",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        (recipe.steps ?: emptyList()).forEach { step ->
-                            StepItem(
-                                number = step.step_number,
-                                description = step.description,
-                                imageUrl = step.image_url,
-                                timeMinutes = step.timer
-                            )
-                            Spacer(modifier = Modifier.height(24.dp))
-                        }
-                        Spacer(modifier = Modifier.height(32.dp))
-                    }
-                }
+                    }                }
             }
         }
     }

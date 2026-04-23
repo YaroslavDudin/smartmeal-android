@@ -544,14 +544,23 @@ private fun GenderRow(state: ProfileState, viewModel: ProfileViewModel) {
 
 @Composable
 private fun SaveButton(state: ProfileState, viewModel: ProfileViewModel) {
-    SmartMealButton(
-        text = if (state.isSaving) "Сохранение..." else "Сохранить",
-        onClick = { viewModel.savePersonalData() },
-        variant = SmartMealButtonVariant.PRIMARY,
-        color = SmartMealButtonColor.GREEN,
-        modifier = Modifier.padding(horizontal = if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE) 0.dp else 20.dp),
-        enabled = !state.isSaving
-    )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp, top = 10.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        SmartMealButton(
+            text = if (state.isSaving) "..." else "Сохранить",
+            onClick = { viewModel.savePersonalData() },
+            variant = SmartMealButtonVariant.PRIMARY,
+            color = SmartMealButtonColor.GREEN,
+            modifier = Modifier
+                .width(200.dp)
+                .height(42.dp),
+            enabled = !state.isSaving
+        )
+    }
 }
 
 @Composable

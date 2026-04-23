@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -75,192 +76,189 @@ fun CookTimeSettingsScreen(
             )
         }
 
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
-        ) {
-            Spacer(modifier = Modifier.height(8.dp))
-            SmartMealText(
-                text = "Выберите прием пищи, чтобы изменить предпочтительное время приготовления",
-                fontSize = 14.sp,
-                color = Color.Gray,
-                modifier = Modifier.padding(bottom = 16.dp),
-                textAlign = TextAlign.Center
-            )
+        // --- Основная область с плавающими кнопками ---
+        val configuration = LocalConfiguration.current
+        val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
 
-            val configuration = LocalConfiguration.current
-            val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+        Box(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp)
+            ) {
+                Spacer(modifier = Modifier.height(8.dp))
+                SmartMealText(
+                    text = "Выберите прием пищи, чтобы изменить предпочтительное время приготовления",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    textAlign = TextAlign.Center
+                )
 
-            if (isLandscape) {
-                // ЛАНДШАФТ: Две колонки
-                MEAL_TYPES_3.chunked(2).forEach { rowMeals ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        rowMeals.forEach { meal ->
-                            Box(modifier = Modifier.weight(1f)) {
-                                val isSelected = selectedMeal == meal
-                                val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
-                                val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
+                if (isLandscape) {
+                    // ЛАНДШАФТ: Две колонки
+                    MEAL_TYPES_3.chunked(2).forEach { rowMeals ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            rowMeals.forEach { meal ->
+                                Box(modifier = Modifier.weight(1f)) {
+                                    val isSelected = selectedMeal == meal
+                                    val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
+                                    val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
 
-                                Surface(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 6.dp)
-                                        .clickable { selectedMeal = if (isSelected) null else meal },
-                                    shape = RoundedCornerShape(16.dp),
-                                    color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
-                                    border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
-                                ) {
-                                    Row(
+                                    Surface(
                                         modifier = Modifier
-                                            .padding(horizontal = 16.dp, vertical = 18.dp)
-                                            .fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
+                                            .fillMaxWidth()
+                                            .padding(vertical = 6.dp)
+                                            .clickable { selectedMeal = if (isSelected) null else meal },
+                                        shape = RoundedCornerShape(16.dp),
+                                        color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
+                                        border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
                                     ) {
-                                        Column {
-                                            SmartMealText(
-                                                text = meal,
-                                                fontSize = 17.sp,
-                                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
-                                                color = if (isSelected) PrimaryGreen else Color.Black
-                                            )
-                                            SmartMealText(
-                                                text = displayPref,
-                                                fontSize = 13.sp,
-                                                color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
+                                        Row(
+                                            modifier = Modifier
+                                                .padding(horizontal = 16.dp, vertical = 18.dp)
+                                                .fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Column {
+                                                SmartMealText(
+                                                    text = meal,
+                                                    fontSize = 17.sp,
+                                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                                    color = if (isSelected) PrimaryGreen else Color.Black
+                                                )
+                                                SmartMealText(
+                                                    text = displayPref,
+                                                    fontSize = 13.sp,
+                                                    color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
+                                                )
+                                            }
+                                            Icon(
+                                                imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                                contentDescription = null,
+                                                tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
+                                                modifier = Modifier.size(22.dp)
                                             )
                                         }
-                                        Icon(
-                                            imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
-                                            contentDescription = null,
-                                            tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
-                                            modifier = Modifier.size(22.dp)
-                                        )
                                     }
                                 }
                             }
+                            if (rowMeals.size == 1) Spacer(modifier = Modifier.weight(1f))
                         }
-                        if (rowMeals.size == 1) Spacer(modifier = Modifier.weight(1f))
                     }
-                }
-            } else {
-                // ПОРТРЕТ: Один за другим
-                MEAL_TYPES_3.forEach { meal ->
-                    val isSelected = selectedMeal == meal
-                    val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
-                    val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
+                } else {
+                    // ПОРТРЕТ: Один за другим
+                    MEAL_TYPES_3.forEach { meal ->
+                        val isSelected = selectedMeal == meal
+                        val currentPref = state.mealCookTimes[meal] ?: state.preferredCookTime ?: "any"
+                        val displayPref = COOK_TIME_OPTIONS.find { it.first == currentPref }?.second ?: "Любое время"
 
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp)
-                            .clickable { selectedMeal = if (isSelected) null else meal },
-                        shape = RoundedCornerShape(16.dp),
-                        color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
-                        border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
-                    ) {
-                        Row(
+                        Surface(
                             modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 18.dp)
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp)
+                                .clickable { selectedMeal = if (isSelected) null else meal },
+                            shape = RoundedCornerShape(16.dp),
+                            color = if (isSelected) Color(0xFFF4F9F4) else Color.White,
+                            border = if (isSelected) androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen) else androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
                         ) {
-                            Column {
-                                SmartMealText(
-                                    text = meal,
-                                    fontSize = 17.sp,
-                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
-                                    color = if (isSelected) PrimaryGreen else Color.Black
-                                )
-                                SmartMealText(
-                                    text = displayPref,
-                                    fontSize = 13.sp,
-                                    color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
+                            Row(
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp, vertical = 18.dp)
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    SmartMealText(
+                                        text = meal,
+                                        fontSize = 17.sp,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                        color = if (isSelected) PrimaryGreen else Color.Black
+                                    )
+                                    SmartMealText(
+                                        text = displayPref,
+                                        fontSize = 13.sp,
+                                        color = if (isSelected) PrimaryGreen.copy(alpha = 0.7f) else Color.Gray
+                                    )
+                                }
+                                Icon(
+                                    imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                    contentDescription = null,
+                                    tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
+                                    modifier = Modifier.size(22.dp)
                                 )
                             }
-                            Icon(
-                                imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
-                                contentDescription = null,
-                                tint = if (isSelected) PrimaryGreen else Color(0xFFE0E0E0),
-                                modifier = Modifier.size(22.dp)
-                            )
                         }
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(24.dp))
-        }
-
-        // --- Кнопки действий внизу ---
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = Color.White,
-            shadowElevation = 8.dp
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .navigationBarsPadding()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                // --- Кнопки в конце списка (не фиксированные) ---
+                Spacer(modifier = Modifier.height(32.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 32.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    // --- Кнопка Изменить ---
-                    androidx.compose.material3.OutlinedButton(
-                        onClick = { showEditModal = true },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(52.dp),
-                        enabled = selectedMeal != null && !state.isSaving,
-                        shape = RoundedCornerShape(14.dp),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, if (selectedMeal != null) PrimaryGreen else Color.LightGray.copy(alpha = 0.5f)),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = PrimaryGreen,
-                            disabledContentColor = Color.LightGray
-                        )
+                    Row(
+                        modifier = if (isLandscape) Modifier.width(320.dp) else Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        SmartMealText(
-                            text = "Изменить",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    // --- Кнопка Подтвердить ---
-                    androidx.compose.material3.Button(
-                        onClick = {
-                            viewModel.confirmCookTimes()
-                            onBack()
-                        },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(52.dp),
-                        enabled = !state.isRegenerating,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = PrimaryGreen,
-                            contentColor = Color.White,
-                            disabledContainerColor = Color.LightGray
-                        ),
-                        shape = RoundedCornerShape(14.dp)
-                    ) {
-                        if (state.isRegenerating) {
-                            CircularProgressIndicator(color = Color.White, modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
-                        } else {
+                        // --- Кнопка Изменить ---
+                        androidx.compose.material3.OutlinedButton(
+                            onClick = { showEditModal = true },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(44.dp),
+                            enabled = selectedMeal != null && !state.isSaving,
+                            shape = CircleShape,
+                            border = androidx.compose.foundation.BorderStroke(1.dp, if (selectedMeal != null) PrimaryGreen else Color.LightGray.copy(alpha = 0.5f)),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = PrimaryGreen,
+                                disabledContentColor = Color.LightGray
+                            ),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
                             SmartMealText(
-                                text = "Сохранить",
-                                fontSize = 15.sp,
+                                text = "Изменить",
+                                fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold
                             )
+                        }
+
+                        // --- Кнопка Сохранить ---
+                        androidx.compose.material3.Button(
+                            onClick = {
+                                viewModel.confirmCookTimes()
+                                onBack()
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(44.dp),
+                            enabled = !state.isRegenerating,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = PrimaryGreen,
+                                contentColor = Color.White,
+                                disabledContainerColor = Color.LightGray
+                            ),
+                            shape = CircleShape,
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            if (state.isRegenerating) {
+                                CircularProgressIndicator(color = Color.White, modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
+                            } else {
+                                SmartMealText(
+                                    text = "Сохранить",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     }
                 }

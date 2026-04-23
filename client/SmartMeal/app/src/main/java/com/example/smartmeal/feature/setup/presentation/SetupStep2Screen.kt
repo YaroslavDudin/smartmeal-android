@@ -1,5 +1,6 @@
 package com.example.smartmeal.feature.setup.presentation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,151 +76,256 @@ fun SetupStep2Content(
     onNextMonth: () -> Unit,
 ) {
     val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val isWideScreen = configuration.screenWidthDp >= 600
-    val shouldScroll = true
     val today = createNormalizedTodayCalendar()
     val isCompactHeight = configuration.screenHeightDp < 640
     val isCompactWidth = configuration.screenWidthDp < 360
-    val useCompactCalendar = isCompactHeight || isCompactWidth
+    val useCompactCalendar = isCompactHeight || isCompactWidth || isLandscape
     val horizontalPadding = if (isCompactWidth) 8.dp else if (isCompactHeight) 12.dp else 24.dp
     val verticalPadding = if (isCompactHeight) 12.dp else 28.dp
-    val sectionSpacing = if (isCompactHeight) 12.dp else 24.dp
-    val chipRowSpacing = if (isCompactHeight) 10.dp else 12.dp
-    val calendarPadding = if (isCompactHeight) 12.dp else 16.dp
     val contentMaxWidth: Dp = if (isWideScreen) 460.dp else Dp.Unspecified
-    val bottomButtonSpace = if (isCompactHeight) 96.dp else 112.dp
     val canNavigatePrevious = canNavigateToOffsetMonth(state.calendarYear, state.calendarMonth, -1, today)
     val canNavigateNext = canNavigateToOffsetMonth(state.calendarYear, state.calendarMonth, 1, today)
     val scrollState = rememberScrollState()
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
+    if (isLandscape) {
+        Row(
             modifier = Modifier
                 .fillMaxSize()
-                .then(if (shouldScroll) Modifier.verticalScroll(scrollState) else Modifier)
-                .padding(horizontal = horizontalPadding, vertical = verticalPadding)
-                .padding(bottom = bottomButtonSpace)
-                .width(if (isWideScreen) contentMaxWidth else Dp.Unspecified)
-                .align(Alignment.TopCenter),
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+            // Левая часть: Выбор периода
+            Column(
+                modifier = Modifier
+                    .weight(0.45f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                StepIndicator(current = 2, total = 3)
-                BackButton(
-                    onClick = onBack,
-                    modifier = Modifier.testTag("setup_step2_back")
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        StepIndicator(current = 2, total = 3)
+                        BackButton(onClick = onBack)
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    SmartMealText(
+                        text = "Тип периода",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = TextBlack,
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            PeriodType.entries.take(2).forEach { type ->
+                                PeriodChip(
+                                    label = type.label,
+                                    isSelected = state.periodType == type,
+                                    onClick = { onSelectPeriodType(type) },
+                                    compact = true,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+                        PeriodChip(
+                            label = PeriodType.CUSTOM.label,
+                            isSelected = state.periodType == PeriodType.CUSTOM,
+                            onClick = { onSelectPeriodType(PeriodType.CUSTOM) },
+                            compact = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+
+                WidePrimaryButton(
+                    text = nextButtonText,
+                    onClick = onNext,
+                    enabled = when (state.periodType) {
+                        PeriodType.CUSTOM -> state.selectedStartDateMillis != null && state.selectedEndDateMillis != null
+                        PeriodType.DAILY, PeriodType.WEEKLY -> state.selectedStartDateMillis != null
+                        null -> false
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            Spacer(modifier = Modifier.height(sectionSpacing))
-
-            SmartMealText(
-                text = "Тип периода",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Medium,
-                color = TextBlack,
-            )
-
-            Spacer(modifier = Modifier.height(chipRowSpacing))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(chipRowSpacing),
+            // Правая часть: Календарь
+            Column(
+                modifier = Modifier
+                    .weight(0.55f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center
             ) {
-                PeriodType.entries.take(2).forEach { type ->
-                    val tag = when (type) {
-                        PeriodType.DAILY -> "setup_step2_period_daily"
-                        PeriodType.WEEKLY -> "setup_step2_period_weekly"
-                        else -> "setup_step2_period_other"
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    color = Color.White,
+                    shadowElevation = 4.dp,
+                    border = BorderStroke(1.dp, PrimaryGreen),
+                ) {
+                    SmartMealCalendar(
+                        year = state.calendarYear,
+                        month = state.calendarMonth,
+                        periodType = state.periodType,
+                        selectedStartDateMillis = state.selectedStartDateMillis,
+                        selectedEndDateMillis = state.selectedEndDateMillis,
+                        onDaySelected = onSelectDay,
+                        onPreviousMonth = onPreviousMonth,
+                        onNextMonth = onNextMonth,
+                        enabled = state.periodType != null,
+                        canNavigatePrevious = canNavigatePrevious,
+                        canNavigateNext = canNavigateNext,
+                        showNavigation = true,
+                        showYear = false,
+                        showAdjacentMonths = false,
+                        compact = true,
+                        modifier = Modifier.padding(8.dp),
+                        isDateSelectable = { year, month, day -> isPlanDateSelectable(year, month, day, today) },
+                    )
+                }
+            }
+        }
+    } else {
+        val bottomButtonSpace = if (isCompactHeight) 96.dp else 112.dp
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(horizontal = horizontalPadding, vertical = verticalPadding)
+                    .padding(bottom = bottomButtonSpace)
+                    .width(if (isWideScreen) contentMaxWidth else Dp.Unspecified)
+                    .align(Alignment.TopCenter),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    StepIndicator(current = 2, total = 3)
+                    BackButton(
+                        onClick = onBack,
+                        modifier = Modifier.testTag("setup_step2_back")
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                SmartMealText(
+                    text = "Тип периода",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = TextBlack,
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    PeriodType.entries.take(2).forEach { type ->
+                        val tag = when (type) {
+                            PeriodType.DAILY -> "setup_step2_period_daily"
+                            PeriodType.WEEKLY -> "setup_step2_period_weekly"
+                            else -> "setup_step2_period_other"
+                        }
+                        PeriodChip(
+                            label = type.label,
+                            isSelected = state.periodType == type,
+                            onClick = { onSelectPeriodType(type) },
+                            compact = useCompactCalendar,
+                            modifier = Modifier
+                                .weight(1f)
+                                .testTag(tag),
+                        )
                     }
-                    PeriodChip(
-                        label = type.label,
-                        isSelected = state.periodType == type,
-                        onClick = { onSelectPeriodType(type) },
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                PeriodChip(
+                    label = PeriodType.CUSTOM.label,
+                    isSelected = state.periodType == PeriodType.CUSTOM,
+                    onClick = { onSelectPeriodType(PeriodType.CUSTOM) },
+                    compact = useCompactCalendar,
+                    modifier = if (isWideScreen) {
+                        Modifier
+                            .fillMaxWidth(0.5f)
+                            .align(Alignment.CenterHorizontally)
+                            .testTag("setup_step2_period_custom")
+                    } else {
+                        Modifier
+                            .width(if (useCompactCalendar) 148.dp else 180.dp)
+                            .align(Alignment.CenterHorizontally)
+                            .testTag("setup_step2_period_custom")
+                    },
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                        .testTag("setup_step2_calendar"),
+                    shape = RoundedCornerShape(20.dp),
+                    color = Color.White,
+                    shadowElevation = 8.dp,
+                    border = BorderStroke(1.5.dp, PrimaryGreen),
+                ) {
+                    SmartMealCalendar(
+                        year = state.calendarYear,
+                        month = state.calendarMonth,
+                        periodType = state.periodType,
+                        selectedStartDateMillis = state.selectedStartDateMillis,
+                        selectedEndDateMillis = state.selectedEndDateMillis,
+                        onDaySelected = onSelectDay,
+                        onPreviousMonth = onPreviousMonth,
+                        onNextMonth = onNextMonth,
+                        enabled = state.periodType != null,
+                        canNavigatePrevious = canNavigatePrevious,
+                        canNavigateNext = canNavigateNext,
+                        showNavigation = true,
+                        showYear = false,
+                        showAdjacentMonths = !isCompactWidth,
                         compact = useCompactCalendar,
-                        modifier = Modifier
-                            .weight(1f)
-                            .testTag(tag),
+                        modifier = Modifier.padding(16.dp),
+                        isDateSelectable = { year, month, day -> isPlanDateSelectable(year, month, day, today) },
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(chipRowSpacing))
-
-            PeriodChip(
-                label = PeriodType.CUSTOM.label,
-                isSelected = state.periodType == PeriodType.CUSTOM,
-                onClick = { onSelectPeriodType(PeriodType.CUSTOM) },
-                compact = useCompactCalendar,
-                modifier = if (isWideScreen) {
-                    Modifier
-                        .fillMaxWidth(0.5f)
-                        .align(Alignment.CenterHorizontally)
-                        .testTag("setup_step2_period_custom")
-                } else {
-                    Modifier
-                        .width(if (useCompactCalendar) 148.dp else 180.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .testTag("setup_step2_period_custom")
+            WidePrimaryButton(
+                text = nextButtonText,
+                onClick = onNext,
+                enabled = when (state.periodType) {
+                    PeriodType.CUSTOM -> state.selectedStartDateMillis != null && state.selectedEndDateMillis != null
+                    PeriodType.DAILY, PeriodType.WEEKLY -> state.selectedStartDateMillis != null
+                    null -> false
                 },
-            )
-
-            Spacer(modifier = Modifier.height(if (isCompactHeight) 16.dp else 20.dp))
-
-            Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally)
-                    .testTag("setup_step2_calendar"),
-                shape = RoundedCornerShape(20.dp),
-                color = Color.White,
-                shadowElevation = 8.dp,
-                border = BorderStroke(1.5.dp, PrimaryGreen),
-            ) {
-                SmartMealCalendar(
-                    year = state.calendarYear,
-                    month = state.calendarMonth,
-                    periodType = state.periodType,
-                    selectedStartDateMillis = state.selectedStartDateMillis,
-                    selectedEndDateMillis = state.selectedEndDateMillis,
-                    onDaySelected = onSelectDay,
-                    onPreviousMonth = onPreviousMonth,
-                    onNextMonth = onNextMonth,
-                    enabled = state.periodType != null,
-                    canNavigatePrevious = canNavigatePrevious,
-                    canNavigateNext = canNavigateNext,
-                    showNavigation = true,
-                    showYear = false,
-                    showAdjacentMonths = !isCompactWidth,
-                    compact = useCompactCalendar,
-                    modifier = Modifier.padding(calendarPadding),
-                    isDateSelectable = { year, month, day -> isPlanDateSelectable(year, month, day, today) },
-                )
-            }
+                    .widthIn(max = contentMaxWidth)
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = horizontalPadding, vertical = if (isCompactHeight) 16.dp else 24.dp)
+                    .testTag("setup_step2_next")
+            )
         }
-
-        WidePrimaryButton(
-            text = nextButtonText,
-            onClick = onNext,
-            enabled = when (state.periodType) {
-                PeriodType.CUSTOM -> state.selectedStartDateMillis != null && state.selectedEndDateMillis != null
-                PeriodType.DAILY, PeriodType.WEEKLY -> state.selectedStartDateMillis != null
-                null -> false
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .widthIn(max = contentMaxWidth)
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = horizontalPadding, vertical = if (isCompactHeight) 16.dp else 24.dp)
-                .testTag("setup_step2_next")
-        )
     }
 }
+
 
 internal fun isPlanDateSelectable(
     year: Int,

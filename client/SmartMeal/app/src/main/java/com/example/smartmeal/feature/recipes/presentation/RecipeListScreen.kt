@@ -21,6 +21,12 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.cards.MealCard
 import com.example.smartmeal.ui.theme.PrimaryGreen
 
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import android.content.res.Configuration
+import androidx.compose.ui.platform.LocalConfiguration
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeListScreen(
@@ -29,6 +35,8 @@ fun RecipeListScreen(
     onRecipeClick: (Int) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Scaffold(
         topBar = {
@@ -66,7 +74,6 @@ fun RecipeListScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Упрощенный выбор калорий
                 FilterButton(
                     label = if (state.maxCalories == null) "Калории" else "До ${state.maxCalories} ккал",
                     onClick = {
@@ -87,12 +94,27 @@ fun RecipeListScreen(
                     SmartMealText("Ничего не найдено", color = Color.Gray)
                 }
             } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(bottom = 24.dp)
-                ) {
-                    items(state.recipes) { recipe ->
-                        RecipeItem(recipe, onClick = { onRecipeClick(recipe.id) })
+                if (isLandscape) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(bottom = 24.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(state.recipes) { recipe ->
+                            RecipeItem(recipe, onClick = { onRecipeClick(recipe.id) })
+                        }
+                    }
+                } else {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(bottom = 24.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(state.recipes) { recipe ->
+                            RecipeItem(recipe, onClick = { onRecipeClick(recipe.id) })
+                        }
                     }
                 }
             }
