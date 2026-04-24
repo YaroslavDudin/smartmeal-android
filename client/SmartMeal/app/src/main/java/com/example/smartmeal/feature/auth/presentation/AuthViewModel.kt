@@ -231,8 +231,9 @@ class AuthViewModel(
         val refreshToken = tokenManager.getRefreshToken()
         
         // Очищаем только сессию текущего пользователя, НЕ удаляя базу данных настроек
-        setupPreferences.clearActiveUserKey() 
-        com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
+        setupPreferences.clearActiveUserKey()
+        // Теперь очищаем и дисковый кэш меню, передавая контекст
+        com.example.smartmeal.feature.home.data.MenuRepository.clearCache(setupPreferences.getContext())
         com.example.smartmeal.data.manager.DateManager.clear()
         com.example.smartmeal.data.manager.MenuSyncManager.clear()
         com.example.smartmeal.data.manager.FavoritesManager.clear()

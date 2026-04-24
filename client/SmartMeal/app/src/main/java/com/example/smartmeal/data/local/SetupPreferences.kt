@@ -7,6 +7,8 @@ class SetupPreferences(context: Context) {
     private val appContext = context.applicationContext
     private val prefs = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
+    fun getContext(): Context = appContext
+
     fun setActiveUserKey(rawKey: String?) {
         if (rawKey.isNullOrBlank()) {
             prefs.edit().remove(KEY_ACTIVE_USER).apply()

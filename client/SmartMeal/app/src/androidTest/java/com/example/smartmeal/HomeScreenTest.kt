@@ -37,14 +37,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
                 )
@@ -65,14 +63,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = { clicked = true },
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
                 )
@@ -114,14 +110,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
                 )
@@ -155,7 +149,6 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state.value,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = { id ->
@@ -174,7 +167,6 @@ class HomeScreenTest {
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
                 )
@@ -216,14 +208,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = { selected = dateFormatter.format(it) },
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
                 )
@@ -247,14 +237,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
                 )
@@ -277,14 +265,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = null
                 )
@@ -309,14 +295,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = { clicked = true },
                     customPlan = null
                 )
@@ -342,14 +326,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = com.example.smartmeal.feature.home.presentation.CustomPlan(
                         startDate = dateFormatter.parse("2099-03-10")!!,
@@ -377,14 +359,12 @@ class HomeScreenTest {
                 HomeContent(
                     uiState = state,
                     onDismissError = {},
-                    onSetActiveSlot = {},
                     onDateSelected = {},
                     onGenerateMenu = {},
                     onReplaceMeal = {},
                     onToggleFavorite = {},
                     onRecipeClick = { _, _ -> },
                     onSearchClick = {},
-                    onDateSelectedFromPlan = {},
                     onReselectPlan = {},
                     customPlan = com.example.smartmeal.feature.home.presentation.CustomPlan(
                         startDate = dateFormatter.parse("2099-03-10")!!,
