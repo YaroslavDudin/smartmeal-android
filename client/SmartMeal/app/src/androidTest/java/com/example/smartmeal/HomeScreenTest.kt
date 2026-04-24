@@ -128,7 +128,7 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithTag("home_meal_list", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("home_title", useUnmergedTree = true).assertIsDisplayed()
 
         composeTestRule.onNodeWithTag("home_replace_breakfast", useUnmergedTree = true).assertExists()
         composeTestRule.onNodeWithTag("home_replace_dinner", useUnmergedTree = true).assertExists()

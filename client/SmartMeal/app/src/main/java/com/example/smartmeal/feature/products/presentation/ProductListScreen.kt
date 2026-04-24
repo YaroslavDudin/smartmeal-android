@@ -323,13 +323,13 @@ fun ProductListScreen(
                 ProductContentState.Expired -> {
                     item {
                         Column(
-                            modifier = Modifier.fillMaxWidth().padding(24.dp),
+                            modifier = Modifier.fillMaxWidth().padding(24.dp).testTag("products_expired_state"),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
                             SmartMealText(text = "Доступные дни закончились", fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.height(16.dp))
-                            Button(onClick = onReselectPlan) { SmartMealText("Выбрать заново") }
+                            Button(onClick = onReselectPlan, modifier = Modifier.testTag("products_reselect_plan_button")) { SmartMealText("Выбрать заново") }
                         }
                     }
                 }
@@ -376,7 +376,9 @@ fun ProductListScreen(
                         // Выбрать всё
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.clickable(
+                            modifier = Modifier
+                                .testTag("product_select_all")
+                                .clickable(
                                 interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
                                 indication = null
                             ) { onCheckAll(allVisibleProductIds, !allVisibleChecked) }

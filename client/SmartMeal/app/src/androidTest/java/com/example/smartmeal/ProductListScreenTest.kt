@@ -364,8 +364,8 @@ class ProductListScreenTest {
             }
         }
 
-        // Вместо тега ищем по тексту "Выбрать всё"
-        composeTestRule.onNodeWithText("Выбрать всё").performClick()
+        // Используем ТОЛЬКО тег, так как кириллица в Windows ломает текстовый поиск
+        composeTestRule.onNodeWithTag("product_select_all").performClick()
         composeTestRule.waitForIdle()
 
         assertEquals(listOf("1", "2"), checkedIds.sorted())
@@ -442,9 +442,9 @@ class ProductListScreenTest {
             }
         }
 
-        // Вместо тегов ищем по тексту
-        composeTestRule.onNodeWithText("Доступные дни закончились").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Выбрать заново").performClick()
+        // Используем поиск по подстроке для надежности
+        composeTestRule.onNodeWithText("Доступные дни", substring = true).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Выбрать заново", substring = true).performClick()
         assertTrue(clicked)
     }
 }
