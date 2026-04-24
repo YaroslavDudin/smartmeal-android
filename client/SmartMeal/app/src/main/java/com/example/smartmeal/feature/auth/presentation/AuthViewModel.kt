@@ -42,6 +42,7 @@ class AuthViewModel(
                     val refresh = loginResponse?.refresh
                     if (access != null && refresh != null) {
                         tokenManager.saveTokens(access, refresh)
+                        setupPreferences.setActiveUserKey(email) // Восстанавливаем профиль по email
                         _authState.value = AuthState.Success(access)
                     } else {
                         _authState.value = AuthState.Error("Пустой ответ от сервера")
@@ -69,6 +70,7 @@ class AuthViewModel(
                     val refresh = registerResponse?.refresh
                     if (access != null && refresh != null) {
                         tokenManager.saveTokens(access, refresh)
+                        setupPreferences.setActiveUserKey(email) // Восстанавливаем профиль по email
                         _authState.value = AuthState.Success(access)
                     } else {
                         _authState.value = AuthState.Error("Ошибка: токены не получены")
@@ -228,8 +230,8 @@ class AuthViewModel(
         _authState.value = AuthState.Idle
         val refreshToken = tokenManager.getRefreshToken()
         
-        // Глобальная очистка всех данных
-        setupPreferences.clearAll()
+        // Очищаем только сессию текущего пользователя, НЕ удаляя базу данных настроек
+        setupPreferences.clearActiveUserKey() 
         com.example.smartmeal.feature.home.data.MenuRepository.clearCache()
         com.example.smartmeal.data.manager.DateManager.clear()
         com.example.smartmeal.data.manager.MenuSyncManager.clear()

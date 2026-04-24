@@ -19,7 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.example.smartmeal.ui.components.feedback.shimmerEffect
 import coil.request.ImageRequest
 import com.example.smartmeal.R
 import com.example.smartmeal.ui.components.buttons.CircleIconButton
@@ -69,7 +70,7 @@ fun MealCard(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl ?: imageRes)
                     .crossfade(500)
@@ -78,7 +79,10 @@ fun MealCard(
                 modifier = Modifier
                     .width(100.dp)
                     .fillMaxHeight(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                loading = {
+                    Box(modifier = Modifier.fillMaxSize().shimmerEffect())
+                }
             )
 
             Column(
