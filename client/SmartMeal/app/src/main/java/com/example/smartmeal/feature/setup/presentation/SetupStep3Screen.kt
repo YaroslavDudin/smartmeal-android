@@ -107,7 +107,8 @@ fun SetupStep3Content(
             Column(
                 modifier = Modifier
                     .weight(0.4f)
-                    .fillMaxHeight(),
+                    .fillMaxHeight()
+                    .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
@@ -228,19 +229,33 @@ fun SetupStep3Content(
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             COOK_TIME_OPTIONS.take(2).forEach { (key, label, _) ->
+                                val tag = when (key) {
+                                    "under30" -> "setup_step3_cook_under30"
+                                    "30to60" -> "setup_step3_cook_30to60"
+                                    else -> "setup_step3_cook_other"
+                                }
                                 SelectableChip(
                                     label = label,
                                     isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
                                     onClick = { onSelectCookTime(key) },
-                                    modifier = Modifier.weight(1f)
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .testTag(tag)
                                 )
                             }
                         }
+                        val key = COOK_TIME_OPTIONS[2].first
+                        val tag = when (key) {
+                            "over60" -> "setup_step3_cook_over60"
+                            else -> "setup_step3_cook_other"
+                        }
                         SelectableChip(
                             label = COOK_TIME_OPTIONS[2].second,
-                            isSelected = mapApiCookTimeToUi(state.cookTimePreference) == COOK_TIME_OPTIONS[2].first,
-                            onClick = { onSelectCookTime(COOK_TIME_OPTIONS[2].first) },
-                            modifier = Modifier.fillMaxWidth(0.5f)
+                            isSelected = mapApiCookTimeToUi(state.cookTimePreference) == key,
+                            onClick = { onSelectCookTime(key) },
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                                .testTag(tag)
                         )
                     }
                 }

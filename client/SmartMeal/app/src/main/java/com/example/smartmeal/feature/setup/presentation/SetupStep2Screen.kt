@@ -100,7 +100,8 @@ fun SetupStep2Content(
             Column(
                 modifier = Modifier
                     .weight(0.45f)
-                    .fillMaxHeight(),
+                    .fillMaxHeight()
+                    .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
@@ -110,7 +111,10 @@ fun SetupStep2Content(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         StepIndicator(current = 2, total = 3)
-                        BackButton(onClick = onBack)
+                        BackButton(
+                            onClick = onBack,
+                            modifier = Modifier.testTag("setup_step2_back")
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -127,12 +131,19 @@ fun SetupStep2Content(
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             PeriodType.entries.take(2).forEach { type ->
+                                val tag = when (type) {
+                                    PeriodType.DAILY -> "setup_step2_period_daily"
+                                    PeriodType.WEEKLY -> "setup_step2_period_weekly"
+                                    else -> "setup_step2_period_other"
+                                }
                                 PeriodChip(
                                     label = type.label,
                                     isSelected = state.periodType == type,
                                     onClick = { onSelectPeriodType(type) },
                                     compact = true,
-                                    modifier = Modifier.weight(1f)
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .testTag(tag)
                                 )
                             }
                         }
@@ -141,7 +152,9 @@ fun SetupStep2Content(
                             isSelected = state.periodType == PeriodType.CUSTOM,
                             onClick = { onSelectPeriodType(PeriodType.CUSTOM) },
                             compact = true,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("setup_step2_period_custom")
                         )
                     }
                 }
@@ -154,7 +167,9 @@ fun SetupStep2Content(
                         PeriodType.DAILY, PeriodType.WEEKLY -> state.selectedStartDateMillis != null
                         null -> false
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("setup_step2_next")
                 )
             }
 
@@ -166,7 +181,9 @@ fun SetupStep2Content(
                 verticalArrangement = Arrangement.Center
             ) {
                 Surface(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("setup_step2_calendar"),
                     shape = RoundedCornerShape(16.dp),
                     color = Color.White,
                     shadowElevation = 4.dp,
