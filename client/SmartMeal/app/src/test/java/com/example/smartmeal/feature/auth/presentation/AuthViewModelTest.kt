@@ -95,7 +95,7 @@ class AuthViewModelTest {
         viewModel.logout()
         advanceUntilIdle()
 
-        verify { setupPreferences.clearAll() }
+        verify { setupPreferences.clearActiveUserKey() }
         verify { tokenManager.clearTokens() }
     }
 }
