@@ -1,5 +1,6 @@
 package com.example.smartmeal.feature.recipes.presentation
 
+import android.view.View
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -9,12 +10,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.VolumeOff
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -84,6 +88,7 @@ fun RecipeDetailScreen(
     var lastTapPosition by remember { mutableStateOf<Offset?>(null) }
     var rootLayoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
     var activeVideoUrl by remember { mutableStateOf<String?>(null) }
+    var isVideoMuted by remember { mutableStateOf(false) }
 
     LaunchedEffect(recipeId) {
         viewModel.loadRecipe(recipeId, menuItemId, portionSize)
@@ -278,7 +283,9 @@ fun RecipeDetailScreen(
                                         hideVideoControlsSignal = hideVideoControlsSignal,
                                         lastTapPosition = lastTapPosition,
                                         activeVideoUrl = activeVideoUrl,
-                                        onVideoPlay = { activeVideoUrl = it }
+                                        onVideoPlay = { activeVideoUrl = it },
+                                        isMuted = isVideoMuted,
+                                        onMuteToggle = { isVideoMuted = !isVideoMuted }
                                     )
                                     Spacer(modifier = Modifier.height(20.dp))
                                 }
@@ -421,7 +428,9 @@ fun RecipeDetailScreen(
                                     hideVideoControlsSignal = hideVideoControlsSignal,
                                     lastTapPosition = lastTapPosition,
                                     activeVideoUrl = activeVideoUrl,
-                                    onVideoPlay = { activeVideoUrl = it }
+                                    onVideoPlay = { activeVideoUrl = it },
+                                    isMuted = isVideoMuted,
+                                    onMuteToggle = { isVideoMuted = !isVideoMuted }
                                 )
                                 Spacer(modifier = Modifier.height(24.dp))
                             }
@@ -640,13 +649,16 @@ fun VideoPlayer(
     hideSignal: Int = 0,
     lastTapPosition: Offset? = null,
     activeVideoUrl: String? = null,
-    onPlay: (String) -> Unit = {}
+    onPlay: (String) -> Unit = {},
+    isMuted: Boolean = false,
+    onMuteToggle: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     
     // Состояние для мгновенного скрытия
     var isVisible by remember { mutableStateOf(true) }
+    var isControllerVisible by remember { mutableStateOf(false) }
     
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
@@ -655,6 +667,7 @@ fun VideoPlayer(
             prepare()
             playWhenReady = false
             repeatMode = Player.REPEAT_MODE_OFF
+            volume = if (isMuted) 0f else 1f
         }
     }
 
@@ -665,6 +678,10 @@ fun VideoPlayer(
         if (activeVideoUrl != null && activeVideoUrl != videoUrl) {
             exoPlayer.pause()
         }
+    }
+
+    LaunchedEffect(isMuted) {
+        exoPlayer.volume = if (isMuted) 0f else 1f
     }
 
     DisposableEffect(exoPlayer) {
@@ -694,12 +711,22 @@ fun VideoPlayer(
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_PAUSE) {
-                exoPlayer.pause()
-            }
-            if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
-                isVisible = false
-                exoPlayer.stop()
+            when (event) {
+                Lifecycle.Event.ON_PAUSE -> {
+                    exoPlayer.pause()
+                }
+                Lifecycle.Event.ON_START -> {
+                    isVisible = true // Мгновенно показываем при возврате
+                }
+                Lifecycle.Event.ON_STOP -> {
+                    isVisible = false // Мгновенно скрываем при уходе с экрана (убирает задержку)
+                    exoPlayer.pause() // Только пауза, не стоп
+                }
+                Lifecycle.Event.ON_DESTROY -> {
+                    isVisible = false
+                    exoPlayer.stop()
+                }
+                else -> {}
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -710,36 +737,58 @@ fun VideoPlayer(
     }
 
     if (isVisible) {
-        AndroidView(
-            factory = { ctx ->
-                PlayerView(ctx).apply {
-                    player = exoPlayer
-                    useController = true
-                    setShowNextButton(false)
-                    setShowPreviousButton(false)
-                    setShowFastForwardButton(false)
-                    setShowRewindButton(false)
-                    setShowBuffering(PlayerView.SHOW_BUFFERING_NEVER)
-                    setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                    setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)
-                    resizeMode = androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
-                    playerViewRef = this
-                }
-            },
-            update = { view ->
-                if (!isVisible) {
+        Box(modifier = modifier) {
+            AndroidView(
+                factory = { ctx ->
+                    PlayerView(ctx).apply {
+                        player = exoPlayer
+                        useController = true
+                        setShowNextButton(false)
+                        setShowPreviousButton(false)
+                        setShowFastForwardButton(false)
+                        setShowRewindButton(false)
+                        setShowBuffering(PlayerView.SHOW_BUFFERING_NEVER)
+                        setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                        setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)
+                        resizeMode = androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
+                        setControllerVisibilityListener(PlayerView.ControllerVisibilityListener { visibility ->
+                            isControllerVisible = visibility == View.VISIBLE
+                        })
+                        playerViewRef = this
+                    }
+                },
+                update = { view ->
+                    if (!isVisible) {
+                        view.player = null
+                    }
+                },
+                onRelease = { view ->
                     view.player = null
+                },
+                modifier = Modifier.fillMaxSize()
+                    .onGloballyPositioned { 
+                        playerBounds = it.boundsInWindow() 
+                    }
+                    .graphicsLayer(alpha = if (isVisible) 1f else 0f) // Мгновенная прозрачность
+            )
+
+            if (isControllerVisible) {
+                IconButton(
+                    onClick = onMuteToggle,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .background(Color.Black.copy(alpha = 0.4f), CircleShape)
+                ) {
+                    Icon(
+                        imageVector = if (isMuted) Icons.Default.VolumeOff else Icons.Default.VolumeUp,
+                        contentDescription = if (isMuted) "Включить звук" else "Выключить звук",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
-            },
-            onRelease = { view ->
-                view.player = null
-            },
-            modifier = modifier
-                .onGloballyPositioned { 
-                    playerBounds = it.boundsInWindow() 
-                }
-                .graphicsLayer(alpha = if (isVisible) 1f else 0f) // Мгновенная прозрачность
-        )
+            }
+        }
     }
 }
 
@@ -753,7 +802,9 @@ fun StepItem(
     hideVideoControlsSignal: Int = 0,
     lastTapPosition: Offset? = null,
     activeVideoUrl: String? = null,
-    onVideoPlay: (String) -> Unit = {}
+    onVideoPlay: (String) -> Unit = {},
+    isMuted: Boolean = false,
+    onMuteToggle: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -853,7 +904,9 @@ fun StepItem(
                                 hideSignal = hideVideoControlsSignal,
                                 lastTapPosition = lastTapPosition,
                                 activeVideoUrl = activeVideoUrl,
-                                onPlay = onVideoPlay
+                                onPlay = onVideoPlay,
+                                isMuted = isMuted,
+                                onMuteToggle = onMuteToggle
                             )
                         }
                     } else if (!imageUrl.isNullOrBlank()) {
