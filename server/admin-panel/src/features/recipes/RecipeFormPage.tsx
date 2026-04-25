@@ -47,7 +47,7 @@ const ingredientSchema = z.object({
 const stepSchema = z.object({
   id: z.number().optional(),
   description: z.string().min(1, 'Введите описание шага'),
-  timer: z.number({ coerce: true }).positive('Таймер должен быть > 0').nullable().default(null),
+  timer: z.number({ coerce: true }).min(0, 'Таймер не может быть отрицательным').nullable().default(null),
   image_url: z.union([z.string(), z.instanceof(File), z.null()]).optional().nullable(),
   video_url: z.union([z.string(), z.instanceof(File), z.null()]).optional().nullable(),
 })
