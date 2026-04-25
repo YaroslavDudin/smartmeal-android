@@ -3,8 +3,10 @@ package com.example.smartmeal.ui.components.feedback
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -217,6 +219,91 @@ fun StatisticsSkeleton() {
         // Еще одна секция
         Box(modifier = Modifier.width(140.dp).height(24.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
         Box(modifier = Modifier.fillMaxWidth().height(120.dp).clip(RoundedCornerShape(16.dp)).shimmerEffect())
+    }
+}
+
+/**
+ * Скелетон экрана деталей рецепта.
+ */
+@Composable
+fun RecipeDetailSkeleton() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        // Главное изображение
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(240.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .shimmerEffect()
+        )
+
+        // Заголовок и вес
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.weight(1f).height(28.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
+            Spacer(modifier = Modifier.width(16.dp))
+            Box(modifier = Modifier.width(60.dp).height(24.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
+        }
+
+        // Чипсы (время, калории)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(modifier = Modifier.width(80.dp).height(32.dp).clip(RoundedCornerShape(16.dp)).shimmerEffect())
+            Box(modifier = Modifier.width(120.dp).height(32.dp).clip(RoundedCornerShape(16.dp)).shimmerEffect())
+        }
+
+        // Карточка КБЖУ
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .shimmerEffect()
+        )
+
+        // Секция ингредиентов
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Box(modifier = Modifier.width(150.dp).height(24.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .shimmerEffect()
+            )
+        }
+
+        // Секция шагов
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Box(modifier = Modifier.width(200.dp).height(28.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
+            
+            repeat(2) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(modifier = Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).shimmerEffect())
+                        Spacer(modifier = Modifier.width(14.dp))
+                        Box(modifier = Modifier.width(60.dp).height(20.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
+                    }
+                    Box(modifier = Modifier.fillMaxWidth().height(60.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
+                    // Плейсхолдер для фото/видео шага
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(16f / 9f)
+                            .clip(RoundedCornerShape(28.dp))
+                            .shimmerEffect()
+                    )
+                }
+            }
+        }
     }
 }
 

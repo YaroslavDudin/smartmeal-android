@@ -49,6 +49,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import coil.compose.SubcomposeAsyncImage
 import com.example.smartmeal.ui.components.feedback.shimmerEffect
+import com.example.smartmeal.ui.components.feedback.RecipeDetailSkeleton
 import com.example.smartmeal.R
 import coil.request.ImageRequest
 import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto
@@ -120,10 +121,7 @@ fun RecipeDetailScreen(
                 }
         ) {
             if (state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    color = PrimaryGreen
-                )
+                RecipeDetailSkeleton()
             } else if (state.error != null) {
                 SmartMealText(
                     text = state.error ?: "Ошибка",
@@ -787,8 +785,8 @@ fun StepItem(
                 Spacer(modifier = Modifier.width(14.dp))
                 Column {
                     SmartMealText(
-                        text = "ШАГ $number",
-                        fontSize = 12.sp,
+                        text = "Шаг",
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = PrimaryGreen.copy(alpha = 0.7f),
                         letterSpacing = 1.sp
