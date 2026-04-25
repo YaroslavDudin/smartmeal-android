@@ -20,10 +20,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -32,6 +41,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
@@ -68,6 +79,10 @@ fun RecipeDetailScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+    var hideVideoControlsSignal by remember { mutableStateOf(0) }
+    var lastTapPosition by remember { mutableStateOf<Offset?>(null) }
+    var rootLayoutCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    var activeVideoUrl by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(recipeId) {
         viewModel.loadRecipe(recipeId, menuItemId, portionSize)
@@ -85,12 +100,24 @@ fun RecipeDetailScreen(
                 onBack = onBack 
             ) 
         }
-    )
- { innerPadding ->
+    ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .onGloballyPositioned { rootLayoutCoordinates = it }
+                .pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent(PointerEventPass.Initial)
+                            if (event.type == PointerEventType.Press) {
+                                val position = event.changes.first().position
+                                lastTapPosition = rootLayoutCoordinates?.localToWindow(position)
+                                hideVideoControlsSignal++
+                            }
+                        }
+                    }
+                }
         ) {
             if (state.isLoading) {
                 CircularProgressIndicator(
@@ -249,7 +276,11 @@ fun RecipeDetailScreen(
                                         description = step.description,
                                         imageUrl = step.image_url,
                                         videoUrl = step.video_url,
-                                        timeMinutes = step.timer
+                                        timeMinutes = step.timer,
+                                        hideVideoControlsSignal = hideVideoControlsSignal,
+                                        lastTapPosition = lastTapPosition,
+                                        activeVideoUrl = activeVideoUrl,
+                                        onVideoPlay = { activeVideoUrl = it }
                                     )
                                     Spacer(modifier = Modifier.height(20.dp))
                                 }
@@ -388,7 +419,11 @@ fun RecipeDetailScreen(
                                     description = step.description,
                                     imageUrl = step.image_url,
                                     videoUrl = step.video_url,
-                                    timeMinutes = step.timer
+                                    timeMinutes = step.timer,
+                                    hideVideoControlsSignal = hideVideoControlsSignal,
+                                    lastTapPosition = lastTapPosition,
+                                    activeVideoUrl = activeVideoUrl,
+                                    onVideoPlay = { activeVideoUrl = it }
                                 )
                                 Spacer(modifier = Modifier.height(24.dp))
                             }
@@ -603,37 +638,111 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 @Composable
 fun VideoPlayer(
     videoUrl: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    hideSignal: Int = 0,
+    lastTapPosition: Offset? = null,
+    activeVideoUrl: String? = null,
+    onPlay: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    
+    // Состояние для мгновенного скрытия
+    var isVisible by remember { mutableStateOf(true) }
+    
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             val mediaItem = MediaItem.fromUri(videoUrl)
             setMediaItem(mediaItem)
             prepare()
             playWhenReady = false
-            repeatMode = Player.REPEAT_MODE_ONE
+            repeatMode = Player.REPEAT_MODE_OFF
         }
     }
 
-    DisposableEffect(Unit) {
+    var playerViewRef by remember { mutableStateOf<PlayerView?>(null) }
+    var playerBounds by remember { mutableStateOf<Rect?>(null) }
+
+    LaunchedEffect(activeVideoUrl) {
+        if (activeVideoUrl != null && activeVideoUrl != videoUrl) {
+            exoPlayer.pause()
+        }
+    }
+
+    DisposableEffect(exoPlayer) {
+        val listener = object : Player.Listener {
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                if (isPlaying) {
+                    onPlay(videoUrl)
+                }
+            }
+        }
+        exoPlayer.addListener(listener)
         onDispose {
+            isVisible = false
+            exoPlayer.removeListener(listener)
+            exoPlayer.stop() // Останавливаем немедленно
+        }
+    }
+
+    LaunchedEffect(hideSignal, lastTapPosition) {
+        if (hideSignal > 0 && lastTapPosition != null) {
+            val isInside = playerBounds?.contains(lastTapPosition) ?: false
+            if (!isInside) {
+                playerViewRef?.hideController()
+            }
+        }
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_PAUSE) {
+                exoPlayer.pause()
+            }
+            if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
+                isVisible = false
+                exoPlayer.stop()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
             exoPlayer.release()
         }
     }
 
-    AndroidView(
-        factory = { ctx ->
-            PlayerView(ctx).apply {
-                player = exoPlayer
-                useController = true
-                setShowNextButton(false)
-                setShowPreviousButton(false)
-                resizeMode = androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
-            }
-        },
-        modifier = modifier
-    )
+    if (isVisible) {
+        AndroidView(
+            factory = { ctx ->
+                PlayerView(ctx).apply {
+                    player = exoPlayer
+                    useController = true
+                    setShowNextButton(false)
+                    setShowPreviousButton(false)
+                    setShowFastForwardButton(false)
+                    setShowRewindButton(false)
+                    setShowBuffering(PlayerView.SHOW_BUFFERING_NEVER)
+                    setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                    setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)
+                    resizeMode = androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
+                    playerViewRef = this
+                }
+            },
+            update = { view ->
+                if (!isVisible) {
+                    view.player = null
+                }
+            },
+            onRelease = { view ->
+                view.player = null
+            },
+            modifier = modifier
+                .onGloballyPositioned { 
+                    playerBounds = it.boundsInWindow() 
+                }
+                .graphicsLayer(alpha = if (isVisible) 1f else 0f) // Мгновенная прозрачность
+        )
+    }
 }
 
 @Composable
@@ -642,14 +751,18 @@ fun StepItem(
     description: String,
     imageUrl: String?,
     videoUrl: String? = null,
-    timeMinutes: Int?
+    timeMinutes: Int?,
+    hideVideoControlsSignal: Int = 0,
+    lastTapPosition: Offset? = null,
+    activeVideoUrl: String? = null,
+    onVideoPlay: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        // Шапка шага: Номер и Таймер
+        // Шапка шага
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -712,7 +825,6 @@ fun StepItem(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Описание с улучшенной читаемостью
         SmartMealText(
             text = description,
             fontSize = 17.sp,
@@ -721,16 +833,15 @@ fun StepItem(
             modifier = Modifier.padding(horizontal = 2.dp)
         )
 
-        // Медиа-контейнер (Фото или Видео)
         if (!videoUrl.isNullOrBlank() || !imageUrl.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(18.dp))
             
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(28.dp)), // Элегантное сильное скругление
-                color = Color(0xFFF8F8FA), // Мягкий фон для фото любого формата
-                border = androidx.compose.foundation.BorderStroke(0.5.dp, Color.Black.copy(alpha = 0.08f))
+                    .clip(RoundedCornerShape(28.dp)),
+                color = if (!videoUrl.isNullOrBlank()) Color.Transparent else Color(0xFFF8F8FA),
+                border = if (!videoUrl.isNullOrBlank()) null else androidx.compose.foundation.BorderStroke(0.5.dp, Color.Black.copy(alpha = 0.08f))
             ) {
                 Box(
                     modifier = Modifier.fillMaxWidth().animateContentSize(),
@@ -740,7 +851,11 @@ fun StepItem(
                         Box(modifier = Modifier.aspectRatio(16f / 9f)) {
                             VideoPlayer(
                                 videoUrl = videoUrl,
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier.fillMaxSize(),
+                                hideSignal = hideVideoControlsSignal,
+                                lastTapPosition = lastTapPosition,
+                                activeVideoUrl = activeVideoUrl,
+                                onPlay = onVideoPlay
                             )
                         }
                     } else if (!imageUrl.isNullOrBlank()) {
@@ -768,15 +883,14 @@ fun StepItem(
                             contentDescription = "Step $number",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .heightIn(max = 550.dp), // Чтобы высокие фото не ломали верстку
-                            contentScale = ContentScale.Fit // ПОЛНОЕ ОТОБРАЖЕНИЕ без кропа
+                                .heightIn(max = 550.dp),
+                            contentScale = ContentScale.Fit
                         )
                     }
                 }
             }
         }
         
-        // Мягкий разделитель для визуального ритма
         Spacer(modifier = Modifier.height(28.dp))
         Box(
             modifier = Modifier
