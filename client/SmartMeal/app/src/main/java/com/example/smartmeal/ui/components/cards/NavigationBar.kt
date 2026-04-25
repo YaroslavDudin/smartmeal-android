@@ -44,8 +44,7 @@ fun BottomNavigationBar(
             .fillMaxWidth()
             .then(if (isLandscape) Modifier.height(56.dp) else Modifier),
         containerColor = Color.White,
-        tonalElevation = 8.dp,
-        windowInsets = WindowInsets(0, 0, 0, 0)
+        tonalElevation = 8.dp
     ) {
         items.forEachIndexed { index, item ->
             val isSelected = selectedItem == index

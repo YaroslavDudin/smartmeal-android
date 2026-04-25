@@ -99,14 +99,15 @@ fun StatisticsScreen(preferences: SetupPreferences) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 12.dp)
+                        .padding(start = 24.dp, end = 24.dp, top = 4.dp, bottom = 12.dp)
                 ) {
                     SmartMealText(
                         text = "Статистика",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = TextBlack,
-                        modifier = Modifier.align(Alignment.CenterStart)
+                        modifier = Modifier.align(Alignment.Center),
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -118,33 +119,38 @@ fun StatisticsScreen(preferences: SetupPreferences) {
                         .padding(horizontal = 16.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color.White)
-                        .padding(vertical = 12.dp)
+                        .padding(vertical = 4.dp)
                 ) {
                     if (customPlan != null) {
-                        MyPlanSection(
-                            customPlan = customPlan,
-                            selectedDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
-                            onDateSelectedFromPlan = { date ->
-                                val index = uiState.dailyStats.indexOfFirst { 
-                                    val cal1 = Calendar.getInstance().apply { time = it.date }
-                                    val cal2 = Calendar.getInstance().apply { time = date }
-                                    cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                                    cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
-                                }
-                                if (index != -1) {
-                                    scope.launch {
-                                        pagerState.animateScrollToPage(index)
-                                    }
-                                }
-                            },
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-                        )
+                        val diff = customPlan.endDate.time - customPlan.startDate.time
+                        val days = (diff / (1000L * 60 * 60 * 24)) + 1
                         
-                        HorizontalDivider(
-                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 12.dp),
-                            thickness = 1.dp,
-                            color = BgLightGray
-                        )
+                        if (days > 7) {
+                            MyPlanSection(
+                                customPlan = customPlan,
+                                selectedDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
+                                onDateSelectedFromPlan = { date ->
+                                    val index = uiState.dailyStats.indexOfFirst { 
+                                        val cal1 = Calendar.getInstance().apply { time = it.date }
+                                        val cal2 = Calendar.getInstance().apply { time = date }
+                                        cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                                        cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
+                                    }
+                                    if (index != -1) {
+                                        scope.launch {
+                                            pagerState.animateScrollToPage(index)
+                                        }
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                            )
+                            
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp),
+                                thickness = 1.dp,
+                                color = BgLightGray
+                            )
+                        }
                     }
 
                     DateNavigationHeader(

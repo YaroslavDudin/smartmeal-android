@@ -121,6 +121,20 @@ fun ProductItemSkeleton() {
 }
 
 /**
+ * Скелетон кнопки "Мой план".
+ */
+@Composable
+fun MyPlanButtonSkeleton() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .shimmerEffect()
+    )
+}
+
+/**
  * Скелетон всего домашнего экрана.
  */
 @Composable
@@ -129,6 +143,9 @@ fun HomeScreenSkeleton() {
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Добавляем скелетон кнопки "Мой план" в начало, если он нужен
+        MyPlanButtonSkeleton()
+        
         repeat(4) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Box(modifier = Modifier.width(100.dp).height(20.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
@@ -150,6 +167,10 @@ fun ProductListSkeleton() {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally).width(120.dp).height(32.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
         Spacer(modifier = Modifier.height(24.dp))
         
+        // Скелетон кнопки "Мой план" (если он нужен, добавим для консистентности)
+        MyPlanButtonSkeleton()
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Селектор дат
         Box(modifier = Modifier.fillMaxWidth().height(60.dp).clip(RoundedCornerShape(12.dp)).shimmerEffect())
         Spacer(modifier = Modifier.height(24.dp))
@@ -181,6 +202,9 @@ fun StatisticsSkeleton() {
         // Заголовок
         Box(modifier = Modifier.width(180.dp).height(28.dp).clip(RoundedCornerShape(4.dp)).shimmerEffect())
         
+        // Скелетон кнопки "Мой план"
+        MyPlanButtonSkeleton()
+
         // Большая карточка графика
         Box(modifier = Modifier.fillMaxWidth().height(200.dp).clip(RoundedCornerShape(24.dp)).shimmerEffect())
         

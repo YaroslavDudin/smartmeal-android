@@ -126,7 +126,7 @@ fun ProfileScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = if (isLandscape) 8.dp else 16.dp)
+                            .padding(horizontal = 20.dp, vertical = if (isLandscape) 4.dp else 4.dp)
                     ) {
                         SmartMealText(
                             text = "Профиль",

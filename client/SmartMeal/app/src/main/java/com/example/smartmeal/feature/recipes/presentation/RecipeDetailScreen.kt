@@ -34,7 +34,6 @@ import coil.compose.SubcomposeAsyncImage
 import com.example.smartmeal.ui.components.feedback.shimmerEffect
 import com.example.smartmeal.R
 import coil.request.ImageRequest
-import com.example.smartmeal.R
 import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.QuantityStepper
@@ -69,6 +68,7 @@ fun RecipeDetailScreen(
     }
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         containerColor = LightCream,
         topBar = { 
             CustomRecipeTopBar(
@@ -76,17 +76,11 @@ fun RecipeDetailScreen(
                 isInMenu = state.isInMenuOnSelectedDay,
                 onFavoriteClick = { viewModel.toggleFavorite() },
                 onAddClick = { viewModel.addToMenu() },
-                onShareClick = {
-                    state.recipe?.let { recipe ->
-                        // Мы отправляем только текст с прямой ссылкой в приложение
-                        // Это 100% открывает приложение у друга
-                        ShareUtils.shareRecipe(context, recipe.title, recipe.id)
-                    }
-                },
                 onBack = onBack 
             ) 
         }
-    ) { innerPadding ->
+    )
+ { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -405,13 +399,13 @@ fun CustomRecipeTopBar(
     isInMenu: Boolean,
     onFavoriteClick: () -> Unit,
     onAddClick: () -> Unit,
-    onShareClick: () -> Unit,
     onBack: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 12.dp),
+            .statusBarsPadding()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -424,15 +418,6 @@ fun CustomRecipeTopBar(
         }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onShareClick) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = "Поделиться",
-                    modifier = Modifier.size(24.dp),
-                    tint = Color.DarkGray
-                )
-            }
-            
             // Кнопка "+" отображается только если рецепт в избранном
             if (isFavorite) {
                 RecipePlusButton(

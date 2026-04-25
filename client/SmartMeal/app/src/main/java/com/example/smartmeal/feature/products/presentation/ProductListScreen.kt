@@ -101,8 +101,10 @@ fun ProductListScreen(
     errorMessage: String? = null,
     customPlan: CustomPlan? = null,
     openOrderModal: Boolean = false,
-    onOrderModalConsumed: () -> Unit = {}
-) {
+    scrollToCart: Boolean = false,
+    onOrderModalConsumed: () -> Unit = {},
+    onScrollToCartConsumed: () -> Unit = {}
+    ) {
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
     val availableDates = remember(products, customPlan) {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -110,7 +112,7 @@ fun ProductListScreen(
             .flatMap { it.actualDates }
             .distinct()
             .sorted()
-            
+
         val filteredStrings = if (customPlan != null) {
             val startStr = formatter.format(customPlan.startDate)
             val endStr = formatter.format(customPlan.endDate)
@@ -118,21 +120,21 @@ fun ProductListScreen(
         } else {
             rawDateStrings
         }
-        
+
         filteredStrings.mapNotNull { parseApiDate(it) }
             .filter { !it.before(normalizeProductDate(Date())) }
     }
-    
+
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
-    
+
     val filteredProducts = remember(products, selectedStartDateKey, selectedEndDateKey) {
         filterProductsByDateRange(products, selectedStartDateKey, selectedEndDateKey)
     }
-    
+
     val aggregatedProducts = remember(filteredProducts) {
         aggregateProductsForDisplay(filteredProducts)
     }
-    
+
     val monthYearLabel = remember(selectedDate, availableDates, selectedStartDateKey, selectedEndDateKey) {
         val startDate = selectedStartDateKey?.let { parseApiDate(it) }
         val endDate = selectedEndDateKey?.let { parseApiDate(it) }
@@ -145,15 +147,15 @@ fun ProductListScreen(
             }
         }
     }
-    
+
     val allVisibleProductIds = remember(filteredProducts) {
         filteredProducts.flatMap { it.sourceIds }.distinct()
     }
-    
+
     val allVisibleChecked = filteredProducts.isNotEmpty() && filteredProducts.all { it.checked }
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    
+
     val configuration = androidx.compose.ui.platform.LocalConfiguration.current
     val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
     val isSmallScreen = configuration.screenHeightDp < 640 || configuration.screenWidthDp < 360
@@ -180,8 +182,22 @@ fun ProductListScreen(
         count
     }
 
-    val hasSingleAvailableDate = availableDates.size == 1
-    
+    // Эффект автоматической прокрутки к корзине
+    androidx.compose.runtime.LaunchedEffect(scrollToCart, aggregatedProducts) {
+        if (scrollToCart) {
+            if (aggregatedProducts.any { it.checked }) {
+                // Небольшая задержка, чтобы список успел отрисоваться
+                kotlinx.coroutines.delay(100)
+                listState.animateScrollToItem(
+                    index = itemsBeforePurchased,
+                    scrollOffset = -100
+                )
+            }
+            onScrollToCartConsumed()
+        }
+    }
+
+    val hasSingleAvailableDate = availableDates.size == 1    
     val contentState: ProductContentState = when {
         isLoading -> ProductContentState.Loading
         hasNoAvailableDays -> ProductContentState.Expired
@@ -220,7 +236,7 @@ fun ProductListScreen(
                         .padding(
                             start = if (isSmallScreen) 16.dp else 24.dp,
                             end = if (isSmallScreen) 16.dp else 24.dp,
-                            top = if (isSmallScreen) 4.dp else 16.dp,
+                            top = if (isSmallScreen) 0.dp else 4.dp,
                             bottom = if (isSmallScreen) 4.dp else 12.dp
                         )
                 ) {
@@ -229,7 +245,8 @@ fun ProductListScreen(
                         fontSize = if (isSmallScreen) 20.sp else 24.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = TextBlack,
-                        modifier = Modifier.align(Alignment.CenterStart).testTag("title")
+                        modifier = Modifier.align(Alignment.Center).testTag("title"),
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -242,7 +259,7 @@ fun ProductListScreen(
                         .padding(horizontal = if (isSmallScreen) 8.dp else 16.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color.White)
-                        .padding(vertical = if (isSmallScreen) 4.dp else 12.dp)
+                        .padding(vertical = if (isSmallScreen) 2.dp else 4.dp)
                 ) {
                     if (availableDates.isNotEmpty()) {
                         if (hasSingleAvailableDate) {
@@ -260,7 +277,7 @@ fun ProductListScreen(
                                     fontSize = if (isSmallScreen) 12.sp else 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Gray,
-                                    modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = if (isSmallScreen) 2.dp else 8.dp)
+                                    modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = if (isSmallScreen) 2.dp else 4.dp)
                                 )
                             }
                             DateSelector(
@@ -273,10 +290,10 @@ fun ProductListScreen(
                         }
                     }
 
-                    if (customPlan != null) {
+                    if (customPlan != null && !isLoading) {
                         if (availableDates.isNotEmpty()) {
                             HorizontalDivider(
-                                modifier = Modifier.padding(vertical = if (isSmallScreen) 4.dp else 12.dp, horizontal = 12.dp),
+                                modifier = Modifier.padding(vertical = if (isSmallScreen) 2.dp else 4.dp, horizontal = 12.dp),
                                 thickness = 1.dp,
                                 color = BgLightGray
                             )

@@ -32,11 +32,7 @@ class MainActivity : ComponentActivity() {
                     val controller = rememberNavController()
                     navController = controller
 
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        Box(modifier = Modifier.padding(innerPadding)) {
-                            SmartMealNavGraph(navController = controller)
-                        }
-                    }
+                    SmartMealNavGraph(navController = controller)
                 }
             }
         }

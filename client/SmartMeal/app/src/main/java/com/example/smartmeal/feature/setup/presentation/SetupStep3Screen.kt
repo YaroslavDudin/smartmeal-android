@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -75,11 +76,11 @@ fun SetupStep3Screen(
 
     SetupStep3Content(
         state = state,
-        onBack = onBack,
+        onBack = { if (!state.isLoading) onBack() },
         onSubmit = { viewModel.submitSetup() },
-        onToggleAllergy = { viewModel.toggleAllergy(it) },
-        onSetEatAll = { viewModel.setEatAll(it) },
-        onSelectCookTime = { viewModel.selectCookTime(mapUiCookTimeToApi(it)) },
+        onToggleAllergy = { if (!state.isLoading) viewModel.toggleAllergy(it) },
+        onSetEatAll = { if (!state.isLoading) viewModel.setEatAll(it) },
+        onSelectCookTime = { if (!state.isLoading) viewModel.selectCookTime(mapUiCookTimeToApi(it)) },
     )
 }
 
@@ -117,8 +118,10 @@ fun SetupStep3Content(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        StepIndicatorLocal(current = 3, total = 3)
-                        BackButtonLocal(onClick = onBack)
+                        BackButtonLocal(
+                            onClick = onBack,
+                            enabled = !state.isLoading
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -265,8 +268,9 @@ fun SetupStep3Content(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .systemBarsPadding()
                 .verticalScroll(scrollState)
-                .padding(horizontal = 24.dp, vertical = 32.dp),
+                .padding(horizontal = 24.dp, vertical = 16.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -433,21 +437,24 @@ private fun StepIndicatorLocal(current: Int, total: Int) {
 }
 
 @Composable
-private fun BackButtonLocal(onClick: () -> Unit) {
+private fun BackButtonLocal(
+    onClick: () -> Unit,
+    enabled: Boolean = true
+) {
     Surface(
         modifier = Modifier
             .testTag("setup_step3_back")
-            .clickable(onClick = onClick),
+            .clickable(enabled = enabled, onClick = onClick),
         shape = RoundedCornerShape(12.dp),
-        color = Color.White,
-        shadowElevation = 8.dp,
-        border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
+        color = if (enabled) Color.White else Color.White.copy(alpha = 0.6f),
+        shadowElevation = if (enabled) 8.dp else 0.dp,
+        border = BorderStroke(1.5.dp, if (enabled) Color(0xFFE6D36E) else Color(0xFFE6D36E).copy(alpha = 0.5f)),
     ) {
         SmartMealText(
             text = "Назад",
             modifier = Modifier.padding(horizontal = 18.dp, vertical = 8.dp),
             style = MaterialTheme.typography.bodyMedium,
-            color = TextBlack,
+            color = if (enabled) TextBlack else TextBlack.copy(alpha = 0.6f),
         )
     }
 }
@@ -473,21 +480,28 @@ private fun SelectableChip(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
-    val bgColor = if (isSelected) MainGreen else Color.White
+    val bgColor = if (isSelected) {
+        if (enabled) MainGreen else MainGreen.copy(alpha = 0.6f)
+    } else {
+        if (enabled) Color.White else Color.White.copy(alpha = 0.6f)
+    }
     val textColor = if (isSelected) Color.White else MaterialTheme.colorScheme.onBackground
+    val mutedTextColor = textColor.copy(alpha = 0.6f)
     val borderColor = if (isSelected) MainGreen else GreenBorder
 
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW)
-            .border(1.dp, borderColor, RoundedCornerShape(12.dp))
+            .border(1.dp, if (enabled) borderColor else borderColor.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
             .clickable(
                 interactionSource = interactionSource,
                 indication = androidx.compose.foundation.LocalIndication.current,
+                enabled = enabled,
                 onClick = onClick
             ),
         shape = RoundedCornerShape(12.dp),
@@ -498,7 +512,7 @@ private fun SelectableChip(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp, horizontal = 4.dp),
-            color = textColor,
+            color = if (enabled) textColor else mutedTextColor,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center

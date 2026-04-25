@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModel
@@ -67,6 +69,8 @@ import java.util.Date
 import java.util.Locale
 
 import com.example.smartmeal.ui.components.feedback.HomeScreenSkeleton
+
+import com.example.smartmeal.ui.components.feedback.ExitConfirmDialog
 
 private val ModalBackground = Color(0xFFF4F4F4)
 private val ReplaceButtonBackground = Color(0xFFF5F5F5)
@@ -150,8 +154,7 @@ fun HomeScreen(
     val planType = setupPreferences.getPlanType()
     val planRange = setupPreferences.getCustomPlanRange()
     val selectedPlanDateMillis = setupPreferences.getSelectedPlanDate()
-    val showMyPlanSection = planType == SetupPreferences.PLAN_TYPE_CUSTOM
-
+    
     val customPlan = remember(planType, planRange, selectedPlanDateMillis) {
         when (planType) {
             SetupPreferences.PLAN_TYPE_CUSTOM -> {
@@ -174,6 +177,15 @@ fun HomeScreen(
                 }
             }
             else -> null
+        }
+    }
+
+    val showMyPlanSection = remember(planType, customPlan) {
+        if (planType != SetupPreferences.PLAN_TYPE_CUSTOM || customPlan == null) false
+        else {
+            val diff = customPlan.endDate.time - customPlan.startDate.time
+            val days = (diff / (1000L * 60 * 60 * 24)) + 1
+            days > 7
         }
     }
 
@@ -208,6 +220,26 @@ fun HomeScreen(
 
     var selectedNavItem: Int by rememberSaveable { mutableIntStateOf(0) }
     var shouldOpenOrderModal: Boolean by remember { mutableStateOf(false) }
+    var shouldScrollToCart: Boolean by remember { mutableStateOf(false) }
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    // Перехват кнопки "Назад" для подтверждения выхода
+    androidx.activity.compose.BackHandler(enabled = true) {
+        if (selectedNavItem != 0) {
+            selectedNavItem = 0
+        } else {
+            showExitDialog = true
+        }
+    }
+
+    if (showExitDialog) {
+        ExitConfirmDialog(
+            onConfirm = {
+                (context as? android.app.Activity)?.finish()
+            },
+            onDismiss = { showExitDialog = false }
+        )
+    }
 
     LaunchedEffect(selectedNavItem, uiState.currentMenu) {
         if (selectedNavItem == 1) {
@@ -220,81 +252,125 @@ fun HomeScreen(
         }
     }
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        bottomBar = {
-            BottomNavigationBar(
-                selectedItem = selectedNavItem,
-                onItemSelected = { selectedNavItem = it }
-            )
-        }
-    ) { innerPadding ->
-        androidx.compose.animation.AnimatedContent(
-            targetState = selectedNavItem,
-            modifier = Modifier.padding(innerPadding).fillMaxSize(),
-            transitionSpec = {
-                fadeIn(animationSpec = tween(300)) togetherWith fadeOut(animationSpec = tween(300))
-            },
-            label = "ScreenSwitchAnimation"
-        ) { targetIndex ->
-            when (targetIndex) {
-                0 -> Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(
-                            onClick = { viewModel.clearError() },
-                            indication = null,
-                            interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+    Box(modifier = modifier.fillMaxSize()) {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            bottomBar = {
+                BottomNavigationBar(
+                    selectedItem = selectedNavItem,
+                    onItemSelected = { selectedNavItem = it }
+                )
+            }
+        ) { innerPadding ->
+            androidx.compose.animation.AnimatedContent(
+                targetState = selectedNavItem,
+                modifier = Modifier.padding(innerPadding).fillMaxSize(),
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(300)) togetherWith fadeOut(animationSpec = tween(300))
+                },
+                label = "ScreenSwitchAnimation"
+            ) { targetIndex ->
+                when (targetIndex) {
+                    0 -> Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(
+                                onClick = { viewModel.clearError() },
+                                indication = null,
+                                interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+                            )
+                    ) {
+                        HomeContent(
+                            uiState = uiState,
+                            onDismissError = { viewModel.clearError() },
+                            onDateSelected = { viewModel.selectDate(it) },
+                            onGenerateMenu = { viewModel.regenerateMenuForCurrentPlan() },
+                            onReplaceMeal = { viewModel.replaceMeal(it) },
+                            onToggleFavorite = { viewModel.toggleFavorite(it) },
+                            onRecipeClick = onRecipeClick,
+                            onSearchClick = onSearchClick,
+                            onReselectPlan = onReselectPlan,
+                            onCartClick = {
+                                selectedNavItem = 1
+                                shouldScrollToCart = true
+                            },
+                            customPlan = visibleCustomPlan,
+                            showMyPlanSection = showMyPlanSection
                         )
-                ) {
-                    HomeContent(
-                        uiState = uiState,
-                        onDismissError = { viewModel.clearError() },
-                        onDateSelected = { viewModel.selectDate(it) },
-                        onGenerateMenu = { viewModel.regenerateMenuForCurrentPlan() },
-                        onReplaceMeal = { viewModel.replaceMeal(it) },
-                        onToggleFavorite = { viewModel.toggleFavorite(it) },
-                        onRecipeClick = onRecipeClick,
-                        onSearchClick = onSearchClick,
+                    }
+                    1 -> ProductListScreen(
+                        viewModel = productListViewModel,
+                        products = productListViewModel.products,
+                        selectedDate = uiState.selectedDate,
+                        selectedStartDateKey = productListViewModel.selectedStartDateKey,
+                        selectedEndDateKey = productListViewModel.selectedEndDateKey,
+                        dateRangeText = productListViewModel.dateRangeText,
+                        onDateSelected = { dateKey -> productListViewModel.selectDateRange(dateKey) },
+                        onProductChecked = { productIds, checked ->
+                            productListViewModel.onProductChecked(productIds, checked)
+                        },
+                        onCheckAll = { productIds, checked ->
+                            productListViewModel.toggleCheckAllProducts(productIds, checked)
+                        },
                         onReselectPlan = onReselectPlan,
-                        customPlan = visibleCustomPlan,
-                        showMyPlanSection = showMyPlanSection
+                        hasNoAvailableDays = productListViewModel.hasNoAvailableDays,
+                        isLoading = productListViewModel.isLoading,
+                        errorMessage = productListViewModel.errorMessage,
+                        customPlan = if (showMyPlanSection) customPlan else null,
+                        openOrderModal = shouldOpenOrderModal,
+                        scrollToCart = shouldScrollToCart,
+                        onOrderModalConsumed = { shouldOpenOrderModal = false },
+                        onScrollToCartConsumed = { shouldScrollToCart = false }
+                    )
+                    2 -> StatisticsScreen(preferences = setupPreferences)
+                    3 -> ProfileScreen(
+                        viewModel = profileViewModel,
+                        onLogout = onLogout,
+                        onLogoutSuccess = onLogoutSuccess,
+                        onGoToProducts = {
+                            selectedNavItem = 1
+                            shouldOpenOrderModal = true
+                        },
+                        onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) },
+                        onProfileUpdatedSuccessfully = {}
                     )
                 }
-                1 -> ProductListScreen(
-                    viewModel = productListViewModel,
-                    products = productListViewModel.products,
-                    selectedDate = uiState.selectedDate,
-                    selectedStartDateKey = productListViewModel.selectedStartDateKey,
-                    selectedEndDateKey = productListViewModel.selectedEndDateKey,
-                    dateRangeText = productListViewModel.dateRangeText,
-                    onDateSelected = { dateKey -> productListViewModel.selectDateRange(dateKey) },
-                    onProductChecked = { productIds, checked ->
-                        productListViewModel.onProductChecked(productIds, checked)
-                    },
-                    onCheckAll = { productIds, checked ->
-                        productListViewModel.toggleCheckAllProducts(productIds, checked)
-                    },
-                    onReselectPlan = onReselectPlan,
-                    hasNoAvailableDays = productListViewModel.hasNoAvailableDays,
-                    isLoading = productListViewModel.isLoading,
-                    errorMessage = productListViewModel.errorMessage,
-                    customPlan = if (showMyPlanSection) customPlan else null,
-                    openOrderModal = shouldOpenOrderModal,
-                    onOrderModalConsumed = { shouldOpenOrderModal = false }
-                )
-                2 -> StatisticsScreen(preferences = setupPreferences)
-                3 -> ProfileScreen(
-                    viewModel = profileViewModel,
-                    onLogout = onLogout,
-                    onLogoutSuccess = onLogoutSuccess,
-                    onGoToProducts = {
-                        selectedNavItem = 1
-                        shouldOpenOrderModal = true
-                    },
-                    onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) },
-                    onProfileUpdatedSuccessfully = {}
-                )
+            }
+        }
+
+        // БЛОКИРУЮЩИЙ ОВЕРЛЕЙ (Твоя красивая загрузка) - ТЕПЕРЬ ВСЕГДА СВЕРХУ
+        if (uiState.isSyncing) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.3f))
+                    .clickable(enabled = true, onClick = {})
+                    .zIndex(100f),
+                contentAlignment = Alignment.Center
+            ) {
+                Surface(
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 4.dp
+                ) {
+                    Column(
+                        modifier = Modifier.padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator(color = PrimaryGreen)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        SmartMealText(
+                            text = "Сверяем актуальные данные...",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Medium
+                        )
+                        SmartMealText(
+                            text = "Ищем последние обновления рациона",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray
+                        )
+                    }
+                }
             }
         }
     }
@@ -311,6 +387,7 @@ fun HomeContent(
     onRecipeClick: (Int, Int?) -> Unit,
     onSearchClick: () -> Unit,
     onReselectPlan: () -> Unit,
+    onCartClick: () -> Unit,
     customPlan: CustomPlan?,
     showMyPlanSection: Boolean = false
 ) {
@@ -324,13 +401,8 @@ fun HomeContent(
     var pendingReplacement by remember { mutableStateOf<MealSection?>(null) }
 
     // Проверка для кнопки "Мой план": тип CUSTOM и более 7 дней
-    val showMyPlanButton = remember(customPlan, showMyPlanSection) {
-        if (!showMyPlanSection || customPlan == null) false
-        else {
-            val diff = customPlan.endDate.time - customPlan.startDate.time
-            val days = (diff / (1000L * 60 * 60 * 24)) + 1
-            days > 7
-        }
+    val showMyPlanButton = remember(showMyPlanSection, customPlan) {
+        showMyPlanSection && customPlan != null
     }
 
     LazyColumn(
@@ -339,7 +411,7 @@ fun HomeContent(
         contentPadding = PaddingValues(bottom = 8.dp)
     ) {
         item {
-            Box(modifier = Modifier.fillMaxWidth().padding(top = 0.dp, bottom = 0.dp)) {
+            Box(modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 0.dp)) {
                 SmartMealText(
                     text = "Меню",
                     style = MaterialTheme.typography.headlineMedium,
@@ -347,6 +419,18 @@ fun HomeContent(
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
                 )
+
+                IconButton(
+                    onClick = onCartClick,
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = 8.dp).testTag("home_cart_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingCart,
+                        contentDescription = "Корзина",
+                        tint = PrimaryGreen,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
             }
         }
 
@@ -391,90 +475,93 @@ fun HomeContent(
             }
         }
 
-        if (showMyPlanButton) {
-            item {
-                MyPlanSection(
-                    customPlan = customPlan,
-                    selectedDate = uiState.selectedDate,
-                    onDateSelectedFromPlan = onDateSelected,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .testTag("home_my_plan")
-                )
-            }
-        }
-
         if (uiState.isLoading && !uiState.hasMenu) {
             item {
                 HomeScreenSkeleton()
             }
-        } else if (!uiState.hasMenu) {
-            item {
-                Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.testTag("home_empty_state")
-                    ) {
-                        SmartMealText("У вас еще нет меню на эту неделю")
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = onGenerateMenu,
-                            modifier = Modifier.testTag("home_generate_button"),
-                            elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp, pressedElevation = 2.dp)
-                        ) {
-                            SmartMealText("Сгенерировать меню")
-                        }
-                    }
-                }
-            }
-        } else if (availableDates.isEmpty() && uiState.hasMenu) {
-            // Состояние истекшего рациона
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp)
-                        .testTag("home_expired_state"),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        SmartMealText(
-                            text = "Ваш рацион закончился",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        SmartMealText(
-                            text = "Выберите новый план питания, чтобы продолжить",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
-                        Button(
-                            onClick = onReselectPlan,
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f)
-                                .height(54.dp)
-                                .testTag("home_reselect_plan_button"),
-                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen),
-                            shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
-                        ) {
-                            SmartMealText("Выбрать новый рацион", color = Color.White, fontSize = 16.sp)
-                        }
-                    }
-                }
-            }
         } else {
-            items(uiState.mealSections, key = { it.meal.id }) { section ->
-                MealSection(
-                    sectionId = section.id,
-                    title = section.title,
-                    meal = section.meal,
-                    onReplaceClick = { pendingReplacement = section },
-                    onFavoriteClick = { onToggleFavorite(section.meal.id) },
-                    onRecipeClick = onRecipeClick
-                )
+            if (showMyPlanButton) {
+                item {
+                    MyPlanSection(
+                        customPlan = customPlan,
+                        selectedDate = uiState.selectedDate,
+                        onDateSelectedFromPlan = onDateSelected,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 0.dp, bottom = 4.dp)
+                            .testTag("home_my_plan")
+                    )
+                }
+            }
+
+            if (!uiState.hasMenu) {
+                item {
+                    Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.testTag("home_empty_state")
+                        ) {
+                            SmartMealText("У вас еще нет меню на эту неделю")
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(
+                                onClick = onGenerateMenu,
+                                modifier = Modifier.testTag("home_generate_button"),
+                                elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp, pressedElevation = 2.dp)
+                            ) {
+                                SmartMealText("Сгенерировать меню")
+                            }
+                        }
+                    }
+                }
+            } else if (availableDates.isEmpty() && uiState.hasMenu) {
+                // Состояние истекшего рациона
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .testTag("home_expired_state"),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            SmartMealText(
+                                text = "Ваш рацион закончился",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            SmartMealText(
+                                text = "Выберите новый план питания, чтобы продолжить",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(24.dp))
+                            Button(
+                                onClick = onReselectPlan,
+                                modifier = Modifier
+                                    .fillMaxWidth(0.8f)
+                                    .height(54.dp)
+                                    .testTag("home_reselect_plan_button"),
+                                colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen),
+                                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                            ) {
+                                SmartMealText("Выбрать новый рацион", color = Color.White, fontSize = 16.sp)
+                            }
+                        }
+                    }
+                }
+            } else {
+                items(uiState.mealSections, key = { it.meal.id }) { section ->
+                    MealSection(
+                        sectionId = section.id,
+                        title = section.title,
+                        meal = section.meal,
+                        onReplaceClick = { pendingReplacement = section },
+                        onFavoriteClick = { onToggleFavorite(section.meal.id) },
+                        onRecipeClick = onRecipeClick
+                    )
+                }
             }
         }
 
@@ -715,4 +802,5 @@ internal fun resolveCustomDays(range: Pair<Long, Long>?): Int? {
     if (range == null) return null
     return ((range.second - range.first) / (1000L * 60L * 60L * 24L)).toInt() + 1
 }
+
 

@@ -27,11 +27,15 @@ import com.example.smartmeal.ui.components.buttons.SmartMealButtonColor
 import com.example.smartmeal.ui.components.buttons.SmartMealButtonVariant
 import com.example.smartmeal.ui.theme.*
 
+import androidx.compose.ui.platform.LocalContext
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.smartmeal.ui.components.feedback.ExitConfirmDialog
+
 /**
  * Экран-заставка после авторизации.
- * Пока ViewModel проверяет профиль (isCheckingUser=true) — показывает загрузку.
- * Если пользователь уже настроен (isUserAlreadyConfigured=true) — сразу отправляет на Home.
- * Иначе — показывает приветствие и кнопку «Начать» для перехода к шагу 1.
  */
 @Composable
 fun SetupIntroScreen(
@@ -40,6 +44,22 @@ fun SetupIntroScreen(
     onAlreadyConfigured: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    // Перехват кнопки "Назад" для подтверждения выхода
+    BackHandler(enabled = true) {
+        showExitDialog = true
+    }
+
+    if (showExitDialog) {
+        ExitConfirmDialog(
+            onConfirm = {
+                (context as? android.app.Activity)?.finish()
+            },
+            onDismiss = { showExitDialog = false }
+        )
+    }
 
     // Загружаем данные только когда пользователь реально дошёл до экрана
     LaunchedEffect(Unit) {
