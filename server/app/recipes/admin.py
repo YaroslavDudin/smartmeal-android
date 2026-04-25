@@ -16,34 +16,25 @@ class RecipeIngredientInline(admin.TabularInline):
 from django.utils.html import format_html
 
 
-class RecipeStepInline(admin.StackedInline):
+class RecipeStepInline(admin.TabularInline):
     model = RecipeStep
     extra = 1
-    # Каждая группа полей будет в своем блоке
-    fieldsets = (
-        (None, {
-            'fields': (('step_number', 'timer'), 'description')
-        }),
-        ('Медиа-контент (выберите что-то одно)', {
-            'fields': (('image_url', 'photo_preview'), ('video_url', 'video_preview')),
-            'classes': ('collapse',), # Можно скрыть по умолчанию, если шагов много
-        }),
-    )
+    fields = ('step_number', 'description', 'image_url', 'photo_preview', 'video_url', 'video_preview', 'timer')
     readonly_fields = ('photo_preview', 'video_preview')
     
     def photo_preview(self, obj):
         if obj.image_url:
-            return format_html('<img src="{}" style="max-height: 150px; border-radius: 8px; border: 1px solid #ccc;" />', obj.image_url.url)
-        return "Нет изображения"
+            return format_html('<img src="{}" style="max-height: 50px; border-radius: 4px;" />', obj.image_url.url)
+        return ""
     photo_preview.short_description = "Превью фото"
 
     def video_preview(self, obj):
         if obj.video_url:
             return format_html(
-                '<video src="{}" style="max-height: 150px; border-radius: 8px; background: black;" controls />',
+                '<video src="{}" style="max-height: 50px; background: black;" muted />',
                 obj.video_url.url
             )
-        return "Нет видео"
+        return ""
     video_preview.short_description = "Превью видео"
 
 
