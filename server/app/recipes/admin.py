@@ -46,10 +46,9 @@ class RecipeAdmin(admin.ModelAdmin):
         self.message_user(request, f"КБЖУ пересчитаны для {queryset.count()} рецептов.")
 
     def save_related(self, request, form, formsets, change):
-        is_new = not change
         super().save_related(request, form, formsets, change)
-        if is_new:
-            call_command('update_calories')
+        # Всегда пересчитываем КБЖУ для текущего рецепта после сохранения всех связей (ингредиентов)
+        form.instance.update_nutrition_cache()
 
 
 @admin.register(Ingredient)

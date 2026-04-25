@@ -265,6 +265,8 @@ class AdminRecipeWriteSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         recipe.diet_types.set(diet_types)
         recipe.meal_types.set(meal_types)
+        # Пересчитываем КБЖУ после создания
+        recipe.update_nutrition_cache()
         return recipe
 
     def update(self, instance, validated_data):
@@ -277,6 +279,8 @@ class AdminRecipeWriteSerializer(serializers.ModelSerializer):
             instance.diet_types.set(diet_types)
         if meal_types is not None:
             instance.meal_types.set(meal_types)
+        # Пересчитываем КБЖУ после обновления основных полей
+        instance.update_nutrition_cache()
         return instance
 
 

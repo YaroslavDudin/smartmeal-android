@@ -308,7 +308,7 @@ fun ProductListScreen(
                                 onDateSelected(apiFormatter.format(start))
                                 onDateSelected(apiFormatter.format(end))
                             },
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).testTag("home_my_plan")
                         )
                     }
                 }

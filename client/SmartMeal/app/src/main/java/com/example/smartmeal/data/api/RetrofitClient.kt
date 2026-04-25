@@ -15,7 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "https://approximate-restaurant-syracuse-york.trycloudflare.com/"
+    private const val BASE_URL = "http://62.113.41.205/"
     private var tokenManager: TokenManager? = null
 
     fun init(manager: TokenManager) {
