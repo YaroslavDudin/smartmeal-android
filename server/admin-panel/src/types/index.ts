@@ -79,7 +79,8 @@ export interface RecipeStep {
   id: number
   step_number: number
   description: string
-  image_url: string
+  image_url: string | null
+  video_url: string | null
   timer: number | null
 }
 

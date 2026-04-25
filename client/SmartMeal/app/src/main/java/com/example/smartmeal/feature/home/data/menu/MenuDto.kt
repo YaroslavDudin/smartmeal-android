@@ -72,6 +72,7 @@ data class RecipeStepDto(
     val step_number: Int,
     val description: String,
     val image_url: String? = null,
+    val video_url: String? = null,
     val timer: Int? = null,
 )
 

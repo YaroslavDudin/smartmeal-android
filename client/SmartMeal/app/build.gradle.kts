@@ -54,6 +54,11 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp.logging)
 
+    // Media3 for Video support
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.common)
+
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)

@@ -15,6 +15,7 @@ import {
   Clock,
   Users,
   Timer,
+  Video,
 } from 'lucide-react'
 import {
   getRecipe,
@@ -43,12 +44,12 @@ const ingredientSchema = z.object({
   amount: z.number({ coerce: true }).min(0.01, 'Укажите количество').positive('Количество должно быть > 0'),
   unit: z.number({ coerce: true, invalid_type_error: 'Выберите единицу измерения' }).min(1, 'Выберите единицу'),
 })
-
 const stepSchema = z.object({
   id: z.number().optional(),
   description: z.string().min(1, 'Введите описание шага'),
   timer: z.number({ coerce: true }).positive('Таймер должен быть > 0').nullable().default(null),
   image_url: z.union([z.string(), z.instanceof(File), z.null()]).optional().nullable(),
+  video_url: z.union([z.string(), z.instanceof(File), z.null()]).optional().nullable(),
 })
 
 const recipeSchema = z.object({
@@ -138,8 +139,8 @@ export function RecipeFormPage() {
 
   // Локальный стейт для превью основного фото
   const [recipeImagePreview, setRecipeImagePreview] = useState<string>('')
-  // Храним временные URL для превью шагов (ключ - индекс в stepFields)
-  const [stepPreviewUrls, setStepPreviewUrls] = useState<Map<number, string>>(new Map())
+  // Храним временные URL для превью шагов (ключ - "img_index" или "vid_index")
+  const [stepPreviewUrls, setStepPreviewUrls] = useState<Map<string, string>>(new Map())
   // Общие ошибки сервера (не привязанные к конкретному полю)
   const [serverErrors, setServerErrors] = useState<{ general?: string[] }>({})
 
@@ -169,6 +170,7 @@ export function RecipeFormPage() {
             description: step.description,
             timer: step.timer ?? null,
             image_url: step.image_url,
+            video_url: step.video_url,
           }))
       )
       setValue('image_url', recipe.image_url)
@@ -191,6 +193,7 @@ export function RecipeFormPage() {
           description: step.description,
           timer: step.timer,
           image_url: step.image_url,
+          video_url: step.video_url,
         })),
       })
 
@@ -218,36 +221,43 @@ export function RecipeFormPage() {
     setRecipeImagePreview(previewUrl)
   }
 
-  // Обработка выбора файла для шага
-  const handleStepImageChange = (index: number, file: File) => {
+  // Обработка выбора медиа для шага
+  const handleStepMediaChange = (index: number, type: 'image' | 'video', file: File) => {
     const url = URL.createObjectURL(file)
-    setStepPreviewUrls(prev => new Map(prev).set(index, url))
-    setValue(`steps.${index}.image_url`, file, { shouldDirty: true })
+    const key = `${type === 'image' ? 'img' : 'vid'}_${index}`
+    setStepPreviewUrls(prev => new Map(prev).set(key, url))
+    if (type === 'image') {
+      setValue(`steps.${index}.image_url`, file, { shouldDirty: true })
+    } else {
+      setValue(`steps.${index}.video_url`, file, { shouldDirty: true })
+    }
   }
 
-  // Функция для получения URL для отображения шага (существующий или временный)
-  const getStepImageUrl = (field: RecipeStepForm, index: number): string | null => {
-    if (stepPreviewUrls.has(index)) {
-      return stepPreviewUrls.get(index)!
+  // Функция для получения URL для отображения медиа шага
+  const getStepMediaUrl = (index: number, type: 'image' | 'video', originalUrl: any): string | null => {
+    const key = `${type === 'image' ? 'img' : 'vid'}_${index}`
+    if (stepPreviewUrls.has(key)) {
+      return stepPreviewUrls.get(key)!
     }
-    if (typeof field.image_url === 'string') {
-      return field.image_url
+    if (typeof originalUrl === 'string') {
+      return originalUrl
     }
     return null
   }
 
   // Удаление шага с очисткой временного URL
   const handleDeleteStep = (index: number) => {
-    // Очищаем временный URL, если есть
-    const url = stepPreviewUrls.get(index)
-    if (url) {
-      URL.revokeObjectURL(url)
+    // Очищаем временные URL медиа, если есть
+    ;['img', 'vid'].forEach(type => {
+      const key = `${type}_${index}`
+      const url = stepPreviewUrls.get(key)
+      if (url) URL.revokeObjectURL(url)
       setStepPreviewUrls(prev => {
         const newMap = new Map(prev)
-        newMap.delete(index)
+        newMap.delete(key)
         return newMap
       })
-    }
+    })
     removeStep(index)
     setDeleteStepIndex(null)
   }
@@ -394,10 +404,13 @@ export function RecipeFormPage() {
           if (original) {
             const imageChanged = step.image_url instanceof File ||
               (typeof step.image_url === 'string' && step.image_url !== original.image_url)
+            const videoChanged = step.video_url instanceof File ||
+              (typeof step.video_url === 'string' && step.video_url !== original.video_url)
             if (
               original.description !== step.description ||
               original.timer !== step.timer ||
-              imageChanged
+              imageChanged ||
+              videoChanged
             ) {
               updatedSteps.push({
                 id: step.id,
@@ -405,6 +418,7 @@ export function RecipeFormPage() {
                   description: step.description,
                   timer: step.timer,
                   image_url: step.image_url,
+                  video_url: step.video_url,
                 },
               })
             }
@@ -424,6 +438,11 @@ export function RecipeFormPage() {
         } else if (typeof step.image_url === 'string' && step.image_url) {
           formData.append('image_url', step.image_url)
         }
+        if (step.video_url instanceof File) {
+          formData.append('video_url', step.video_url)
+        } else if (typeof step.video_url === 'string' && step.video_url) {
+          formData.append('video_url', step.video_url)
+        }
         await addRecipeStep(currentRecipeId, formData)
       }
       // Обновление существующих шагов
@@ -435,6 +454,11 @@ export function RecipeFormPage() {
           formData.append('image_url', upd.data.image_url)
         } else if (typeof upd.data.image_url === 'string' && upd.data.image_url) {
           formData.append('image_url', upd.data.image_url)
+        }
+        if (upd.data.video_url instanceof File) {
+          formData.append('video_url', upd.data.video_url)
+        } else if (typeof upd.data.video_url === 'string' && upd.data.video_url) {
+          formData.append('video_url', upd.data.video_url)
         }
         if ([...formData.keys()].length > 0) {
           await updateRecipeStep(currentRecipeId, upd.id, formData)
@@ -511,8 +535,12 @@ export function RecipeFormPage() {
         JSON.stringify(data.ingredients) !== JSON.stringify(initialRecipe.ingredients)
 
       const stepsChanged =
-        JSON.stringify(data.steps.map(s => ({ ...s, image_url: typeof s.image_url === 'string' ? s.image_url : (s.image_url instanceof File ? 'FILE' : null) }))) !==
-        JSON.stringify(initialRecipe.steps.map(s => ({ ...s, image_url: s.image_url })))
+        JSON.stringify(data.steps.map(s => ({ 
+          ...s, 
+          image_url: typeof s.image_url === 'string' ? s.image_url : (s.image_url instanceof File ? 'FILE' : null),
+          video_url: typeof s.video_url === 'string' ? s.video_url : (s.video_url instanceof File ? 'FILE' : null)
+        }))) !==
+        JSON.stringify(initialRecipe.steps.map(s => ({ ...s, image_url: s.image_url, video_url: s.video_url })))
 
       if (!isRecipeChanged && !ingredientsChanged && !stepsChanged) {
         toast.info('Нет изменений для сохранения')
@@ -832,28 +860,59 @@ export function RecipeFormPage() {
                             {...register(`steps.${index}.timer`, { valueAsNumber: true })}
                           />
                         </div>
-                        <label className="btn-ghost text-xs cursor-pointer flex items-center gap-1">
-                          <ImageIcon className="w-3 h-3" />
-                          {displayImageUrl ? 'Сменить фото' : 'Загрузить фото'}
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={e => {
-                              const file = e.target.files?.[0]
-                              if (file) handleStepImageChange(index, file)
-                            }}
-                          />
-                        </label>
+                        <div className="flex gap-2">
+                          <label className="btn-ghost text-xs cursor-pointer flex items-center gap-1">
+                            <ImageIcon className="w-3 h-3" />
+                            {getStepMediaUrl(index, 'image', field.image_url) ? 'Сменить фото' : 'Загрузить фото'}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={e => {
+                                const file = e.target.files?.[0]
+                                if (file) handleStepMediaChange(index, 'image', file)
+                              }}
+                            />
+                          </label>
+                          <label className="btn-ghost text-xs cursor-pointer flex items-center gap-1">
+                            <Video className="w-3 h-3" />
+                            {getStepMediaUrl(index, 'video', field.video_url) ? 'Сменить видео' : 'Загрузить видео'}
+                            <input
+                              type="file"
+                              accept="video/*"
+                              className="hidden"
+                              onChange={e => {
+                                const file = e.target.files?.[0]
+                                if (file) handleStepMediaChange(index, 'video', file)
+                              }}
+                            />
+                          </label>
+                        </div>
                       </div>
                       <FieldError msg={error?.timer?.message} />
-                      {displayImageUrl && (
-                        <img
-                          src={displayImageUrl}
-                          alt={`Шаг ${index + 1}`}
-                          className="h-24 rounded-lg object-cover"
-                        />
-                      )}
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {getStepMediaUrl(index, 'image', field.image_url) && (
+                          <div className="space-y-1">
+                            <p className="text-[10px] uppercase font-bold text-gray-400">Фото шага</p>
+                            <img
+                              src={getStepMediaUrl(index, 'image', field.image_url)!}
+                              alt={`Шаг ${index + 1}`}
+                              className="h-32 w-full rounded-lg object-cover border"
+                            />
+                          </div>
+                        )}
+                        {getStepMediaUrl(index, 'video', field.video_url) && (
+                          <div className="space-y-1">
+                            <p className="text-[10px] uppercase font-bold text-gray-400">Видео шага</p>
+                            <video
+                              src={getStepMediaUrl(index, 'video', field.video_url)!}
+                              className="h-32 w-full rounded-lg object-cover border bg-black"
+                              controls
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <button
                       type="button"
@@ -875,6 +934,7 @@ export function RecipeFormPage() {
                       description: '',
                       timer: null,
                       image_url: null,
+                      video_url: null,
                     })
                   }
                 >

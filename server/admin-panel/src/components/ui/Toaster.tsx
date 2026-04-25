@@ -13,10 +13,14 @@ export interface Toast {
 type ToastListener = (toast: Toast) => void
 const listeners: ToastListener[] = []
 
+const generateId = () => {
+  return Math.random().toString(36).substring(2, 9) + Date.now().toString(36)
+}
+
 export const toast = {
-  success: (message: string) => emit({ id: crypto.randomUUID(), message, type: 'success' }),
-  error: (message: string) => emit({ id: crypto.randomUUID(), message, type: 'error' }),
-  info: (message: string) => emit({ id: crypto.randomUUID(), message, type: 'info' }),
+  success: (message: string) => emit({ id: generateId(), message, type: 'success' }),
+  error: (message: string) => emit({ id: generateId(), message, type: 'error' }),
+  info: (message: string) => emit({ id: generateId(), message, type: 'info' }),
 }
 
 function emit(t: Toast) {

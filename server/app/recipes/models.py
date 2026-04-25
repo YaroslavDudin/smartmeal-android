@@ -441,14 +441,20 @@ class RecipeIngredient(models.Model):
 def _get_recipe_step_photopath(instance, filename):
     return f'recipes/{instance.recipe.pk}/steps/step_{instance.step_number}_{filename}'
 
+# Построение пути для файла видео шага рецепта
+def _get_recipe_step_videopath(instance, filename):
+    return f'recipes/{instance.recipe.pk}/steps/video_{instance.step_number}_{filename}'
+
 
 class RecipeStep(models.Model):
-    '''Шаг приготовления рецепта: порядковый номер, описание и опциональное изображение.'''
+    '''Шаг приготовления рецепта: порядковый номер, описание и опциональное изображение или видео.'''
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
     step_number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     description = models.TextField()
     # Локальная загрузка фото
     image_url = models.ImageField(upload_to=_get_recipe_step_photopath, null=True, blank=True)
+    # Локальная загрузка видео
+    video_url = models.FileField(upload_to=_get_recipe_step_videopath, null=True, blank=True)
     timer = models.IntegerField(blank=True, null=True, help_text="Время таймера в минутах")
 
     class Meta:

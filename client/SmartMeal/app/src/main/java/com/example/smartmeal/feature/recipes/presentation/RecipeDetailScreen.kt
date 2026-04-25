@@ -1,6 +1,7 @@
 package com.example.smartmeal.feature.recipes.presentation
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -30,6 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import coil.compose.SubcomposeAsyncImage
 import com.example.smartmeal.ui.components.feedback.shimmerEffect
 import com.example.smartmeal.R
@@ -242,9 +248,10 @@ fun RecipeDetailScreen(
                                         number = step.step_number,
                                         description = step.description,
                                         imageUrl = step.image_url,
+                                        videoUrl = step.video_url,
                                         timeMinutes = step.timer
                                     )
-                                    Spacer(modifier = Modifier.height(16.dp))
+                                    Spacer(modifier = Modifier.height(20.dp))
                                 }
                                 Spacer(modifier = Modifier.height(24.dp))
                             }
@@ -380,6 +387,7 @@ fun RecipeDetailScreen(
                                     number = step.step_number,
                                     description = step.description,
                                     imageUrl = step.image_url,
+                                    videoUrl = step.video_url,
                                     timeMinutes = step.timer
                                 )
                                 Spacer(modifier = Modifier.height(24.dp))
@@ -593,60 +601,196 @@ fun IngredientsCard(ingredients: List<RecipeIngredientDto>) {
 }
 
 @Composable
-fun StepItem(number: Int, description: String, imageUrl: String?, timeMinutes: Int?) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        SmartMealText(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = TextGreen, fontSize = 18.sp, fontWeight = FontWeight.Bold)) {
-                    append("Шаг $number: ")
-                }
-                withStyle(style = SpanStyle(color = Color.Black, fontSize = 18.sp)) {
-                    append(description)
-                }
-            }
-        )
+fun VideoPlayer(
+    videoUrl: String,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            val mediaItem = MediaItem.fromUri(videoUrl)
+            setMediaItem(mediaItem)
+            prepare()
+            playWhenReady = false
+            repeatMode = Player.REPEAT_MODE_ONE
+        }
+    }
 
-        formatStepTimerLabel(timeMinutes)?.let { timerLabel ->
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = TextGray
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                SmartMealText(
-                    text = timerLabel,
-                    fontSize = 14.sp,
-                    color = TextGray
-                )
+    DisposableEffect(Unit) {
+        onDispose {
+            exoPlayer.release()
+        }
+    }
+
+    AndroidView(
+        factory = { ctx ->
+            PlayerView(ctx).apply {
+                player = exoPlayer
+                useController = true
+                setShowNextButton(false)
+                setShowPreviousButton(false)
+                resizeMode = androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH
             }
-            Spacer(modifier = Modifier.height(12.dp))
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+fun StepItem(
+    number: Int,
+    description: String,
+    imageUrl: String?,
+    videoUrl: String? = null,
+    timeMinutes: Int?
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        // Шапка шага: Номер и Таймер
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Surface(
+                    color = PrimaryGreen.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.size(42.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.5.dp, PrimaryGreen.copy(alpha = 0.2f))
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        SmartMealText(
+                            text = number.toString(),
+                            color = PrimaryGreen,
+                            fontWeight = FontWeight.Black,
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(14.dp))
+                Column {
+                    SmartMealText(
+                        text = "ШАГ $number",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = PrimaryGreen.copy(alpha = 0.7f),
+                        letterSpacing = 1.sp
+                    )
+                }
+            }
+
+            formatStepTimerLabel(timeMinutes)?.let { timerLabel ->
+                Surface(
+                    color = Color(0xFFF2F2F7),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = android.R.drawable.ic_menu_recent_history),
+                            contentDescription = null,
+                            modifier = Modifier.size(14.dp),
+                            tint = TextGray
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        SmartMealText(
+                            text = timerLabel,
+                            fontSize = 13.sp,
+                            color = TextGray,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+            }
         }
 
-        SubcomposeAsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .crossfade(500)
-                .build(),
-            loading = {
-                Box(modifier = Modifier.fillMaxWidth().height(200.dp).shimmerEffect())
-            },
-            error = {
-                androidx.compose.foundation.Image(
-                    painter = painterResource(id = R.drawable.food),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth().height(200.dp)
-                )
-            },
-            contentDescription = null,
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Описание с улучшенной читаемостью
+        SmartMealText(
+            text = description,
+            fontSize = 17.sp,
+            color = Color.Black.copy(alpha = 0.85f),
+            lineHeight = 25.sp,
+            modifier = Modifier.padding(horizontal = 2.dp)
+        )
+
+        // Медиа-контейнер (Фото или Видео)
+        if (!videoUrl.isNullOrBlank() || !imageUrl.isNullOrBlank()) {
+            Spacer(modifier = Modifier.height(18.dp))
+            
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(28.dp)), // Элегантное сильное скругление
+                color = Color(0xFFF8F8FA), // Мягкий фон для фото любого формата
+                border = androidx.compose.foundation.BorderStroke(0.5.dp, Color.Black.copy(alpha = 0.08f))
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth().animateContentSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (!videoUrl.isNullOrBlank()) {
+                        Box(modifier = Modifier.aspectRatio(16f / 9f)) {
+                            VideoPlayer(
+                                videoUrl = videoUrl,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    } else if (!imageUrl.isNullOrBlank()) {
+                        SubcomposeAsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(imageUrl)
+                                .crossfade(600)
+                                .build(),
+                            loading = {
+                                Box(modifier = Modifier.fillMaxWidth().height(220.dp).shimmerEffect())
+                            },
+                            error = {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth().height(120.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.food),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(40.dp),
+                                        tint = Color.LightGray.copy(alpha = 0.5f)
+                                    )
+                                }
+                            },
+                            contentDescription = "Step $number",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(max = 550.dp), // Чтобы высокие фото не ломали верстку
+                            contentScale = ContentScale.Fit // ПОЛНОЕ ОТОБРАЖЕНИЕ без кропа
+                        )
+                    }
+                }
+            }
+        }
+        
+        // Мягкий разделитель для визуального ритма
+        Spacer(modifier = Modifier.height(28.dp))
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.Crop
+                .height(1.dp)
+                .background(
+                    brush = androidx.compose.ui.graphics.Brush.horizontalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.04f),
+                            Color.Transparent
+                        )
+                    )
+                )
         )
     }
 }
