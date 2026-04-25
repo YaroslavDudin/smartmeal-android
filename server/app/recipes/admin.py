@@ -16,26 +16,35 @@ class RecipeIngredientInline(admin.TabularInline):
 from django.utils.html import format_html
 
 
-class RecipeStepInline(admin.TabularInline):
+class RecipeStepInline(admin.StackedInline):
     model = RecipeStep
     extra = 1
-    # Поля, которые будут отображаться в ряд
-    fields = ('step_number', 'description', 'timer', 'image_url', 'video_url', 'photo_preview', 'video_preview')
+    # Каждая группа полей будет в своем блоке
+    fieldsets = (
+        (None, {
+            'fields': (('step_number', 'timer'), 'description')
+        }),
+        ('Медиа-контент (выберите что-то одно)', {
+            'fields': (('image_url', 'photo_preview'), ('video_url', 'video_preview')),
+            'classes': ('collapse',), # Можно скрыть по умолчанию, если шагов много
+        }),
+    )
     readonly_fields = ('photo_preview', 'video_preview')
     
     def photo_preview(self, obj):
         if obj.image_url:
-            return format_html('<img src="{}" style="max-height: 50px; border-radius: 4px;" />', obj.image_url.url)
-        return "-"
-    photo_preview.short_description = "📸"
+            return format_html('<img src="{}" style="max-height: 150px; border-radius: 8px; border: 1px solid #ccc;" />', obj.image_url.url)
+        return "Нет изображения"
+    photo_preview.short_description = "Превью фото"
 
     def video_preview(self, obj):
         if obj.video_url:
             return format_html(
-                '<div style="width: 50px; height: 50px; background: black; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">VIDEO</div>'
+                '<video src="{}" style="max-height: 150px; border-radius: 8px; background: black;" controls />',
+                obj.video_url.url
             )
-        return "-"
-    video_preview.short_description = "🎥"
+        return "Нет видео"
+    video_preview.short_description = "Превью видео"
 
 
 class UnitConversionInline(admin.TabularInline):

@@ -16,6 +16,7 @@ import {
   Users,
   Timer,
   Video,
+  X,
 } from 'lucide-react'
 import {
   getRecipe,

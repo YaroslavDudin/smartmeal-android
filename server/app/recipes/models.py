@@ -455,13 +455,13 @@ from moviepy.editor import VideoFileClip
 class RecipeStep(models.Model):
     '''Шаг приготовления рецепта: порядковый номер, описание и опциональное изображение или видео.'''
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
-    step_number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
-    description = models.TextField()
+    step_number = models.PositiveSmallIntegerField(verbose_name='Номер шага', validators=[MinValueValidator(1)])
+    description = models.TextField(verbose_name='Описание')
     # Локальная загрузка фото
-    image_url = models.ImageField(upload_to=_get_recipe_step_photopath, null=True, blank=True)
+    image_url = models.ImageField(verbose_name='Изображение', upload_to=_get_recipe_step_photopath, null=True, blank=True)
     # Локальная загрузка видео
-    video_url = models.FileField(upload_to=_get_recipe_step_videopath, null=True, blank=True)
-    timer = models.IntegerField(blank=True, null=True, help_text="Время таймера в минутах")
+    video_url = models.FileField(verbose_name='Видео', upload_to=_get_recipe_step_videopath, null=True, blank=True)
+    timer = models.IntegerField(verbose_name='Таймер (мин)', blank=True, null=True, help_text="Время таймера в минутах")
 
     class Meta:
         db_table = 'recipe_step'
