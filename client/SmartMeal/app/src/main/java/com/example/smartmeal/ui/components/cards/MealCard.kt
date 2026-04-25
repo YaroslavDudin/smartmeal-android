@@ -82,6 +82,14 @@ fun MealCard(
                 contentScale = ContentScale.Crop,
                 loading = {
                     Box(modifier = Modifier.fillMaxSize().shimmerEffect())
+                },
+                error = {
+                    androidx.compose.foundation.Image(
+                        painter = painterResource(id = R.drawable.food),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             )
 

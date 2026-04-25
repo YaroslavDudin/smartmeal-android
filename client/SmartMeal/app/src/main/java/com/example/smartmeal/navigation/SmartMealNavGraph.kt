@@ -262,15 +262,27 @@ fun SmartMealNavGraph(navController: NavHostController) {
             route = Screen.RecipeDetail.route,
             arguments = listOf(
                 navArgument("recipeId") { type = NavType.IntType },
-                navArgument("portionSize") { type = NavType.IntType },
+                navArgument("portionSize") { 
+                    type = NavType.IntType 
+                    defaultValue = -1 // Будем брать из настроек, если -1
+                },
                 navArgument("menuItemId") {
                     type = NavType.IntType
                     defaultValue = -1
                 }
+            ),
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "smartmeal://recipe/{recipeId}"
+                },
+                navDeepLink {
+                    uriPattern = "https://smartmeal.com/recipe/{recipeId}"
+                }
             )
         ) { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: 0
-            val portionSize = backStackEntry.arguments?.getInt("portionSize") ?: 1
+            val portionSizeRaw = backStackEntry.arguments?.getInt("portionSize") ?: -1
+            val portionSize = if (portionSizeRaw != -1) portionSizeRaw else setupPreferences.getPortionSize()
             val menuItemIdRaw = backStackEntry.arguments?.getInt("menuItemId") ?: -1
             val menuItemId = if (menuItemIdRaw != -1) menuItemIdRaw else null
 

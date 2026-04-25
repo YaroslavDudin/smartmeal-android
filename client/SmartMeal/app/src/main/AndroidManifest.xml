@@ -26,14 +26,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Deep Link для сброса пароля -->
-            <intent-filter android:autoVerify="true">
+            <!-- 1. Кастомная схема (Самый надежный способ для Telegram/WhatsApp) -->
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="smartmeal" />
             </intent-filter>
+
+            <!-- 2. Веб-ссылки (Для поддержки превью и сайта) -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="smartmeal.com" android:pathPrefix="/recipe" />
+                <data android:scheme="https" android:host="smartmeal.com" android:pathPrefix="/recipe" />
+                <data android:scheme="https" android:host="www.smartmeal.com" android:pathPrefix="/recipe" />
+            </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

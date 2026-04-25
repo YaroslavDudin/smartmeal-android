@@ -6,36 +6,16 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,7 +30,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.example.smartmeal.ui.components.feedback.shimmerEffect
+import com.example.smartmeal.R
 import coil.request.ImageRequest
 import com.example.smartmeal.R
 import com.example.smartmeal.feature.home.data.menu.RecipeIngredientDto
@@ -58,6 +40,7 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.QuantityStepper
 import com.example.smartmeal.ui.theme.Padding
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.utils.ShareUtils
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -79,6 +62,7 @@ fun RecipeDetailScreen(
     onBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(recipeId) {
         viewModel.loadRecipe(recipeId, menuItemId, portionSize)
@@ -92,6 +76,13 @@ fun RecipeDetailScreen(
                 isInMenu = state.isInMenuOnSelectedDay,
                 onFavoriteClick = { viewModel.toggleFavorite() },
                 onAddClick = { viewModel.addToMenu() },
+                onShareClick = {
+                    state.recipe?.let { recipe ->
+                        // Мы отправляем только текст с прямой ссылкой в приложение
+                        // Это 100% открывает приложение у друга
+                        ShareUtils.shareRecipe(context, recipe.title, recipe.id)
+                    }
+                },
                 onBack = onBack 
             ) 
         }
@@ -125,7 +116,7 @@ fun RecipeDetailScreen(
                                 .padding(horizontal = Padding.SCREEN),
                             horizontalArrangement = Arrangement.spacedBy(24.dp)
                         ) {
-                            // Левая колонка: Фото и КБЖУ (фиксированно или свой скролл)
+                            // Левая колонка: Фото и КБЖУ
                             Column(
                                 modifier = Modifier
                                     .weight(0.42f)
@@ -133,11 +124,22 @@ fun RecipeDetailScreen(
                                     .verticalScroll(rememberScrollState())
                                     .padding(vertical = 8.dp)
                             ) {
-                                AsyncImage(
+                                SubcomposeAsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
                                         .data(recipe.image_url)
                                         .crossfade(500)
                                         .build(),
+                                    loading = {
+                                        Box(modifier = Modifier.fillMaxSize().shimmerEffect())
+                                    },
+                                    error = {
+                                        androidx.compose.foundation.Image(
+                                            painter = painterResource(id = R.drawable.food),
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier.fillMaxSize()
+                                        )
+                                    },
                                     contentDescription = recipe.title,
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -191,7 +193,7 @@ fun RecipeDetailScreen(
                                 )
                             }
 
-                            // Правая колонка: Ингредиенты и Шаги (скролл)
+                            // Правая колонка: Ингредиенты и Шаги
                             Column(
                                 modifier = Modifier
                                     .weight(0.58f)
@@ -260,11 +262,22 @@ fun RecipeDetailScreen(
                                 .verticalScroll(rememberScrollState())
                                 .padding(horizontal = Padding.SCREEN)
                         ) {
-                            AsyncImage(
+                            SubcomposeAsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
                                     .data(recipe.image_url)
                                     .crossfade(500)
                                     .build(),
+                                loading = {
+                                    Box(modifier = Modifier.fillMaxSize().shimmerEffect())
+                                },
+                                error = {
+                                    androidx.compose.foundation.Image(
+                                        painter = painterResource(id = R.drawable.food),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier.fillMaxSize()
+                                    )
+                                },
                                 contentDescription = recipe.title,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -379,7 +392,8 @@ fun RecipeDetailScreen(
                             }
                             Spacer(modifier = Modifier.height(32.dp))
                         }
-                    }                }
+                    }
+                }
             }
         }
     }
@@ -391,6 +405,7 @@ fun CustomRecipeTopBar(
     isInMenu: Boolean,
     onFavoriteClick: () -> Unit,
     onAddClick: () -> Unit,
+    onShareClick: () -> Unit,
     onBack: () -> Unit
 ) {
     Row(
@@ -407,7 +422,17 @@ fun CustomRecipeTopBar(
                 modifier = Modifier.size(28.dp)
             )
         }
+
         Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onShareClick) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Поделиться",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.DarkGray
+                )
+            }
+            
             // Кнопка "+" отображается только если рецепт в избранном
             if (isFavorite) {
                 RecipePlusButton(
@@ -522,11 +547,11 @@ fun NutritionDivider() {
 fun NutritionItem(value: String, label: String) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(60.dp) // Фиксированная ширина для ровного распределения
+        modifier = Modifier.width(60.dp)
     ) {
         SmartMealText(
             text = value,
-            fontSize = 22.sp, // Увеличенные цифры
+            fontSize = 22.sp,
             color = Color.Black,
             fontWeight = FontWeight.ExtraBold,
             lineHeight = 24.sp
@@ -615,11 +640,22 @@ fun StepItem(number: Int, description: String, imageUrl: String?, timeMinutes: I
             Spacer(modifier = Modifier.height(12.dp))
         }
 
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
                 .crossfade(500)
                 .build(),
+            loading = {
+                Box(modifier = Modifier.fillMaxWidth().height(200.dp).shimmerEffect())
+            },
+            error = {
+                androidx.compose.foundation.Image(
+                    painter = painterResource(id = R.drawable.food),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth().height(200.dp)
+                )
+            },
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
@@ -643,19 +679,6 @@ fun InfoChip(label: String) {
             fontSize = 14.sp,
             color = Color.DarkGray
         )
-    }
-}
-
-@Composable
-fun IngredientItem(name: String, amount: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        SmartMealText(text = name, fontSize = 16.sp, color = Color.Black)
-        SmartMealText(text = amount, fontSize = 16.sp, color = Color.Gray)
     }
 }
 

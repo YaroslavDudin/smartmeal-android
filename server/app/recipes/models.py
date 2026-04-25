@@ -4,6 +4,7 @@ from django.db.models import Max
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 from app.recipes.utils import convert_amount
+from app.recipes.image_utils import compress_image
 
 
 CALORIES_PER_GRAM = {
@@ -277,6 +278,9 @@ class Recipe(models.Model):
         return self._get_nutrition_totals()['calories']
 
     def save(self, *args, **kwargs):
+        if self.image_url:
+            compress_image(self.image_url)
+
         if hasattr(self, '_nutrition_cache'):
             delattr(self, '_nutrition_cache')
         
@@ -457,6 +461,9 @@ class RecipeStep(models.Model):
         ]
     
     def save(self, *args, **kwargs):
+        if self.image_url:
+            compress_image(self.image_url)
+
         if not self.step_number:
             # Автоматически присваиваем следующий номер
             max_number = RecipeStep.objects.filter(recipe=self.recipe).aggregate(Max('step_number'))['step_number__max']

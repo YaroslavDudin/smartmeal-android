@@ -45,6 +45,8 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.foundation.BorderStroke
 
+import com.example.smartmeal.ui.components.feedback.StatisticsSkeleton
+
 @Composable
 fun StatisticsScreen(preferences: SetupPreferences) {
     val viewModel: StatisticsViewModel = viewModel(factory = StatisticsViewModelFactory(preferences))
@@ -194,11 +196,13 @@ fun StatisticsScreen(preferences: SetupPreferences) {
             }
         }
     } else {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxSize()) {
             if (uiState.isLoading) {
-                CircularProgressIndicator(color = PrimaryGreen)
+                StatisticsSkeleton()
             } else {
-                SmartMealText(text = uiState.error ?: "Нет данных для отображения")
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    SmartMealText(text = uiState.error ?: "Нет данных для отображения")
+                }
             }
         }
     }

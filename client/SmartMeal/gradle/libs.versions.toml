@@ -16,8 +16,10 @@ coil = "2.6.0"
 googleFonts = "1.7.0"
 mockk = "1.13.13"
 coroutinesTest = "1.10.1"
+ucrop = "2.2.8"
 
 [libraries]
+ucrop = { group = "com.github.yalantis", name = "ucrop", version.ref = "ucrop" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 androidx-compose-ui-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "googleFonts" }

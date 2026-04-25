@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material.icons)
     implementation(libs.retrofit)
+    implementation(libs.ucrop)
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp.logging)
 

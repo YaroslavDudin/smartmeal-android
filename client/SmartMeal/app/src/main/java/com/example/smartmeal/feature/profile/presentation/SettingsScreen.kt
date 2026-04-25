@@ -37,6 +37,9 @@ import com.example.smartmeal.ui.theme.HintGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import java.text.SimpleDateFormat
 import java.util.*
+import com.yalantis.ucrop.UCrop
+import java.io.File
+import android.graphics.Bitmap
 
 private val AvatarGray = Color(0xFFEEEEEE)
 private val GenderSelectedBg = PrimaryGreen
@@ -50,21 +53,53 @@ fun SettingsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
+
+    // Лаунчер для получения результата обрезки
+    val cropLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            val resultUri = result.data?.let { UCrop.getOutput(it) }
+            resultUri?.let { uri ->
+                val contentResolver = context.contentResolver
+                try {
+                    val inputStream = contentResolver.openInputStream(uri)
+                    if (inputStream != null) {
+                        val fileName = "avatar_${System.currentTimeMillis()}.jpg"
+                        viewModel.updateAvatar(inputStream, fileName)
+                    }
+                } catch (e: Exception) {
+                    // Ошибка обработки обрезанного файла
+                }
+            }
+        }
+    }
     
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
-        uri?.let {
-            val contentResolver = context.contentResolver
-            try {
-                val inputStream = contentResolver.openInputStream(it)
-                if (inputStream != null) {
-                    val fileName = "avatar_${System.currentTimeMillis()}.jpg"
-                    viewModel.updateAvatar(inputStream, fileName)
-                }
-            } catch (e: Exception) {
-                // Обработка ошибки открытия потока
+        uri?.let { sourceUri ->
+            val destinationUri = android.net.Uri.fromFile(File(context.cacheDir, "cropped_avatar.jpg"))
+            
+            // Настройка стилей для UCrop
+            val options = UCrop.Options().apply {
+                setCircleDimmedLayer(true) // Круглая область обрезки
+                setShowCropGrid(false)
+                setCompressionFormat(android.graphics.Bitmap.CompressFormat.JPEG)
+                setCompressionQuality(90)
+                setToolbarTitle("Обрежьте фото")
+                setToolbarColor(android.graphics.Color.WHITE)
+                setToolbarWidgetColor(android.graphics.Color.BLACK)
+                setActiveControlsWidgetColor(android.graphics.Color.parseColor("#4CAF50"))
             }
+
+            val uCropIntent = UCrop.of(sourceUri, destinationUri)
+                .withAspectRatio(1f, 1f)
+                .withMaxResultSize(1000, 1000)
+                .withOptions(options)
+                .getIntent(context)
+            
+            cropLauncher.launch(uCropIntent)
         }
     }
     

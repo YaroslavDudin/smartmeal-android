@@ -55,6 +55,8 @@ import kotlinx.coroutines.launch
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ShoppingCart
 
+import com.example.smartmeal.ui.components.feedback.ProductListSkeleton
+
 // Порядок категорий для отображения
 private val categoryOrder = listOf(
     "Фрукты и ягоды", "Овощи и фрукты", "Овощи, зелень и грибы",
@@ -301,9 +303,7 @@ fun ProductListScreen(
             when (contentState) {
                 ProductContentState.Loading -> {
                     item {
-                        Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator(color = PrimaryGreen)
-                        }
+                        ProductListSkeleton()
                     }
                 }
                 ProductContentState.Error -> {

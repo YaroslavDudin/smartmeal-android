@@ -66,6 +66,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+import com.example.smartmeal.ui.components.feedback.HomeScreenSkeleton
+
 private val ModalBackground = Color(0xFFF4F4F4)
 private val ReplaceButtonBackground = Color(0xFFF5F5F5)
 
@@ -404,9 +406,7 @@ fun HomeContent(
 
         if (uiState.isLoading && !uiState.hasMenu) {
             item {
-                Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(modifier = Modifier.testTag("home_loading"))
-                }
+                HomeScreenSkeleton()
             }
         } else if (!uiState.hasMenu) {
             item {

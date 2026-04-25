@@ -23,10 +23,13 @@ sealed class Screen(val route: String) {
     }
     object SetupStep3 : Screen("setup_step3")
 
-    object RecipeDetail : Screen("recipe_detail/{recipeId}/{portionSize}?menuItemId={menuItemId}") {
+    object RecipeDetail : Screen("recipe_detail/{recipeId}?portionSize={portionSize}&menuItemId={menuItemId}") {
         fun createRoute(recipeId: Int, portionSize: Int, menuItemId: Int? = null): String {
-            val base = "recipe_detail/$recipeId/$portionSize"
-            return if (menuItemId != null) "$base?menuItemId=$menuItemId" else base
+            var url = "recipe_detail/$recipeId?portionSize=$portionSize"
+            if (menuItemId != null) {
+                url += "&menuItemId=$menuItemId"
+            }
+            return url
         }
     }
 }

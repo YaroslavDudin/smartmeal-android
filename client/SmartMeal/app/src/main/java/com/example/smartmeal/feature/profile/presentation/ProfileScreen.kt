@@ -44,7 +44,8 @@ import com.example.smartmeal.ui.theme.PrimaryGreen
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.example.smartmeal.ui.components.feedback.shimmerEffect
 import androidx.compose.ui.layout.ContentScale
 
 private val CardYellow = Color(0xFFF4F4F4)
@@ -167,8 +168,11 @@ fun ProfileScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 if (!state.avatarUrl.isNullOrBlank()) {
-                                    AsyncImage(
+                                    SubcomposeAsyncImage(
                                         model = state.avatarUrl,
+                                        loading = {
+                                            Box(modifier = Modifier.fillMaxSize().shimmerEffect())
+                                        },
                                         contentDescription = "Аватар",
                                         modifier = Modifier.fillMaxSize().clip(CircleShape),
                                         contentScale = ContentScale.Crop
