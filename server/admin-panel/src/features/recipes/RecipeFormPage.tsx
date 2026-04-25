@@ -837,7 +837,6 @@ export function RecipeFormPage() {
 
               {stepFields.map((field, index) => {
                 const error = (errors.steps as any)?.[index]
-                const displayImageUrl = getStepImageUrl(field, index)
                 return (
                   <div key={field.fieldId} className="flex gap-3 p-4 border border-[var(--border-color)] rounded-lg">
                     <div className="w-7 h-7 rounded-full bg-primary-600 text-white text-sm font-semibold flex items-center justify-center flex-shrink-0">

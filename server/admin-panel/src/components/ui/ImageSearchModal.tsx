@@ -14,7 +14,6 @@ export function ImageSearchModal({ open, onClose, onSelect }: ImageSearchModalPr
   const [images, setImages] = useState<ImageSearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [isRateLimit, setIsRateLimit] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
   const inputRef = useRef<HTMLInputElement>(null)
@@ -26,7 +25,6 @@ export function ImageSearchModal({ open, onClose, onSelect }: ImageSearchModalPr
     if (!q) return
     setLoading(true)
     setError('')
-    setIsRateLimit(false)
     setImages([])
     setSelected(null)
     setFailedImages(new Set())
@@ -38,7 +36,6 @@ export function ImageSearchModal({ open, onClose, onSelect }: ImageSearchModalPr
       setImages(result.images ?? [])
     } catch (e: unknown) {
       if (e instanceof ImageSearchRateLimitError) {
-        setIsRateLimit(true)
         setError((e as ImageSearchRateLimitError).message)
       } else {
         setError('Ошибка поиска. Попробуйте позже.')
@@ -64,7 +61,6 @@ export function ImageSearchModal({ open, onClose, onSelect }: ImageSearchModalPr
     setImages([])
     setSelected(null)
     setError('')
-    setIsRateLimit(false)
     setFailedImages(new Set())
     onClose()
   }

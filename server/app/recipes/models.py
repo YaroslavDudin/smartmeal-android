@@ -446,6 +446,12 @@ def _get_recipe_step_videopath(instance, filename):
     return f'recipes/{instance.recipe.pk}/steps/video_{instance.step_number}_{filename}'
 
 
+import os
+import tempfile
+from django.core.files.base import ContentFile
+from moviepy.editor import VideoFileClip
+
+
 class RecipeStep(models.Model):
     '''Шаг приготовления рецепта: порядковый номер, описание и опциональное изображение или видео.'''
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
@@ -459,29 +465,64 @@ class RecipeStep(models.Model):
 
     class Meta:
         db_table = 'recipe_step'
-        verbose_name = 'Шаг притовления рецепта'
+        verbose_name = 'Шаг приготовления рецепта'
         verbose_name_plural = 'Шаги приготовления рецептов'
         ordering = ['step_number']
         constraints = [
             models.UniqueConstraint(fields=['recipe', 'step_number'], name='unique_recipe_step_number')
         ]
-    
+
     def save(self, *args, **kwargs):
+        # 1. Сжатие изображения
         if self.image_url:
             compress_image(self.image_url)
 
+        # 2. Сжатие видео (moviepy)
+        if self.video_url and hasattr(self.video_url, 'file'):
+            try:
+                with tempfile.NamedTemporaryFile(suffix='.mp4', delete=False) as temp_input:
+                    for chunk in self.video_url.chunks():
+                        temp_input.write(chunk)
+                    temp_input_path = temp_input.name
+
+                temp_output_path = temp_input_path + "_compressed.mp4"
+                clip = VideoFileClip(temp_input_path)
+                
+                if clip.h > 720:
+                    clip = clip.resize(height=720)
+                
+                clip.write_videofile(
+                    temp_output_path, 
+                    codec="libx264", 
+                    audio_codec="aac", 
+                    bitrate="1500k",
+                    temp_audiofile=temp_input_path + '.m4a',
+                    remove_temp=True,
+                    verbose=False,
+                    logger=None
+                )
+                clip.close()
+
+                with open(temp_output_path, 'rb') as compressed_file:
+                    name = os.path.basename(self.video_url.name)
+                    self.video_url.save(name, ContentFile(compressed_file.read()), save=False)
+
+                os.remove(temp_input_path)
+                os.remove(temp_output_path)
+            except Exception as e:
+                print(f"Error compressing video: {e}")
+
+        # 3. Автоматическая нумерация шагов
         if not self.step_number:
-            # Автоматически присваиваем следующий номер
             max_number = RecipeStep.objects.filter(recipe=self.recipe).aggregate(Max('step_number'))['step_number__max']
             self.step_number = (max_number or 0) + 1
+
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        # Запоминаем номер удаляемого шага
         deleted_number = self.step_number
         recipe = self.recipe
         super().delete(*args, **kwargs)
-        # Сдвигаем номера всех последующих шагов
         RecipeStep.objects.filter(recipe=recipe, step_number__gt=deleted_number).update(step_number=models.F('step_number') - 1)
 
     def __str__(self):
