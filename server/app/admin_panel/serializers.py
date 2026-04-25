@@ -179,7 +179,7 @@ class AdminRecipeIngredientSerializer(serializers.ModelSerializer):
 class AdminRecipeStepSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeStep
-        fields = ['id', 'recipe', 'step_number', 'description', 'image_url', 'timer']
+        fields = ['id', 'recipe', 'step_number', 'description', 'image_url', 'video_url', 'timer']
         read_only_fields = ['id', 'recipe', 'step_number']
 
 
