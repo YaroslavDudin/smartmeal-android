@@ -225,11 +225,42 @@ export function RecipeFormPage() {
   const handleStepMediaChange = (index: number, type: 'image' | 'video', file: File) => {
     const url = URL.createObjectURL(file)
     const key = `${type === 'image' ? 'img' : 'vid'}_${index}`
-    setStepPreviewUrls(prev => new Map(prev).set(key, url))
+    const otherKey = `${type === 'image' ? 'vid' : 'img'}_${index}`
+    
+    setStepPreviewUrls(prev => {
+      const newMap = new Map(prev)
+      // Удаляем превью другого типа медиа
+      const otherUrl = newMap.get(otherKey)
+      if (otherUrl) URL.revokeObjectURL(otherUrl)
+      newMap.delete(otherKey)
+      // Устанавливаем новое превью
+      newMap.set(key, url)
+      return newMap
+    })
+
     if (type === 'image') {
       setValue(`steps.${index}.image_url`, file, { shouldDirty: true })
+      setValue(`steps.${index}.video_url`, null, { shouldDirty: true })
     } else {
       setValue(`steps.${index}.video_url`, file, { shouldDirty: true })
+      setValue(`steps.${index}.image_url`, null, { shouldDirty: true })
+    }
+  }
+
+  // Удаление медиа из шага
+  const handleRemoveStepMedia = (index: number, type: 'image' | 'video') => {
+    const key = `${type === 'image' ? 'img' : 'vid'}_${index}`
+    setStepPreviewUrls(prev => {
+      const newMap = new Map(prev)
+      const url = newMap.get(key)
+      if (url) URL.revokeObjectURL(url)
+      newMap.delete(key)
+      return newMap
+    })
+    if (type === 'image') {
+      setValue(`steps.${index}.image_url`, null, { shouldDirty: true })
+    } else {
+      setValue(`steps.${index}.video_url`, null, { shouldDirty: true })
     }
   }
 
@@ -892,23 +923,39 @@ export function RecipeFormPage() {
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {getStepMediaUrl(index, 'image', field.image_url) && (
-                          <div className="space-y-1">
+                          <div className="space-y-1 relative group">
                             <p className="text-[10px] uppercase font-bold text-gray-400">Фото шага</p>
                             <img
                               src={getStepMediaUrl(index, 'image', field.image_url)!}
                               alt={`Шаг ${index + 1}`}
                               className="h-32 w-full rounded-lg object-cover border"
                             />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveStepMedia(index, 'image')}
+                              className="absolute top-6 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                              title="Удалить фото"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
                           </div>
                         )}
                         {getStepMediaUrl(index, 'video', field.video_url) && (
-                          <div className="space-y-1">
+                          <div className="space-y-1 relative group">
                             <p className="text-[10px] uppercase font-bold text-gray-400">Видео шага</p>
                             <video
                               src={getStepMediaUrl(index, 'video', field.video_url)!}
                               className="h-32 w-full rounded-lg object-cover border bg-black"
                               controls
                             />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveStepMedia(index, 'video')}
+                              className="absolute top-6 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                              title="Удалить видео"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
                           </div>
                         )}
                       </div>
