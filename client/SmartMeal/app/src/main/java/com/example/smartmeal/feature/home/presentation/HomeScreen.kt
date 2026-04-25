@@ -322,7 +322,10 @@ fun HomeScreen(
                         onOrderModalConsumed = { shouldOpenOrderModal = false },
                         onScrollToCartConsumed = { shouldScrollToCart = false }
                     )
-                    2 -> StatisticsScreen(preferences = setupPreferences)
+                    2 -> StatisticsScreen(
+                        preferences = setupPreferences,
+                        onRecipeClick = onRecipeClick
+                    )
                     3 -> ProfileScreen(
                         viewModel = profileViewModel,
                         onLogout = onLogout,

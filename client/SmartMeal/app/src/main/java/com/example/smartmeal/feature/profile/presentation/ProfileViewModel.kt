@@ -504,7 +504,9 @@ class ProfileViewModel(
 
     fun selectPendingDiet(id: Int) {
         _state.update {
-            it.copy(pendingDietTypeId = if (it.pendingDietTypeId == id) null else id)
+            // Если нажали на уже выбранный — ничего не меняем (запрет деселекции)
+            if (it.pendingDietTypeId == id) it
+            else it.copy(pendingDietTypeId = id)
         }
     }
 

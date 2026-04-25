@@ -287,6 +287,7 @@ class SetupViewModel(
                     )
                 )
                 if (response.isSuccessful) {
+                    preferences?.setPendingPlanRegeneration(true)
                     _state.update { it.copy(isLoading = false, isComplete = true) }
                 } else {
                     _state.update { it.copy(isLoading = false, error = "Ошибка сохранения: ${response.code()}") }

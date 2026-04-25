@@ -150,7 +150,7 @@ fun SetupStep3Content(
                         .testTag("setup_step3_submit"),
                     variant = SmartMealButtonVariant.PRIMARY,
                     color = SmartMealButtonColor.GREEN,
-                    enabled = !state.isLoading,
+                    enabled = !state.isLoading && state.cookTimePreference != null,
                 )
             }
 
@@ -406,7 +406,7 @@ fun SetupStep3Content(
                     .testTag("setup_step3_submit"),
                 variant = SmartMealButtonVariant.PRIMARY,
                 color = SmartMealButtonColor.GREEN,
-                enabled = !state.isLoading,
+                enabled = !state.isLoading && state.cookTimePreference != null,
             )
         }
     }

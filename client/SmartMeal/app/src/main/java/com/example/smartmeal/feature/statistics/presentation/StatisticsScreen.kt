@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -48,7 +49,10 @@ import androidx.compose.foundation.BorderStroke
 import com.example.smartmeal.ui.components.feedback.StatisticsSkeleton
 
 @Composable
-fun StatisticsScreen(preferences: SetupPreferences) {
+fun StatisticsScreen(
+    preferences: SetupPreferences,
+    onRecipeClick: (Int, Int?) -> Unit = { _, _ -> }
+) {
     val viewModel: StatisticsViewModel = viewModel(factory = StatisticsViewModelFactory(preferences))
     
     val uiState by viewModel.uiState.collectAsState()
@@ -195,7 +199,8 @@ fun StatisticsScreen(preferences: SetupPreferences) {
                             targetProteins = uiState.targetProteins,
                             targetFats = uiState.targetFats,
                             targetCarbs = uiState.targetCarbs,
-                            isLandscape = isLandscape
+                            isLandscape = isLandscape,
+                            onRecipeClick = onRecipeClick
                         )
                     }
                 }
@@ -278,7 +283,8 @@ fun DailyStatsContent(
     targetProteins: Double,
     targetFats: Double,
     targetCarbs: Double,
-    isLandscape: Boolean = false
+    isLandscape: Boolean = false,
+    onRecipeClick: (Int, Int?) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -304,7 +310,7 @@ fun DailyStatsContent(
         )
 
         stats.meals.forEach { meal ->
-            MealNutritionRow(meal = meal)
+            MealNutritionRow(meal = meal, onClick = { onRecipeClick(meal.recipe, meal.id) })
         }
         
         Spacer(modifier = Modifier.height(16.dp))
@@ -501,8 +507,8 @@ fun MacroNutrientItem(label: String, value: Double, color: Color) {
         SmartMealText(
             text = label,
             fontSize = 13.sp,
-            color = Color.Gray,
-            fontWeight = FontWeight.Medium
+            color = color,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(12.dp))
         Box(
@@ -518,7 +524,7 @@ fun MacroNutrientItem(label: String, value: Double, color: Color) {
 }
 
 @Composable
-fun MealNutritionRow(meal: MenuItemDto) {
+fun MealNutritionRow(meal: MenuItemDto, onClick: () -> Unit = {}) {
     val mealTypeTitle = when(meal.meal_type) {
         "breakfast" -> "Завтрак"
         "lunch" -> "Обед"
@@ -527,7 +533,7 @@ fun MealNutritionRow(meal: MenuItemDto) {
     }
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
         shape = RoundedCornerShape(18.dp),
         color = Color.White,
         border = BorderStroke(1.dp, Color(0xFFF5F5F5))
@@ -550,15 +556,38 @@ fun MealNutritionRow(meal: MenuItemDto) {
                     text = meal.recipe_title,
                     fontSize = 16.sp,
                     color = TextBlack,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1
+                    fontWeight = FontWeight.SemiBold
                 )
-                SmartMealText(
-                    text = "${meal.per_serving_calories.toInt()} ккал • 1 порция",
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    fontWeight = FontWeight.Medium
-                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    SmartMealText(
+                        text = "${meal.per_serving_calories.toInt()} ккал",
+                        fontSize = 13.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Medium
+                    )
+                    SmartMealText(text = " • ", fontSize = 13.sp, color = Color.Gray)
+                    SmartMealText(
+                        text = "Б: ${meal.per_serving_proteins.toInt()}г",
+                        fontSize = 13.sp,
+                        color = Color(0xFF00C853),
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    SmartMealText(
+                        text = "Ж: ${meal.per_serving_fats.toInt()}г",
+                        fontSize = 13.sp,
+                        color = Color(0xFFFFAB00),
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    SmartMealText(
+                        text = "У: ${meal.per_serving_carbs.toInt()}г",
+                        fontSize = 13.sp,
+                        color = Color(0xFF0091EA),
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
 
             Surface(
@@ -576,3 +605,4 @@ fun MealNutritionRow(meal: MenuItemDto) {
         }
     }
 }
+
