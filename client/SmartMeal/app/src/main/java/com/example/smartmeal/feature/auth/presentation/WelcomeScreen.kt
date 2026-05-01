@@ -36,6 +36,7 @@ fun WelcomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .systemBarsPadding()
     ) {
         val horizontalPadding = if (isCompactHeight || isCompactWidth) 16.dp else 24.dp
         val topSpacing = if (isCompactHeight) 16.dp else 40.dp

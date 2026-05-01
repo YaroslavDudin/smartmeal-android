@@ -240,7 +240,8 @@ fun RecipeDetailScreen(
                                         text = "Ингредиенты",
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.Black
+                                        color = Color.Black,
+                                        modifier = Modifier.weight(1f)
                                     )
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         SmartMealText(
@@ -384,7 +385,8 @@ fun RecipeDetailScreen(
                                     text = "Ингредиенты",
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.Black
+                                    color = Color.Black,
+                                    modifier = Modifier.weight(1f)
                                 )
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     SmartMealText(

@@ -38,9 +38,9 @@ fun QuantityStepper(
         modifier = modifier
             .clip(RoundedCornerShape(24.dp))
             .background(LightGreenBg.copy(alpha = 0.5f))
-            .padding(4.dp),
+            .padding(2.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         // Кнопка уменьшения
         StepperButton(
@@ -66,8 +66,8 @@ fun QuantityStepper(
         ) { targetQuantity ->
             SmartMealText(
                 text = targetQuantity.toString(),
-                modifier = Modifier.widthIn(min = 20.dp),
-                fontSize = 18.sp,
+                modifier = Modifier.widthIn(min = 18.dp),
+                fontSize = 16.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = PrimaryGreen,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -91,7 +91,7 @@ private fun StepperButton(
 ) {
     Box(
         modifier = Modifier
-            .size(32.dp)
+            .size(28.dp)
             .clip(CircleShape)
             .background(if (enabled) PrimaryGreen else Color.LightGray.copy(alpha = 0.5f))
             .clickable(enabled = enabled, onClick = onClick),
@@ -100,7 +100,7 @@ private fun StepperButton(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(16.dp),
             tint = Color.White
         )
     }
