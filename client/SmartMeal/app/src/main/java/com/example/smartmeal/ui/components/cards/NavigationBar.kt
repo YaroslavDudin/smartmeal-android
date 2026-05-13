@@ -46,20 +46,14 @@ fun BottomNavigationBar(
     )
 
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-        shape = RoundedCornerShape(24.dp),
+        modifier = Modifier.fillMaxWidth(),
         color = Color.White,
-        tonalElevation = 0.dp,
-        shadowElevation = 10.dp,
-        border = androidx.compose.foundation.BorderStroke(1.dp, NavigationBorder)
+        border = androidx.compose.foundation.BorderStroke(0.5.dp, NavigationBorder.copy(alpha = 0.5f))
     ) {
         NavigationBar(
             modifier = Modifier.then(if (isLandscape) Modifier.height(58.dp) else Modifier),
             containerColor = NavigationContainer,
-            tonalElevation = 0.dp,
-            windowInsets = WindowInsets(0.dp)
+            tonalElevation = 0.dp
         ) {
             items.forEachIndexed { index, item ->
                 val isSelected = selectedItem == index
