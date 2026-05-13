@@ -1,21 +1,34 @@
 package com.example.smartmeal.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.smartmeal.data.api.RetrofitClient
 import com.example.smartmeal.data.local.SetupPreferences
@@ -42,6 +55,80 @@ import com.example.smartmeal.feature.auth.presentation.ResetPasswordScreen
 import com.example.smartmeal.feature.recipes.presentation.RecipeListScreen
 import com.example.smartmeal.feature.recipes.presentation.RecipeListViewModel
 
+private data class NavigationBackgroundPalette(
+    val start: Color,
+    val end: Color
+)
+
+private val AuthBackgroundPalette = NavigationBackgroundPalette(
+    start = Color(0xFFFBFCFA),
+    end = Color(0xFFF0F6EA)
+)
+private val SetupBackgroundPalette = NavigationBackgroundPalette(
+    start = Color(0xFFF7FBF3),
+    end = Color(0xFFE9F3E1)
+)
+private val AppBackgroundPalette = NavigationBackgroundPalette(
+    start = Color(0xFFF5FAF1),
+    end = Color(0xFFEAF3E3)
+)
+private val DetailBackgroundPalette = NavigationBackgroundPalette(
+    start = Color(0xFFF8FAF7),
+    end = Color(0xFFEDF1EC)
+)
+
+private val routeEnterTransition: AnimatedContentTransitionScope<androidx.navigation.NavBackStackEntry>.() -> EnterTransition = {
+    fadeIn(animationSpec = tween(durationMillis = 320, delayMillis = 40)) +
+        slideIntoContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.Start,
+            animationSpec = tween(durationMillis = 360, easing = FastOutSlowInEasing),
+            initialOffset = { fullWidth -> (fullWidth * 0.08f).toInt() }
+        ) +
+        scaleIn(
+            initialScale = 0.985f,
+            animationSpec = tween(durationMillis = 360, easing = FastOutSlowInEasing)
+        )
+}
+
+private val routeExitTransition: AnimatedContentTransitionScope<androidx.navigation.NavBackStackEntry>.() -> ExitTransition = {
+    fadeOut(animationSpec = tween(durationMillis = 220)) +
+        slideOutOfContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.Start,
+            animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing),
+            targetOffset = { fullWidth -> (fullWidth * 0.04f).toInt() }
+        ) +
+        scaleOut(
+            targetScale = 1.01f,
+            animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing)
+        )
+}
+
+private val routePopEnterTransition: AnimatedContentTransitionScope<androidx.navigation.NavBackStackEntry>.() -> EnterTransition = {
+    fadeIn(animationSpec = tween(durationMillis = 320, delayMillis = 40)) +
+        slideIntoContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.End,
+            animationSpec = tween(durationMillis = 360, easing = FastOutSlowInEasing),
+            initialOffset = { fullWidth -> (fullWidth * 0.08f).toInt() }
+        ) +
+        scaleIn(
+            initialScale = 0.985f,
+            animationSpec = tween(durationMillis = 360, easing = FastOutSlowInEasing)
+        )
+}
+
+private val routePopExitTransition: AnimatedContentTransitionScope<androidx.navigation.NavBackStackEntry>.() -> ExitTransition = {
+    fadeOut(animationSpec = tween(durationMillis = 220)) +
+        slideOutOfContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.End,
+            animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing),
+            targetOffset = { fullWidth -> (fullWidth * 0.04f).toInt() }
+        ) +
+        scaleOut(
+            targetScale = 1.01f,
+            animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing)
+        )
+}
+
 /**
  * Главный граф навигации приложения.
  * Принимает [navController], который создается в MainActivity.
@@ -50,6 +137,7 @@ import com.example.smartmeal.feature.recipes.presentation.RecipeListViewModel
 fun SmartMealNavGraph(navController: NavHostController) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val tokenManager = remember { com.example.smartmeal.data.local.TokenManager(context) }
+    val backStackEntry by navController.currentBackStackEntryAsState()
 
     LaunchedEffect(tokenManager) {
         RetrofitClient.init(tokenManager)
@@ -81,10 +169,54 @@ fun SmartMealNavGraph(navController: NavHostController) {
         Screen.Welcome.route
     }
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
+    val currentRoute = backStackEntry?.destination?.route.orEmpty()
+    val backgroundPalette = remember(currentRoute) {
+        when {
+            currentRoute == Screen.Welcome.route ||
+                currentRoute == Screen.AuthForm.route ||
+                currentRoute == Screen.ForgotPassword.route ||
+                currentRoute == Screen.ResetPassword.route -> AuthBackgroundPalette
+
+            currentRoute == Screen.SetupIntro.route ||
+                currentRoute == Screen.SetupStep1.route ||
+                currentRoute == Screen.SetupStep2.route ||
+                currentRoute == Screen.SetupStep3.route -> SetupBackgroundPalette
+
+            currentRoute == Screen.RecipeList.route ||
+                currentRoute.startsWith("recipe_detail") -> DetailBackgroundPalette
+
+            else -> AppBackgroundPalette
+        }
+    }
+    val animatedBackgroundStart by animateColorAsState(
+        targetValue = backgroundPalette.start,
+        animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
+        label = "navBackgroundStart"
+    )
+    val animatedBackgroundEnd by animateColorAsState(
+        targetValue = backgroundPalette.end,
+        animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
+        label = "navBackgroundEnd"
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(animatedBackgroundStart, animatedBackgroundEnd)
+                )
+            )
     ) {
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = Modifier.fillMaxSize(),
+            enterTransition = routeEnterTransition,
+            exitTransition = routeExitTransition,
+            popEnterTransition = routePopEnterTransition,
+            popExitTransition = routePopExitTransition
+        ) {
 
         fun navigateToHomeClearingOnboardingStack() {
             navController.navigate(Screen.Home.route) {
@@ -300,6 +432,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
                 viewModel = recipeViewModel,
                 onBack = { navController.popBackStack() }
             )
+        }
         }
     }
 }

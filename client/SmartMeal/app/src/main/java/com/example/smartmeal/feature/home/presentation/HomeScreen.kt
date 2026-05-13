@@ -1,6 +1,9 @@
 package com.example.smartmeal.feature.home.presentation
 
-import androidx.compose.animation.AnimatedContent      
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,73 +11,144 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.RestaurantMenu
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.smartmeal.data.api.RetrofitClient
 import com.example.smartmeal.data.local.SetupPreferences
-import com.example.smartmeal.feature.home.data.MenuRepository
 import com.example.smartmeal.feature.home.data.api.MenuApi
-import com.example.smartmeal.feature.home.data.menu.MenuDto
 import com.example.smartmeal.feature.home.data.menu.MenuItemDto
-import com.example.smartmeal.feature.menu_generator.data.api.GeneratorApi
-import com.example.smartmeal.feature.menu_generator.data.models.AutoGenerateRequest
-import com.example.smartmeal.feature.products.presentation.ProductListViewModel
 import com.example.smartmeal.feature.products.presentation.ProductListScreen
-import com.example.smartmeal.feature.statistics.presentation.StatisticsScreen
+import com.example.smartmeal.feature.products.presentation.ProductListViewModel
 import com.example.smartmeal.feature.profile.presentation.ProfileScreen
 import com.example.smartmeal.feature.profile.presentation.ProfileViewModel
 import com.example.smartmeal.feature.setup.data.api.SetupApi
+import com.example.smartmeal.feature.statistics.presentation.StatisticsScreen
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.buttons.CircleIconButton
 import com.example.smartmeal.ui.components.buttons.CircleIconType
 import com.example.smartmeal.ui.components.cards.BottomNavigationBar
 import com.example.smartmeal.ui.components.cards.MealCard
+import com.example.smartmeal.ui.components.feedback.ExitConfirmDialog
+import com.example.smartmeal.ui.components.feedback.HomeScreenSkeleton
 import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorId
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
+import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-import com.example.smartmeal.ui.components.feedback.HomeScreenSkeleton
-
-import com.example.smartmeal.ui.components.feedback.ExitConfirmDialog
-
 private val ModalBackground = Color(0xFFF4F4F4)
-private val ReplaceButtonBackground = Color(0xFFF5F5F5)
+private val HomeHeroStart = Color(0xFFF6FBF2)
+private val HomeHeroEnd = Color(0xFFE6F4DE)
+private val HomeCardBorder = Color(0xFFE4ECDD)
+private val HomeMutedText = Color(0xFF66725F)
+private val HomeSoftSurface = Color(0xFFF9FBF7)
+private val HomePageBackground = PageBackgroundPalette(
+    start = Color(0xFFF4FAEF),
+    end = Color(0xFFEAF4E1)
+)
+private val ProductsPageBackground = PageBackgroundPalette(
+    start = Color(0xFFF8FBF6),
+    end = Color(0xFFEEF5E9)
+)
+private val StatisticsPageBackground = PageBackgroundPalette(
+    start = Color(0xFFF6FAF7),
+    end = Color(0xFFE8F1EC)
+)
+private val ProfilePageBackground = PageBackgroundPalette(
+    start = Color(0xFFF7F9F7),
+    end = Color(0xFFECEFEA)
+)
 
+private data class PageBackgroundPalette(
+    val start: Color,
+    val end: Color
+)
+
+private enum class ShoppingPeriodPreset(
+    val days: Int,
+    val title: String,
+    val actionLabel: String
+) {
+    DAY(1, "На 1 день", "Собрать продукты на ближайший день"),
+    WEEK(7, "На 1 неделю", "Подготовить стандартную недельную закупку"),
+    TWO_WEEKS(14, "На 2 недели", "Собрать расширенный список на 14 дней"),
+    MONTH(30, "На 1 месяц", "Посмотреть полный продуктовый горизонт")
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -91,8 +165,8 @@ fun HomeScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     val viewModel: HomeViewModel = viewModel(
-        factory = remember { 
-            HomeViewModelFactory(context.applicationContext as android.app.Application, setupPreferences) 
+        factory = remember {
+            HomeViewModelFactory(context.applicationContext as android.app.Application, setupPreferences)
         }
     )
 
@@ -100,7 +174,6 @@ fun HomeScreen(
         factory = remember { ProductListViewModelFactory(menuApi, setupPreferences) }
     )
 
-    // Профиль теперь использует настоящий ViewModel Александра
     val profileViewModel: ProfileViewModel = viewModel(
         factory = remember {
             ProfileViewModelFactory(
@@ -114,56 +187,18 @@ fun HomeScreen(
     )
 
     val uiState by viewModel.uiState.collectAsState()
-    
-    // БЛОКИРУЮЩИЙ ОВЕРЛЕЙ (Твоя красивая загрузка)
-    if (uiState.isSyncing) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.3f))
-                .clickable(enabled = true, onClick = {}) 
-                .zIndex(100f),
-            contentAlignment = Alignment.Center
-        ) {
-            Surface(
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
-                color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 4.dp
-            ) {
-                Column(
-                    modifier = Modifier.padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator(color = PrimaryGreen)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    SmartMealText(
-                        text = "Сверяем актуальные данные...",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium
-                    )
-                    SmartMealText(
-                        text = "Ищем последние обновления рациона",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
-                    )
-                }
-            }
-        }
-    }
 
     val planType = setupPreferences.getPlanType()
     val planRange = setupPreferences.getCustomPlanRange()
     val selectedPlanDateMillis = setupPreferences.getSelectedPlanDate()
-    
+
     val customPlan = remember(planType, planRange, selectedPlanDateMillis) {
         when (planType) {
             SetupPreferences.PLAN_TYPE_CUSTOM -> {
-                planRange?.let { range: Pair<Long, Long> -> 
-                    CustomPlan(Date(range.first), Date(range.second)) 
-                }
+                planRange?.let { range -> CustomPlan(Date(range.first), Date(range.second)) }
             }
             SetupPreferences.PLAN_TYPE_WEEKLY -> {
-                selectedPlanDateMillis?.let { startMillis: Long ->
+                selectedPlanDateMillis?.let { startMillis ->
                     val endMillis = Calendar.getInstance().apply {
                         time = Date(startMillis)
                         add(Calendar.DATE, 6)
@@ -172,7 +207,7 @@ fun HomeScreen(
                 }
             }
             SetupPreferences.PLAN_TYPE_DAILY -> {
-                selectedPlanDateMillis?.let { startMillis: Long ->
+                selectedPlanDateMillis?.let { startMillis ->
                     CustomPlan(Date(startMillis), Date(startMillis))
                 }
             }
@@ -181,16 +216,19 @@ fun HomeScreen(
     }
 
     val showMyPlanSection = remember(planType, customPlan) {
-        if (planType != SetupPreferences.PLAN_TYPE_CUSTOM || customPlan == null) false
-        else {
-            val diff = customPlan.endDate.time - customPlan.startDate.time
-            val days = (diff / (1000L * 60 * 60 * 24)) + 1
-            days > 7
-        }
+        planType == SetupPreferences.PLAN_TYPE_CUSTOM && customPlan != null && resolvePlanDays(customPlan) > 7
     }
 
     val visibleCustomPlan = remember(customPlan) {
         trimCustomPlanToToday(customPlan)
+    }
+
+    val menuItemsForProducts = remember(uiState.allMenuItems, uiState.currentMenu) {
+        uiState.allMenuItems.ifEmpty { uiState.currentMenu?.items ?: emptyList() }
+    }
+
+    val cartPreviewEndDate = remember(menuItemsForProducts, visibleCustomPlan) {
+        buildAvailableDates(menuItemsForProducts, visibleCustomPlan).lastOrNull()
     }
 
     LaunchedEffect(visibleCustomPlan?.startDate?.time, visibleCustomPlan?.endDate?.time) {
@@ -218,13 +256,13 @@ fun HomeScreen(
         }
     }
 
-    var selectedNavItem: Int by rememberSaveable { mutableIntStateOf(0) }
-    var shouldOpenOrderModal: Boolean by remember { mutableStateOf(false) }
-    var shouldScrollToCart: Boolean by remember { mutableStateOf(false) }
+    var selectedNavItem by rememberSaveable { mutableIntStateOf(0) }
+    var shouldOpenOrderModal by remember { mutableStateOf(false) }
+    var shouldScrollToCart by remember { mutableStateOf(false) }
     var showExitDialog by remember { mutableStateOf(false) }
+    var showCartPeriodSheet by rememberSaveable { mutableStateOf(false) }
 
-    // Перехват кнопки "Назад" для подтверждения выхода
-    androidx.activity.compose.BackHandler(enabled = true) {
+    BackHandler(enabled = true) {
         if (selectedNavItem != 0) {
             selectedNavItem = 0
         } else {
@@ -234,39 +272,115 @@ fun HomeScreen(
 
     if (showExitDialog) {
         ExitConfirmDialog(
-            onConfirm = {
-                (context as? android.app.Activity)?.finish()
-            },
+            onConfirm = { (context as? android.app.Activity)?.finish() },
             onDismiss = { showExitDialog = false }
         )
     }
 
-    LaunchedEffect(selectedNavItem, uiState.currentMenu) {
+    fun openProductsForPreset(preset: ShoppingPeriodPreset) {
+        if (menuItemsForProducts.isNotEmpty()) {
+            productListViewModel.generateProductsFromMenuItems(menuItemsForProducts)
+            productListViewModel.selectPresetRange(
+                days = preset.days,
+                anchorDate = uiState.selectedDate ?: visibleCustomPlan?.startDate
+            )
+        } else {
+            productListViewModel.clearProducts()
+        }
+
+        shouldScrollToCart = false
+        showCartPeriodSheet = false
+        selectedNavItem = 1
+    }
+
+    LaunchedEffect(selectedNavItem, menuItemsForProducts) {
         if (selectedNavItem == 1) {
-            val currentItems = uiState.currentMenu?.items ?: emptyList()
-            if (currentItems.isNotEmpty()) {
-                productListViewModel.generateProductsFromMenuItems(currentItems)
+            if (menuItemsForProducts.isNotEmpty()) {
+                productListViewModel.generateProductsFromMenuItems(menuItemsForProducts)
             } else {
                 productListViewModel.clearProducts()
             }
         }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
+    val pageBackground = remember(selectedNavItem) {
+        when (selectedNavItem) {
+            1 -> ProductsPageBackground
+            2 -> StatisticsPageBackground
+            3 -> ProfilePageBackground
+            else -> HomePageBackground
+        }
+    }
+    val animatedBackgroundStart by animateColorAsState(
+        targetValue = pageBackground.start,
+        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),
+        label = "homePageBackgroundStart"
+    )
+    val animatedBackgroundEnd by animateColorAsState(
+        targetValue = pageBackground.end,
+        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing),
+        label = "homePageBackgroundEnd"
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(animatedBackgroundStart, animatedBackgroundEnd)
+                )
+            )
+    ) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
+            containerColor = Color.Transparent,
             bottomBar = {
                 BottomNavigationBar(
                     selectedItem = selectedNavItem,
                     onItemSelected = { selectedNavItem = it }
                 )
+            },
+            floatingActionButton = {
+                if (selectedNavItem == 0 && uiState.hasMenu) {
+                    ExtendedFloatingActionButton(
+                        onClick = { showCartPeriodSheet = true },
+                        containerColor = PrimaryGreen,
+                        contentColor = Color.White,
+                        modifier = Modifier
+                            .navigationBarsPadding()
+                            .testTag("home_cart_fab")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ShoppingCart,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        SmartMealText(
+                            text = "Список",
+                            color = Color.White,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
             }
         ) { innerPadding ->
-            androidx.compose.animation.AnimatedContent(
+            AnimatedContent(
                 targetState = selectedNavItem,
-                modifier = Modifier.padding(innerPadding).fillMaxSize(),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
                 transitionSpec = {
-                    fadeIn(animationSpec = tween(300)) togetherWith fadeOut(animationSpec = tween(300))
+                    (fadeIn(animationSpec = tween(320, delayMillis = 40)) +
+                        scaleIn(
+                            initialScale = 0.985f,
+                            animationSpec = tween(320, delayMillis = 40)
+                        )) togetherWith
+                        (fadeOut(animationSpec = tween(220)) +
+                            scaleOut(
+                                targetScale = 1.01f,
+                                animationSpec = tween(220)
+                            ))
                 },
                 label = "ScreenSwitchAnimation"
             ) { targetIndex ->
@@ -277,7 +391,9 @@ fun HomeScreen(
                             .clickable(
                                 onClick = { viewModel.clearError() },
                                 indication = null,
-                                interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
+                                interactionSource = remember {
+                                    androidx.compose.foundation.interaction.MutableInteractionSource()
+                                }
                             )
                     ) {
                         HomeContent(
@@ -290,10 +406,7 @@ fun HomeScreen(
                             onRecipeClick = onRecipeClick,
                             onSearchClick = onSearchClick,
                             onReselectPlan = onReselectPlan,
-                            onCartClick = {
-                                selectedNavItem = 1
-                                shouldScrollToCart = true
-                            },
+                            onCartClick = { showCartPeriodSheet = true },
                             customPlan = visibleCustomPlan,
                             showMyPlanSection = showMyPlanSection
                         )
@@ -316,7 +429,7 @@ fun HomeScreen(
                         hasNoAvailableDays = productListViewModel.hasNoAvailableDays,
                         isLoading = productListViewModel.isLoading,
                         errorMessage = productListViewModel.errorMessage,
-                        customPlan = if (showMyPlanSection) customPlan else null,
+                        customPlan = if (showMyPlanSection) visibleCustomPlan else null,
                         openOrderModal = shouldOpenOrderModal,
                         scrollToCart = shouldScrollToCart,
                         onOrderModalConsumed = { shouldOpenOrderModal = false },
@@ -341,41 +454,18 @@ fun HomeScreen(
             }
         }
 
-        // БЛОКИРУЮЩИЙ ОВЕРЛЕЙ (Твоя красивая загрузка) - ТЕПЕРЬ ВСЕГДА СВЕРХУ
         if (uiState.isSyncing) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.3f))
-                    .clickable(enabled = true, onClick = {})
-                    .zIndex(100f),
-                contentAlignment = Alignment.Center
-            ) {
-                Surface(
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
-                    color = MaterialTheme.colorScheme.surface,
-                    tonalElevation = 4.dp
-                ) {
-                    Column(
-                        modifier = Modifier.padding(24.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator(color = PrimaryGreen)
-                        Spacer(modifier = Modifier.height(16.dp))
-                        SmartMealText(
-                            text = "Сверяем актуальные данные...",
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Medium
-                        )
-                        SmartMealText(
-                            text = "Ищем последние обновления рациона",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.Gray
-                        )
-                    }
-                }
-            }
+            SyncingOverlay()
         }
+    }
+
+    if (showCartPeriodSheet) {
+        ShoppingRangeBottomSheet(
+            anchorDate = uiState.selectedDate ?: visibleCustomPlan?.startDate,
+            maxAvailableDate = cartPreviewEndDate,
+            onDismiss = { showCartPeriodSheet = false },
+            onPresetSelected = { preset -> openProductsForPreset(preset) }
+        )
     }
 }
 
@@ -394,85 +484,121 @@ fun HomeContent(
     customPlan: CustomPlan?,
     showMyPlanSection: Boolean = false
 ) {
-    val availableDates = remember(uiState.allMenuItems, customPlan) {
-        buildAvailableDates(uiState.allMenuItems, customPlan)
+    val sourceMenuItems = remember(uiState.allMenuItems, uiState.currentMenu) {
+        uiState.allMenuItems.ifEmpty { uiState.currentMenu?.items ?: emptyList() }
     }
-
+    val availableDates = remember(sourceMenuItems, customPlan) {
+        buildAvailableDates(sourceMenuItems, customPlan)
+    }
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
     val selectedDateId = uiState.selectedDate?.let { buildDateSelectorId(it) }
     val hasAvailableDates = availableDates.isNotEmpty()
     var pendingReplacement by remember { mutableStateOf<MealSection?>(null) }
 
-    // Проверка для кнопки "Мой план": тип CUSTOM и более 7 дней
     val showMyPlanButton = remember(showMyPlanSection, customPlan) {
-        showMyPlanSection && customPlan != null
+        showMyPlanSection && customPlan != null && resolvePlanDays(customPlan) > 7
     }
 
+    val anchorDate = uiState.selectedDate ?: availableDates.firstOrNull()
+    val monthYearLabel = anchorDate?.let(::formatMonthYearForSelector).orEmpty()
+
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = PaddingValues(bottom = 8.dp)
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 104.dp)
     ) {
         item {
-            Box(modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 0.dp)) {
-                SmartMealText(
-                    text = "Меню",
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.align(Alignment.Center).testTag("home_title"),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center
-                )
+            HomeHeroSection(
+                selectedDate = anchorDate,
+                mealsCount = uiState.mealSections.size,
+                hasMenu = uiState.hasMenu,
+                isLoading = uiState.isLoading,
+                onSearchClick = onSearchClick,
+                onCartClick = onCartClick
+            )
+        }
 
-                IconButton(
-                    onClick = onCartClick,
-                    modifier = Modifier.align(Alignment.CenterEnd).padding(end = 8.dp).testTag("home_cart_button")
+        if (hasAvailableDates || showMyPlanButton) {
+            item {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(28.dp),
+                    color = Color.White,
+                    tonalElevation = 1.dp,
+                    shadowElevation = 2.dp,
+                    border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = "Корзина",
-                        tint = PrimaryGreen,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-            }
-        }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                    ) {
+                        if (monthYearLabel.isNotBlank() && availableDates.size > 1) {
+                            SmartMealText(
+                                text = monthYearLabel,
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag("home_month_year"),
+                                color = HomeMutedText,
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
 
-        val monthYearLabel = availableDates.firstOrNull()?.let {
-            formatMonthYearForSelector(uiState.selectedDate ?: it)
-        }.orEmpty()
-
-        if (monthYearLabel.isNotBlank() && availableDates.size > 1) {
-            item {
-                SmartMealText(
-                    text = monthYearLabel,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp).testTag("home_month_year"),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-
-        if (hasAvailableDates) {
-            item {
-                Box(modifier = Modifier.testTag("home_day_selector")) {
-                    if (availableDates.size == 1) {
-                        SmartMealText(
-                            text = formatSelectedDateLabel(availableDates.first()),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 14.dp)
-                                .testTag("home_selected_date_summary"),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center
-                        )
-                    } else {
-                        DateSelector(
-                            items = dateSelectorItems,
-                            selectedStartId = selectedDateId,
-                            onItemClick = { dateId ->
-                                availableDates.firstOrNull { buildDateSelectorId(it) == dateId }?.let(onDateSelected)
+                        if (hasAvailableDates) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag("home_day_selector")
+                            ) {
+                                if (availableDates.size == 1) {
+                                    SmartMealText(
+                                        text = formatSelectedDateLabel(availableDates.first()),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .testTag("home_selected_date_summary"),
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                } else {
+                                    DateSelector(
+                                        items = dateSelectorItems,
+                                        selectedStartId = selectedDateId,
+                                        onItemClick = { dateId ->
+                                            availableDates.firstOrNull { buildDateSelectorId(it) == dateId }
+                                                ?.let(onDateSelected)
+                                        }
+                                    )
+                                }
                             }
-                        )
+                        }
+
+                        if (showMyPlanButton) {
+                            if (hasAvailableDates) {
+                                Spacer(modifier = Modifier.height(12.dp))
+                                HorizontalDivider(color = HomeCardBorder)
+                                Spacer(modifier = Modifier.height(12.dp))
+                            }
+
+                            SmartMealText(
+                                text = "План на период",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = HomeMutedText,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                            MyPlanSection(
+                                customPlan = customPlan,
+                                selectedDate = uiState.selectedDate,
+                                onDateSelectedFromPlan = onDateSelected,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag("home_my_plan")
+                            )
+                        }
                     }
                 }
             }
@@ -480,79 +606,22 @@ fun HomeContent(
 
         if (uiState.isLoading && !uiState.hasMenu) {
             item {
-                HomeScreenSkeleton()
+                Box(modifier = Modifier.testTag("home_loading")) {
+                    HomeScreenSkeleton()
+                }
             }
         } else {
-            if (showMyPlanButton) {
-                item {
-                    MyPlanSection(
-                        customPlan = customPlan,
-                        selectedDate = uiState.selectedDate,
-                        onDateSelectedFromPlan = onDateSelected,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 0.dp, bottom = 4.dp)
-                            .testTag("home_my_plan")
-                    )
-                }
-            }
-
             if (!uiState.hasMenu) {
                 item {
-                    Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.testTag("home_empty_state")
-                        ) {
-                            SmartMealText("У вас еще нет меню на эту неделю")
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(
-                                onClick = onGenerateMenu,
-                                modifier = Modifier.testTag("home_generate_button"),
-                                elevation = ButtonDefaults.buttonElevation(defaultElevation = 6.dp, pressedElevation = 2.dp)
-                            ) {
-                                SmartMealText("Сгенерировать меню")
-                            }
-                        }
-                    }
+                    EmptyMenuStateCard(
+                        onGenerateMenu = onGenerateMenu
+                    )
                 }
-            } else if (availableDates.isEmpty() && uiState.hasMenu) {
-                // Состояние истекшего рациона
+            } else if (availableDates.isEmpty()) {
                 item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp)
-                            .testTag("home_expired_state"),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            SmartMealText(
-                                text = "Ваш рацион закончился",
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            SmartMealText(
-                                text = "Выберите новый план питания, чтобы продолжить",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Color.Gray,
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.height(24.dp))
-                            Button(
-                                onClick = onReselectPlan,
-                                modifier = Modifier
-                                    .fillMaxWidth(0.8f)
-                                    .height(54.dp)
-                                    .testTag("home_reselect_plan_button"),
-                                colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen),
-                                shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
-                            ) {
-                                SmartMealText("Выбрать новый рацион", color = Color.White, fontSize = 16.sp)
-                            }
-                        }
-                    }
+                    ExpiredMenuStateCard(
+                        onReselectPlan = onReselectPlan
+                    )
                 }
             } else {
                 items(uiState.mealSections, key = { it.meal.id }) { section ->
@@ -568,13 +637,33 @@ fun HomeContent(
             }
         }
 
-        if (uiState.error != null) {
+        uiState.error?.let { errorMessage ->
             item {
-                SmartMealText(
-                    text = uiState.error ?: "",
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(8.dp)
-                )
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.errorContainer
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        SmartMealText(
+                            text = errorMessage,
+                            modifier = Modifier.weight(1f),
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                        TextButton(onClick = onDismissError) {
+                            SmartMealText(
+                                text = "Скрыть",
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -592,6 +681,261 @@ fun HomeContent(
 }
 
 @Composable
+private fun HomeHeroSection(
+    selectedDate: Date?,
+    mealsCount: Int,
+    hasMenu: Boolean,
+    isLoading: Boolean,
+    onSearchClick: () -> Unit,
+    onCartClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(30.dp),
+        shadowElevation = 4.dp,
+        color = Color.Transparent
+    ) {
+        Box(
+            modifier = Modifier
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(HomeHeroStart, HomeHeroEnd)
+                    )
+                )
+                .padding(20.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        SmartMealText(
+                            text = "Меню",
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.testTag("home_title"),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        SmartMealText(
+                            text = selectedDate?.let(::formatHeroDate)
+                                ?: "Подберем рацион под ваш текущий план",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = HomeMutedText
+                        )
+                    }
+
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        FilledTonalIconButton(
+                            onClick = onSearchClick,
+                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                containerColor = Color.White.copy(alpha = 0.82f),
+                                contentColor = MaterialTheme.colorScheme.onSurface
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Поиск"
+                            )
+                        }
+
+                        FilledTonalIconButton(
+                            onClick = onCartClick,
+                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                containerColor = PrimaryGreen,
+                                contentColor = Color.White
+                            ),
+                            modifier = Modifier.testTag("home_cart_button")
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "Корзина"
+                            )
+                        }
+                    }
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    HeroStatChip(
+                        icon = Icons.Default.CalendarMonth,
+                        label = if (hasMenu) "План активен" else "Нужна генерация"
+                    )
+                    HeroStatChip(
+                        icon = Icons.Default.RestaurantMenu,
+                        label = if (isLoading) "Обновляем" else "$mealsCount блюда"
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeroStatChip(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String
+) {
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = Color.White.copy(alpha = 0.72f)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = PrimaryGreen,
+                modifier = Modifier.size(16.dp)
+            )
+            SmartMealText(
+                text = label,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyMenuStateCard(
+    onGenerateMenu: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("home_empty_state"),
+        shape = RoundedCornerShape(28.dp),
+        color = Color.White,
+        shadowElevation = 2.dp,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Surface(
+                shape = CircleShape,
+                color = LightGreenBg
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AutoAwesome,
+                    contentDescription = null,
+                    tint = PrimaryGreen,
+                    modifier = Modifier.padding(14.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(18.dp))
+            SmartMealText(
+                text = "Меню еще не сформировано",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            SmartMealText(
+                text = "Сгенерируем план питания и сразу подготовим список блюд по дням.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = HomeMutedText,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = onGenerateMenu,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp)
+                    .testTag("home_generate_button"),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+            ) {
+                SmartMealText(
+                    text = "Сгенерировать меню",
+                    color = Color.White,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ExpiredMenuStateCard(
+    onReselectPlan: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("home_expired_state"),
+        shape = RoundedCornerShape(28.dp),
+        color = Color.White,
+        shadowElevation = 2.dp,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Surface(
+                shape = CircleShape,
+                color = HomeSoftSurface
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CalendarMonth,
+                    contentDescription = null,
+                    tint = PrimaryGreen,
+                    modifier = Modifier.padding(14.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(18.dp))
+            SmartMealText(
+                text = "Текущий рацион завершился",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            SmartMealText(
+                text = "Выберите новый период, чтобы продолжить план и заново собрать продукты.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = HomeMutedText,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = onReselectPlan,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(54.dp)
+                    .testTag("home_reselect_plan_button"),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen)
+            ) {
+                SmartMealText(
+                    text = "Выбрать новый рацион",
+                    color = Color.White,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun MealSection(
     sectionId: String,
     title: String,
@@ -601,38 +945,53 @@ fun MealSection(
     onRecipeClick: (Int, Int?) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
         Row(
-            modifier = Modifier.padding(horizontal = 4.dp),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SmartMealText(
-                text = title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.width(8.dp))
+            Surface(
+                shape = RoundedCornerShape(18.dp),
+                color = HomeSoftSurface
+            ) {
+                SmartMealText(
+                    text = title,
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
             CircleIconButton(
                 iconType = CircleIconType.REPLACE,
                 onClick = onReplaceClick,
                 backgroundColor = Color.Transparent,
-                contentColor = Color.Black.copy(alpha = 0.6f),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
-                modifier = Modifier.size(36.dp).testTag("home_replace_${sectionId}")
+                contentColor = Color.Black.copy(alpha = 0.64f),
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .size(38.dp)
+                    .testTag("home_replace_$sectionId")
             )
         }
 
-        AnimatedContent<MenuItemDto>(
+        AnimatedContent(
             targetState = meal,
             transitionSpec = {
-                (fadeIn(animationSpec = tween(400)) + scaleIn(initialScale = 0.95f)) togetherWith
-                        (fadeOut(animationSpec = tween(400)) + scaleOut(targetScale = 0.95f))
+                (fadeIn(animationSpec = tween(360)) + scaleIn(initialScale = 0.96f)) togetherWith
+                    (fadeOut(animationSpec = tween(240)) + scaleOut(targetScale = 0.96f))
             },
             contentKey = { it.recipe },
             label = "MealReplacementAnimation"
         ) { item ->
             Box(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
                     .clickable { onRecipeClick(item.recipe, item.id) }
             ) {
                 MealCard(
@@ -659,9 +1018,9 @@ private fun ReplaceMealConfirmDialog(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .testTag("home_replace_confirm_dialog"),
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(28.dp),
             color = ModalBackground,
-            shadowElevation = 8.dp
+            shadowElevation = 10.dp
         ) {
             Column(
                 modifier = Modifier
@@ -672,20 +1031,20 @@ private fun ReplaceMealConfirmDialog(
                 SmartMealText(
                     text = "Заменить \"$mealTitle\"",
                     fontSize = 22.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.Black
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 SmartMealText(
-                    text = "Вы уверены что хотите заменить\nэто блюдо на что-нибудь другое?\nЕсли блюдо добавлено в\nизбранное, оно останется в\nизбранном",
+                    text = "Подберем другое блюдо для этого приема пищи. Избранное сохранится, а меню обновится сразу после замены.",
                     fontSize = 16.sp,
-                    color = Color.Black,
+                    color = Color.Black.copy(alpha = 0.78f),
                     lineHeight = 22.sp
                 )
 
-                Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(26.dp))
 
                 Button(
                     onClick = onConfirm,
@@ -693,17 +1052,16 @@ private fun ReplaceMealConfirmDialog(
                         .fillMaxWidth()
                         .height(54.dp)
                         .testTag("home_replace_confirm_button"),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF4CAF50),
+                        containerColor = PrimaryGreen,
                         contentColor = Color.White
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
+                    )
                 ) {
-                    SmartMealText("Заменить блюдо", color = Color.White, fontSize = 18.sp)
+                    SmartMealText("Заменить блюдо", color = Color.White, fontWeight = FontWeight.SemiBold)
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Button(
                     onClick = onDismiss,
@@ -711,15 +1069,137 @@ private fun ReplaceMealConfirmDialog(
                         .fillMaxWidth()
                         .height(54.dp)
                         .testTag("home_replace_cancel_button"),
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE53935),
-                        contentColor = Color.White
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
+                        containerColor = Color(0xFFEDEDED),
+                        contentColor = Color.Black
+                    )
                 ) {
-                    SmartMealText("Отменить", color = Color.White, fontSize = 18.sp)
+                    SmartMealText("Отменить", fontWeight = FontWeight.SemiBold)
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ShoppingRangeBottomSheet(
+    anchorDate: Date?,
+    maxAvailableDate: Date?,
+    onDismiss: () -> Unit,
+    onPresetSelected: (ShoppingPeriodPreset) -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = Color.White
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            SmartMealText(
+                text = "Собрать список продуктов",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+            SmartMealText(
+                text = "Выберите период, и мы сразу откроем продукты с уже подготовленным диапазоном.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = HomeMutedText
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+
+            ShoppingPeriodPreset.entries.forEach { preset ->
+                ShoppingPresetCard(
+                    preset = preset,
+                    preview = buildShoppingPreview(
+                        preset = preset,
+                        anchorDate = anchorDate,
+                        maxAvailableDate = maxAvailableDate
+                    ),
+                    onClick = { onPresetSelected(preset) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ShoppingPresetCard(
+    preset: ShoppingPeriodPreset,
+    preview: String,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(22.dp),
+        color = HomeSoftSurface,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder)
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            SmartMealText(
+                text = preset.title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            SmartMealText(
+                text = preset.actionLabel,
+                style = MaterialTheme.typography.bodyMedium,
+                color = HomeMutedText
+            )
+            SmartMealText(
+                text = preview,
+                style = MaterialTheme.typography.labelLarge,
+                color = PrimaryGreen,
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
+}
+
+@Composable
+private fun SyncingOverlay() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.28f))
+            .clickable(enabled = true, onClick = {})
+            .zIndex(100f),
+        contentAlignment = Alignment.Center
+    ) {
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = MaterialTheme.colorScheme.surface,
+            tonalElevation = 6.dp
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 22.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(color = PrimaryGreen)
+                Spacer(modifier = Modifier.height(14.dp))
+                SmartMealText(
+                    text = "Сверяем актуальные данные...",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                SmartMealText(
+                    text = "Ищем последние обновления рациона",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = HomeMutedText
+                )
             }
         }
     }
@@ -730,14 +1210,23 @@ private class HomeViewModelFactory(
     private val preferences: SetupPreferences
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) return HomeViewModel(application, preferences) as T
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HomeViewModel(application, preferences) as T
+        }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 
-private class ProductListViewModelFactory(private val menuApi: MenuApi, private val preferences: SetupPreferences) : ViewModelProvider.Factory {
+private class ProductListViewModelFactory(
+    private val menuApi: MenuApi,
+    private val preferences: SetupPreferences
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ProductListViewModel::class.java)) return ProductListViewModel(menuApi, preferences) as T
+        if (modelClass.isAssignableFrom(ProductListViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ProductListViewModel(menuApi, preferences) as T
+        }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
@@ -752,7 +1241,13 @@ class ProfileViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return ProfileViewModel(api, preferences, onCriticalSettingsChanged, onSimpleSettingsChanged, onMenuManualChanged) as T
+            return ProfileViewModel(
+                api,
+                preferences,
+                onCriticalSettingsChanged,
+                onSimpleSettingsChanged,
+                onMenuManualChanged
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
@@ -765,12 +1260,34 @@ internal fun buildAvailableDates(
 ): List<Date> {
     val normalizedToday = normalizeDateStatic(today)
     val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-    return menuItems
-        .mapNotNull { item -> try { formatter.parse(item.actual_date) } catch(e: Exception) { null } }
+    val menuDates = menuItems
+        .mapNotNull { item ->
+            try {
+                formatter.parse(item.actual_date)
+            } catch (_: Exception) {
+                null
+            }
+        }
         .map(::normalizeDateStatic)
         .filter { !it.before(normalizedToday) }
         .distinct()
         .sorted()
+
+    if (menuDates.isNotEmpty() || customPlan == null) {
+        return menuDates
+    }
+
+    val startDate = maxOf(normalizeDateStatic(customPlan.startDate), normalizedToday)
+    val endDate = normalizeDateStatic(customPlan.endDate)
+    if (startDate.after(endDate)) return emptyList()
+
+    val dates = mutableListOf<Date>()
+    val calendar = Calendar.getInstance().apply { time = startDate }
+    while (!calendar.time.after(endDate)) {
+        dates += calendar.time
+        calendar.add(Calendar.DATE, 1)
+    }
+    return dates
 }
 
 internal fun trimCustomPlanToToday(
@@ -784,26 +1301,66 @@ internal fun trimCustomPlanToToday(
 }
 
 private fun normalizeDateStatic(date: Date): Date {
-    val cal = Calendar.getInstance().apply {
+    val calendar = Calendar.getInstance().apply {
         time = date
-        set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
     }
-    return cal.time
+    return calendar.time
 }
 
 private fun formatMonthYearForSelector(date: Date): String {
-    return SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date).replaceFirstChar { it.titlecase() }
+    return SimpleDateFormat("LLLL yyyy", Locale("ru"))
+        .format(date)
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("ru")) else it.toString() }
+}
+
+private fun formatHeroDate(date: Date): String {
+    return SimpleDateFormat("EEEE, d MMMM", Locale("ru"))
+        .format(date)
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale("ru")) else it.toString() }
+}
+
+private fun buildShoppingPreview(
+    preset: ShoppingPeriodPreset,
+    anchorDate: Date?,
+    maxAvailableDate: Date?
+): String {
+    val start = normalizeDateStatic(anchorDate ?: Date())
+    val rawEnd = Calendar.getInstance().apply {
+        time = start
+        add(Calendar.DATE, preset.days - 1)
+    }.time
+    val end = if (maxAvailableDate != null) minOf(rawEnd, normalizeDateStatic(maxAvailableDate)) else rawEnd
+
+    val formatter = SimpleDateFormat("d MMM", Locale("ru"))
+    return if (start == end) {
+        formatter.format(start)
+    } else {
+        "${formatter.format(start)} - ${formatter.format(end)}"
+    }
+}
+
+private fun resolvePlanDays(customPlan: CustomPlan?): Long {
+    if (customPlan == null) return 0
+    val diff = normalizeDateStatic(customPlan.endDate).time - normalizeDateStatic(customPlan.startDate).time
+    return (diff / (1000L * 60L * 60L * 24L)) + 1L
 }
 
 internal fun mergeUpdatedMenuItemIntoState(state: HomeUiState, updatedItem: MenuItemDto): HomeUiState {
     val updatedAll = state.allMenuItems.map { if (it.id == updatedItem.id) updatedItem else it }
-    return state.copy(allMenuItems = updatedAll)
+    val updatedCurrentMenu = state.currentMenu?.copy(
+        items = state.currentMenu.items?.map { if (it.id == updatedItem.id) updatedItem else it }
+    )
+    return state.copy(
+        allMenuItems = updatedAll,
+        currentMenu = updatedCurrentMenu
+    )
 }
 
 internal fun resolveCustomDays(range: Pair<Long, Long>?): Int? {
     if (range == null) return null
     return ((range.second - range.first) / (1000L * 60L * 60L * 24L)).toInt() + 1
 }
-
-

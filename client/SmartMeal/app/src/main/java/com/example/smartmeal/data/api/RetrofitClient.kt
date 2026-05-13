@@ -15,7 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://62.113.41.205/"
+    private const val BASE_URL = "http://10.0.2.2:8000/"
     private var tokenManager: TokenManager? = null
 
     fun init(manager: TokenManager) {

@@ -3,18 +3,44 @@ package com.example.smartmeal.feature.statistics.presentation
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,7 +48,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,19 +60,20 @@ import com.example.smartmeal.feature.home.data.menu.MenuItemDto
 import com.example.smartmeal.feature.home.presentation.CustomPlan
 import com.example.smartmeal.feature.home.presentation.MyPlanSection
 import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.components.feedback.StatisticsSkeleton
 import com.example.smartmeal.ui.theme.BgLightGray
-import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import kotlinx.coroutines.launch
 
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.foundation.BorderStroke
-
-import com.example.smartmeal.ui.components.feedback.StatisticsSkeleton
+private val StatisticsHeroStart = Color(0xFFF6FBF2)
+private val StatisticsHeroEnd = Color(0xFFE7F4DF)
+private val StatisticsBorder = Color(0xFFE2ECD9)
+private val StatisticsMutedText = Color(0xFF6E7A67)
 
 @Composable
 fun StatisticsScreen(
@@ -54,7 +81,6 @@ fun StatisticsScreen(
     onRecipeClick: (Int, Int?) -> Unit = { _, _ -> }
 ) {
     val viewModel: StatisticsViewModel = viewModel(factory = StatisticsViewModelFactory(preferences))
-    
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
 
@@ -71,7 +97,7 @@ fun StatisticsScreen(
             viewModel.refresh()
         }
     }
-    
+
     if (uiState.dailyStats.isNotEmpty()) {
         val pagerState = rememberPagerState(
             initialPage = uiState.selectedIndex,
@@ -96,83 +122,75 @@ fun StatisticsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BgLightGray),
+                .background(Color.Transparent),
             contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 24.dp, end = 24.dp, top = 4.dp, bottom = 12.dp)
-                ) {
-                    SmartMealText(
-                        text = "Статистика",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = TextBlack,
-                        modifier = Modifier.align(Alignment.Center),
-                        textAlign = TextAlign.Center
-                    )
-                }
+                StatisticsHeroSection(
+                    modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 14.dp),
+                    currentDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
+                    isCaloriesEnabled = uiState.isCaloriesEnabled,
+                    targetCalories = uiState.targetCalories
+                )
             }
 
             item {
-                Column(
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color.White)
-                        .padding(vertical = 4.dp)
+                        .padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(26.dp),
+                    color = Color.White,
+                    shadowElevation = 2.dp,
+                    border = BorderStroke(1.dp, StatisticsBorder)
                 ) {
-                    if (customPlan != null) {
-                        val diff = customPlan.endDate.time - customPlan.startDate.time
-                        val days = (diff / (1000L * 60 * 60 * 24)) + 1
-                        
-                        if (days > 7) {
-                            MyPlanSection(
-                                customPlan = customPlan,
-                                selectedDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
-                                onDateSelectedFromPlan = { date ->
-                                    val index = uiState.dailyStats.indexOfFirst { 
-                                        val cal1 = Calendar.getInstance().apply { time = it.date }
-                                        val cal2 = Calendar.getInstance().apply { time = date }
-                                        cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                                        cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
-                                    }
-                                    if (index != -1) {
-                                        scope.launch {
-                                            pagerState.animateScrollToPage(index)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                    ) {
+                        if (customPlan != null) {
+                            val diff = customPlan.endDate.time - customPlan.startDate.time
+                            val days = (diff / (1000L * 60 * 60 * 24)) + 1
+                            if (days > 7) {
+                                SmartMealText(
+                                    text = "Период плана",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = StatisticsMutedText,
+                                    fontWeight = FontWeight.Medium
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                MyPlanSection(
+                                    customPlan = customPlan,
+                                    selectedDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
+                                    onDateSelectedFromPlan = { date ->
+                                        val index = uiState.dailyStats.indexOfFirst {
+                                            val cal1 = Calendar.getInstance().apply { time = it.date }
+                                            val cal2 = Calendar.getInstance().apply { time = date }
+                                            cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                                                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
                                         }
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-                            )
-                            
-                            HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp),
-                                thickness = 1.dp,
-                                color = BgLightGray
-                            )
+                                        if (index != -1) {
+                                            scope.launch { pagerState.animateScrollToPage(index) }
+                                        }
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                HorizontalDivider(color = StatisticsBorder)
+                                Spacer(modifier = Modifier.height(12.dp))
+                            }
                         }
-                    }
 
-                    DateNavigationHeader(
-                        currentDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date ?: Date(),
-                        showArrows = uiState.dailyStats.size > 1,
-                        canGoBack = pagerState.currentPage > 0,
-                        canGoForward = pagerState.currentPage < uiState.dailyStats.size - 1,
-                        onBackClick = {
-                            scope.launch {
-                                pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                            }
-                        },
-                        onForwardClick = {
-                            scope.launch {
-                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                            }
-                        }
-                    )
+                        DateNavigationHeader(
+                            currentDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date ?: Date(),
+                            showArrows = uiState.dailyStats.size > 1,
+                            canGoBack = pagerState.currentPage > 0,
+                            canGoForward = pagerState.currentPage < uiState.dailyStats.size - 1,
+                            onBackClick = { scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) } },
+                            onForwardClick = { scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) } }
+                        )
+                    }
                 }
             }
 
@@ -180,7 +198,6 @@ fun StatisticsScreen(
 
             item {
                 val pagerHeight = if (isLandscape) 400.dp else 600.dp
-                
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier
@@ -220,6 +237,82 @@ fun StatisticsScreen(
 }
 
 @Composable
+private fun StatisticsHeroSection(
+    modifier: Modifier = Modifier,
+    currentDate: Date?,
+    isCaloriesEnabled: Boolean,
+    targetCalories: Double
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(30.dp),
+        color = Color.Transparent,
+        shadowElevation = 4.dp
+    ) {
+        Box(
+            modifier = Modifier
+                .background(Brush.linearGradient(listOf(StatisticsHeroStart, StatisticsHeroEnd)))
+                .padding(horizontal = 20.dp, vertical = 18.dp)
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                SmartMealText(
+                    text = "Статистика",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextBlack
+                )
+                SmartMealText(
+                    text = currentDate?.let {
+                        SimpleDateFormat("EEEE, d MMMM", Locale("ru"))
+                            .format(it)
+                            .replaceFirstChar { char -> char.titlecase(Locale("ru")) }
+                    } ?: "Сводка по вашему плану питания",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = StatisticsMutedText
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    StatisticsChip(icon = Icons.Default.Insights, text = "Дневная аналитика")
+                    StatisticsChip(
+                        icon = Icons.Default.LocalFireDepartment,
+                        text = if (isCaloriesEnabled) "Цель ${targetCalories.toInt()} ккал" else "Калории без цели"
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatisticsChip(
+    icon: ImageVector,
+    text: String
+) {
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = Color.White.copy(alpha = 0.72f)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = PrimaryGreen,
+                modifier = Modifier.size(16.dp)
+            )
+            SmartMealText(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                color = TextBlack,
+                fontWeight = FontWeight.Medium
+            )
+        }
+    }
+}
+
+@Composable
 fun DateNavigationHeader(
     currentDate: Date,
     showArrows: Boolean,
@@ -234,16 +327,24 @@ fun DateNavigationHeader(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         if (showArrows) {
-            IconButton(onClick = onBackClick, enabled = canGoBack) {
+            FilledTonalIconButton(
+                onClick = onBackClick,
+                enabled = canGoBack,
+                colors = IconButtonDefaults.filledTonalIconButtonColors(
+                    containerColor = Color(0xFFF3F8EE),
+                    contentColor = PrimaryGreen,
+                    disabledContainerColor = Color(0xFFF6F6F6),
+                    disabledContentColor = Color.LightGray
+                )
+            ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = "Предыдущий день",
-                    tint = if (canGoBack) PrimaryGreen else Color.LightGray,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -253,7 +354,7 @@ fun DateNavigationHeader(
 
         SmartMealText(
             text = dateStr,
-            fontSize = 16.sp,
+            fontSize = 17.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center,
@@ -261,11 +362,19 @@ fun DateNavigationHeader(
         )
 
         if (showArrows) {
-            IconButton(onClick = onForwardClick, enabled = canGoForward) {
+            FilledTonalIconButton(
+                onClick = onForwardClick,
+                enabled = canGoForward,
+                colors = IconButtonDefaults.filledTonalIconButtonColors(
+                    containerColor = Color(0xFFF3F8EE),
+                    contentColor = PrimaryGreen,
+                    disabledContainerColor = Color(0xFFF6F6F6),
+                    disabledContentColor = Color.LightGray
+                )
+            ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = "Следующий день",
-                    tint = if (canGoForward) PrimaryGreen else Color.LightGray,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -301,7 +410,7 @@ fun DailyStatsContent(
         )
 
         SmartMealText(
-            text = "ПРИЁМЫ ПИЩИ",
+            text = "ПРИЕМЫ ПИЩИ",
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold,
             letterSpacing = 0.5.sp,
@@ -312,7 +421,7 @@ fun DailyStatsContent(
         stats.meals.forEach { meal ->
             MealNutritionRow(meal = meal, onClick = { onRecipeClick(meal.recipe, meal.id) })
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -328,18 +437,18 @@ fun DailyNutritionCard(
     isLandscape: Boolean = false
 ) {
     val totalCalsConsumed = (stats.totalProteins * 4 + stats.totalFats * 9 + stats.totalCarbs * 4).coerceAtLeast(1.0)
-    val ratioP_any = (stats.totalProteins * 4 / totalCalsConsumed).toFloat()
-    val ratioF_any = (stats.totalFats * 9 / totalCalsConsumed).toFloat()
-    val ratioC_any = (stats.totalCarbs * 4 / totalCalsConsumed).toFloat()
+    val ratioPAny = (stats.totalProteins * 4 / totalCalsConsumed).toFloat()
+    val ratioFAny = (stats.totalFats * 9 / totalCalsConsumed).toFloat()
+    val ratioCAny = (stats.totalCarbs * 4 / totalCalsConsumed).toFloat()
 
-    val ratioP_target = (stats.totalProteins * 4 / targetCalories.coerceAtLeast(1.0)).toFloat()
-    val ratioF_target = (stats.totalFats * 9 / targetCalories.coerceAtLeast(1.0)).toFloat()
-    val ratioC_target = (stats.totalCarbs * 4 / targetCalories.coerceAtLeast(1.0)).toFloat()
+    val ratioPTarget = (stats.totalProteins * 4 / targetCalories.coerceAtLeast(1.0)).toFloat()
+    val ratioFTarget = (stats.totalFats * 9 / targetCalories.coerceAtLeast(1.0)).toFloat()
+    val ratioCTarget = (stats.totalCarbs * 4 / targetCalories.coerceAtLeast(1.0)).toFloat()
 
-    val finalRatioP = if (isCaloriesEnabled) ratioP_target else ratioP_any
-    val finalRatioF = if (isCaloriesEnabled) ratioF_target else ratioF_any
-    val finalRatioC = if (isCaloriesEnabled) ratioC_target else ratioC_any
-    
+    val finalRatioP = if (isCaloriesEnabled) ratioPTarget else ratioPAny
+    val finalRatioF = if (isCaloriesEnabled) ratioFTarget else ratioFAny
+    val finalRatioC = if (isCaloriesEnabled) ratioCTarget else ratioCAny
+
     val animatedP by animateFloatAsState(targetValue = finalRatioP, animationSpec = tween(1500), label = "P")
     val animatedF by animateFloatAsState(targetValue = finalRatioF, animationSpec = tween(1500), label = "F")
     val animatedC by animateFloatAsState(targetValue = finalRatioC, animationSpec = tween(1500), label = "C")
@@ -417,11 +526,11 @@ private fun NutritionCircle(
     Canvas(modifier = Modifier.fillMaxSize()) {
         val strokeWidth = 20.dp.toPx()
         val gap = 2.5f
-        
+
         val brushP = Brush.linearGradient(listOf(Color(0xFF00E676), Color(0xFF00C853)))
         val brushF = Brush.linearGradient(listOf(Color(0xFFFFD600), Color(0xFFFFAB00)))
         val brushC = Brush.linearGradient(listOf(Color(0xFF00B0FF), Color(0xFF0091EA)))
-        
+
         drawArc(
             brush = Brush.sweepGradient(listOf(Color(0xFFF0F0F0), Color(0xFFFAFAFA), Color(0xFFF0F0F0))),
             startAngle = -90f,
@@ -516,16 +625,14 @@ fun MacroNutrientItem(label: String, value: Double, color: Color) {
                 .fillMaxWidth(0.75f)
                 .height(7.dp)
                 .clip(CircleShape)
-                .background(
-                    Brush.linearGradient(listOf(color, color.copy(alpha = 0.7f)))
-                )
+                .background(Brush.linearGradient(listOf(color, color.copy(alpha = 0.7f))))
         )
     }
 }
 
 @Composable
 fun MealNutritionRow(meal: MenuItemDto, onClick: () -> Unit = {}) {
-    val mealTypeTitle = when(meal.meal_type) {
+    val mealTypeTitle = when (meal.meal_type) {
         "breakfast" -> "Завтрак"
         "lunch" -> "Обед"
         "dinner" -> "Ужин"
@@ -533,7 +640,9 @@ fun MealNutritionRow(meal: MenuItemDto, onClick: () -> Unit = {}) {
     }
 
     Surface(
-        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         shape = RoundedCornerShape(18.dp),
         color = Color.White,
         border = BorderStroke(1.dp, Color(0xFFF5F5F5))
@@ -605,4 +714,3 @@ fun MealNutritionRow(meal: MenuItemDto, onClick: () -> Unit = {}) {
         }
     }
 }
-

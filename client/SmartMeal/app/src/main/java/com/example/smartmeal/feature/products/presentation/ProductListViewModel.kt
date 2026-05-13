@@ -25,6 +25,11 @@ class ProductListViewModel(
     private val preferences: SetupPreferences
 ) : ViewModel() {
 
+    private data class QuickRangeSelection(
+        val days: Int,
+        val anchorDateKey: String?
+    )
+
     private data class RecipeCacheKey(
         val recipeId: Int,
         val servings: Int,
@@ -62,6 +67,7 @@ class ProductListViewModel(
     private var lastMenuItems: List<MenuItemDto> = emptyList()
     private var lastMenuSignature: String? = null
     private var pendingProductsRefresh = false
+    private var pendingQuickRangeSelection: QuickRangeSelection? = null
 
     var products by mutableStateOf<List<ProductUiModel>>(emptyList())
         private set
@@ -145,7 +151,20 @@ class ProductListViewModel(
         lastMenuItems = emptyList()
         lastMenuSignature = null
         pendingProductsRefresh = false
+        pendingQuickRangeSelection = null
         recipeCache.clear() // Clear the cache when the menu changes.
+    }
+
+    fun selectPresetRange(days: Int, anchorDate: Date?) {
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val anchorDateKey = anchorDate?.let(formatter::format)
+
+        if (availableDateKeys.isEmpty()) {
+            pendingQuickRangeSelection = QuickRangeSelection(days, anchorDateKey)
+            return
+        }
+
+        applyPresetRange(days = days, anchorDateKey = anchorDateKey)
     }
 
     fun selectDateRange(dateKey: String) {
@@ -379,8 +398,55 @@ class ProductListViewModel(
         
         val candidateEnd = selectedEndDateKey ?: globalEndKey
         selectedEndDateKey = if (candidateEnd in orderedDateKeys) candidateEnd else null
-        
+
+        pendingQuickRangeSelection?.let { selection ->
+            pendingQuickRangeSelection = null
+            applyPresetRange(days = selection.days, anchorDateKey = selection.anchorDateKey)
+            return
+        }
+
         updateDateRangeText()
+    }
+
+    private fun applyPresetRange(days: Int, anchorDateKey: String?) {
+        if (availableDateKeys.isEmpty()) {
+            pendingQuickRangeSelection = QuickRangeSelection(days, anchorDateKey)
+            return
+        }
+
+        val startKey = resolvePresetStartKey(anchorDateKey)
+        val endLimitKey = addDaysToApiKey(startKey, days - 1)
+        val endKey = availableDateKeys.lastOrNull { it in startKey..endLimitKey } ?: startKey
+
+        selectedStartDateKey = startKey
+        selectedEndDateKey = endKey.takeUnless { it == startKey }
+        updateDateRangeText()
+
+        val startDate = parseApiDate(startKey)
+        val endDate = selectedEndDateKey?.let { parseApiDate(it) }
+        if (startDate != null) {
+            com.example.smartmeal.data.manager.DateManager.notifyDateSelected(startDate, endDate)
+        }
+    }
+
+    private fun resolvePresetStartKey(anchorDateKey: String?): String {
+        anchorDateKey?.let { anchor ->
+            if (anchor in availableDateKeys) return anchor
+            availableDateKeys.firstOrNull { it >= anchor }?.let { return it }
+        }
+
+        val todayKey = currentApiDateKey()
+        return availableDateKeys.firstOrNull { it >= todayKey } ?: availableDateKeys.first()
+    }
+
+    private fun addDaysToApiKey(startKey: String, daysToAdd: Int): String {
+        val startDate = parseApiDate(startKey) ?: return startKey
+        return SimpleDateFormat("yyyy-MM-dd", Locale.US).format(
+            Calendar.getInstance().apply {
+                time = startDate
+                add(Calendar.DATE, maxOf(0, daysToAdd))
+            }.time
+        )
     }
 
     private fun updateDateRangeText() {

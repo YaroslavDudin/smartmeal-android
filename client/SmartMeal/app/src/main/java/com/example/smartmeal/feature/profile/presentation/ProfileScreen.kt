@@ -1,10 +1,14 @@
 package com.example.smartmeal.feature.profile.presentation
 
+import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,55 +16,73 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.MedicalServices
+import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.activity.compose.BackHandler
-import com.example.smartmeal.feature.home.data.api.UserFavoriteDto
-import com.example.smartmeal.ui.components.SmartMealText
-import com.example.smartmeal.ui.components.cards.MealCard
-import com.example.smartmeal.ui.theme.BgLightGray
-import com.example.smartmeal.ui.theme.BorderGray
-import com.example.smartmeal.ui.theme.HintGray
-import com.example.smartmeal.ui.theme.PrimaryGreen
-import java.text.SimpleDateFormat
-import java.util.Locale
-
 import coil.compose.SubcomposeAsyncImage
+import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.feedback.shimmerEffect
-import androidx.compose.ui.layout.ContentScale
+import com.example.smartmeal.ui.theme.BorderGray
+import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.TextBlack
 
-private val CardYellow = Color(0xFFF4F4F4)
 private val LogoutRed = Color(0xFFE53935)
 private val AvatarFallbackBg = Color(0xFFEEEEEE)
+private val ProfileHeroStart = Color(0xFFF6FBF2)
+private val ProfileHeroEnd = Color(0xFFE7F4DF)
+private val ProfileSurface = Color(0xFFF8FBF6)
+private val ProfileBorder = Color(0xFFE2ECD9)
+private val ProfileMutedText = Color(0xFF6E7A67)
 
-// Подэкраны внутри вкладки профиля
 enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME, CALORIES }
+
+private data class ProfileActionItem(
+    val title: String,
+    val subtitle: String,
+    val icon: ImageVector,
+    val onClick: () -> Unit
+)
 
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     onLogout: () -> Unit,
     onLogoutSuccess: () -> Unit,
-    onGoToProducts: (Boolean) -> Unit,      // переключает BottomNav → вкладка "Продукты"
+    onGoToProducts: (Boolean) -> Unit,
     onRecipeClick: (Int) -> Unit = {},
     onProfileUpdatedSuccessfully: () -> Unit = {}
 ) {
@@ -68,286 +90,213 @@ fun ProfileScreen(
     var subScreen by remember { mutableStateOf(ProfileSubScreen.NONE) }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
-    // Обработка системной кнопки "Назад": если не в корне, возвращаемся в корень профиля
     BackHandler(enabled = subScreen != ProfileSubScreen.NONE) {
         subScreen = ProfileSubScreen.NONE
     }
 
     when (subScreen) {
-        ProfileSubScreen.SETTINGS ->
-            SettingsScreen(
-                viewModel = viewModel,
-                onBack = { subScreen = ProfileSubScreen.NONE }
-            )
+        ProfileSubScreen.SETTINGS -> SettingsScreen(
+            viewModel = viewModel,
+            onBack = { subScreen = ProfileSubScreen.NONE }
+        )
 
-        ProfileSubScreen.ALLERGIES ->
-            AllergiesScreen(
-                viewModel = viewModel,
-                onBack = { subScreen = ProfileSubScreen.NONE }
-            )
+        ProfileSubScreen.ALLERGIES -> AllergiesScreen(
+            viewModel = viewModel,
+            onBack = { subScreen = ProfileSubScreen.NONE }
+        )
 
-        ProfileSubScreen.DIET ->
-            DietScreen(
-                viewModel = viewModel,
-                onBack = { subScreen = ProfileSubScreen.NONE }
-            )
+        ProfileSubScreen.DIET -> DietScreen(
+            viewModel = viewModel,
+            onBack = { subScreen = ProfileSubScreen.NONE }
+        )
 
-        ProfileSubScreen.FAVORITES ->
-            FavoritesScreen(
-                viewModel = viewModel,
-                onBack = { subScreen = ProfileSubScreen.NONE },
-                onRecipeClick = onRecipeClick
-            )
+        ProfileSubScreen.FAVORITES -> FavoritesScreen(
+            viewModel = viewModel,
+            onBack = { subScreen = ProfileSubScreen.NONE },
+            onRecipeClick = onRecipeClick
+        )
 
-        ProfileSubScreen.COOK_TIME ->
-            CookTimeSettingsScreen(
-                viewModel = viewModel,
-                onBack = { subScreen = ProfileSubScreen.NONE }
-            )
+        ProfileSubScreen.COOK_TIME -> CookTimeSettingsScreen(
+            viewModel = viewModel,
+            onBack = { subScreen = ProfileSubScreen.NONE }
+        )
 
-        ProfileSubScreen.CALORIES ->
-            CalorieSettingsScreen(
-                viewModel = viewModel,
-                onBack = { subScreen = ProfileSubScreen.NONE }
-            )
+        ProfileSubScreen.CALORIES -> CalorieSettingsScreen(
+            viewModel = viewModel,
+            onBack = { subScreen = ProfileSubScreen.NONE }
+        )
 
         ProfileSubScreen.NONE -> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(BgLightGray)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
-                    val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+            val configuration = LocalConfiguration.current
+            val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+            val columns = if (isLandscape) 3 else 2
 
-                    // ── Шапка ──────────────────────────────────────────────
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = if (isLandscape) 4.dp else 4.dp)
-                    ) {
-                        SmartMealText(
-                            text = "Профиль",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+            val allergySummary = if (state.currentAllergyNames.isNotEmpty()) {
+                state.currentAllergyNames.joinToString(", ")
+            } else {
+                "Нет ограничений"
+            }
+            val dietSummary = state.currentDietTypeName ?: "Не выбран"
+            val calorieSummary = if (viewModel.isCaloriesEnabled()) {
+                "${state.totalCalories} ккал в день"
+            } else {
+                "Гибкая цель"
+            }
 
-                    // ── Загрузка ───────────────────────────────────────────
-                    if (state.isLoading) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth().padding(if (isLandscape) 16.dp else 32.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(color = PrimaryGreen)
-                        }
-                    }
-
-                    // ── Аватар + имя + "Настройки >" ───────────────────────
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 8.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .clickable { subScreen = ProfileSubScreen.SETTINGS },
-                        color = CardYellow
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(if (isLandscape) 12.dp else 16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(if (isLandscape) 48.dp else 64.dp)
-                                    .clip(CircleShape)
-                                    .background(if (state.avatarUrl.isNullOrBlank()) AvatarFallbackBg else Color.White),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                if (!state.avatarUrl.isNullOrBlank()) {
-                                    SubcomposeAsyncImage(
-                                        model = state.avatarUrl,
-                                        loading = {
-                                            Box(modifier = Modifier.fillMaxSize().shimmerEffect())
-                                        },
-                                        contentDescription = "Аватар",
-                                        modifier = Modifier.fillMaxSize().clip(CircleShape),
-                                        contentScale = ContentScale.Crop
-                                    )
-                                } else {
-                                    SmartMealText(
-                                        text = state.userName.take(1).uppercase(),
-                                        fontSize = if (isLandscape) 18.sp else 24.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.Black
-                                    )
-                                }
-                            }
-                            Column(modifier = Modifier.weight(1f)) {
-                                SmartMealText(
-                                    text = state.userName,
-                                    fontSize = if (isLandscape) 18.sp else 20.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                if (state.userEmail.isNotBlank()) {
-                                    SmartMealText(
-                                        text = state.userEmail,
-                                        fontSize = 13.sp,
-                                        color = Color.Gray
-                                    )
-                                }
-                            }
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                contentDescription = null,
-                                tint = Color.LightGray
-                            )
-                        }
-                    }
-
-                    if (isLandscape) {
-                        // ЛАНДШАФТ: Группируем настройки в сетку
-                        ProfileSectionHeader("ПИТАНИЕ И НАСТРОЙКИ")
-                        
-                        val allergySub = if (state.currentAllergyNames.isNotEmpty())
-                            state.currentAllergyNames.joinToString(", ")
-                        else "Нет ограничений"
-                        val dietSub = state.currentDietTypeName ?: "Не выбран"
-                        val calorieSub = if (viewModel.isCaloriesEnabled()) 
-                            "${state.totalCalories} ккал/день" 
-                        else "Любая"
-
-                        val items = listOf(
-                            Triple("Мои аллергии", allergySub) { subScreen = ProfileSubScreen.ALLERGIES },
-                            Triple("Мой рацион", dietSub) { subScreen = ProfileSubScreen.DIET },
-                            Triple("Целевая калорийность", calorieSub) { subScreen = ProfileSubScreen.CALORIES },
-                            Triple("Время готовки", "Тайминги приемов пищи") { subScreen = ProfileSubScreen.COOK_TIME },
-                            Triple("Заказать продукты", "Сформировать корзину") { onGoToProducts(true) },
-                            Triple("Избранное", "Ваши рецепты") { 
-                                viewModel.loadFavorites()
-                                subScreen = ProfileSubScreen.FAVORITES 
-                            }
-                        )
-
-                        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                            items.chunked(2).forEach { rowItems ->
-                                Row(
-                                    modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                                ) {
-                                    rowItems.forEach { (title, sub, action) ->
-                                        Box(modifier = Modifier.weight(1f)) {
-                                            ProfileMenuCard(title = title, subtitle = sub, onClick = action)
-                                        }
-                                    }
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(10.dp))
-                            PortionStepperCard(
-                                count = state.pendingPortionSize,
-                                isSaving = state.isSaving,
-                                onDecrement = { viewModel.decrementPortion() },
-                                onIncrement = { viewModel.incrementPortion() },
-                                onSave = { viewModel.savePortion() }
-                            )
-                        }
+            val actionItems = listOf(
+                ProfileActionItem(
+                    title = "Аллергии",
+                    subtitle = allergySummary,
+                    icon = Icons.Default.MedicalServices,
+                    onClick = { subScreen = ProfileSubScreen.ALLERGIES }
+                ),
+                ProfileActionItem(
+                    title = "Рацион",
+                    subtitle = dietSummary,
+                    icon = Icons.Default.Restaurant,
+                    onClick = { subScreen = ProfileSubScreen.DIET }
+                ),
+                ProfileActionItem(
+                    title = "Калории",
+                    subtitle = calorieSummary,
+                    icon = Icons.Default.LocalFireDepartment,
+                    onClick = { subScreen = ProfileSubScreen.CALORIES }
+                ),
+                ProfileActionItem(
+                    title = "Время готовки",
+                    subtitle = "Тайминги приема пищи",
+                    icon = Icons.Default.AccessTime,
+                    onClick = { subScreen = ProfileSubScreen.COOK_TIME }
+                ),
+                ProfileActionItem(
+                    title = "Список покупок",
+                    subtitle = "Открыть корзину",
+                    icon = Icons.Default.ShoppingCart,
+                    onClick = { onGoToProducts(true) }
+                ),
+                ProfileActionItem(
+                    title = "Избранное",
+                    subtitle = if (state.favorites.isNotEmpty()) {
+                        "${state.favorites.size} рецептов"
                     } else {
-                        // ПОРТРЕТ: Обычный список
-                        ProfileSectionHeader("ПИТАНИЕ")
-                        
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            val allergySub = if (state.currentAllergyNames.isNotEmpty())
-                                state.currentAllergyNames.joinToString(", ")
-                            else "Нет ограничений"
-
-                            ProfileMenuCard(title = "Мои аллергии", subtitle = allergySub) {
-                                subScreen = ProfileSubScreen.ALLERGIES
-                            }
-
-                            val dietSub = state.currentDietTypeName ?: "Не выбран"
-                            ProfileMenuCard(title = "Мой рацион", subtitle = dietSub) {
-                                subScreen = ProfileSubScreen.DIET
-                            }
-
-                            val calorieSub = if (viewModel.isCaloriesEnabled()) 
-                                "${state.totalCalories} ккал/день" 
-                            else "Любая"
-                            
-                            ProfileMenuCard(title = "Целевая калорийность", subtitle = calorieSub) {
-                                subScreen = ProfileSubScreen.CALORIES
-                            }
-
-                            PortionStepperCard(
-                                count = state.pendingPortionSize,
-                                isSaving = state.isSaving,
-                                onDecrement = { viewModel.decrementPortion() },
-                                onIncrement = { viewModel.incrementPortion() },
-                                onSave = { viewModel.savePortion() }
-                            )
-                        }
-
-                        ProfileSectionHeader("НАСТРОЙКИ ПЛАНА")
-                        
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            ProfileMenuCard(title = "Время готовки", subtitle = "Настроить тайминги приемов пищи") { 
-                                subScreen = ProfileSubScreen.COOK_TIME
-                            }
-
-                            ProfileMenuCard(title = "Заказать продукты", subtitle = "Сформировать корзину в магазин") {
-                                onGoToProducts(true)
-                            }
-
-                            ProfileMenuCard(title = "Избранное", subtitle = "Ваши сохраненные рецепты") {
-                                viewModel.loadFavorites()
-                                subScreen = ProfileSubScreen.FAVORITES
-                            }
-                        }
+                        "Сохраненные блюда"
+                    },
+                    icon = Icons.Default.FavoriteBorder,
+                    onClick = {
+                        viewModel.loadFavorites()
+                        subScreen = ProfileSubScreen.FAVORITES
                     }
+                )
+            )
 
-                    Spacer(modifier = Modifier.height(40.dp))
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(CardYellow)
-                            .clickable { showLogoutDialog = true },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        SmartMealText(
-                            text = "Выйти из аккаунта",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = LogoutRed,
-                            modifier = Modifier.padding(vertical = 16.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+            ) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 28.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    item {
+                        ProfileHeroCard(
+                            userName = state.userName,
+                            userEmail = state.userEmail,
+                            avatarUrl = state.avatarUrl,
+                            favoritesCount = state.favorites.size,
+                            portionSize = state.pendingPortionSize,
+                            onClick = { subScreen = ProfileSubScreen.SETTINGS }
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(32.dp))
+                    item { ProfileSectionLabel(text = "Быстрые настройки") }
+
+                    items(actionItems.chunked(columns)) { rowItems ->
+                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            rowItems.forEach { item ->
+                                Box(modifier = Modifier.weight(1f)) {
+                                    ProfileActionCard(
+                                        title = item.title,
+                                        subtitle = item.subtitle,
+                                        icon = item.icon,
+                                        onClick = item.onClick
+                                    )
+                                }
+                            }
+                            repeat(columns - rowItems.size) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
+                    }
+
+                    item { ProfileSectionLabel(text = "Порции") }
+
+                    item {
+                        PortionStepperCard(
+                            count = state.pendingPortionSize,
+                            isSaving = state.isSaving,
+                            onDecrement = { viewModel.decrementPortion() },
+                            onIncrement = { viewModel.incrementPortion() },
+                            onSave = { viewModel.savePortion() }
+                        )
+                    }
+
+                    item { ProfileSectionLabel(text = "Аккаунт") }
+
+                    item {
+                        ProfileActionCard(
+                            title = "Настройки профиля",
+                            subtitle = "Фото, имя, дата рождения и личные параметры",
+                            icon = Icons.Default.Settings,
+                            onClick = { subScreen = ProfileSubScreen.SETTINGS }
+                        )
+                    }
+
+                    item {
+                        ProfileLogoutCard(onClick = { showLogoutDialog = true })
+                    }
                 }
 
-                // --- Диалоги ---
+                if (state.isLoading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.White.copy(alpha = 0.55f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Surface(
+                            shape = RoundedCornerShape(20.dp),
+                            color = Color.White,
+                            shadowElevation = 8.dp
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 18.dp, vertical = 14.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(22.dp),
+                                    strokeWidth = 2.5.dp,
+                                    color = PrimaryGreen
+                                )
+                                SmartMealText(
+                                    text = "Обновляем профиль",
+                                    color = TextBlack,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                        }
+                    }
+                }
+
                 if (state.error != null) {
-                    androidx.compose.material3.AlertDialog(
+                    AlertDialog(
                         onDismissRequest = { viewModel.clearError() },
                         title = { SmartMealText("Внимание", fontWeight = FontWeight.Bold) },
                         text = { SmartMealText(state.error!!) },
                         confirmButton = {
-                            androidx.compose.material3.TextButton(onClick = { viewModel.clearError() }) {
+                            TextButton(onClick = { viewModel.clearError() }) {
                                 SmartMealText("ОК", color = PrimaryGreen, fontWeight = FontWeight.Bold)
                             }
                         },
@@ -372,57 +321,197 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileSectionHeader(text: String) {
+private fun ProfileHeroCard(
+    userName: String,
+    userEmail: String,
+    avatarUrl: String?,
+    favoritesCount: Int,
+    portionSize: Int,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(30.dp),
+        color = Color.Transparent,
+        shadowElevation = 4.dp
+    ) {
+        Box(
+            modifier = Modifier
+                .background(Brush.linearGradient(listOf(ProfileHeroStart, ProfileHeroEnd)))
+                .padding(20.dp)
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(68.dp)
+                            .clip(CircleShape)
+                            .background(if (avatarUrl.isNullOrBlank()) AvatarFallbackBg else Color.White),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (!avatarUrl.isNullOrBlank()) {
+                            SubcomposeAsyncImage(
+                                model = avatarUrl,
+                                loading = { Box(modifier = Modifier.fillMaxSize().shimmerEffect()) },
+                                contentDescription = "Аватар",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            SmartMealText(
+                                text = userName.take(1).uppercase(),
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = TextBlack
+                            )
+                        }
+                    }
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        SmartMealText(
+                            text = "Профиль",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = ProfileMutedText,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        SmartMealText(
+                            text = userName,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextBlack
+                        )
+                        if (userEmail.isNotBlank()) {
+                            Spacer(modifier = Modifier.height(4.dp))
+                            SmartMealText(
+                                text = userEmail,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = ProfileMutedText
+                            )
+                        }
+                    }
+
+                    Surface(
+                        shape = CircleShape,
+                        color = Color.White.copy(alpha = 0.74f)
+                    ) {
+                        androidx.compose.material3.Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = PrimaryGreen,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    }
+                }
+
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    ProfileHeroPill(
+                        title = "Порции",
+                        value = "$portionSize ${personLabel(portionSize)}"
+                    )
+                    ProfileHeroPill(
+                        title = "Избранное",
+                        value = if (favoritesCount > 0) "$favoritesCount рецептов" else "Пока пусто"
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProfileHeroPill(
+    title: String,
+    value: String
+) {
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = Color.White.copy(alpha = 0.76f)
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            SmartMealText(
+                text = title,
+                style = MaterialTheme.typography.labelMedium,
+                color = ProfileMutedText,
+                fontWeight = FontWeight.Medium
+            )
+            SmartMealText(
+                text = value,
+                style = MaterialTheme.typography.labelLarge,
+                color = TextBlack,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProfileSectionLabel(text: String) {
     SmartMealText(
-        text = text,
+        text = text.uppercase(),
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
-        color = Color.Gray,
-        modifier = Modifier.padding(start = 24.dp, top = 16.dp, bottom = 8.dp),
+        color = ProfileMutedText,
+        modifier = Modifier.padding(start = 4.dp, top = 4.dp),
         letterSpacing = 0.5.sp
     )
 }
 
 @Composable
-private fun ProfileMenuCard(
+private fun ProfileActionCard(
     title: String,
-    subtitle: String? = null,
+    subtitle: String,
+    icon: ImageVector,
     onClick: () -> Unit
 ) {
-    Box(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(CardYellow)
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .clickable(onClick = onClick),
+        color = Color.White,
+        border = BorderStroke(1.dp, ProfileBorder),
+        shadowElevation = 2.dp
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Surface(
+                shape = RoundedCornerShape(14.dp),
+                color = ProfileSurface
+            ) {
+                androidx.compose.material3.Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = PrimaryGreen,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 SmartMealText(
                     text = title,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
+                    color = TextBlack
                 )
-                if (!subtitle.isNullOrBlank()) {
-                    SmartMealText(
-                        text = subtitle,
-                        fontSize = 13.sp,
-                        color = Color.Gray,
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
-                }
+                SmartMealText(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = ProfileMutedText
+                )
             }
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = Color.LightGray,
-                modifier = Modifier.size(24.dp)
-            )
         }
     }
 }
@@ -435,112 +524,195 @@ private fun PortionStepperCard(
     onIncrement: () -> Unit,
     onSave: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(CardYellow)
-            .padding(horizontal = 16.dp, vertical = 14.dp)
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        color = Color.White,
+        border = BorderStroke(1.dp, ProfileBorder),
+        shadowElevation = 2.dp
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(28.dp)
-                    .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.7f))
-                    .clickable { onDecrement() },
-                contentAlignment = Alignment.Center
-            ) {
-                SmartMealText(text = "−", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.DarkGray)
-            }
-
-            Spacer(modifier = Modifier.width(12.dp))
             SmartMealText(
-                text = "$count ${personLabel(count)}",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium
+                text = "Размер порции",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = TextBlack
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            SmartMealText(
+                text = "Подберите комфортное количество персон для генерации меню и списка продуктов.",
+                style = MaterialTheme.typography.bodySmall,
+                color = ProfileMutedText
+            )
 
-            Box(
-                modifier = Modifier
-                    .size(28.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFF4CAF50))
-                    .clickable { onIncrement() },
-                contentAlignment = Alignment.Center
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                SmartMealText(text = "+", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Surface(
+                    modifier = Modifier
+                        .size(42.dp)
+                        .clickable(onClick = onDecrement),
+                    shape = CircleShape,
+                    color = ProfileSurface
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        SmartMealText(text = "-", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = TextBlack)
+                    }
+                }
+
+                Surface(
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(18.dp),
+                    color = ProfileSurface
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        SmartMealText(
+                            text = "$count ${personLabel(count)}",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = TextBlack
+                        )
+                    }
+                }
+
+                Surface(
+                    modifier = Modifier
+                        .size(42.dp)
+                        .clickable(onClick = onIncrement),
+                    shape = CircleShape,
+                    color = PrimaryGreen
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        SmartMealText(text = "+", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    }
+                }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            Box(
+            Surface(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(if (isSaving) Color.LightGray else Color(0xFF4CAF50))
-                    .clickable(enabled = !isSaving) { onSave() }
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                    .fillMaxWidth()
+                    .clickable(enabled = !isSaving, onClick = onSave),
+                shape = RoundedCornerShape(16.dp),
+                color = if (isSaving) Color(0xFFE0E0E0) else PrimaryGreen
             ) {
-                SmartMealText(
-                    text = if (isSaving) "..." else "✓",
-                    fontSize = 13.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    SmartMealText(
+                        text = if (isSaving) "Сохраняем..." else "Сохранить",
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun LogoutConfirmDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
-    Dialog(onDismissRequest = onDismiss) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color.White)
-                .padding(24.dp)
+private fun ProfileLogoutCard(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(24.dp),
+        color = Color(0xFFFFF4F4),
+        border = BorderStroke(1.dp, Color(0xFFF5D0D0))
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            SmartMealText(
+                text = "Выйти из аккаунта",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = LogoutRed
+            )
+            SmartMealText(
+                text = "Выход не затронет сохраненные настройки на устройстве.",
+                style = MaterialTheme.typography.bodySmall,
+                color = LogoutRed.copy(alpha = 0.82f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun LogoutConfirmDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            color = Color.White
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 SmartMealText(
-                    text = "Вы уверены, что хотите\nвыйти из профиля?",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    text = "Выйти из профиля?",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = TextBlack
                 )
-
-                HorizontalDivider(color = BorderGray, thickness = 1.dp)
-
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Box(
-                        modifier = Modifier.weight(1f).clickable { onConfirm() }.padding(vertical = 12.dp),
-                        contentAlignment = Alignment.Center
+                Spacer(modifier = Modifier.height(10.dp))
+                SmartMealText(
+                    text = "Вы всегда сможете снова войти в аккаунт позже.",
+                    textAlign = TextAlign.Center,
+                    color = ProfileMutedText
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                androidx.compose.material3.HorizontalDivider(color = BorderGray)
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Surface(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable(onClick = onDismiss),
+                        shape = RoundedCornerShape(16.dp),
+                        color = ProfileSurface
                     ) {
-                        SmartMealText("Да", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = LogoutRed)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            SmartMealText("Отмена", fontWeight = FontWeight.SemiBold, color = TextBlack)
+                        }
                     }
 
-                    Box(
+                    Surface(
                         modifier = Modifier
-                            .size(width = 1.dp, height = 44.dp)
-                            .background(BorderGray)
-                            .align(Alignment.CenterVertically)
-                    )
-
-                    Box(
-                        modifier = Modifier.weight(1f).clickable { onDismiss() }.padding(vertical = 12.dp),
-                        contentAlignment = Alignment.Center
+                            .weight(1f)
+                            .clickable(onClick = onConfirm),
+                        shape = RoundedCornerShape(16.dp),
+                        color = LogoutRed
                     ) {
-                        SmartMealText("Нет", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            SmartMealText("Выйти", fontWeight = FontWeight.SemiBold, color = Color.White)
+                        }
                     }
                 }
             }

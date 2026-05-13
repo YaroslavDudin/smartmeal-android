@@ -10,54 +10,80 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.BorderStroke
 import com.example.smartmeal.feature.home.presentation.CustomPlan
 import com.example.smartmeal.feature.home.presentation.MyPlanSection
 import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.components.feedback.ProductListSkeleton
 import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
-import com.example.smartmeal.ui.theme.BgLightGray
-import com.example.smartmeal.ui.theme.BorderGray
-import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.TextBlack
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import android.util.Log
-import androidx.compose.foundation.clickable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.draw.clip
 import kotlinx.coroutines.launch
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
 
-import com.example.smartmeal.ui.components.feedback.ProductListSkeleton
-
-// Порядок категорий для отображения
 private val categoryOrder = listOf(
     "Фрукты и ягоды", "Овощи и фрукты", "Овощи, зелень и грибы",
     "Мясо и мясная продукция", "Рыба и морепродукты", "Мясо и рыба",
@@ -68,7 +94,12 @@ private val categoryOrder = listOf(
     "Напитки", "Зерновые", "Сладости", "Разное", "Покупки"
 )
 
-// Переносим модель данных сюда, так как она используется в UI
+private val ProductHeroStart = Color(0xFFF6FBF2)
+private val ProductHeroEnd = Color(0xFFE7F4DF)
+private val ProductSoftSurface = Color(0xFFF8FBF6)
+private val ProductBorder = Color(0xFFE2ECD9)
+private val ProductMutedText = Color(0xFF6E7A67)
+
 data class ProductUiModel(
     val id: String,
     val name: String,
@@ -104,8 +135,7 @@ fun ProductListScreen(
     scrollToCart: Boolean = false,
     onOrderModalConsumed: () -> Unit = {},
     onScrollToCartConsumed: () -> Unit = {}
-    ) {
-    val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+) {
     val availableDates = remember(products, customPlan) {
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val rawDateStrings = products
@@ -126,11 +156,9 @@ fun ProductListScreen(
     }
 
     val dateSelectorItems = remember(availableDates) { buildDateSelectorItems(availableDates) }
-
     val filteredProducts = remember(products, selectedStartDateKey, selectedEndDateKey) {
         filterProductsByDateRange(products, selectedStartDateKey, selectedEndDateKey)
     }
-
     val aggregatedProducts = remember(filteredProducts) {
         aggregateProductsForDisplay(filteredProducts)
     }
@@ -151,16 +179,15 @@ fun ProductListScreen(
     val allVisibleProductIds = remember(filteredProducts) {
         filteredProducts.flatMap { it.sourceIds }.distinct()
     }
-
     val allVisibleChecked = filteredProducts.isNotEmpty() && filteredProducts.all { it.checked }
+    val checkedCount = aggregatedProducts.count { it.checked }
+
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-
-    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+    val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
     val isSmallScreen = configuration.screenHeightDp < 640 || configuration.screenWidthDp < 360
 
-    // Вычисляем индекс начала секции "Покупки" для прокрутки
     val itemsBeforePurchased = remember(aggregatedProducts, isLandscape) {
         val regularCategoriesList = aggregatedProducts
             .filterNot { it.checked }
@@ -170,34 +197,25 @@ fun ProductListScreen(
                 categoryOrder.indexOf(categoryName).let { if (it == -1) Int.MAX_VALUE else it }
             }
 
-        var count = 3 // Title (0), Dates zone (1), Spacer (2)
+        var count = 3
         regularCategoriesList.forEach { (_, productsInCategory) ->
-            count += 1 // Header
-            count += if (isLandscape) {
-                (productsInCategory.size + 1) / 2
-            } else {
-                productsInCategory.size
-            }
+            count += 1
+            count += if (isLandscape) (productsInCategory.size + 1) / 2 else productsInCategory.size
         }
         count
     }
 
-    // Эффект автоматической прокрутки к корзине
-    androidx.compose.runtime.LaunchedEffect(scrollToCart, aggregatedProducts) {
+    LaunchedEffect(scrollToCart, aggregatedProducts) {
         if (scrollToCart) {
             if (aggregatedProducts.any { it.checked }) {
-                // Небольшая задержка, чтобы список успел отрисоваться
                 kotlinx.coroutines.delay(100)
-                listState.animateScrollToItem(
-                    index = itemsBeforePurchased,
-                    scrollOffset = -100
-                )
+                listState.animateScrollToItem(index = itemsBeforePurchased, scrollOffset = -100)
             }
             onScrollToCartConsumed()
         }
     }
 
-    val hasSingleAvailableDate = availableDates.size == 1    
+    val hasSingleAvailableDate = availableDates.size == 1
     val contentState: ProductContentState = when {
         isLoading -> ProductContentState.Loading
         hasNoAvailableDays -> ProductContentState.Expired
@@ -207,7 +225,7 @@ fun ProductListScreen(
     }
 
     var showOrderModal by remember { mutableStateOf(openOrderModal) }
-    androidx.compose.runtime.LaunchedEffect(openOrderModal) {
+    LaunchedEffect(openOrderModal) {
         if (openOrderModal) {
             showOrderModal = true
             onOrderModalConsumed()
@@ -221,134 +239,122 @@ fun ProductListScreen(
         )
     }
 
-    Box(modifier = modifier.fillMaxSize().background(BgLightGray)) {
-        // ЛАНДШАФТ: Используем единый LazyColumn для всего экрана
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.Transparent)
+    ) {
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = if (isLandscape) 70.dp else 100.dp)
+            contentPadding = PaddingValues(bottom = if (isLandscape) 88.dp else 116.dp)
         ) {
-            // --- Элегантная шапка ---
             item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = if (isSmallScreen) 16.dp else 24.dp,
-                            end = if (isSmallScreen) 16.dp else 24.dp,
-                            top = if (isSmallScreen) 0.dp else 4.dp,
-                            bottom = if (isSmallScreen) 4.dp else 12.dp
-                        )
-                ) {
-                    SmartMealText(
-                        text = "Продукты",
-                        fontSize = if (isSmallScreen) 20.sp else 24.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = TextBlack,
-                        modifier = Modifier.align(Alignment.Center).testTag("title"),
-                        textAlign = TextAlign.Center
-                    )
-                }
+                ProductHeroSection(
+                    modifier = Modifier.padding(
+                        start = if (isSmallScreen) 16.dp else 24.dp,
+                        end = if (isSmallScreen) 16.dp else 24.dp,
+                        top = if (isSmallScreen) 8.dp else 12.dp,
+                        bottom = if (isSmallScreen) 8.dp else 14.dp
+                    ),
+                    dateRangeText = dateRangeText,
+                    checkedCount = checkedCount,
+                    testTag = "title"
+                )
             }
 
-            // --- Зона Контекста (Даты + План) ---
             item {
-                Column(
+                Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = if (isSmallScreen) 8.dp else 16.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color.White)
-                        .padding(vertical = if (isSmallScreen) 2.dp else 4.dp)
+                        .padding(horizontal = if (isSmallScreen) 10.dp else 16.dp),
+                    shape = RoundedCornerShape(26.dp),
+                    color = Color.White,
+                    shadowElevation = 2.dp,
+                    border = BorderStroke(1.dp, ProductBorder)
                 ) {
-                    if (availableDates.isNotEmpty()) {
-                        if (hasSingleAvailableDate) {
-                            SmartMealText(
-                                text = formatSelectedDateLabel(availableDates.first()),
-                                fontSize = if (isSmallScreen) 14.sp else 15.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = PrimaryGreen,
-                                modifier = Modifier.padding(horizontal = 12.dp)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                    ) {
+                        if (availableDates.isNotEmpty()) {
+                            RangeContextRow(
+                                dateRangeText = dateRangeText,
+                                monthYearLabel = monthYearLabel
                             )
-                        } else {
-                            if (monthYearLabel.isNotBlank()) {
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            if (hasSingleAvailableDate) {
                                 SmartMealText(
-                                    text = monthYearLabel,
-                                    fontSize = if (isSmallScreen) 12.sp else 13.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Gray,
-                                    modifier = Modifier.padding(horizontal = 12.dp).padding(bottom = if (isSmallScreen) 2.dp else 4.dp)
+                                    text = formatSelectedDateLabel(availableDates.first()),
+                                    fontSize = if (isSmallScreen) 14.sp else 15.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = PrimaryGreen,
+                                    modifier = Modifier.padding(horizontal = 4.dp)
+                                )
+                            } else {
+                                DateSelector(
+                                    items = dateSelectorItems,
+                                    selectedStartId = selectedStartDateKey,
+                                    selectedEndId = selectedEndDateKey,
+                                    onItemClick = onDateSelected,
+                                    isSmallScreen = isSmallScreen
                                 )
                             }
-                            DateSelector(
-                                items = dateSelectorItems,
-                                selectedStartId = selectedStartDateKey,
-                                selectedEndId = selectedEndDateKey,
-                                onItemClick = onDateSelected,
-                                isSmallScreen = isSmallScreen
-                            )
                         }
-                    }
 
-                    if (customPlan != null && !isLoading) {
-                        if (availableDates.isNotEmpty()) {
-                            HorizontalDivider(
-                                modifier = Modifier.padding(vertical = if (isSmallScreen) 2.dp else 4.dp, horizontal = 12.dp),
-                                thickness = 1.dp,
-                                color = BgLightGray
+                        if (customPlan != null && !isLoading) {
+                            if (availableDates.isNotEmpty()) {
+                                Spacer(modifier = Modifier.height(12.dp))
+                                HorizontalDivider(color = ProductBorder)
+                                Spacer(modifier = Modifier.height(12.dp))
+                            }
+
+                            val apiFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                            SmartMealText(
+                                text = "Период плана",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = ProductMutedText,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                            MyPlanSection(
+                                customPlan = customPlan,
+                                selectedDate = selectedStartDateKey?.let { parseApiDate(it) },
+                                isRangeSelection = true,
+                                onDateSelectedFromPlan = { },
+                                onRangeSelected = { start, end ->
+                                    onDateSelected(apiFormatter.format(start))
+                                    onDateSelected(apiFormatter.format(end))
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag("home_my_plan")
                             )
                         }
-                        val apiFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                        MyPlanSection(
-                            customPlan = customPlan,
-                            selectedDate = selectedStartDateKey?.let { parseApiDate(it) },
-                            isRangeSelection = true,
-                            onDateSelectedFromPlan = { /* Не используется */ },
-                            onRangeSelected = { start, end ->
-                                onDateSelected(apiFormatter.format(start))
-                                onDateSelected(apiFormatter.format(end))
-                            },
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).testTag("home_my_plan")
-                        )
                     }
                 }
             }
 
-            item { Spacer(modifier = Modifier.height(if (isSmallScreen) 4.dp else 16.dp)) }
+            item { Spacer(modifier = Modifier.height(if (isSmallScreen) 8.dp else 16.dp)) }
 
-            // --- Контент списка ---
             when (contentState) {
-                ProductContentState.Loading -> {
-                    item {
-                        ProductListSkeleton()
-                    }
+                ProductContentState.Loading -> item { ProductListSkeleton() }
+                ProductContentState.Error -> item {
+                    ProductMessageCard(
+                        text = errorMessage.orEmpty(),
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
-                ProductContentState.Error -> {
-                    item {
-                        Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                            SmartMealText(text = errorMessage.orEmpty(), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
-                        }
-                    }
+                ProductContentState.Empty -> item {
+                    ProductMessageCard(
+                        text = "Список продуктов пока пуст",
+                        color = ProductMutedText
+                    )
                 }
-                ProductContentState.Empty -> {
-                    item {
-                        Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                            SmartMealText(text = "Список продуктов пуст", color = Color.Gray)
-                        }
-                    }
-                }
-                ProductContentState.Expired -> {
-                    item {
-                        Column(
-                            modifier = Modifier.fillMaxWidth().padding(24.dp).testTag("products_expired_state"),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            SmartMealText(text = "Доступные дни закончились", fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(onClick = onReselectPlan, modifier = Modifier.testTag("products_reselect_plan_button")) { SmartMealText("Выбрать заново") }
-                        }
-                    }
+                ProductContentState.Expired -> item {
+                    ProductExpiredStateCard(onReselectPlan = onReselectPlan)
                 }
                 ProductContentState.List -> {
                     productCategoryItems(
@@ -360,45 +366,36 @@ fun ProductListScreen(
             }
         }
 
-        // --- Панель Действий (Sticky Bottom Bar) ---
         if (contentState == ProductContentState.List) {
-            val checkedCount = aggregatedProducts.count { it.checked }
-            
-            // ПРОПОРЦИИ: Делаем панель "плавающей" и не на всю ширину
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(horizontal = if (isLandscape) 64.dp else 24.dp) // Больше отступы по бокам
-                    .padding(bottom = if (isLandscape) 12.dp else 16.dp) // Отступ от низа
+                    .padding(horizontal = if (isLandscape) 52.dp else 18.dp)
+                    .padding(bottom = if (isLandscape) 10.dp else 14.dp)
                     .navigationBarsPadding()
             ) {
                 Surface(
                     modifier = Modifier
-                        .widthIn(max = 500.dp) // Ограничиваем максимальную ширину
+                        .widthIn(max = 560.dp)
                         .fillMaxWidth(),
                     color = Color.White,
-                    shape = RoundedCornerShape(20.dp), // Сильнее закругляем
+                    shape = RoundedCornerShape(24.dp),
                     shadowElevation = 12.dp,
-                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
+                    border = BorderStroke(1.dp, ProductBorder)
                 ) {
                     Row(
-                        modifier = Modifier
-                            .padding(
-                                horizontal = 16.dp, 
-                                vertical = if (isLandscape) 6.dp else 10.dp 
-                            ),
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = if (isLandscape) 8.dp else 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Выбрать всё
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .testTag("product_select_all")
                                 .clickable(
-                                interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
-                                indication = null
-                            ) { onCheckAll(allVisibleProductIds, !allVisibleChecked) }
+                                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                                    indication = null
+                                ) { onCheckAll(allVisibleProductIds, !allVisibleChecked) }
                         ) {
                             Checkbox(
                                 checked = allVisibleChecked,
@@ -414,25 +411,18 @@ fun ProductListScreen(
                             )
                         }
 
-                        // Кнопка Корзина (Посередине)
                         if (checkedCount > 0) {
-                            androidx.compose.material3.TextButton(
+                            TextButton(
                                 onClick = {
                                     scope.launch {
                                         val targetIndex = itemsBeforePurchased
                                         val currentIndex = listState.firstVisibleItemIndex
-                                        
-                                        // Если расстояние до цели большое (> 25 элементов), 
-                                        // делаем мгновенный прыжок ближе к цели, чтобы анимация была плавной.
                                         if (kotlin.math.abs(targetIndex - currentIndex) > 25) {
-                                            listState.scrollToItem(if (targetIndex > currentIndex) targetIndex - 10 else targetIndex + 10)
+                                            listState.scrollToItem(
+                                                if (targetIndex > currentIndex) targetIndex - 10 else targetIndex + 10
+                                            )
                                         }
-
-                                        // Плавная доводка до цели
-                                        listState.animateScrollToItem(
-                                            index = targetIndex,
-                                            scrollOffset = -100
-                                        )
+                                        listState.animateScrollToItem(index = targetIndex, scrollOffset = -100)
                                     }
                                 },
                                 modifier = Modifier.height(if (isLandscape) 38.dp else 44.dp),
@@ -456,11 +446,10 @@ fun ProductListScreen(
                             }
                         }
 
-                        // Кнопка Заказать
-                        androidx.compose.material3.Button(
+                        Button(
                             onClick = { showOrderModal = true },
                             enabled = checkedCount > 0,
-                            shape = RoundedCornerShape(12.dp),
+                            shape = RoundedCornerShape(14.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = PrimaryGreen,
                                 contentColor = Color.White
@@ -498,21 +487,11 @@ fun ProductListScreen(
     }
 }
 
-private fun androidx.compose.foundation.lazy.LazyListScope.productCategoryItems(
+private fun LazyListScope.productCategoryItems(
     aggregatedProducts: List<ProductUiModel>,
     onProductChecked: (Collection<String>, Boolean) -> Unit,
     isLandscape: Boolean
 ) {
-    val categoryOrder = listOf(
-        "Фрукты и ягоды", "Овощи и фрукты", "Овощи, зелень и грибы",
-        "Мясо и мясная продукция", "Рыба и морепродукты", "Мясо и рыба",
-        "Молочные продукты и яйца", "Молочные продукты", "Бобовые",
-        "Консервированные продукты", "Пасты", "Бакалея и молочные продукты",
-        "Мука и мучные изделия", "Приправы и специи", "Специи", "Соусы",
-        "Орехи и семена", "Добавки для приготовления блюд", "Масла",
-        "Напитки", "Зерновые", "Сладости", "Разное", "Покупки"
-    )
-
     val regularCategories = aggregatedProducts
         .filterNot { it.checked }
         .groupBy { it.categoryName }
@@ -540,10 +519,9 @@ private fun androidx.compose.foundation.lazy.LazyListScope.productCategoryItems(
                 testTag = "category-$categoryName"
             )
         }
-        
+
         val items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) }
         if (isLandscape) {
-            // В ландшафте отображаем в две колонки
             items.chunked(2).forEach { rowItems ->
                 item {
                     Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
@@ -586,7 +564,7 @@ private fun androidx.compose.foundation.lazy.LazyListScope.productCategoryItems(
                     textStyle = MaterialTheme.typography.titleSmall
                 )
             }
-            
+
             val items = productsInCategory.sortedBy { it.name.lowercase(Locale("ru")) }
             if (isLandscape) {
                 items.chunked(2).forEach { rowItems ->
@@ -613,6 +591,125 @@ private fun androidx.compose.foundation.lazy.LazyListScope.productCategoryItems(
 }
 
 @Composable
+private fun ProductHeroSection(
+    modifier: Modifier = Modifier,
+    dateRangeText: String,
+    checkedCount: Int,
+    testTag: String
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(30.dp),
+        color = Color.Transparent,
+        shadowElevation = 4.dp
+    ) {
+        Box(
+            modifier = Modifier
+                .background(Brush.linearGradient(listOf(ProductHeroStart, ProductHeroEnd)))
+                .padding(horizontal = 20.dp, vertical = 18.dp)
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                SmartMealText(
+                    text = "Продукты",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = TextBlack,
+                    modifier = Modifier.testTag(testTag)
+                )
+                SmartMealText(
+                    text = "Соберите покупки по выбранному периоду и отмечайте уже купленное без лишних переходов.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = ProductMutedText
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    ProductInfoChip(
+                        icon = Icons.Default.DateRange,
+                        text = dateRangeText.ifBlank { "Выберите диапазон" }
+                    )
+                    ProductInfoChip(
+                        icon = Icons.Default.CheckCircle,
+                        text = if (checkedCount > 0) "$checkedCount выбрано" else "Покупки не отмечены"
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProductInfoChip(
+    icon: ImageVector,
+    text: String
+) {
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = Color.White.copy(alpha = 0.72f)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = PrimaryGreen,
+                modifier = Modifier.size(16.dp)
+            )
+            SmartMealText(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                color = TextBlack,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun RangeContextRow(
+    dateRangeText: String,
+    monthYearLabel: String
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            SmartMealText(
+                text = "Текущий диапазон",
+                style = MaterialTheme.typography.labelLarge,
+                color = ProductMutedText,
+                fontWeight = FontWeight.Medium
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            SmartMealText(
+                text = dateRangeText,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = TextBlack
+            )
+        }
+        if (monthYearLabel.isNotBlank()) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = ProductSoftSurface
+            ) {
+                SmartMealText(
+                    text = monthYearLabel,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = ProductMutedText,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun ProductCategoryHeader(
     title: String,
     icon: String,
@@ -627,9 +724,9 @@ private fun ProductCategoryHeader(
     Column(modifier = modifier.padding(start = 4.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             SmartMealText(
-                text = title.uppercase(), 
-                style = textStyle, 
-                color = if (title == "Покупки") Color.Gray else PrimaryGreen, 
+                text = title.uppercase(),
+                style = textStyle,
+                color = if (title == "Покупки") ProductMutedText else PrimaryGreen,
                 modifier = Modifier.testTag(testTag)
             )
             if (icon.isNotBlank()) {
@@ -671,11 +768,11 @@ internal fun filterProductsByDateRange(
 }
 
 internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<ProductUiModel> {
-    return products.groupBy { Triple(it.name.trim().lowercase(Locale("ru")), it.categoryName, it.checked) }.values.map { grouped ->
+    return products.groupBy {
+        Triple(it.name.trim().lowercase(Locale("ru")), it.categoryName, it.checked)
+    }.values.map { grouped ->
         val first = grouped.first()
-
         val isPiece = first.amount.contains("шт")
-
         val totalValue = grouped.sumOf { parseWeightToGrams(it.amount) }
 
         val finalAmountString = if (isPiece) {
@@ -694,24 +791,28 @@ internal fun aggregateProductsForDisplay(products: List<ProductUiModel>): List<P
 }
 
 @Composable
-private fun ProductRowItem(product: ProductUiModel, onProductChecked: (Collection<String>, Boolean) -> Unit) {
+private fun ProductRowItem(
+    product: ProductUiModel,
+    onProductChecked: (Collection<String>, Boolean) -> Unit
+) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .animateContentSize()
             .clickable { onProductChecked(product.sourceIds, !product.checked) },
-        shape = RoundedCornerShape(16.dp),
-        color = if (product.checked) Color(0xFFF4F9F4) else Color.White,
-        border = if (product.checked)
-            androidx.compose.foundation.BorderStroke(1.dp, PrimaryGreen)
-        else
-            androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFF0F0F0))
+        shape = RoundedCornerShape(18.dp),
+        color = if (product.checked) Color(0xFFF2FAF1) else Color.White,
+        border = if (product.checked) {
+            BorderStroke(1.dp, PrimaryGreen.copy(alpha = 0.65f))
+        } else {
+            BorderStroke(1.dp, ProductBorder.copy(alpha = 0.7f))
+        }
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 14.dp),
+                .padding(horizontal = 14.dp, vertical = 15.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -722,7 +823,11 @@ private fun ProductRowItem(product: ProductUiModel, onProductChecked: (Collectio
                     uncheckedColor = Color(0xFFE0E0E0)
                 )
             )
-            SmartMealText(text = product.icon, modifier = Modifier.padding(horizontal = 8.dp), fontSize = 20.sp)
+            SmartMealText(
+                text = product.icon,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                fontSize = 20.sp
+            )
             SmartMealText(
                 text = product.name,
                 fontSize = 16.sp,
@@ -732,16 +837,20 @@ private fun ProductRowItem(product: ProductUiModel, onProductChecked: (Collectio
             )
             SmartMealText(
                 text = product.amount,
-                fontSize = 15.sp,
-                color = if (product.checked) PrimaryGreen else Color.Gray,
-                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp,
+                color = if (product.checked) PrimaryGreen else ProductMutedText,
+                fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
     }
 }
 
-private fun formatMonthYearForSelector(date: Date): String = SimpleDateFormat("LLLL yyyy", Locale("ru")).format(date).replaceFirstChar { it.titlecase(Locale("ru")) }
+private fun formatMonthYearForSelector(date: Date): String {
+    return SimpleDateFormat("LLLL yyyy", Locale("ru"))
+        .format(date)
+        .replaceFirstChar { it.titlecase(Locale("ru")) }
+}
 
 internal fun formatMonthYearRangeForSelector(startDate: Date, endDate: Date): String {
     val startMonth = SimpleDateFormat("LLLL", Locale("ru")).format(startDate).replaceFirstChar { it.titlecase(Locale("ru")) }
@@ -752,6 +861,74 @@ internal fun formatMonthYearRangeForSelector(startDate: Date, endDate: Date): St
         startMonth == endMonth && startYear == endYear -> "$startMonth $startYear"
         startYear == endYear -> "$startMonth - $endMonth $startYear"
         else -> "$startMonth $startYear - $endMonth $endYear"
+    }
+}
+
+@Composable
+private fun ProductMessageCard(
+    text: String,
+    color: Color
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(24.dp),
+        color = Color.White,
+        border = BorderStroke(1.dp, ProductBorder)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            SmartMealText(text = text, color = color, textAlign = TextAlign.Center)
+        }
+    }
+}
+
+@Composable
+private fun ProductExpiredStateCard(
+    onReselectPlan: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .testTag("products_expired_state"),
+        shape = RoundedCornerShape(26.dp),
+        color = Color.White,
+        border = BorderStroke(1.dp, ProductBorder)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 26.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SmartMealText(
+                text = "Доступные дни закончились",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            SmartMealText(
+                text = "Выберите новый период питания, чтобы снова собрать актуальный список продуктов.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = ProductMutedText,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = onReselectPlan,
+                modifier = Modifier.testTag("products_reselect_plan_button"),
+                shape = RoundedCornerShape(14.dp)
+            ) {
+                SmartMealText("Выбрать заново", color = Color.White, fontWeight = FontWeight.SemiBold)
+            }
+        }
     }
 }
 
@@ -812,7 +989,6 @@ private fun OrderModalBottomSheet(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(16.dp))
                             .clickable {
                                 viewModel.exportCheckedProducts(
                                     onSuccess = { txtContent ->
@@ -831,52 +1007,19 @@ private fun OrderModalBottomSheet(
                             contentDescription = store.name,
                             modifier = Modifier
                                 .size(64.dp)
-                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color.White, RoundedCornerShape(18.dp))
+                                .padding(6.dp)
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         SmartMealText(
                             text = store.name,
                             style = MaterialTheme.typography.bodyMedium,
                             color = TextBlack,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
-}
-
-@Composable
-private fun PdfPreviewDialog(
-    storeName: String,
-    products: List<ProductUiModel>,
-    onDismiss: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { SmartMealText("Список для $storeName (PDF Preview)") },
-        text = {
-            LazyColumn {
-                items(products, key = { it.id }) { product ->
-                    SmartMealText(
-                        text = "• ${product.name} - ${product.amount}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(vertical = 2.dp)
-                    )
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                SmartMealText("Скачать", color = PrimaryGreen)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                SmartMealText("Закрыть", color = Color.Gray)
-            }
-        }
-    )
 }
