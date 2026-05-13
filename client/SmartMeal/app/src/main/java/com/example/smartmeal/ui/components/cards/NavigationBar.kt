@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.theme.PrimaryGreen
 
-private val NavigationContainer = Color(0xFFF8FBF5)
-private val NavigationBorder = Color(0xFFE2ECD9)
-private val NavigationMuted = Color(0xFF7C8875)
+private val NavigationContainer = Color.White
+private val NavigationBorder = Color(0xFFE0E0E0)
+private val NavigationMuted = Color(0xFF757575)
 
 @Composable
 fun BottomNavigationBar(

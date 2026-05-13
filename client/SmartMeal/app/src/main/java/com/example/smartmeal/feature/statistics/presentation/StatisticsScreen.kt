@@ -70,10 +70,10 @@ import java.util.Date
 import java.util.Locale
 import kotlinx.coroutines.launch
 
-private val StatisticsHeroStart = Color(0xFFF6FBF2)
-private val StatisticsHeroEnd = Color(0xFFE7F4DF)
-private val StatisticsBorder = Color(0xFFE2ECD9)
-private val StatisticsMutedText = Color(0xFF6E7A67)
+private val StatisticsHeroStart = Color(0xFFFFFFFF)
+private val StatisticsHeroEnd = Color(0xFFF0F0F0)
+private val StatisticsBorder = Color(0xFFE0E0E0)
+private val StatisticsMutedText = Color(0xFF757575)
 
 @Composable
 fun StatisticsScreen(

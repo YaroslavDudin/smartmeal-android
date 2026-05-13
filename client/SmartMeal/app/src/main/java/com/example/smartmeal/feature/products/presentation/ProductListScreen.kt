@@ -94,11 +94,11 @@ private val categoryOrder = listOf(
     "Напитки", "Зерновые", "Сладости", "Разное", "Покупки"
 )
 
-private val ProductHeroStart = Color(0xFFF6FBF2)
-private val ProductHeroEnd = Color(0xFFE7F4DF)
-private val ProductSoftSurface = Color(0xFFF8FBF6)
-private val ProductBorder = Color(0xFFE2ECD9)
-private val ProductMutedText = Color(0xFF6E7A67)
+private val ProductHeroStart = Color(0xFFFFFFFF)
+private val ProductHeroEnd = Color(0xFFF0F0F0)
+private val ProductSoftSurface = Color(0xFFF8F8F8)
+private val ProductBorder = Color(0xFFE0E0E0)
+private val ProductMutedText = Color(0xFF757575)
 
 data class ProductUiModel(
     val id: String,

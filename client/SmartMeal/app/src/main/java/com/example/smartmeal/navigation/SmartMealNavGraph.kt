@@ -61,20 +61,20 @@ private data class NavigationBackgroundPalette(
 )
 
 private val AuthBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFFBFCFA),
-    end = Color(0xFFF0F6EA)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 private val SetupBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFF7FBF3),
-    end = Color(0xFFE9F3E1)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 private val AppBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFF5FAF1),
-    end = Color(0xFFEAF3E3)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 private val DetailBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFF8FAF7),
-    end = Color(0xFFEDF1EC)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 
 private val routeEnterTransition: AnimatedContentTransitionScope<androidx.navigation.NavBackStackEntry>.() -> EnterTransition = {

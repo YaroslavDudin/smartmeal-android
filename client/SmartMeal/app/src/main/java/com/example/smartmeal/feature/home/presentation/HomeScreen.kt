@@ -109,27 +109,27 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-private val ModalBackground = Color(0xFFF4F4F4)
-private val HomeHeroStart = Color(0xFFF6FBF2)
-private val HomeHeroEnd = Color(0xFFE6F4DE)
-private val HomeCardBorder = Color(0xFFE4ECDD)
-private val HomeMutedText = Color(0xFF66725F)
-private val HomeSoftSurface = Color(0xFFF9FBF7)
+private val ModalBackground = Color(0xFFF5F5F5)
+private val HomeHeroStart = Color(0xFFFFFFFF)
+private val HomeHeroEnd = Color(0xFFF0F0F0)
+private val HomeCardBorder = Color(0xFFE0E0E0)
+private val HomeMutedText = Color(0xFF757575)
+private val HomeSoftSurface = Color(0xFFF8F8F8)
 private val HomePageBackground = PageBackgroundPalette(
-    start = Color(0xFFF4FAEF),
-    end = Color(0xFFEAF4E1)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 private val ProductsPageBackground = PageBackgroundPalette(
-    start = Color(0xFFF8FBF6),
-    end = Color(0xFFEEF5E9)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 private val StatisticsPageBackground = PageBackgroundPalette(
-    start = Color(0xFFF6FAF7),
-    end = Color(0xFFE8F1EC)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 private val ProfilePageBackground = PageBackgroundPalette(
-    start = Color(0xFFF7F9F7),
-    end = Color(0xFFECEFEA)
+    start = Color(0xFFFFFFFF),
+    end = Color(0xFFFBFBFB)
 )
 
 private data class PageBackgroundPalette(
@@ -460,11 +460,13 @@ fun HomeScreen(
     }
 
     if (showCartPeriodSheet) {
+        val planDuration = resolvePlanDays(visibleCustomPlan)
         ShoppingRangeBottomSheet(
             anchorDate = uiState.selectedDate ?: visibleCustomPlan?.startDate,
             maxAvailableDate = cartPreviewEndDate,
             onDismiss = { showCartPeriodSheet = false },
-            onPresetSelected = { preset -> openProductsForPreset(preset) }
+            onPresetSelected = { preset -> openProductsForPreset(preset) },
+            planDurationDays = planDuration
         )
     }
 }
@@ -732,19 +734,6 @@ private fun HomeHeroSection(
 
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         FilledTonalIconButton(
-                            onClick = onSearchClick,
-                            colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                containerColor = Color.White.copy(alpha = 0.82f),
-                                contentColor = MaterialTheme.colorScheme.onSurface
-                            )
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "Поиск"
-                            )
-                        }
-
-                        FilledTonalIconButton(
                             onClick = onCartClick,
                             colors = IconButtonDefaults.filledTonalIconButtonColors(
                                 containerColor = PrimaryGreen,
@@ -950,9 +939,8 @@ fun MealSection(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Surface(
                 shape = RoundedCornerShape(18.dp),
@@ -1071,8 +1059,8 @@ private fun ReplaceMealConfirmDialog(
                         .testTag("home_replace_cancel_button"),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFEDEDED),
-                        contentColor = Color.Black
+                        containerColor = Color(0xFFE53935),
+                        contentColor = Color.White
                     )
                 ) {
                     SmartMealText("Отменить", fontWeight = FontWeight.SemiBold)
@@ -1088,9 +1076,20 @@ private fun ShoppingRangeBottomSheet(
     anchorDate: Date?,
     maxAvailableDate: Date?,
     onDismiss: () -> Unit,
-    onPresetSelected: (ShoppingPeriodPreset) -> Unit
+    onPresetSelected: (ShoppingPeriodPreset) -> Unit,
+    planDurationDays: Long
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val availablePresets = remember(planDurationDays) {
+        ShoppingPeriodPreset.entries.filter { preset ->
+            // Всегда показываем "На 1 день"
+            if (preset == ShoppingPeriodPreset.DAY) return@filter true
+            
+            // Показываем остальные только если они помещаются в текущий план
+            planDurationDays >= preset.days
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -1116,7 +1115,7 @@ private fun ShoppingRangeBottomSheet(
             )
             Spacer(modifier = Modifier.height(4.dp))
 
-            ShoppingPeriodPreset.entries.forEach { preset ->
+            availablePresets.forEach { preset ->
                 ShoppingPresetCard(
                     preset = preset,
                     preview = buildShoppingPreview(
