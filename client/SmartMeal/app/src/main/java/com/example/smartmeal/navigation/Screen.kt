@@ -14,6 +14,7 @@ sealed class Screen(val route: String) {
     }
     object Home : Screen("home_screen")
     object RecipeList : Screen("recipe_list")
+    object ServiceUnavailable : Screen("service_unavailable")
 
     // Флоу первоначальной настройки профиля (показывается после авторизации, если профиль не настроен)
     object SetupIntro : Screen("setup_intro")

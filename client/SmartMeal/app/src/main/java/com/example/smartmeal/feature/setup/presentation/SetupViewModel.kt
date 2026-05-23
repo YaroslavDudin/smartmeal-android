@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import java.util.Calendar
 
 enum class PeriodType(val apiValue: String, val label: String) {
@@ -65,13 +66,21 @@ class SetupViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isCheckingUser = true) }
             try {
-                val userDeferred = async { api.getCurrentUser() }
-                val dietTypesDeferred = async { api.getDietTypes() }
-                val allergiesDeferred = async { api.getAllergies() }
+                val (userResult, dietTypesResult, allergiesResult) = supervisorScope {
+                    val userDeferred = async { runCatching { api.getCurrentUser() } }
+                    val dietTypesDeferred = async { runCatching { api.getDietTypes() } }
+                    val allergiesDeferred = async { runCatching { api.getAllergies() } }
 
-                val userResponse = userDeferred.await()
-                val dietTypesResponse = dietTypesDeferred.await()
-                val allergiesResponse = allergiesDeferred.await()
+                    Triple(
+                        userDeferred.await(),
+                        dietTypesDeferred.await(),
+                        allergiesDeferred.await()
+                    )
+                }
+
+                val userResponse = userResult.getOrThrow()
+                val dietTypesResponse = dietTypesResult.getOrThrow()
+                val allergiesResponse = allergiesResult.getOrThrow()
 
                 val user = userResponse.body()
                 if (user != null) {

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -252,13 +253,21 @@ class ProfileViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
             try {
-                val userDeferred = async { api.getCurrentUser() }
-                val dietsDeferred = async { api.getDietTypes() }
-                val allergiesDeferred = async { api.getAllergies() }
+                val (userResult, dietsResult, allergiesResult) = supervisorScope {
+                    val userDeferred = async { runCatching { api.getCurrentUser() } }
+                    val dietsDeferred = async { runCatching { api.getDietTypes() } }
+                    val allergiesDeferred = async { runCatching { api.getAllergies() } }
 
-                val userResp = userDeferred.await()
-                val dietsResp = dietsDeferred.await()
-                val allergiesResp = allergiesDeferred.await()
+                    Triple(
+                        userDeferred.await(),
+                        dietsDeferred.await(),
+                        allergiesDeferred.await()
+                    )
+                }
+
+                val userResp = userResult.getOrThrow()
+                val dietsResp = dietsResult.getOrThrow()
+                val allergiesResp = allergiesResult.getOrThrow()
 
                 val user = userResp.body()
                 val diets = if (dietsResp.isSuccessful) dietsResp.body() ?: emptyList() else emptyList()

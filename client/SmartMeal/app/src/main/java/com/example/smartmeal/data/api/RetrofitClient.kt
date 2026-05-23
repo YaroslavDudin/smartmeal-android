@@ -3,7 +3,9 @@ package com.example.smartmeal.data.api
 import com.example.smartmeal.data.local.TokenManager
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.data.models.RefreshRequest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -13,6 +15,8 @@ import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     private const val BASE_URL = "http://10.0.2.2:8000/"
@@ -26,12 +30,26 @@ object RetrofitClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
+    private val serviceAvailabilityInterceptor = Interceptor { chain ->
+        try {
+            val response = chain.proceed(chain.request())
+            if (response.code >= 500) {
+                ServiceAvailabilityMonitor.reportUnavailable()
+            }
+            response
+        } catch (e: IOException) {
+            ServiceAvailabilityMonitor.reportUnavailable()
+            throw e
+        }
+    }
+
     private val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
-            .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-            .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-            .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(logging)
+            .addInterceptor(serviceAvailabilityInterceptor)
             .addInterceptor { chain ->
                 val original = chain.request()
                 // Не добавляем токен к запросам авторизации (login/register/refresh)
@@ -93,11 +111,15 @@ object RetrofitClient {
                                 .header("Authorization", "Bearer $newAccess")
                                 .build()
                         } else {
+                            if (refreshResponse.code() >= 500) {
+                                ServiceAvailabilityMonitor.reportUnavailable()
+                            }
                             // Если сервер ответил 401/400/500 — токен мертв или пользователь удален
                             manager.clearTokens()
                             null
                         }
                     } catch (e: Exception) {
+                        ServiceAvailabilityMonitor.reportUnavailable()
                         // Ошибка сети или серьезный сбой сервера — сбрасываем всё
                         manager.clearTokens()
                         null
@@ -120,5 +142,32 @@ object RetrofitClient {
     fun <T> createService(serviceClass: Class<T>, manager: TokenManager? = null): T {
         manager?.let { init(it) }
         return createService(serviceClass)
+    }
+
+    suspend fun checkServerAvailable(): Boolean = withContext(Dispatchers.IO) {
+        val request = Request.Builder()
+            .url(BASE_URL)
+            .get()
+            .build()
+        val checkClient = OkHttpClient.Builder()
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(5, TimeUnit.SECONDS)
+            .writeTimeout(5, TimeUnit.SECONDS)
+            .build()
+
+        try {
+            checkClient.newCall(request).execute().use { response ->
+                val isAvailable = response.code < 500
+                if (isAvailable) {
+                    ServiceAvailabilityMonitor.reportAvailable()
+                } else {
+                    ServiceAvailabilityMonitor.reportUnavailable()
+                }
+                isAvailable
+            }
+        } catch (e: IOException) {
+            ServiceAvailabilityMonitor.reportUnavailable()
+            false
+        }
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,6 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.smartmeal.data.api.RetrofitClient
+import com.example.smartmeal.data.api.ServiceAvailabilityMonitor
 import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.presentation.AuthViewModel
@@ -41,6 +43,7 @@ import com.example.smartmeal.feature.recipes.data.api.RecipeApi
 import com.example.smartmeal.feature.recipes.presentation.RecipeDetailScreen
 import com.example.smartmeal.feature.recipes.presentation.RecipeDetailViewModel
 import com.example.smartmeal.feature.sandbox.TestScreen
+import com.example.smartmeal.feature.service_unavailable.presentation.ServiceUnavailableScreen
 import com.example.smartmeal.feature.setup.data.api.SetupApi
 import com.example.smartmeal.feature.setup.presentation.SetupIntroScreen
 import com.example.smartmeal.feature.setup.presentation.SetupStep1Screen
@@ -143,6 +146,8 @@ fun SmartMealNavGraph(navController: NavHostController) {
         RetrofitClient.init(tokenManager)
     }
 
+    val isServiceUnavailable by ServiceAvailabilityMonitor.isUnavailable.collectAsState()
+
     val authApi = remember { RetrofitClient.createService(AuthApi::class.java) }
     val setupApi = remember { RetrofitClient.createService(SetupApi::class.java) }
     val recipeApi = remember { RetrofitClient.createService(RecipeApi::class.java) }
@@ -170,6 +175,15 @@ fun SmartMealNavGraph(navController: NavHostController) {
     }
 
     val currentRoute = backStackEntry?.destination?.route.orEmpty()
+
+    LaunchedEffect(isServiceUnavailable, currentRoute) {
+        if (isServiceUnavailable && currentRoute != Screen.ServiceUnavailable.route) {
+            navController.navigate(Screen.ServiceUnavailable.route) {
+                launchSingleTop = true
+            }
+        }
+    }
+
     val backgroundPalette = remember(currentRoute) {
         when {
             currentRoute == Screen.Welcome.route ||
@@ -234,6 +248,21 @@ fun SmartMealNavGraph(navController: NavHostController) {
 
         composable(route = Screen.Test.route) {
             TestScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(route = Screen.ServiceUnavailable.route) {
+            ServiceUnavailableScreen(
+                onRefresh = { RetrofitClient.checkServerAvailable() },
+                onRecovered = {
+                    val restoredPreviousScreen = navController.popBackStack()
+                    if (!restoredPreviousScreen) {
+                        navController.navigate(startDestination) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                }
+            )
         }
 
         composable(route = Screen.AuthForm.route) {

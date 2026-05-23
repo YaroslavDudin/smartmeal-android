@@ -270,12 +270,14 @@ class ProductListViewModel(
                 if (missingKeys.isNotEmpty()) {
                     val deferred = missingKeys.map { cacheKey ->
                         async {
-                            val response = menuApi.getRecipe(cacheKey.recipeId, servings = cacheKey.servings)
-                            if (response.isSuccessful && response.body() != null) {
-                                cacheKey to response.body()!!
-                            } else {
-                                null
-                            }
+                            runCatching {
+                                val response = menuApi.getRecipe(cacheKey.recipeId, servings = cacheKey.servings)
+                                if (response.isSuccessful && response.body() != null) {
+                                    cacheKey to response.body()!!
+                                } else {
+                                    null
+                                }
+                            }.getOrNull()
                         }
                     }
                     deferred.awaitAll().filterNotNull().forEach { (cacheKey, recipe) ->
