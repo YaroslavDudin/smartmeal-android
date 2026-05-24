@@ -175,7 +175,7 @@ fun OrdersScreen(
 
             if (isExporting) {
                 Spacer(modifier = Modifier.height(32.dp))
-                CircularProgressIndicator(color = Color(0xFF4CAF50))
+                CircularProgressIndicator(color = Color(0xFFE85D3F))
             }
 
             Spacer(modifier = Modifier.height(64.dp))

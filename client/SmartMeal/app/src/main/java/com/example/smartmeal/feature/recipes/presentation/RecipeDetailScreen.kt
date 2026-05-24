@@ -70,7 +70,7 @@ val LightCream = Color(0xFFFAFAFA)
 val NutritionBgColor = Color(0xFFFBE9A6)
 val IngredientRowDark = Color(0xFFE8D385)
 val IngredientRowLight = Color(0xFFF3E49B)
-val TextGreen = Color(0xFF388E3C)
+val TextGreen = Color(0xFFC7462E)
 val TextGray = Color(0xFF757575)
 
 @OptIn(ExperimentalMaterial3Api::class)

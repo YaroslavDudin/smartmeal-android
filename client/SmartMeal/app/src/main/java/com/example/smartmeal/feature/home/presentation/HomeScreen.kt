@@ -1042,7 +1042,7 @@ private fun ReplaceMealConfirmDialog(
                         .testTag("home_replace_confirm_button"),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryGreen,
+                        containerColor = Color(0xFF4CAF50),
                         contentColor = Color.White
                     )
                 ) {

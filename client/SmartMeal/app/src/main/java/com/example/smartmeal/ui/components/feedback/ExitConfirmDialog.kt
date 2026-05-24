@@ -86,7 +86,11 @@ fun ExitConfirmDialog(
                         shape = RoundedCornerShape(14.dp),
                         border = androidx.compose.foundation.BorderStroke(
                             1.dp, 
-                            MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                            Color(0xFFF4F4F4)
+                        ),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = Color(0xFFF4F4F4),
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     ) {
                         SmartMealText(
