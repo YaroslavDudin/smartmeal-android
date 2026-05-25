@@ -33,12 +33,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.smartmeal.data.api.RetrofitClient
 import com.example.smartmeal.data.api.ServiceAvailabilityMonitor
+import com.example.smartmeal.data.local.IntroPreferences
 import com.example.smartmeal.data.local.SetupPreferences
 import com.example.smartmeal.feature.auth.data.api.AuthApi
 import com.example.smartmeal.feature.auth.presentation.AuthViewModel
 import com.example.smartmeal.feature.auth.presentation.LoginRegisterForm
 import com.example.smartmeal.feature.auth.presentation.WelcomeScreen
 import com.example.smartmeal.feature.home.presentation.HomeScreen
+import com.example.smartmeal.feature.intro.presentation.IntroScreen
 import com.example.smartmeal.feature.recipes.data.api.RecipeApi
 import com.example.smartmeal.feature.recipes.presentation.RecipeDetailScreen
 import com.example.smartmeal.feature.recipes.presentation.RecipeDetailViewModel
@@ -152,6 +154,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
     val setupApi = remember { RetrofitClient.createService(SetupApi::class.java) }
     val recipeApi = remember { RetrofitClient.createService(RecipeApi::class.java) }
     val menuApi = remember { RetrofitClient.createService(com.example.smartmeal.feature.home.data.api.MenuApi::class.java) }
+    val introPreferences = remember { IntroPreferences(context) }
     val setupPreferences = remember { SetupPreferences(context) }
 
     val authViewModel: AuthViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
@@ -168,10 +171,10 @@ fun SmartMealNavGraph(navController: NavHostController) {
         }
     })
 
-    val startDestination = if (tokenManager.getAccessToken() != null) {
-        Screen.SetupIntro.route
-    } else {
-        Screen.Welcome.route
+    val startDestination = when {
+        tokenManager.getAccessToken() != null -> Screen.SetupIntro.route
+        !introPreferences.isIntroShown() -> Screen.Intro.route
+        else -> Screen.Welcome.route
     }
 
     val currentRoute = backStackEntry?.destination?.route.orEmpty()
@@ -186,6 +189,7 @@ fun SmartMealNavGraph(navController: NavHostController) {
 
     val backgroundPalette = remember(currentRoute) {
         when {
+            currentRoute == Screen.Intro.route ||
             currentRoute == Screen.Welcome.route ||
                 currentRoute == Screen.AuthForm.route ||
                 currentRoute == Screen.ForgotPassword.route ||
@@ -240,6 +244,18 @@ fun SmartMealNavGraph(navController: NavHostController) {
         }
 
         // Зона авторизации
+        composable(route = Screen.Intro.route) {
+            IntroScreen(
+                onFinish = {
+                    introPreferences.markIntroShown()
+                    navController.navigate(Screen.Welcome.route) {
+                        popUpTo(Screen.Intro.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
         composable(route = Screen.Welcome.route) {
             WelcomeScreen(
                 onNavigateNext = { navController.navigate(Screen.AuthForm.route) }

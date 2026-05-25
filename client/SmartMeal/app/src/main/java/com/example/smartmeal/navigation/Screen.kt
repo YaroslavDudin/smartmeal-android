@@ -5,6 +5,7 @@ package com.example.smartmeal.ui.navigation
  * Это защищает от опечаток в строках при вызове навигации.
  */
 sealed class Screen(val route: String) {
+    object Intro : Screen("intro_screen")
     object Welcome : Screen("welcome_screen")
     object Test : Screen("test_screen")
     object AuthForm : Screen("login_register_form")
