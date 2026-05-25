@@ -170,9 +170,7 @@ fun IntroScreen(
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = heroHeight)
-                    .weight(1f, fill = false),
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.Top
             ) { page ->
                 IntroPageContent(
