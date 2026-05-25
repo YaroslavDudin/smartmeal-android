@@ -54,6 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -398,7 +399,7 @@ private fun CaloriesMockup() {
             title = "Статистика",
             subtitle = "Четверг, 23 июля",
             icon = Icons.Default.BarChart,
-            chips = listOf("Дневная аналитика", "Калории без цели")
+            chips = listOf("Аналитика", "Калории")
         )
         Surface(
             shape = RoundedCornerShape(18.dp),
@@ -412,11 +413,15 @@ private fun CaloriesMockup() {
                     .padding(vertical = 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                CalorieRing(Modifier.size(138.dp))
+                CalorieRing(
+                    Modifier
+                        .size(110.dp)
+                        .aspectRatio(1f)
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 14.dp, vertical = 6.dp),
+                        .padding(horizontal = 14.dp, vertical = 4.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     MacroStat("89г", "Белки", Color(0xFF12C95B))
@@ -519,7 +524,7 @@ private fun DateStrip(selected: String) {
                 modifier = Modifier.padding(horizontal = 10.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                listOf(selected, "Пт\n24", "Сб\n25", "Вс\n26").forEachIndexed { index, label ->
+                listOf(selected, "Пт\n24", "Сб\n25").forEachIndexed { index, label ->
                     DateCell(label = label, selected = index == 0)
                 }
             }
@@ -629,26 +634,83 @@ private fun OrderBarMock() {
 @Composable
 private fun CalorieRing(modifier: Modifier = Modifier) {
     Canvas(modifier = modifier) {
-        val stroke = Stroke(width = 15.dp.toPx(), cap = StrokeCap.Round)
-        val inset = 18.dp.toPx()
-        val arcSize = Size(size.width - inset * 2f, size.height - inset * 2f)
-        drawArc(Color(0xFFEDEDED), startAngle = 0f, sweepAngle = 360f, useCenter = false, topLeft = Offset(inset, inset), size = arcSize, style = stroke)
-        drawArc(Color(0xFF12C95B), startAngle = -88f, sweepAngle = 78f, useCenter = false, topLeft = Offset(inset, inset), size = arcSize, style = stroke)
-        drawArc(Color(0xFFFFB300), startAngle = -4f, sweepAngle = 104f, useCenter = false, topLeft = Offset(inset, inset), size = arcSize, style = stroke)
-        drawArc(Color(0xFF17A8F5), startAngle = 105f, sweepAngle = 178f, useCenter = false, topLeft = Offset(inset, inset), size = arcSize, style = stroke)
+        // Force a perfectly circular drawing area based on the smaller dimension
+        val diameter = size.minDimension
+        val strokeWidth = 5.dp.toPx()
+        val stroke = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+        
+        // Dynamic inset to keep it airy but well-contained
+        val inset = strokeWidth / 2f + 4.dp.toPx()
+        val innerDiameter = diameter - inset * 2f
+        val arcSize = Size(innerDiameter, innerDiameter)
+        
+        // Perfectly centered offset for the arcs
+        val topLeft = Offset(
+            (size.width - innerDiameter) / 2f,
+            (size.height - innerDiameter) / 2f
+        )
+        val center = Offset(size.width / 2f, size.height / 2f)
+        
+        // 1. Soft background track (Perfect Circle)
+        drawArc(
+            color = Color(0xFFF0F0F0),
+            startAngle = 0f,
+            sweepAngle = 360f,
+            useCenter = false,
+            topLeft = topLeft,
+            size = arcSize,
+            style = stroke
+        )
+        
+        // 2. Progress Arcs
+        drawArc(
+            color = Color(0xFF00C853), // Vibrant Green
+            startAngle = -90f,
+            sweepAngle = 90f,
+            useCenter = false,
+            topLeft = topLeft,
+            size = arcSize,
+            style = stroke
+        )
+        drawArc(
+            color = Color(0xFFFFAB00), // Vibrant Amber
+            startAngle = 5f,
+            sweepAngle = 110f,
+            useCenter = false,
+            topLeft = topLeft,
+            size = arcSize,
+            style = stroke
+        )
+        drawArc(
+            color = Color(0xFF00B0FF), // Vibrant Blue
+            startAngle = 120f,
+            sweepAngle = 140f,
+            useCenter = false,
+            topLeft = topLeft,
+            size = arcSize,
+            style = stroke
+        )
+        
         drawContext.canvas.nativeCanvas.apply {
             val paint = android.graphics.Paint().apply {
                 color = android.graphics.Color.rgb(32, 33, 36)
                 textAlign = android.graphics.Paint.Align.CENTER
-                textSize = 30.sp.toPx()
+                textSize = 20.sp.toPx()
                 isAntiAlias = true
-                typeface = android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD)
+                typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
             }
-            drawText("2112", size.width / 2f, size.height / 2f + 8.dp.toPx(), paint)
-            paint.color = android.graphics.Color.rgb(130, 130, 130)
-            paint.textSize = 9.sp.toPx()
-            paint.typeface = android.graphics.Typeface.DEFAULT
-            drawText("ккал", size.width / 2f, size.height / 2f + 28.dp.toPx(), paint)
+            
+            // Draw 2112 (Slightly smaller, centered)
+            drawText("2112", center.x, center.y + 4.dp.toPx(), paint)
+            
+            // Draw "ккал"
+            paint.apply {
+                color = android.graphics.Color.rgb(150, 150, 150)
+                textSize = 9.sp.toPx()
+                letterSpacing = 0.05f
+                typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.NORMAL)
+            }
+            drawText("ккал", center.x, center.y + 18.dp.toPx(), paint)
         }
     }
 }
