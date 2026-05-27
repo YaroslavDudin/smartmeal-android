@@ -78,6 +78,10 @@ import com.example.smartmeal.ui.components.selectors.DateSelector
 import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealBackground
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
 import com.example.smartmeal.ui.theme.TextBlack
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -95,10 +99,10 @@ private val categoryOrder = listOf(
 )
 
 private val ProductHeroStart = Color(0xFFFFFFFF)
-private val ProductHeroEnd = Color(0xFFF0F0F0)
-private val ProductSoftSurface = Color(0xFFF8F8F8)
-private val ProductBorder = Color(0xFFE0E0E0)
-private val ProductMutedText = Color(0xFF757575)
+private val ProductHeroEnd = Color(0xFFFFF0EB)
+private val ProductSoftSurface = SmartMealSurfaceSoft
+private val ProductBorder = SmartMealCardBorder
+private val ProductMutedText = SmartMealTextSecondary
 
 data class ProductUiModel(
     val id: String,
@@ -270,7 +274,7 @@ fun ProductListScreen(
                         .padding(horizontal = if (isSmallScreen) 10.dp else 16.dp),
                     shape = RoundedCornerShape(26.dp),
                     color = Color.White,
-                    shadowElevation = 2.dp,
+                    shadowElevation = 6.dp,
                     border = BorderStroke(1.dp, ProductBorder)
                 ) {
                     Column(
@@ -601,7 +605,8 @@ private fun ProductHeroSection(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(30.dp),
         color = Color.Transparent,
-        shadowElevation = 4.dp
+        shadowElevation = 8.dp,
+        border = BorderStroke(1.dp, ProductBorder)
     ) {
         Box(
             modifier = Modifier
@@ -643,7 +648,8 @@ private fun ProductInfoChip(
 ) {
     Surface(
         shape = RoundedCornerShape(18.dp),
-        color = Color.White.copy(alpha = 0.72f)
+        color = Color.White.copy(alpha = 0.82f),
+        border = BorderStroke(1.dp, ProductBorder.copy(alpha = 0.72f))
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),

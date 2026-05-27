@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.smartmeal.utils.softBottomShadow
@@ -19,6 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.theme.AccentOrange
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
 import com.example.smartmeal.ui.theme.MainGreen
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealTheme
@@ -52,18 +56,19 @@ fun SmartMealButton(
     }
 
     val contentColor = Color.White
-    val disabledContainerColor = Color.LightGray.copy(alpha = 0.5f)
-    val disabledContentColor = Color.Gray
+    val disabledContainerColor = SmartMealCardBorder
+    val disabledContentColor = SmartMealTextSecondary
+    val shape = RoundedCornerShape(18.dp)
 
     val buttonModifier = if (fullWidth) {
         modifier
             .fillMaxWidth()
             .height(56.dp)
-            .softBottomShadow(shape = RoundedCornerShape(16.dp))
+            .softBottomShadow(shape = shape, color = containerColor.copy(alpha = 0.22f), blurRadius = 10.dp, offsetY = 5.dp)
     } else {
         modifier
             .height(56.dp)
-            .softBottomShadow(shape = RoundedCornerShape(16.dp))
+            .softBottomShadow(shape = shape, color = containerColor.copy(alpha = 0.22f), blurRadius = 10.dp, offsetY = 5.dp)
     }
 
     when (variant) {
@@ -78,7 +83,7 @@ fun SmartMealButton(
                     disabledContainerColor = disabledContainerColor,
                     disabledContentColor = disabledContentColor
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = shape
             ) {
                 SmartMealText(
                     text = text,
@@ -94,12 +99,12 @@ fun SmartMealButton(
                 modifier = buttonModifier,
                 enabled = enabled,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
+                    containerColor = SmartMealSurfaceSoft,
                     contentColor = containerColor,
                     disabledContainerColor = Color.Transparent,
                     disabledContentColor = disabledContentColor
                 ),
-                shape = RoundedCornerShape(16.dp)
+                shape = shape
             ) {
                 SmartMealText(
                     text = text,
@@ -118,7 +123,8 @@ fun SmartMealButton(
                     contentColor = containerColor,
                     disabledContentColor = disabledContentColor
                 ),
-                shape = RoundedCornerShape(16.dp)
+                border = BorderStroke(1.dp, containerColor.copy(alpha = 0.35f)),
+                shape = shape
             ) {
                 SmartMealText(
                     text = text,

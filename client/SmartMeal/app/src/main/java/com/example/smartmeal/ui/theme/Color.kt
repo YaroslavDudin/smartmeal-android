@@ -2,20 +2,36 @@ package com.example.smartmeal.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Основные брендовые цвета: теплая съедобная палитра томата, паприки и сливочного фона.
-val PrimaryGreen = Color(0xFFE85D3F) // Спелый томат
-val PrimaryGreenDark = Color(0xFFC7462E) // Паприка
-val LightGreenBg = Color(0xFFFFF1EC) // Сливочно-томатный фон
+val SmartMealBackground = Color(0xFFFCF8F6)
+val SmartMealSurface = Color(0xFFFFFFFF)
+val SmartMealSurfaceSoft = Color(0xFFFFF2EE)
+val SmartMealCardBorder = Color(0xFFF0E4DF)
+val SmartMealDivider = Color(0xFFE9DED8)
 
-// Акцентные цвета проекта
-val MainGreen = Color(0xFFE85D3F)    // Основной цвет кнопок и выбранных состояний
-val GreenBorder = Color(0xFFFFB6A3)  // Мягкая томатная обводка
-val YellowBorder = Color(0xFFD7D364) // Цвет обводки кнопки "Назад"
+val SmartMealTomato = Color(0xFFFF5738)
+val SmartMealTomatoDark = Color(0xFFE2442B)
+val SmartMealTomatoSoft = Color(0xFFFFE5DC)
+val SmartMealOrange = Color(0xFFE9A23B)
+val SmartMealYellow = Color(0xFFF2C84B)
+val SmartMealGreen = Color(0xFF24C76A)
+val SmartMealBlue = Color(0xFF28A7E8)
+val SmartMealPurple = Color(0xFF8E6BE8)
+val SmartMealHeart = Color(0xFFFF7E8A)
 
-val AccentOrange = Color(0xFFE9A23B) // Медовый апельсин
-// Нейтральные цвета
-val TextBlack = Color(0xFF1C1B1F)
-val BgLightGray = Color(0xFFFBFBFB) // Для фона экранов
-val SurfaceGray = Color(0xFFEFEFEF) // Для подложек (переключатели)
-val BorderGray = Color(0xFFE0E0E0)  // Для границ полей ввода
-val HintGray = Color(0xFF9E9E9E)    // Для плейсхолдеров
+val SmartMealTextColor = Color(0xFF201A17)
+val SmartMealTextSecondary = Color(0xFF6F625C)
+val SmartMealTextMuted = Color(0xFF9B8E88)
+
+// Compatibility aliases used by existing screens.
+val PrimaryGreen = SmartMealTomato
+val PrimaryGreenDark = SmartMealTomatoDark
+val LightGreenBg = SmartMealTomatoSoft
+val MainGreen = SmartMealTomato
+val GreenBorder = Color(0xFFFFB9A8)
+val YellowBorder = SmartMealYellow
+val AccentOrange = SmartMealOrange
+val TextBlack = SmartMealTextColor
+val BgLightGray = SmartMealBackground
+val SurfaceGray = Color(0xFFF5EFEB)
+val BorderGray = SmartMealCardBorder
+val HintGray = SmartMealTextMuted

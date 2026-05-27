@@ -63,6 +63,9 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.feedback.StatisticsSkeleton
 import com.example.smartmeal.ui.theme.BgLightGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
 import com.example.smartmeal.ui.theme.TextBlack
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -71,9 +74,9 @@ import java.util.Locale
 import kotlinx.coroutines.launch
 
 private val StatisticsHeroStart = Color(0xFFFFFFFF)
-private val StatisticsHeroEnd = Color(0xFFF0F0F0)
-private val StatisticsBorder = Color(0xFFE0E0E0)
-private val StatisticsMutedText = Color(0xFF757575)
+private val StatisticsHeroEnd = Color(0xFFFFF0EB)
+private val StatisticsBorder = SmartMealCardBorder
+private val StatisticsMutedText = SmartMealTextSecondary
 
 @Composable
 fun StatisticsScreen(
@@ -123,7 +126,7 @@ fun StatisticsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Transparent),
-            contentPadding = PaddingValues(bottom = 24.dp)
+            contentPadding = PaddingValues(bottom = if (isLandscape) 88.dp else 116.dp)
         ) {
             item {
                 StatisticsHeroSection(
@@ -247,7 +250,8 @@ private fun StatisticsHeroSection(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(30.dp),
         color = Color.Transparent,
-        shadowElevation = 4.dp
+        shadowElevation = 8.dp,
+        border = BorderStroke(1.dp, StatisticsBorder)
     ) {
         Box(
             modifier = Modifier
@@ -289,7 +293,8 @@ private fun StatisticsChip(
 ) {
     Surface(
         shape = RoundedCornerShape(18.dp),
-        color = Color.White.copy(alpha = 0.72f)
+        color = Color.White.copy(alpha = 0.82f),
+        border = BorderStroke(1.dp, StatisticsBorder.copy(alpha = 0.72f))
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -336,7 +341,7 @@ fun DateNavigationHeader(
                 onClick = onBackClick,
                 enabled = canGoBack,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = Color(0xFFF3F8EE),
+                    containerColor = SmartMealSurfaceSoft,
                     contentColor = PrimaryGreen,
                     disabledContainerColor = Color(0xFFF6F6F6),
                     disabledContentColor = Color.LightGray
@@ -366,7 +371,7 @@ fun DateNavigationHeader(
                 onClick = onForwardClick,
                 enabled = canGoForward,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = Color(0xFFF3F8EE),
+                    containerColor = SmartMealSurfaceSoft,
                     contentColor = PrimaryGreen,
                     disabledContainerColor = Color(0xFFF6F6F6),
                     disabledContentColor = Color.LightGray
@@ -457,8 +462,8 @@ fun DailyNutritionCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(32.dp),
         color = Color.White,
-        border = BorderStroke(1.dp, Color(0xFFF8F8F8)),
-        shadowElevation = 4.dp
+        border = BorderStroke(1.dp, StatisticsBorder),
+        shadowElevation = 6.dp
     ) {
         if (isLandscape) {
             Row(

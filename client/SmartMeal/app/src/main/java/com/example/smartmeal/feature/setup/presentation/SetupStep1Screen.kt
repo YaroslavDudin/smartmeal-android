@@ -51,10 +51,10 @@ import com.example.smartmeal.utils.ShadowData
 import com.example.smartmeal.utils.dropShadow
 
 private val SETUP_SHADOW = ShadowData(
-    radius = 4.dp,
+    radius = 8.dp,
     spread = 0.dp,
-    color = Color.Black.copy(alpha = 0.12f),
-    offset = DpOffset(0.dp, 1.5.dp)
+    color = Color.Black.copy(alpha = 0.08f),
+    offset = DpOffset(0.dp, 2.dp)
 )
 
 @Composable
@@ -321,7 +321,7 @@ private fun BackButtonLocal(onClick: () -> Unit) {
         shape = RoundedCornerShape(12.dp),
         color = Color.White,
         shadowElevation = 8.dp,
-        border = BorderStroke(1.5.dp, Color(0xFFE6D36E)),
+        border = BorderStroke(1.dp, GreenBorder.copy(alpha = 0.72f)),
     ) {
         SmartMealText(
             text = "Назад",
@@ -349,14 +349,14 @@ private fun DietTypeChip(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW)
-            .border(1.dp, borderColor, RoundedCornerShape(12.dp))
+            .dropShadow(shape = RoundedCornerShape(16.dp), shadow = SETUP_SHADOW)
+            .border(1.dp, borderColor, RoundedCornerShape(16.dp))
             .clickable(
                 interactionSource = interactionSource,
                 indication = androidx.compose.foundation.LocalIndication.current,
                 onClick = onClick
             ),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         color = bgColor,
     ) {
         SmartMealText(
@@ -385,7 +385,7 @@ private fun PortionStepper(
                 .size(40.dp)
                 .testTag("setup_step1_portion_dec")
                 .clickable(onClick = onDecrement),
-            shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(14.dp),
             color = LightGreenBg,
             shadowElevation = 4.dp,
         ) {
@@ -414,7 +414,7 @@ private fun PortionStepper(
                 .size(40.dp)
                 .testTag("setup_step1_portion_inc")
                 .clickable(onClick = onIncrement),
-            shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(14.dp),
             color = PrimaryGreen,
             shadowElevation = 4.dp,
         ) {

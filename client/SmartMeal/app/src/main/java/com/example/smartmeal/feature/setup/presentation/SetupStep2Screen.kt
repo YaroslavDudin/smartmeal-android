@@ -37,6 +37,8 @@ import androidx.compose.ui.unit.dp
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.calendar.SmartMealCalendar
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
 import com.example.smartmeal.ui.theme.TextBlack
 import java.util.Calendar
 internal const val MAX_PLAN_SELECTION_DAYS = 256
@@ -188,7 +190,7 @@ fun SetupStep2Content(
                     shape = RoundedCornerShape(16.dp),
                     color = Color.White,
                     shadowElevation = 4.dp,
-                    border = BorderStroke(1.dp, PrimaryGreen),
+                    border = BorderStroke(1.dp, SmartMealCardBorder),
                 ) {
                     SmartMealCalendar(
                         year = state.calendarYear,
@@ -301,7 +303,7 @@ fun SetupStep2Content(
                     shape = RoundedCornerShape(20.dp),
                     color = Color.White,
                     shadowElevation = 8.dp,
-                    border = BorderStroke(1.5.dp, PrimaryGreen),
+                    border = BorderStroke(1.dp, SmartMealCardBorder),
                 ) {
                     SmartMealCalendar(
                         year = state.calendarYear,
@@ -436,13 +438,13 @@ private fun BackButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val borderColor = Color(0xFFE6D36E)
+    val borderColor = SmartMealCardBorder
     Surface(
         modifier = modifier.clickable(onClick = onClick),
         shape = RoundedCornerShape(12.dp),
         color = Color.White,
-        shadowElevation = 8.dp,
-        border = BorderStroke(1.5.dp, borderColor),
+        shadowElevation = 5.dp,
+        border = BorderStroke(1.dp, borderColor),
     ) {
         SmartMealText(
             text = "Назад",
@@ -463,8 +465,8 @@ private fun PeriodChip(
 ) {
     val bgColor = if (isSelected) PrimaryGreen else Color.White
     val textColor = if (isSelected) Color.White else TextBlack
-    val borderColor = PrimaryGreen
-    val elevation = if (isSelected) 8.dp else 6.dp
+    val borderColor = if (isSelected) PrimaryGreen else SmartMealCardBorder
+    val elevation = if (isSelected) 5.dp else 2.dp
     val verticalPadding = if (compact) 8.dp else 10.dp
     val horizontalPadding = if (compact) 12.dp else 16.dp
     val textStyle = if (compact) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyMedium
@@ -508,7 +510,7 @@ private fun WidePrimaryButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = PrimaryGreen,
             contentColor = Color.White,
-            disabledContainerColor = Color.LightGray.copy(alpha = 0.5f),
+            disabledContainerColor = SmartMealSurfaceSoft,
             disabledContentColor = Color.Gray,
         ),
     ) {

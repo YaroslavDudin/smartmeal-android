@@ -23,12 +23,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealBackground
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextMuted
 
 private val NavigationContainer = Color.White
-private val NavigationBorder = Color(0xFFE0E0E0)
-private val NavigationMuted = Color(0xFF757575)
+private val NavigationBorder = SmartMealCardBorder
+private val NavigationMuted = SmartMealTextMuted
 
 @Composable
 fun BottomNavigationBar(
@@ -46,12 +51,16 @@ fun BottomNavigationBar(
     )
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+        shape = RoundedCornerShape(22.dp),
         color = Color.White,
-        border = androidx.compose.foundation.BorderStroke(0.5.dp, NavigationBorder.copy(alpha = 0.5f))
+        shadowElevation = 7.dp,
+        border = androidx.compose.foundation.BorderStroke(1.dp, NavigationBorder.copy(alpha = 0.82f))
     ) {
         NavigationBar(
-            modifier = Modifier.then(if (isLandscape) Modifier.height(58.dp) else Modifier),
+            modifier = Modifier.height(if (isLandscape) 56.dp else 72.dp),
             containerColor = NavigationContainer,
             tonalElevation = 0.dp
         ) {
@@ -66,7 +75,7 @@ fun BottomNavigationBar(
                             imageVector = item.icon,
                             contentDescription = item.title,
                             tint = if (isSelected) PrimaryGreen else NavigationMuted,
-                            modifier = Modifier.size(if (isLandscape) 20.dp else 22.dp)
+                            modifier = Modifier.size(if (isLandscape) 20.dp else 21.dp)
                         )
                     },
                     label = if (isLandscape) {
@@ -75,7 +84,9 @@ fun BottomNavigationBar(
                         {
                             SmartMealText(
                                 text = item.title,
-                                color = if (isSelected) PrimaryGreen else NavigationMuted
+                                color = if (isSelected) PrimaryGreen else NavigationMuted,
+                                fontSize = 12.sp,
+                                maxLines = 1
                             )
                         }
                     },
@@ -85,7 +96,7 @@ fun BottomNavigationBar(
                         selectedTextColor = PrimaryGreen,
                         unselectedIconColor = NavigationMuted,
                         unselectedTextColor = NavigationMuted,
-                        indicatorColor = Color.White
+                        indicatorColor = SmartMealSurfaceSoft
                     )
                 )
             }

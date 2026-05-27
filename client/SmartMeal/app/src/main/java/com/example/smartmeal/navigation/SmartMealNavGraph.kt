@@ -59,6 +59,7 @@ import com.example.smartmeal.feature.auth.presentation.ResetPasswordScreen
 
 import com.example.smartmeal.feature.recipes.presentation.RecipeListScreen
 import com.example.smartmeal.feature.recipes.presentation.RecipeListViewModel
+import com.example.smartmeal.ui.theme.SmartMealBackground
 
 private data class NavigationBackgroundPalette(
     val start: Color,
@@ -66,20 +67,20 @@ private data class NavigationBackgroundPalette(
 )
 
 private val AuthBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 private val SetupBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 private val AppBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 private val DetailBackgroundPalette = NavigationBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 
 private val routeEnterTransition: AnimatedContentTransitionScope<androidx.navigation.NavBackStackEntry>.() -> EnterTransition = {

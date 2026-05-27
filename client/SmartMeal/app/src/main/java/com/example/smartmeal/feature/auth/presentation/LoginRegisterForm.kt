@@ -18,7 +18,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -113,23 +112,23 @@ fun LoginRegisterFormContent(
                 painter = painterResource(id = R.drawable.food),
                 contentDescription = "Food logo",
                 modifier = Modifier
-                    .size(IconSize.LOGO)
-                    .clip(RoundedCornerShape(16.dp))
+                    .size(156.dp)
+                    .clip(RoundedCornerShape(28.dp))
                     .testTag("food_logo"),
                 contentScale = ContentScale.Fit
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             SmartMealText(
                 text = if (isLoginMode) "Вход" else "Регистрация",
                 fontSize = 28.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                color = TextBlack,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             AuthToggleSwitch(
                 isLoginMode = isLoginMode,
@@ -139,7 +138,7 @@ fun LoginRegisterFormContent(
                 }
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             if (!isLoginMode) {
                 CustomTextField(
@@ -228,7 +227,7 @@ fun LoginRegisterFormContent(
                 )
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             if (authState is AuthState.Error) {
                 SmartMealText(
@@ -277,8 +276,8 @@ fun AuthToggleSwitch(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .background(SurfaceGray, RoundedCornerShape(25.dp))
+            .height(48.dp)
+            .background(SurfaceGray, RoundedCornerShape(24.dp))
             .padding(4.dp)
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
@@ -286,9 +285,8 @@ fun AuthToggleSwitch(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(25.dp))
-                    .background(if (isLoginMode) Color.White else Color.Transparent)
-                    .shadow(if (isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(if (isLoginMode) SmartMealSurface else Color.Transparent)
                     .testTag("auth_toggle_login")
                     .clickable { onToggle(true) },
                 contentAlignment = Alignment.Center
@@ -303,9 +301,8 @@ fun AuthToggleSwitch(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(25.dp))
-                    .background(if (!isLoginMode) Color.White else Color.Transparent)
-                    .shadow(if (!isLoginMode) 1.dp else 0.dp, RoundedCornerShape(25.dp))
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(if (!isLoginMode) SmartMealSurface else Color.Transparent)
                     .testTag("auth_toggle_register")
                     .clickable { onToggle(false) },
                 contentAlignment = Alignment.Center
@@ -346,13 +343,13 @@ fun CustomTextField(
         },
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp),
-        shape = RoundedCornerShape(12.dp),
+            .height(58.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = BorderGray,
             focusedBorderColor = PrimaryGreen,
-            unfocusedContainerColor = Color.White,
-            focusedContainerColor = Color.White
+            unfocusedContainerColor = SmartMealSurface,
+            focusedContainerColor = SmartMealSurface
         ),
         singleLine = true,
         keyboardOptions = KeyboardOptions(

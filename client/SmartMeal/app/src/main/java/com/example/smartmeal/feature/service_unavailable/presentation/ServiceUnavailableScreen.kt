@@ -16,10 +16,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,14 +44,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.theme.SmartMealBackground
+import com.example.smartmeal.ui.theme.SmartMealTextColor
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
+import com.example.smartmeal.ui.theme.SmartMealTomato
 import kotlinx.coroutines.launch
 
-private val ServiceBackground = Color(0xFFFAFAFA)
-private val ServiceTitle = Color(0xFF222222)
-private val ServiceBody = Color(0xFF4F4F4F)
+private val ServiceBackground = SmartMealBackground
+private val ServiceTitle = SmartMealTextColor
+private val ServiceBody = SmartMealTextSecondary
 private val ServiceYellow = Color(0xFFF3E35D)
 private val ServiceRed = Color(0xFFE96D6D)
-private val ServiceAction = Color(0xFFE8A24D)
+private val ServiceAction = SmartMealTomato
 
 @Composable
 fun ServiceUnavailableScreen(
@@ -75,34 +82,35 @@ fun ServiceUnavailableScreen(
             verticalArrangement = Arrangement.Center
         ) {
             ServiceUnavailableIllustration(
-                modifier = Modifier.size(116.dp)
+                modifier = Modifier.size(154.dp)
             )
 
-            Spacer(modifier = Modifier.height(36.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             SmartMealText(
-                text = "Нестабильная работа сервисов",
+                text = "Сервисы временно\nнедоступны",
                 color = ServiceTitle,
-                fontSize = 18.sp,
+                fontSize = 21.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            SmartMealText(
-                text = "Приносим извинения, наши сервисы временно недоступны. Мы уже исправляем проблему. Попробуйте обновить или повторите попытку позже.",
-                color = ServiceBody,
-                style = MaterialTheme.typography.bodyLarge,
                 lineHeight = 25.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(26.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
-            TextButton(
+            SmartMealText(
+                text = "Приносим извинения, наши сервисы временно недоступны. Мы уже исправляем проблему. Попробуйте обновить или повторите попытку позже.",
+                color = ServiceBody,
+                style = MaterialTheme.typography.bodyMedium,
+                lineHeight = 22.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            Button(
                 enabled = !isChecking,
                 onClick = {
                     scope.launch {
@@ -113,7 +121,17 @@ fun ServiceUnavailableScreen(
                             onRecovered()
                         }
                     }
-                }
+                },
+                modifier = Modifier
+                    .width(188.dp)
+                    .height(50.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = ServiceAction,
+                    contentColor = Color.White,
+                    disabledContainerColor = ServiceAction.copy(alpha = 0.45f),
+                    disabledContentColor = Color.White
+                )
             ) {
                 AnimatedVisibility(
                     visible = isChecking,
@@ -124,13 +142,13 @@ fun ServiceUnavailableScreen(
                         modifier = Modifier
                             .padding(end = 10.dp)
                             .size(18.dp),
-                        color = ServiceAction,
+                        color = Color.White,
                         strokeWidth = 2.dp
                     )
                 }
                 SmartMealText(
                     text = "Обновить",
-                    color = ServiceAction,
+                    color = Color.White,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold
                 )

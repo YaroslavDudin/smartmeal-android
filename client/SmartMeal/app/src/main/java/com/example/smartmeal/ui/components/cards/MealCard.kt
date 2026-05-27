@@ -1,6 +1,8 @@
 package com.example.smartmeal.ui.components.cards
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
@@ -10,6 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +37,9 @@ import androidx.compose.material3.IconButton
 
 import androidx.compose.foundation.border
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
 
 @Composable
 fun MealCard(
@@ -59,12 +65,13 @@ fun MealCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(100.dp)
-            .softBottomShadow(shape = RoundedCornerShape(16.dp))
+            .height(104.dp)
+            .softBottomShadow(shape = RoundedCornerShape(22.dp), color = Color.Black.copy(alpha = 0.08f), blurRadius = 10.dp, offsetY = 4.dp)
             .testTag(resolvedCardTag),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(0.dp)
+        elevation = CardDefaults.cardElevation(0.dp),
+        border = androidx.compose.foundation.BorderStroke(1.dp, SmartMealCardBorder)
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -77,8 +84,10 @@ fun MealCard(
                     .build(),
                 contentDescription = title,
                 modifier = Modifier
-                    .width(100.dp)
-                    .fillMaxHeight(),
+                    .padding(start = 10.dp, top = 10.dp, bottom = 10.dp)
+                    .width(84.dp)
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop,
                 loading = {
                     Box(modifier = Modifier.fillMaxSize().shimmerEffect())
@@ -89,6 +98,7 @@ fun MealCard(
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
+                            .clip(RoundedCornerShape(16.dp))
                     )
                 }
             )
@@ -111,11 +121,13 @@ fun MealCard(
                         imageVector = Icons.Default.AccessTime,
                         contentDescription = "cook_time",
                         modifier = Modifier.size(16.dp)
+                            .background(SmartMealSurfaceSoft, CircleShape)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     SmartMealText(
                         text = cookTime,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = SmartMealTextSecondary
                     )
                 }
             }

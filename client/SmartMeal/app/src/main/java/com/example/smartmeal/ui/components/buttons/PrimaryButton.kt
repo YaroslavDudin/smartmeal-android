@@ -16,7 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
+import com.example.smartmeal.ui.theme.SmartMealTomato
 import com.example.smartmeal.ui.theme.SmartMealTheme
+import com.example.smartmeal.utils.softBottomShadow
 
 @Composable
 fun PrimaryButton(
@@ -24,15 +26,17 @@ fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     // Теперь цвет по умолчанию берется из нашей темы
-    containerColor: Color = MaterialTheme.colorScheme.secondary 
+    containerColor: Color = SmartMealTomato
 ) {
+    val shape = RoundedCornerShape(18.dp)
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(56.dp)
+            .softBottomShadow(shape = shape, color = containerColor.copy(alpha = 0.22f), blurRadius = 10.dp, offsetY = 5.dp),
         colors = ButtonDefaults.buttonColors(containerColor = containerColor),
-        shape = RoundedCornerShape(16.dp) 
+        shape = shape
     ) {
         SmartMealText(
             text = text,

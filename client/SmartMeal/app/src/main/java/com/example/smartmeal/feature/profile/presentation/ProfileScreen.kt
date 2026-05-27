@@ -57,6 +57,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -65,15 +66,18 @@ import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.feedback.shimmerEffect
 import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
 import com.example.smartmeal.ui.theme.TextBlack
 
 private val LogoutRed = Color(0xFFE53935)
 private val AvatarFallbackBg = Color(0xFFEEEEEE)
 private val ProfileHeroStart = Color(0xFFFFFFFF)
-private val ProfileHeroEnd = Color(0xFFF5F5F5)
-private val ProfileSurface = Color(0xFFF8FBF6)
-private val ProfileBorder = Color(0xFFE2ECD9)
-private val ProfileMutedText = Color(0xFF6E7A67)
+private val ProfileHeroEnd = Color(0xFFFFF0EB)
+private val ProfileSurface = SmartMealSurfaceSoft
+private val ProfileBorder = SmartMealCardBorder
+private val ProfileMutedText = SmartMealTextSecondary
 
 enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME, CALORIES }
 
@@ -219,7 +223,7 @@ fun ProfileScreen(
                 ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 28.dp),
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 116.dp),
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
                         item {
@@ -348,7 +352,8 @@ private fun ProfileHeroCard(
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(30.dp),
         color = Color.Transparent,
-        shadowElevation = 4.dp
+        shadowElevation = 8.dp,
+        border = BorderStroke(1.dp, ProfileBorder)
     ) {
         Box(
             modifier = Modifier
@@ -397,16 +402,20 @@ private fun ProfileHeroCard(
                         Spacer(modifier = Modifier.height(2.dp))
                         SmartMealText(
                             text = userName,
-                            fontSize = 24.sp,
+                            fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
-                            color = TextBlack
+                            color = TextBlack,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         if (userEmail.isNotBlank()) {
                             Spacer(modifier = Modifier.height(4.dp))
                             SmartMealText(
                                 text = userEmail,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = ProfileMutedText
+                                color = ProfileMutedText,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -446,7 +455,8 @@ private fun ProfileHeroPill(
 ) {
     Surface(
         shape = RoundedCornerShape(18.dp),
-        color = Color.White.copy(alpha = 0.76f)
+        color = Color.White.copy(alpha = 0.82f),
+        border = BorderStroke(1.dp, ProfileBorder.copy(alpha = 0.72f))
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
@@ -494,7 +504,7 @@ private fun ProfileActionCard(
             .clickable(onClick = onClick),
         color = Color.White,
         border = BorderStroke(1.dp, ProfileBorder),
-        shadowElevation = 2.dp
+        shadowElevation = 6.dp
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
@@ -542,7 +552,7 @@ private fun PortionStepperCard(
         shape = RoundedCornerShape(24.dp),
         color = Color.White,
         border = BorderStroke(1.dp, ProfileBorder),
-        shadowElevation = 2.dp
+        shadowElevation = 6.dp
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),

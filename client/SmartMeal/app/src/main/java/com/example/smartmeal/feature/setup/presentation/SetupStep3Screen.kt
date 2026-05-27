@@ -50,10 +50,10 @@ import com.example.smartmeal.utils.ShadowData
 import com.example.smartmeal.utils.dropShadow
 
 private val SETUP_SHADOW = ShadowData(
-    radius = 4.dp,
+    radius = 8.dp,
     spread = 0.dp,
-    color = Color.Black.copy(alpha = 0.12f),
-    offset = DpOffset(0.dp, 1.5.dp)
+    color = Color.Black.copy(alpha = 0.08f),
+    offset = DpOffset(0.dp, 2.dp)
 )
 
 private val COOK_TIME_OPTIONS = listOf(
@@ -448,7 +448,7 @@ private fun BackButtonLocal(
         shape = RoundedCornerShape(12.dp),
         color = if (enabled) Color.White else Color.White.copy(alpha = 0.6f),
         shadowElevation = if (enabled) 8.dp else 0.dp,
-        border = BorderStroke(1.5.dp, if (enabled) Color(0xFFE6D36E) else Color(0xFFE6D36E).copy(alpha = 0.5f)),
+        border = BorderStroke(1.dp, if (enabled) GreenBorder.copy(alpha = 0.72f) else GreenBorder.copy(alpha = 0.36f)),
     ) {
         SmartMealText(
             text = "Назад",
@@ -496,15 +496,15 @@ private fun SelectableChip(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .dropShadow(shape = RoundedCornerShape(12.dp), shadow = SETUP_SHADOW)
-            .border(1.dp, if (enabled) borderColor else borderColor.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
+            .dropShadow(shape = RoundedCornerShape(16.dp), shadow = SETUP_SHADOW)
+            .border(1.dp, if (enabled) borderColor else borderColor.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
             .clickable(
                 interactionSource = interactionSource,
                 indication = androidx.compose.foundation.LocalIndication.current,
                 enabled = enabled,
                 onClick = onClick
             ),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(16.dp),
         color = bgColor,
     ) {
         SmartMealText(

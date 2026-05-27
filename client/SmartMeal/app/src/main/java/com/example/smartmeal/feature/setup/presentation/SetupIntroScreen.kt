@@ -111,7 +111,7 @@ fun SetupIntroContent(
                     contentDescription = "Food illustration",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
-                        .widthIn(max = 300.dp) // Ограничиваем макс ширину для планшетов
+                        .widthIn(max = 240.dp) // Ограничиваем макс ширину для планшетов
                         .fillMaxWidth()
                         .weight(3f)
                         .testTag("setup_intro_image")
@@ -122,11 +122,11 @@ fun SetupIntroContent(
                 // Заголовок
                 SmartMealText(
                     text = "Гибкий Рацион",
-                    fontSize = TextSize.HERO,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
-                    lineHeight = TextSize.HERO_LINE_HEIGHT,
+                    lineHeight = 40.sp,
                     modifier = Modifier.testTag("setup_intro_title")
                 )
 

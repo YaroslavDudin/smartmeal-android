@@ -68,17 +68,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealBackground
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextColor
+import com.example.smartmeal.ui.theme.SmartMealTextMuted
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
+import com.example.smartmeal.ui.theme.SmartMealTomato
+import com.example.smartmeal.ui.theme.SmartMealTomatoDark
 import kotlinx.coroutines.launch
 
-private val IntroBackground = Color(0xFFFAFAFA)
-private val IntroAccent = Color(0xFFEF5A40)
-private val IntroAccentDark = Color(0xFFC74732)
+private val IntroBackground = SmartMealBackground
+private val IntroAccent = SmartMealTomato
+private val IntroAccentDark = SmartMealTomatoDark
 private val IntroAccentSoft = Color(0xFFFFE8E1)
-private val IntroText = Color(0xFF202124)
-private val IntroBody = Color(0xFF555555)
-private val IntroMuted = Color(0xFF777777)
-private val IntroCardBorder = Color(0xFFE9E9E9)
-private val IntroChip = Color(0xFFF8F8F8)
+private val IntroText = SmartMealTextColor
+private val IntroBody = SmartMealTextSecondary
+private val IntroMuted = SmartMealTextMuted
+private val IntroCardBorder = SmartMealCardBorder
+private val IntroChip = SmartMealSurfaceSoft
 
 private data class IntroPage(
     val title: String,

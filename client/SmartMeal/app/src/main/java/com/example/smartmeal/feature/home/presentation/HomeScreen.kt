@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -33,14 +32,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.RestaurantMenu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.HorizontalDivider
@@ -63,9 +64,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -104,32 +107,42 @@ import com.example.smartmeal.ui.components.selectors.buildDateSelectorItems
 import com.example.smartmeal.ui.components.selectors.formatSelectedDateLabel
 import com.example.smartmeal.ui.theme.LightGreenBg
 import com.example.smartmeal.ui.theme.PrimaryGreen
+import com.example.smartmeal.ui.theme.SmartMealBackground
+import com.example.smartmeal.ui.theme.SmartMealBlue
+import com.example.smartmeal.ui.theme.SmartMealCardBorder
+import com.example.smartmeal.ui.theme.SmartMealGreen
+import com.example.smartmeal.ui.theme.SmartMealHeart
+import com.example.smartmeal.ui.theme.SmartMealOrange
+import com.example.smartmeal.ui.theme.SmartMealPurple
+import com.example.smartmeal.ui.theme.SmartMealSurfaceSoft
+import com.example.smartmeal.ui.theme.SmartMealTextMuted
+import com.example.smartmeal.ui.theme.SmartMealTextSecondary
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-private val ModalBackground = Color(0xFFF5F5F5)
+private val ModalBackground = SmartMealBackground
 private val HomeHeroStart = Color(0xFFFFFFFF)
-private val HomeHeroEnd = Color(0xFFF0F0F0)
-private val HomeCardBorder = Color(0xFFE0E0E0)
-private val HomeMutedText = Color(0xFF757575)
-private val HomeSoftSurface = Color(0xFFF8F8F8)
+private val HomeHeroEnd = Color(0xFFFFF0EB)
+private val HomeCardBorder = SmartMealCardBorder
+private val HomeMutedText = SmartMealTextSecondary
+private val HomeSoftSurface = SmartMealSurfaceSoft
 private val HomePageBackground = PageBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 private val ProductsPageBackground = PageBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 private val StatisticsPageBackground = PageBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 private val ProfilePageBackground = PageBackgroundPalette(
-    start = Color(0xFFFFFFFF),
-    end = Color(0xFFFBFBFB)
+    start = SmartMealBackground,
+    end = Color(0xFFFFFFFF)
 )
 
 private data class PageBackgroundPalette(
@@ -339,30 +352,6 @@ fun HomeScreen(
                     selectedItem = selectedNavItem,
                     onItemSelected = { selectedNavItem = it }
                 )
-            },
-            floatingActionButton = {
-                if (selectedNavItem == 0 && uiState.hasMenu) {
-                    ExtendedFloatingActionButton(
-                        onClick = { showCartPeriodSheet = true },
-                        containerColor = PrimaryGreen,
-                        contentColor = Color.White,
-                        modifier = Modifier
-                            .navigationBarsPadding()
-                            .testTag("home_cart_fab")
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ShoppingCart,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        SmartMealText(
-                            text = "Список",
-                            color = Color.White,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                }
             }
         ) { innerPadding ->
             AnimatedContent(
@@ -407,6 +396,9 @@ fun HomeScreen(
                             onSearchClick = onSearchClick,
                             onReselectPlan = onReselectPlan,
                             onCartClick = { showCartPeriodSheet = true },
+                            onProductsClick = { selectedNavItem = 1 },
+                            onStatisticsClick = { selectedNavItem = 2 },
+                            onProfileClick = { selectedNavItem = 3 },
                             customPlan = visibleCustomPlan,
                             showMyPlanSection = showMyPlanSection
                         )
@@ -483,6 +475,9 @@ fun HomeContent(
     onSearchClick: () -> Unit,
     onReselectPlan: () -> Unit,
     onCartClick: () -> Unit,
+    onProductsClick: () -> Unit,
+    onStatisticsClick: () -> Unit,
+    onProfileClick: () -> Unit,
     customPlan: CustomPlan?,
     showMyPlanSection: Boolean = false
 ) {
@@ -517,6 +512,24 @@ fun HomeContent(
                 isLoading = uiState.isLoading,
                 onSearchClick = onSearchClick,
                 onCartClick = onCartClick
+            )
+        }
+
+        item {
+            PlanDayCard(
+                sections = uiState.mealSections,
+                hasMenu = uiState.hasMenu,
+                isLoading = uiState.isLoading,
+                onGenerateMenu = onGenerateMenu
+            )
+        }
+
+        item {
+            QuickActionsSection(
+                onProductsClick = onProductsClick,
+                onStatisticsClick = onStatisticsClick,
+                onRecipesClick = onSearchClick,
+                onProfileClick = onProfileClick
             )
         }
 
@@ -683,6 +696,212 @@ fun HomeContent(
 }
 
 @Composable
+private fun PlanDayCard(
+    sections: List<MealSection>,
+    hasMenu: Boolean,
+    isLoading: Boolean,
+    onGenerateMenu: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(26.dp),
+        color = Color.White,
+        shadowElevation = 6.dp,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder)
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SmartMealText(
+                    text = "План на день",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                if (!hasMenu && !isLoading) {
+                    TextButton(onClick = onGenerateMenu) {
+                        SmartMealText(
+                            text = "Создать",
+                            color = PrimaryGreen,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            if (hasMenu && sections.isNotEmpty()) {
+                sections.take(3).forEachIndexed { index, section ->
+                    PlanMealRow(
+                        title = section.title,
+                        recipeTitle = section.meal.recipe_title,
+                        accent = when (index) {
+                            0 -> SmartMealOrange
+                            1 -> SmartMealGreen
+                            else -> SmartMealPurple
+                        }
+                    )
+                }
+            } else {
+                SmartMealText(
+                    text = if (isLoading) "Собираем рацион..." else "План еще не сформирован",
+                    color = HomeMutedText,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlanMealRow(
+    title: String,
+    recipeTitle: String,
+    accent: Color
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = accent.copy(alpha = 0.14f)
+        ) {
+            Icon(
+                imageVector = Icons.Default.RestaurantMenu,
+                contentDescription = null,
+                tint = accent,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(18.dp)
+            )
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            SmartMealText(
+                text = title,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            SmartMealText(
+                text = recipeTitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = HomeMutedText,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun QuickActionsSection(
+    onProductsClick: () -> Unit,
+    onStatisticsClick: () -> Unit,
+    onRecipesClick: () -> Unit,
+    onProfileClick: () -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        SmartMealText(
+            text = "Быстрые действия",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(start = 2.dp)
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            QuickActionCard(
+                title = "Продукты",
+                icon = Icons.Default.ShoppingCart,
+                accent = SmartMealOrange,
+                onClick = onProductsClick,
+                modifier = Modifier.weight(1f)
+            )
+            QuickActionCard(
+                title = "Статистика",
+                icon = Icons.Default.BarChart,
+                accent = SmartMealGreen,
+                onClick = onStatisticsClick,
+                modifier = Modifier.weight(1f)
+            )
+            QuickActionCard(
+                title = "Рацион",
+                icon = Icons.Default.RestaurantMenu,
+                accent = SmartMealBlue,
+                onClick = onRecipesClick,
+                modifier = Modifier.weight(1f)
+            )
+            QuickActionCard(
+                title = "Профиль",
+                icon = Icons.Default.Person,
+                accent = SmartMealHeart,
+                onClick = onProfileClick,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun QuickActionCard(
+    title: String,
+    icon: ImageVector,
+    accent: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier
+            .height(82.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(20.dp),
+        color = Color.White,
+        shadowElevation = 4.dp,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = accent.copy(alpha = 0.14f)
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = accent,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(18.dp)
+                )
+            }
+            SmartMealText(
+                text = title,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = HomeMutedText,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
 private fun HomeHeroSection(
     selectedDate: Date?,
     mealsCount: Int,
@@ -694,8 +913,9 @@ private fun HomeHeroSection(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(30.dp),
-        shadowElevation = 4.dp,
-        color = Color.Transparent
+        shadowElevation = 8.dp,
+        color = Color.Transparent,
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder)
     ) {
         Box(
             modifier = Modifier
@@ -717,8 +937,8 @@ private fun HomeHeroSection(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         SmartMealText(
-                            text = "Меню",
-                            style = MaterialTheme.typography.headlineMedium,
+                            text = "Привет!",
+                            fontSize = 24.sp,
                             modifier = Modifier.testTag("home_title"),
                             color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
@@ -773,7 +993,8 @@ private fun HeroStatChip(
 ) {
     Surface(
         shape = RoundedCornerShape(18.dp),
-        color = Color.White.copy(alpha = 0.72f)
+        color = Color.White.copy(alpha = 0.82f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, HomeCardBorder.copy(alpha = 0.72f))
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -790,7 +1011,7 @@ private fun HeroStatChip(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.SemiBold
             )
         }
     }
