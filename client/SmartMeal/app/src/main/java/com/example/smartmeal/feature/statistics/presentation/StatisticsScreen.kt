@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Insights
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.FilledTonalIconButton
@@ -72,6 +73,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 private val StatisticsHeroStart = Color(0xFFFFFFFF)
 private val StatisticsHeroEnd = Color(0xFFFFF0EB)
@@ -81,7 +83,8 @@ private val StatisticsMutedText = SmartMealTextSecondary
 @Composable
 fun StatisticsScreen(
     preferences: SetupPreferences,
-    onRecipeClick: (Int, Int?) -> Unit = { _, _ -> }
+    onRecipeClick: (Int, Int?) -> Unit = { _, _ -> },
+    onCalorieSettingsClick: () -> Unit = {}
 ) {
     val viewModel: StatisticsViewModel = viewModel(factory = StatisticsViewModelFactory(preferences))
     val uiState by viewModel.uiState.collectAsState()
@@ -132,8 +135,8 @@ fun StatisticsScreen(
                 StatisticsHeroSection(
                     modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 12.dp, bottom = 14.dp),
                     currentDate = uiState.dailyStats.getOrNull(pagerState.currentPage)?.date,
-                    isCaloriesEnabled = uiState.isCaloriesEnabled,
-                    targetCalories = uiState.targetCalories
+                    isCaloriesEnabled = preferences.isCaloriesEnabled(),
+                    targetCalories = preferences.getTotalCalories().toDouble()
                 )
             }
 
@@ -193,6 +196,15 @@ fun StatisticsScreen(
                             onBackClick = { scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) } },
                             onForwardClick = { scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) } }
                         )
+
+                        val isCalsEnabled = preferences.isCaloriesEnabled()
+                        if (isCalsEnabled) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            CalorieGoalButton(
+                                goalCalories = preferences.getTotalCalories(),
+                                onClick = onCalorieSettingsClick
+                            )
+                        }
                     }
                 }
             }
@@ -212,11 +224,14 @@ fun StatisticsScreen(
                 ) { page ->
                     val stats = uiState.dailyStats.getOrNull(page)
                     if (stats != null) {
+                        val isCalsEnabled = preferences.isCaloriesEnabled()
+                        val currentTargetCals = preferences.getTotalCalories().toDouble()
+                        
                         DailyStatsContent(
                             stats = stats,
-                            isCaloriesEnabled = uiState.isCaloriesEnabled,
-                            targetCalories = uiState.targetCalories,
-                            targetProteins = uiState.targetProteins,
+                            isCaloriesEnabled = isCalsEnabled,
+                            targetCalories = currentTargetCals,
+                            targetProteins = uiState.targetProteins, // These are still scaled proportionally in VM
                             targetFats = uiState.targetFats,
                             targetCarbs = uiState.targetCarbs,
                             isLandscape = isLandscape,
@@ -235,6 +250,57 @@ fun StatisticsScreen(
                     SmartMealText(text = uiState.error ?: "Нет данных для отображения")
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun CalorieGoalButton(
+    goalCalories: Int,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(16.dp),
+        color = PrimaryGreen.copy(alpha = 0.08f),
+        border = BorderStroke(1.dp, PrimaryGreen.copy(alpha = 0.2f))
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Surface(
+                    shape = CircleShape,
+                    color = PrimaryGreen.copy(alpha = 0.12f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AutoAwesome,
+                        contentDescription = null,
+                        tint = PrimaryGreen,
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .size(16.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                SmartMealText(
+                    text = "Дневная цель",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            SmartMealText(
+                text = "$goalCalories ккал",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                color = PrimaryGreen
+            )
         }
     }
 }

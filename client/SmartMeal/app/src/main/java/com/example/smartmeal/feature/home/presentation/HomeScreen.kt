@@ -63,6 +63,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import com.example.smartmeal.feature.profile.presentation.ProfileSubScreen
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.Modifier
@@ -335,6 +336,12 @@ fun HomeScreen(
         label = "homePageBackgroundEnd"
     )
 
+    var initialProfileSubScreen by remember { mutableStateOf(ProfileSubScreen.NONE) }
+    val onCalorieSettingsClick = {
+        initialProfileSubScreen = ProfileSubScreen.CALORIES
+        selectedNavItem = 3
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -399,6 +406,7 @@ fun HomeScreen(
                             onProductsClick = { selectedNavItem = 1 },
                             onStatisticsClick = { selectedNavItem = 2 },
                             onProfileClick = { selectedNavItem = 3 },
+                            onCalorieSettingsClick = onCalorieSettingsClick,
                             customPlan = visibleCustomPlan,
                             showMyPlanSection = showMyPlanSection
                         )
@@ -429,7 +437,11 @@ fun HomeScreen(
                     )
                     2 -> StatisticsScreen(
                         preferences = setupPreferences,
-                        onRecipeClick = onRecipeClick
+                        onRecipeClick = onRecipeClick,
+                        onCalorieSettingsClick = {
+                            initialProfileSubScreen = ProfileSubScreen.CALORIES
+                            selectedNavItem = 3
+                        }
                     )
                     3 -> ProfileScreen(
                         viewModel = profileViewModel,
@@ -440,7 +452,9 @@ fun HomeScreen(
                             shouldOpenOrderModal = true
                         },
                         onRecipeClick = { recipeId -> onRecipeClick(recipeId, null) },
-                        onProfileUpdatedSuccessfully = {}
+                        onProfileUpdatedSuccessfully = {},
+                        initialSubScreen = initialProfileSubScreen,
+                        onInitialSubScreenConsumed = { initialProfileSubScreen = ProfileSubScreen.NONE }
                     )
                 }
             }
@@ -478,6 +492,7 @@ fun HomeContent(
     onProductsClick: () -> Unit,
     onStatisticsClick: () -> Unit,
     onProfileClick: () -> Unit,
+    onCalorieSettingsClick: () -> Unit,
     customPlan: CustomPlan?,
     showMyPlanSection: Boolean = false
 ) {
@@ -588,6 +603,11 @@ fun HomeContent(
                                         }
                                     )
                                 }
+                            }
+
+                            if (uiState.isCaloriesEnabled) {
+                                // Spacer(modifier = Modifier.height(16.dp))
+                                // CalorieGoalButton removed from here
                             }
                         }
 
@@ -1184,7 +1204,7 @@ fun MealSection(
                 contentColor = Color.Black.copy(alpha = 0.64f),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
-                    .size(38.dp)
+                    .size(48.dp)
                     .testTag("home_replace_$sectionId")
             )
         }

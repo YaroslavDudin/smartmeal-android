@@ -1,7 +1,7 @@
 from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from app.recipes.models import IngredientNutrition
 from app.recipes.utils import convert_amount
@@ -62,6 +62,32 @@ class User(AbstractUser):
         default=CookTimeRange.ANY,
         verbose_name="Предпочитаемое время готовки"
     )
+    calories_enabled = models.BooleanField(default=False, verbose_name="Планировать по калориям")
+    target_calories = models.PositiveSmallIntegerField(
+        default=2000,
+        validators=[MinValueValidator(1200), MaxValueValidator(3000)],
+        verbose_name="Целевая калорийность"
+    )
+    calorie_margin = models.PositiveSmallIntegerField(
+        default=100,
+        validators=[MinValueValidator(50), MaxValueValidator(500)],
+        verbose_name="Допустимый разброс калорий"
+    )
+    protein_percent = models.PositiveSmallIntegerField(
+        default=20,
+        validators=[MinValueValidator(10), MaxValueValidator(80)],
+        verbose_name="Белки, %"
+    )
+    fat_percent = models.PositiveSmallIntegerField(
+        default=30,
+        validators=[MinValueValidator(10), MaxValueValidator(80)],
+        verbose_name="Жиры, %"
+    )
+    carbs_percent = models.PositiveSmallIntegerField(
+        default=50,
+        validators=[MinValueValidator(10), MaxValueValidator(80)],
+        verbose_name="Углеводы, %"
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -71,6 +97,14 @@ class User(AbstractUser):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
         ordering = ['-created_at']
+
+    def clean(self):
+        super().clean()
+        macro_sum = self.protein_percent + self.fat_percent + self.carbs_percent
+        if macro_sum != 100:
+            raise ValidationError({
+                'carbs_percent': 'Сумма белков, жиров и углеводов должна быть равна 100%.'
+            })
 
     def __str__(self):
         return f'Имя пользователя: {self.username}, email: {self.email}'

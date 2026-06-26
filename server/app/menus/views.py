@@ -83,6 +83,9 @@ class MenuViewSet(viewsets.ModelViewSet):
         cook_times_dict = data.get('cook_times') or {}
         max_cook_time = data.get('max_cook_time')
         total_calories = data.get('total_calories')
+        if total_calories is None and request.user.calories_enabled:
+            total_calories = request.user.target_calories
+            data['calorie_margin'] = request.user.calorie_margin
         meal_calories_dict = data.get('meal_calories') or {}
 
         meal_types = list(MealType.objects.all().order_by('order'))

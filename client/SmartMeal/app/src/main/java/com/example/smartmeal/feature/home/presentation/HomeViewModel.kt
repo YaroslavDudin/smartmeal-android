@@ -34,7 +34,9 @@ data class HomeUiState(
     val mealSections: List<MealSection> = emptyList(),
     val currentMenu: MenuDto? = null,
     val allMenuItems: List<MenuItemDto> = emptyList(),
-    val customPlan: CustomPlan? = null
+    val customPlan: CustomPlan? = null,
+    val isCaloriesEnabled: Boolean = false,
+    val goalCalories: Int = 2000
 )
 
 class HomeViewModel(
@@ -160,7 +162,9 @@ class HomeViewModel(
                 allMenuItems = allItems,
                 selectedDate = resolvedSelectedDate,
                 selectedDay = resolvedSelectedDate?.let { d -> resolveDayNameForDate(d) }.orEmpty(),
-                selectedDateFromPlan = false
+                selectedDateFromPlan = false,
+                isCaloriesEnabled = preferences.isCaloriesEnabled(),
+                goalCalories = preferences.getTotalCalories()
             )
         }
         updateMealSections()

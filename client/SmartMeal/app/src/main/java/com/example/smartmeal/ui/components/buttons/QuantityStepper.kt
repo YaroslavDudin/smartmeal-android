@@ -91,7 +91,7 @@ private fun StepperButton(
 ) {
     Box(
         modifier = Modifier
-            .size(32.dp)
+            .size(48.dp)
             .clip(CircleShape)
             .background(if (enabled) PrimaryGreen else Color.LightGray.copy(alpha = 0.5f))
             .clickable(enabled = enabled, onClick = onClick),
@@ -100,7 +100,7 @@ private fun StepperButton(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.size(18.dp),
+            modifier = Modifier.size(20.dp),
             tint = Color.White
         )
     }

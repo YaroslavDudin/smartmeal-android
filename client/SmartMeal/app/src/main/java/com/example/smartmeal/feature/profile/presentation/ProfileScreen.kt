@@ -30,7 +30,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Favorite
+
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.Restaurant
@@ -42,6 +43,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -85,6 +87,7 @@ private data class ProfileActionItem(
     val title: String,
     val subtitle: String,
     val icon: ImageVector,
+    val iconColor: Color = Color.Unspecified,
     val onClick: () -> Unit
 )
 
@@ -95,11 +98,20 @@ fun ProfileScreen(
     onLogoutSuccess: () -> Unit,
     onGoToProducts: (Boolean) -> Unit,
     onRecipeClick: (Int) -> Unit = {},
-    onProfileUpdatedSuccessfully: () -> Unit = {}
+    onProfileUpdatedSuccessfully: () -> Unit = {},
+    initialSubScreen: ProfileSubScreen = ProfileSubScreen.NONE,
+    onInitialSubScreenConsumed: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
     var subScreen by remember { mutableStateOf(ProfileSubScreen.NONE) }
     var showLogoutDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(initialSubScreen) {
+        if (initialSubScreen != ProfileSubScreen.NONE) {
+            subScreen = initialSubScreen
+            onInitialSubScreenConsumed()
+        }
+    }
 
     BackHandler(enabled = subScreen != ProfileSubScreen.NONE) {
         subScreen = ProfileSubScreen.NONE
@@ -175,30 +187,35 @@ fun ProfileScreen(
                         title = "Аллергии",
                         subtitle = allergySummary,
                         icon = Icons.Default.MedicalServices,
+                        iconColor = Color(0xFFFBC02D), // Yellow
                         onClick = { subScreen = ProfileSubScreen.ALLERGIES }
                     ),
                     ProfileActionItem(
                         title = "Рацион",
                         subtitle = dietSummary,
                         icon = Icons.Default.Restaurant,
+                        iconColor = Color(0xFF4CAF50), // Green
                         onClick = { subScreen = ProfileSubScreen.DIET }
                     ),
                     ProfileActionItem(
                         title = "Калории",
                         subtitle = calorieSummary,
                         icon = Icons.Default.LocalFireDepartment,
+                        iconColor = Color(0xFFE53935), // Red
                         onClick = { subScreen = ProfileSubScreen.CALORIES }
                     ),
                     ProfileActionItem(
                         title = "Время готовки",
                         subtitle = "Тайминги приема пищи",
                         icon = Icons.Default.AccessTime,
+                        iconColor = Color(0xFF7E57C2), // Purple
                         onClick = { subScreen = ProfileSubScreen.COOK_TIME }
                     ),
                     ProfileActionItem(
                         title = "Список покупок",
                         subtitle = "Открыть корзину",
                         icon = Icons.Default.ShoppingCart,
+                        iconColor = Color(0xFF03A9F4), // Blue
                         onClick = { onGoToProducts(true) }
                     ),
                     ProfileActionItem(
@@ -208,7 +225,8 @@ fun ProfileScreen(
                         } else {
                             "Сохраненные блюда"
                         },
-                        icon = Icons.Default.FavoriteBorder,
+                        icon = Icons.Default.Favorite,
+                        iconColor = Color(0xFFFF1744), // Bright Red
                         onClick = {
                             viewModel.loadFavorites()
                             subScreen = ProfileSubScreen.FAVORITES
@@ -247,6 +265,7 @@ fun ProfileScreen(
                                             title = item.title,
                                             subtitle = item.subtitle,
                                             icon = item.icon,
+                                            iconColor = item.iconColor,
                                             onClick = item.onClick
                                         )
                                     }
@@ -495,6 +514,7 @@ private fun ProfileActionCard(
     title: String,
     subtitle: String,
     icon: ImageVector,
+    iconColor: Color = PrimaryGreen,
     onClick: () -> Unit
 ) {
     Surface(
@@ -510,17 +530,14 @@ private fun ProfileActionCard(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Surface(
-                shape = RoundedCornerShape(14.dp),
-                color = ProfileSurface
-            ) {
-                androidx.compose.material3.Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = PrimaryGreen,
-                    modifier = Modifier.padding(10.dp)
-                )
-            }
+            androidx.compose.material3.Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = iconColor,
+                modifier = Modifier
+                    .size(44.dp)
+                    .padding(4.dp)
+            )
 
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 SmartMealText(
@@ -577,13 +594,18 @@ private fun PortionStepperCard(
             ) {
                 Surface(
                     modifier = Modifier
-                        .size(42.dp)
-                        .clickable(onClick = onDecrement),
+                        .size(48.dp)
+                        .clickable(enabled = count > 1, onClick = onDecrement),
                     shape = CircleShape,
-                    color = ProfileSurface
+                    color = if (count > 1) ProfileSurface else Color(0xFFF1EFED)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        SmartMealText(text = "-", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = TextBlack)
+                        SmartMealText(
+                            text = "-",
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = if (count > 1) TextBlack else ProfileMutedText
+                        )
                     }
                 }
 
@@ -609,7 +631,7 @@ private fun PortionStepperCard(
 
                 Surface(
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(48.dp)
                         .clickable(onClick = onIncrement),
                     shape = CircleShape,
                     color = PrimaryGreen
@@ -709,7 +731,7 @@ private fun LogoutConfirmDialog(
                             .weight(1f)
                             .clickable(onClick = onDismiss),
                         shape = RoundedCornerShape(16.dp),
-                        color = PrimaryGreen
+                        color = Color(0xFFF4F4F4)
                     ) {
                         Box(
                             modifier = Modifier
@@ -717,7 +739,7 @@ private fun LogoutConfirmDialog(
                                 .padding(vertical = 12.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            SmartMealText("Отмена", fontWeight = FontWeight.SemiBold, color = Color.White)
+                            SmartMealText("Отмена", fontWeight = FontWeight.SemiBold, color = TextBlack)
                         }
                     }
 

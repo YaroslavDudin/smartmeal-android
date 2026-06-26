@@ -24,6 +24,12 @@ data class UserProfileDto(
     val allergies_names: List<String>,
     val birth_date: String? = null,
     val gender: String? = null,
+    val calories_enabled: Boolean? = null,
+    val target_calories: Int? = null,
+    val calorie_margin: Int? = null,
+    val protein_percent: Int? = null,
+    val fat_percent: Int? = null,
+    val carbs_percent: Int? = null,
 )
 
 data class UpdateProfileRequest(
@@ -34,6 +40,12 @@ data class UpdateProfileRequest(
     val preferred_cook_time: String? = null,
     val birth_date: String? = null,
     val gender: String? = null,
+    val calories_enabled: Boolean? = null,
+    val target_calories: Int? = null,
+    val calorie_margin: Int? = null,
+    val protein_percent: Int? = null,
+    val fat_percent: Int? = null,
+    val carbs_percent: Int? = null,
     // Аватар обычно передается через Multipart, поэтому в JSON-запросе он может не понадобиться, 
     // но добавим для полноты модели, если будем использовать PATCH с URL (хотя это редко)
     val avatar: String? = null, 

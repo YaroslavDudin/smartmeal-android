@@ -1,7 +1,6 @@
 package com.example.smartmeal.ui.components.buttons
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.LocalIndication
@@ -10,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -59,11 +57,10 @@ fun CircleIconButton(
     // Состояние для анимации нажатия
     var isPressed by remember { mutableStateOf(false) }
 
-    // Анимируем размер кнопки при нажатии
-    val animatedSize by animateDpAsState(
-        targetValue = if (isPressed) (size - 4).dp else size.dp,
+    val pressScale by animateFloatAsState(
+        targetValue = if (isPressed) 0.92f else 1f,
         animationSpec = tween(durationMillis = 100),
-        label = "button_size_animation"
+        label = "button_press_scale"
     )
 
     // Определяем цвет иконки (для стандартных иконок)
@@ -95,7 +92,11 @@ fun CircleIconButton(
     // Используем Box вместо Button, чтобы убрать ripple (эффект нажатия)
     Box(
         modifier = modifier
-            .size(animatedSize)
+            .size(size.dp)
+            .graphicsLayer(
+                scaleX = pressScale,
+                scaleY = pressScale
+            )
             .clip(shape)
             .background(backgroundColor)
             .clickable(

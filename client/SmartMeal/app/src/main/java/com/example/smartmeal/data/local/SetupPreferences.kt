@@ -296,6 +296,32 @@ class SetupPreferences(context: Context) {
         return prefs.getInt(scopedKey(KEY_CALORIE_MARGIN), 100)
     }
 
+    fun setMacroPercents(protein: Int, fat: Int, carbs: Int) {
+        prefs.edit()
+            .putInt(scopedKey(KEY_PROTEIN_PERCENT), protein)
+            .putInt(scopedKey(KEY_FAT_PERCENT), fat)
+            .putInt(scopedKey(KEY_CARBS_PERCENT), carbs)
+            .apply()
+    }
+
+    fun getProteinPercent(): Int {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return 20
+        return prefs.getInt(scopedKey(KEY_PROTEIN_PERCENT), 20)
+    }
+
+    fun getFatPercent(): Int {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return 30
+        return prefs.getInt(scopedKey(KEY_FAT_PERCENT), 30)
+    }
+
+    fun getCarbsPercent(): Int {
+        val active = getActiveUserKey()
+        if (active.isNullOrBlank()) return 50
+        return prefs.getInt(scopedKey(KEY_CARBS_PERCENT), 50)
+    }
+
     fun setGender(gender: String?) {
         if (gender == null) prefs.edit().remove(scopedKey(KEY_GENDER)).apply()
         else prefs.edit().putString(scopedKey(KEY_GENDER), gender).apply()
@@ -334,5 +360,8 @@ class SetupPreferences(context: Context) {
         private const val KEY_MEAL_CALORIES = "meal_calories"
         private const val KEY_CALORIES_ENABLED = "calories_enabled"
         private const val KEY_CALORIE_MARGIN = "calorie_margin"
+        private const val KEY_PROTEIN_PERCENT = "protein_percent"
+        private const val KEY_FAT_PERCENT = "fat_percent"
+        private const val KEY_CARBS_PERCENT = "carbs_percent"
     }
 }

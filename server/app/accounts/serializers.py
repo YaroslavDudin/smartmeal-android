@@ -103,8 +103,21 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'username', 'email', 'avatar', 'portion_size', 'diet_type', 'diet_type_name', 
             'preferred_cook_time', 'preferred_cook_time_display', 'allergies', 'allergies_names',
-            'birth_date', 'gender'
+            'birth_date', 'gender', 'calories_enabled', 'target_calories', 'calorie_margin',
+            'protein_percent', 'fat_percent', 'carbs_percent'
         )
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        instance = self.instance
+        protein = attrs.get('protein_percent', getattr(instance, 'protein_percent', 20))
+        fat = attrs.get('fat_percent', getattr(instance, 'fat_percent', 30))
+        carbs = attrs.get('carbs_percent', getattr(instance, 'carbs_percent', 50))
+        if protein + fat + carbs != 100:
+            raise serializers.ValidationError({
+                'carbs_percent': 'Сумма белков, жиров и углеводов должна быть равна 100%.'
+            })
+        return attrs
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

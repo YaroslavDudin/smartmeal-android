@@ -63,7 +63,10 @@ data class ProfileState(
     
     // Калорийность
     val totalCalories: Int = 2000,
-    val mealCalories: Map<String, Int> = emptyMap()
+    val mealCalories: Map<String, Int> = emptyMap(),
+    val proteinPercent: Int = 20,
+    val fatPercent: Int = 30,
+    val carbsPercent: Int = 50
 )
 
 fun ProfileState.getGroupedFavorites(): Map<String, List<com.example.smartmeal.feature.home.data.api.UserFavoriteDto>> {
@@ -296,14 +299,23 @@ class ProfileViewModel(
                         pendingUserName = user?.username ?: "",
                         pendingBirthDate = user?.birth_date,
                         pendingGender = user?.gender,
-                        totalCalories = preferences.getTotalCalories(),
-                        mealCalories = preferences.getAllMealCalories()
+                        totalCalories = user?.target_calories ?: preferences.getTotalCalories(),
+                        mealCalories = preferences.getAllMealCalories(),
+                        proteinPercent = user?.protein_percent ?: preferences.getProteinPercent(),
+                        fatPercent = user?.fat_percent ?: preferences.getFatPercent(),
+                        carbsPercent = user?.carbs_percent ?: preferences.getCarbsPercent()
                     )
                 }
                 user?.portion_size?.let { preferences.setPortionSize(it) }
                 preferences.setDietType(user?.diet_type)
                 preferences.setAllergies(user?.allergies ?: emptyList())
                 preferences.setGender(user?.gender)
+                user?.calories_enabled?.let { preferences.setCaloriesEnabled(it) }
+                user?.target_calories?.let { preferences.setTotalCalories(it) }
+                user?.calorie_margin?.let { preferences.setCalorieMargin(it) }
+                if (user?.protein_percent != null && user.fat_percent != null && user.carbs_percent != null) {
+                    preferences.setMacroPercents(user.protein_percent, user.fat_percent, user.carbs_percent)
+                }
             } catch (e: Exception) {
                 _state.update { it.copy(isLoading = false, error = "Ошибка загрузки: ${e.message}") }
             }
@@ -602,15 +614,53 @@ class ProfileViewModel(
     fun isCaloriesEnabled(): Boolean = preferences.isCaloriesEnabled()
     fun getCalorieMargin(): Int = preferences.getCalorieMargin()
 
-    fun saveCalorieSettings(enabled: Boolean, total: Int, margin: Int, meals: Map<String, Int>) {
+    fun saveCalorieSettings(
+        enabled: Boolean,
+        total: Int,
+        margin: Int,
+        meals: Map<String, Int>,
+        proteinPercent: Int = preferences.getProteinPercent(),
+        fatPercent: Int = preferences.getFatPercent(),
+        carbsPercent: Int = preferences.getCarbsPercent()
+    ) {
         viewModelScope.launch {
             preferences.setCaloriesEnabled(enabled)
             preferences.setTotalCalories(total)
             preferences.setCalorieMargin(margin)
+            preferences.setMacroPercents(proteinPercent, fatPercent, carbsPercent)
             meals.forEach { (type, cals) ->
                 preferences.setMealCalories(type, cals)
             }
-            _state.update { it.copy(totalCalories = total, mealCalories = meals) }
+            _state.update {
+                it.copy(
+                    totalCalories = total,
+                    mealCalories = meals,
+                    proteinPercent = proteinPercent,
+                    fatPercent = fatPercent,
+                    carbsPercent = carbsPercent
+                )
+            }
+            runCatching {
+                api.updateProfile(
+                    UpdateProfileRequest(
+                        username = _state.value.userName,
+                        diet_type = _state.value.currentDietTypeId,
+                        portion_size = _state.value.portionSize,
+                        allergies = _state.value.currentAllergyIds.toList(),
+                        preferred_cook_time = _state.value.preferredCookTime,
+                        birth_date = _state.value.birthDate.ifBlank { null },
+                        gender = _state.value.gender,
+                        calories_enabled = enabled,
+                        target_calories = total,
+                        calorie_margin = margin,
+                        protein_percent = proteinPercent,
+                        fat_percent = fatPercent,
+                        carbs_percent = carbsPercent
+                    )
+                )
+            }.onFailure { error ->
+                _state.update { it.copy(error = "Не удалось синхронизировать цель с сервером: ${error.localizedMessage}") }
+            }
             onCriticalSettingsChanged()
         }
     }
