@@ -35,6 +35,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.AlertDialog
@@ -66,6 +67,7 @@ import androidx.compose.ui.window.Dialog
 import coil.compose.SubcomposeAsyncImage
 import com.example.smartmeal.ui.components.SmartMealText
 import com.example.smartmeal.ui.components.feedback.shimmerEffect
+import com.example.smartmeal.feature.economics.presentation.EconomicsScreen
 import com.example.smartmeal.ui.theme.BorderGray
 import com.example.smartmeal.ui.theme.PrimaryGreen
 import com.example.smartmeal.ui.theme.SmartMealCardBorder
@@ -81,7 +83,7 @@ private val ProfileSurface = SmartMealSurfaceSoft
 private val ProfileBorder = SmartMealCardBorder
 private val ProfileMutedText = SmartMealTextSecondary
 
-enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME, CALORIES }
+enum class ProfileSubScreen { NONE, SETTINGS, ALLERGIES, DIET, FAVORITES, COOK_TIME, CALORIES, ECONOMICS }
 
 private data class ProfileActionItem(
     val title: String,
@@ -165,6 +167,10 @@ fun ProfileScreen(
                 onBack = { subScreen = ProfileSubScreen.NONE }
             )
 
+            ProfileSubScreen.ECONOMICS -> EconomicsScreen(
+                onBack = { subScreen = ProfileSubScreen.NONE }
+            )
+
             ProfileSubScreen.NONE -> {
                 val configuration = LocalConfiguration.current
                 val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -226,11 +232,18 @@ fun ProfileScreen(
                             "Сохраненные блюда"
                         },
                         icon = Icons.Default.Favorite,
-                        iconColor = Color(0xFFFF1744), // Bright Red
+                        iconColor = Color(0xFFFF1744),
                         onClick = {
                             viewModel.loadFavorites()
                             subScreen = ProfileSubScreen.FAVORITES
                         }
+                    ),
+                    ProfileActionItem(
+                        title = "Экономика",
+                        subtitle = "Бюджет и расходы",
+                        icon = Icons.Default.AccountBalance,
+                        iconColor = Color(0xFFFF5738),
+                        onClick = { subScreen = ProfileSubScreen.ECONOMICS }
                     )
                 )
 
